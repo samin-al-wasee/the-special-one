@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/duty.dart';
-import 'package:ts1_core/src/enums/role.dart';
+import 'package:ts1_core/src/enums/player/duty.dart';
+import 'package:ts1_core/src/enums/player/role.dart';
 
 part 'role_assignment.freezed.dart';
 part 'role_assignment.g.dart';

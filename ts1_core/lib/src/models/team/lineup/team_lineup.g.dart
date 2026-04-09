@@ -1,14 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'lineup.dart';
+part of 'team_lineup.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Lineup _$LineupFromJson(Map<String, dynamic> json) => _Lineup(
+_TeamLineup _$TeamLineupFromJson(Map<String, dynamic> json) => _TeamLineup(
   id: (json['id'] as num).toInt(),
-  formation: FormationShape.fromJson(json['formation'] as Map<String, dynamic>),
+  formationShape: FormationShape.fromJson(
+    json['formationShape'] as Map<String, dynamic>,
+  ),
   slotAssignments:
       (json['slotAssignments'] as List<dynamic>?)
           ?.map((e) => LineupSlotAssignment.fromJson(e as Map<String, dynamic>))
@@ -29,11 +31,12 @@ _Lineup _$LineupFromJson(Map<String, dynamic> json) => _Lineup(
       : Player.fromJson(json['captain'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$LineupToJson(_Lineup instance) => <String, dynamic>{
-  'id': instance.id,
-  'formation': instance.formation,
-  'slotAssignments': instance.slotAssignments,
-  'bench': instance.bench,
-  'reserves': instance.reserves,
-  'captain': instance.captain,
-};
+Map<String, dynamic> _$TeamLineupToJson(_TeamLineup instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'formationShape': instance.formationShape,
+      'slotAssignments': instance.slotAssignments,
+      'bench': instance.bench,
+      'reserves': instance.reserves,
+      'captain': instance.captain,
+    };

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/position.dart';
+import 'package:ts1_core/src/enums/player/position.dart';
 
 part 'formation_slot.freezed.dart';
 part 'formation_slot.g.dart';

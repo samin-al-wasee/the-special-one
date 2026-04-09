@@ -1,30 +1,30 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ts1_core/src/catalog/role_catalog.dart';
-import 'package:ts1_core/src/enums/duty.dart';
-import 'package:ts1_core/src/enums/role.dart';
-import 'package:ts1_core/src/models/formation_shape.dart';
-import 'package:ts1_core/src/models/lineup_slot_assignment.dart';
-import 'package:ts1_core/src/models/player.dart';
-import 'package:ts1_core/src/models/role_assignment.dart';
+import 'package:ts1_core/src/enums/player/duty.dart';
+import 'package:ts1_core/src/enums/player/role.dart';
+import 'package:ts1_core/src/models/team/lineup/formation/shape/formation_shape.dart';
+import 'package:ts1_core/src/models/team/lineup/slot_assignment/lineup_slot_assignment.dart';
+import 'package:ts1_core/src/models/player/player.dart';
+import 'package:ts1_core/src/models/team/lineup/slot_assignment/role_assignment/role_assignment.dart';
 
-part 'lineup.freezed.dart';
-part 'lineup.g.dart';
+part 'team_lineup.freezed.dart';
+part 'team_lineup.g.dart';
 
 @freezed
-abstract class Lineup with _$Lineup {
+abstract class TeamLineup with _$TeamLineup {
   /// Matchday lineup structure with formation and slot assignments.
-  const factory Lineup({
+  const factory TeamLineup({
     required int id,
-    required FormationShape formation,
+    required FormationShape formationShape,
     @Default([]) List<LineupSlotAssignment> slotAssignments,
     @Default([]) List<Player> bench,
     @Default([]) List<Player> reserves,
     Player? captain,
-  }) = _Lineup;
+  }) = _TeamLineup;
 
-  factory Lineup.fromJson(Map<String, dynamic> json) => _$LineupFromJson(json);
+  factory TeamLineup.fromJson(Map<String, dynamic> json) => _$TeamLineupFromJson(json);
 
-  const Lineup._();
+  const TeamLineup._();
 
   List<int> starterIds() {
     return [for (final assignment in slotAssignments) assignment.player.id];
@@ -32,7 +32,7 @@ abstract class Lineup with _$Lineup {
 
   void validate() {
     final slotIds = <String>{
-      for (final slot in formation.slotDefinitions) slot.slotId,
+      for (final slot in formationShape.slotDefinitions) slot.slotId,
     };
     final assignedSlots = [
       for (final assignment in slotAssignments) assignment.formationSlot.slotId,
@@ -66,7 +66,7 @@ abstract class Lineup with _$Lineup {
     final byId = toPlayerLookup(players);
     final ordered = <Player>[];
 
-    for (final slot in formation.slotDefinitions) {
+    for (final slot in formationShape.slotDefinitions) {
       final assignment = slotAssignments
           .where((a) {
             return a.formationSlot.slotId == slot.slotId &&
@@ -83,10 +83,10 @@ abstract class Lineup with _$Lineup {
     return ordered;
   }
 
-  Lineup clone() {
-    return Lineup(
+  TeamLineup clone() {
+    return TeamLineup(
       id: id,
-      formation: formation,
+      formationShape: formationShape,
       slotAssignments: List<LineupSlotAssignment>.from(slotAssignments),
       bench: List<Player>.from(bench),
       reserves: List<Player>.from(reserves),
@@ -94,7 +94,7 @@ abstract class Lineup with _$Lineup {
     );
   }
 
-  static Lineup fromPlayers({
+  static TeamLineup fromPlayers({
     required FormationShape formation,
     required List<Player> players,
     List<Player>? bench,
@@ -134,9 +134,9 @@ abstract class Lineup with _$Lineup {
       );
     }
 
-    final lineup = Lineup(
+    final lineup = TeamLineup(
       id: 0, // Replace with actual ID if needed
-      formation: formation,
+      formationShape: formation,
       slotAssignments: assignments,
       bench: List<Player>.from(bench ?? const []),
       reserves: List<Player>.from(reserves ?? const []),

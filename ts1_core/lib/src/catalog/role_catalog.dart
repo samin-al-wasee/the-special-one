@@ -1,6 +1,6 @@
-import '../enums/role.dart';
-import '../enums/duty.dart';
-import '../enums/position.dart';
+import '../enums/player/role.dart';
+import '../enums/player/duty.dart';
+import '../enums/player/position.dart';
 
 /// Maps each Role to the set of Positions where that role can be played.
 final roleSupportedPositions = <Role, Set<Position>>{

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/models/lineup.dart';
-import 'package:ts1_core/src/models/player.dart';
-import 'package:ts1_core/src/models/tactic.dart';
+import 'package:ts1_core/src/models/team/lineup/team_lineup.dart';
+import 'package:ts1_core/src/models/player/player.dart';
+import 'package:ts1_core/src/models/team/tactic/team_tactic.dart';
 
 part 'team.freezed.dart';
 part 'team.g.dart';
@@ -11,8 +11,8 @@ abstract class Team with _$Team {
   const factory Team({
     required int id,
     required String name,
-    required Tactic tactic,
-    required Lineup lineup,
+    required TeamTactic tactic,
+    required TeamLineup lineup,
     @Default([]) List<Player> squad,
   }) = _Team;
 
@@ -40,10 +40,10 @@ abstract class Team with _$Team {
   }
 
   String summary() {
-    return '$name | Formation: ${lineup.formation.code} | Squad: ${squadSize()}';
+    return '$name | Formation: ${lineup.formationShape.code} | Squad: ${squadSize()}';
   }
 
-  Team setLineup(Lineup newLineup) {
+  Team setLineup(TeamLineup newLineup) {
     newLineup.validate();
     final mergedSquad = _dedupePlayers([
       ...squad,

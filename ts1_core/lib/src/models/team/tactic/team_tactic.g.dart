@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tactic.dart';
+part of 'team_tactic.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Tactic _$TacticFromJson(Map<String, dynamic> json) => _Tactic(
+_TeamTactic _$TeamTacticFromJson(Map<String, dynamic> json) => _TeamTactic(
   id: (json['id'] as num).toInt(),
   buildUpStyle: $enumDecode(_$BuildUpStyleEnumMap, json['buildUpStyle']),
   tempo: $enumDecode(_$TempoEnumMap, json['tempo']),
@@ -60,7 +60,9 @@ _Tactic _$TacticFromJson(Map<String, dynamic> json) => _Tactic(
   ),
 );
 
-Map<String, dynamic> _$TacticToJson(_Tactic instance) => <String, dynamic>{
+Map<String, dynamic> _$TeamTacticToJson(
+  _TeamTactic instance,
+) => <String, dynamic>{
   'id': instance.id,
   'buildUpStyle': _$BuildUpStyleEnumMap[instance.buildUpStyle]!,
   'tempo': _$TempoEnumMap[instance.tempo]!,

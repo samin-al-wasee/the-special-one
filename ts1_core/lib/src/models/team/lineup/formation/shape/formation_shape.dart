@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'formation_slot.dart';
+import '../slot/formation_slot.dart';
 
 part 'formation_shape.freezed.dart';
 part 'formation_shape.g.dart';

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/models/role_assignment.dart';
-import 'package:ts1_core/src/models/formation_slot.dart';
-import 'package:ts1_core/src/models/player.dart';
+import 'package:ts1_core/src/models/team/lineup/slot_assignment/role_assignment/role_assignment.dart';
+import 'package:ts1_core/src/models/team/lineup/formation/slot/formation_slot.dart';
+import 'package:ts1_core/src/models/player/player.dart';
 
 part 'lineup_slot_assignment.freezed.dart';
 part 'lineup_slot_assignment.g.dart';

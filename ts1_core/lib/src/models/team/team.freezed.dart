@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Team {
 
- int get id; String get name; Tactic get tactic; Lineup get lineup; List<Player> get squad;
+ int get id; String get name; TeamTactic get tactic; TeamLineup get lineup; List<Player> get squad;
 /// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $TeamCopyWith<$Res>  {
   factory $TeamCopyWith(Team value, $Res Function(Team) _then) = _$TeamCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, Tactic tactic, Lineup lineup, List<Player> squad
+ int id, String name, TeamTactic tactic, TeamLineup lineup, List<Player> squad
 });
 
 
-$TacticCopyWith<$Res> get tactic;$LineupCopyWith<$Res> get lineup;
+$TeamTacticCopyWith<$Res> get tactic;$TeamLineupCopyWith<$Res> get lineup;
 
 }
 /// @nodoc
@@ -70,8 +70,8 @@ class _$TeamCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,tactic: null == tactic ? _self.tactic : tactic // ignore: cast_nullable_to_non_nullable
-as Tactic,lineup: null == lineup ? _self.lineup : lineup // ignore: cast_nullable_to_non_nullable
-as Lineup,squad: null == squad ? _self.squad : squad // ignore: cast_nullable_to_non_nullable
+as TeamTactic,lineup: null == lineup ? _self.lineup : lineup // ignore: cast_nullable_to_non_nullable
+as TeamLineup,squad: null == squad ? _self.squad : squad // ignore: cast_nullable_to_non_nullable
 as List<Player>,
   ));
 }
@@ -79,18 +79,18 @@ as List<Player>,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TacticCopyWith<$Res> get tactic {
+$TeamTacticCopyWith<$Res> get tactic {
   
-  return $TacticCopyWith<$Res>(_self.tactic, (value) {
+  return $TeamTacticCopyWith<$Res>(_self.tactic, (value) {
     return _then(_self.copyWith(tactic: value));
   });
 }/// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$LineupCopyWith<$Res> get lineup {
+$TeamLineupCopyWith<$Res> get lineup {
   
-  return $LineupCopyWith<$Res>(_self.lineup, (value) {
+  return $TeamLineupCopyWith<$Res>(_self.lineup, (value) {
     return _then(_self.copyWith(lineup: value));
   });
 }
@@ -175,7 +175,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  Tactic tactic,  Lineup lineup,  List<Player> squad)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  TeamTactic tactic,  TeamLineup lineup,  List<Player> squad)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Team() when $default != null:
 return $default(_that.id,_that.name,_that.tactic,_that.lineup,_that.squad);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.name,_that.tactic,_that.lineup,_that.squad);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  Tactic tactic,  Lineup lineup,  List<Player> squad)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  TeamTactic tactic,  TeamLineup lineup,  List<Player> squad)  $default,) {final _that = this;
 switch (_that) {
 case _Team():
 return $default(_that.id,_that.name,_that.tactic,_that.lineup,_that.squad);case _:
@@ -216,7 +216,7 @@ return $default(_that.id,_that.name,_that.tactic,_that.lineup,_that.squad);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  Tactic tactic,  Lineup lineup,  List<Player> squad)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  TeamTactic tactic,  TeamLineup lineup,  List<Player> squad)?  $default,) {final _that = this;
 switch (_that) {
 case _Team() when $default != null:
 return $default(_that.id,_that.name,_that.tactic,_that.lineup,_that.squad);case _:
@@ -236,8 +236,8 @@ class _Team extends Team {
 
 @override final  int id;
 @override final  String name;
-@override final  Tactic tactic;
-@override final  Lineup lineup;
+@override final  TeamTactic tactic;
+@override final  TeamLineup lineup;
  final  List<Player> _squad;
 @override@JsonKey() List<Player> get squad {
   if (_squad is EqualUnmodifiableListView) return _squad;
@@ -279,11 +279,11 @@ abstract mixin class _$TeamCopyWith<$Res> implements $TeamCopyWith<$Res> {
   factory _$TeamCopyWith(_Team value, $Res Function(_Team) _then) = __$TeamCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, Tactic tactic, Lineup lineup, List<Player> squad
+ int id, String name, TeamTactic tactic, TeamLineup lineup, List<Player> squad
 });
 
 
-@override $TacticCopyWith<$Res> get tactic;@override $LineupCopyWith<$Res> get lineup;
+@override $TeamTacticCopyWith<$Res> get tactic;@override $TeamLineupCopyWith<$Res> get lineup;
 
 }
 /// @nodoc
@@ -301,8 +301,8 @@ class __$TeamCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,tactic: null == tactic ? _self.tactic : tactic // ignore: cast_nullable_to_non_nullable
-as Tactic,lineup: null == lineup ? _self.lineup : lineup // ignore: cast_nullable_to_non_nullable
-as Lineup,squad: null == squad ? _self._squad : squad // ignore: cast_nullable_to_non_nullable
+as TeamTactic,lineup: null == lineup ? _self.lineup : lineup // ignore: cast_nullable_to_non_nullable
+as TeamLineup,squad: null == squad ? _self._squad : squad // ignore: cast_nullable_to_non_nullable
 as List<Player>,
   ));
 }
@@ -311,18 +311,18 @@ as List<Player>,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TacticCopyWith<$Res> get tactic {
+$TeamTacticCopyWith<$Res> get tactic {
   
-  return $TacticCopyWith<$Res>(_self.tactic, (value) {
+  return $TeamTacticCopyWith<$Res>(_self.tactic, (value) {
     return _then(_self.copyWith(tactic: value));
   });
 }/// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$LineupCopyWith<$Res> get lineup {
+$TeamLineupCopyWith<$Res> get lineup {
   
-  return $LineupCopyWith<$Res>(_self.lineup, (value) {
+  return $TeamLineupCopyWith<$Res>(_self.lineup, (value) {
     return _then(_self.copyWith(lineup: value));
   });
 }

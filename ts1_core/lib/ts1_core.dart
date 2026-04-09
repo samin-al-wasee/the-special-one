@@ -3,23 +3,23 @@
 /// More dartdocs go here.
 library;
 
-import 'src/enums/player_attributes.dart';
-import 'src/enums/position.dart';
-import 'src/models/player.dart';
+import 'src/enums/player/player_attributes.dart';
+import 'src/enums/player/position.dart';
+import 'src/models/player/player.dart';
 
 export 'src/ts1_core_base.dart';
-export 'src/enums/player_attributes.dart';
-export 'src/enums/position.dart';
-export 'src/enums/tactical_attributes.dart';
-export 'src/enums/role.dart';
-export 'src/enums/duty.dart';
-export 'src/models/formation_slot.dart';
-export 'src/models/formation_shape.dart';
-export 'src/models/role_assignment.dart';
-export 'src/models/lineup_slot_assignment.dart';
-export 'src/models/lineup.dart';
-export 'src/models/tactic.dart';
-export 'src/models/player.dart';
+export 'src/enums/player/player_attributes.dart';
+export 'src/enums/player/position.dart';
+export 'src/enums/team/tactic/tactical_attributes.dart';
+export 'src/enums/player/role.dart';
+export 'src/enums/player/duty.dart';
+export 'src/models/team/lineup/formation/slot/formation_slot.dart';
+export 'src/models/team/lineup/formation/shape/formation_shape.dart';
+export 'src/models/team/lineup/slot_assignment/role_assignment/role_assignment.dart';
+export 'src/models/team/lineup/slot_assignment/lineup_slot_assignment.dart';
+export 'src/models/team/lineup/team_lineup.dart';
+export 'src/models/team/tactic/team_tactic.dart';
+export 'src/models/player/player.dart';
 
 /// Creates a few sample players and prints them to stdout.
 void printSamplePlayers() {

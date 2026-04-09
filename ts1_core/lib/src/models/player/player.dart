@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/player_attributes.dart';
-import 'package:ts1_core/src/enums/position.dart';
+import 'package:ts1_core/src/enums/player/player_attributes.dart';
+import 'package:ts1_core/src/enums/player/position.dart';
 
 part 'player.freezed.dart';
 part 'player.g.dart';

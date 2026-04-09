@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/tactical_attributes.dart';
+import 'package:ts1_core/src/enums/team/tactic/tactical_attributes.dart';
 
-part 'tactic.freezed.dart';
-part 'tactic.g.dart';
+part 'team_tactic.freezed.dart';
+part 'team_tactic.g.dart';
 
 @freezed
-abstract class Tactic with _$Tactic {
-  const factory Tactic({
+abstract class TeamTactic with _$TeamTactic {
+  const factory TeamTactic({
     required int id,
     // Team Tactics: Attacking Tactics (SPEC Part 2.A)
     required BuildUpStyle buildUpStyle,
@@ -44,11 +44,11 @@ abstract class Tactic with _$Tactic {
     required SetPieceAttack setPieceAttack,
     required SetPieceDefense setPieceDefense,
     required FreeKickStrategy freeKickStrategy,
-  }) = _Tactic;
+  }) = _TeamTactic;
 
-  factory Tactic.fromJson(Map<String, dynamic> json) => _$TacticFromJson(json);
+  factory TeamTactic.fromJson(Map<String, dynamic> json) => _$TeamTacticFromJson(json);
 
-  const Tactic._();
+  const TeamTactic._();
 
   String summary() {
     return 'Build-Up Style: $buildUpStyle\n'

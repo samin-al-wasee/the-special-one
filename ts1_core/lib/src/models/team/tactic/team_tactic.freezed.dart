@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'tactic.dart';
+part of 'team_tactic.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,7 +13,7 @@ part of 'tactic.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$Tactic {
+mixin _$TeamTactic {
 
  int get id;// Team Tactics: Attacking Tactics (SPEC Part 2.A)
  BuildUpStyle get buildUpStyle; Tempo get tempo; Width get width; FinalThirdFocus get finalThirdFocus; AttackingFocus get attackingFocus;// Team Tactics: Defensive Tactics (SPEC Part 2.B)
@@ -23,19 +23,19 @@ mixin _$Tactic {
  PassingRisk get passingRisk; DribblingRisk get dribblingRisk; ShootingPolicy get shootingPolicy;// Team Tactics: Space Control (SPEC Part 2.F)
  Compactness get compactness; VerticalStretch get verticalStretch; OverloadFocus get overloadFocus;// Set Piece Control System (SPEC Part 5)
  SetPieceAttack get setPieceAttack; SetPieceDefense get setPieceDefense; FreeKickStrategy get freeKickStrategy;
-/// Create a copy of Tactic
+/// Create a copy of TeamTactic
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$TacticCopyWith<Tactic> get copyWith => _$TacticCopyWithImpl<Tactic>(this as Tactic, _$identity);
+$TeamTacticCopyWith<TeamTactic> get copyWith => _$TeamTacticCopyWithImpl<TeamTactic>(this as TeamTactic, _$identity);
 
-  /// Serializes this Tactic to a JSON map.
+  /// Serializes this TeamTactic to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Tactic&&(identical(other.id, id) || other.id == id)&&(identical(other.buildUpStyle, buildUpStyle) || other.buildUpStyle == buildUpStyle)&&(identical(other.tempo, tempo) || other.tempo == tempo)&&(identical(other.width, width) || other.width == width)&&(identical(other.finalThirdFocus, finalThirdFocus) || other.finalThirdFocus == finalThirdFocus)&&(identical(other.attackingFocus, attackingFocus) || other.attackingFocus == attackingFocus)&&(identical(other.defensiveLine, defensiveLine) || other.defensiveLine == defensiveLine)&&(identical(other.lineOfEngagement, lineOfEngagement) || other.lineOfEngagement == lineOfEngagement)&&(identical(other.pressingIntensity, pressingIntensity) || other.pressingIntensity == pressingIntensity)&&(identical(other.defensiveWidth, defensiveWidth) || other.defensiveWidth == defensiveWidth)&&(identical(other.markingStyle, markingStyle) || other.markingStyle == markingStyle)&&(identical(other.tacklingAggression, tacklingAggression) || other.tacklingAggression == tacklingAggression)&&(identical(other.transitionOnWin, transitionOnWin) || other.transitionOnWin == transitionOnWin)&&(identical(other.transitionOnLoss, transitionOnLoss) || other.transitionOnLoss == transitionOnLoss)&&(identical(other.teamMentality, teamMentality) || other.teamMentality == teamMentality)&&(identical(other.passingRisk, passingRisk) || other.passingRisk == passingRisk)&&(identical(other.dribblingRisk, dribblingRisk) || other.dribblingRisk == dribblingRisk)&&(identical(other.shootingPolicy, shootingPolicy) || other.shootingPolicy == shootingPolicy)&&(identical(other.compactness, compactness) || other.compactness == compactness)&&(identical(other.verticalStretch, verticalStretch) || other.verticalStretch == verticalStretch)&&(identical(other.overloadFocus, overloadFocus) || other.overloadFocus == overloadFocus)&&(identical(other.setPieceAttack, setPieceAttack) || other.setPieceAttack == setPieceAttack)&&(identical(other.setPieceDefense, setPieceDefense) || other.setPieceDefense == setPieceDefense)&&(identical(other.freeKickStrategy, freeKickStrategy) || other.freeKickStrategy == freeKickStrategy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamTactic&&(identical(other.id, id) || other.id == id)&&(identical(other.buildUpStyle, buildUpStyle) || other.buildUpStyle == buildUpStyle)&&(identical(other.tempo, tempo) || other.tempo == tempo)&&(identical(other.width, width) || other.width == width)&&(identical(other.finalThirdFocus, finalThirdFocus) || other.finalThirdFocus == finalThirdFocus)&&(identical(other.attackingFocus, attackingFocus) || other.attackingFocus == attackingFocus)&&(identical(other.defensiveLine, defensiveLine) || other.defensiveLine == defensiveLine)&&(identical(other.lineOfEngagement, lineOfEngagement) || other.lineOfEngagement == lineOfEngagement)&&(identical(other.pressingIntensity, pressingIntensity) || other.pressingIntensity == pressingIntensity)&&(identical(other.defensiveWidth, defensiveWidth) || other.defensiveWidth == defensiveWidth)&&(identical(other.markingStyle, markingStyle) || other.markingStyle == markingStyle)&&(identical(other.tacklingAggression, tacklingAggression) || other.tacklingAggression == tacklingAggression)&&(identical(other.transitionOnWin, transitionOnWin) || other.transitionOnWin == transitionOnWin)&&(identical(other.transitionOnLoss, transitionOnLoss) || other.transitionOnLoss == transitionOnLoss)&&(identical(other.teamMentality, teamMentality) || other.teamMentality == teamMentality)&&(identical(other.passingRisk, passingRisk) || other.passingRisk == passingRisk)&&(identical(other.dribblingRisk, dribblingRisk) || other.dribblingRisk == dribblingRisk)&&(identical(other.shootingPolicy, shootingPolicy) || other.shootingPolicy == shootingPolicy)&&(identical(other.compactness, compactness) || other.compactness == compactness)&&(identical(other.verticalStretch, verticalStretch) || other.verticalStretch == verticalStretch)&&(identical(other.overloadFocus, overloadFocus) || other.overloadFocus == overloadFocus)&&(identical(other.setPieceAttack, setPieceAttack) || other.setPieceAttack == setPieceAttack)&&(identical(other.setPieceDefense, setPieceDefense) || other.setPieceDefense == setPieceDefense)&&(identical(other.freeKickStrategy, freeKickStrategy) || other.freeKickStrategy == freeKickStrategy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -44,15 +44,15 @@ int get hashCode => Object.hashAll([runtimeType,id,buildUpStyle,tempo,width,fina
 
 @override
 String toString() {
-  return 'Tactic(id: $id, buildUpStyle: $buildUpStyle, tempo: $tempo, width: $width, finalThirdFocus: $finalThirdFocus, attackingFocus: $attackingFocus, defensiveLine: $defensiveLine, lineOfEngagement: $lineOfEngagement, pressingIntensity: $pressingIntensity, defensiveWidth: $defensiveWidth, markingStyle: $markingStyle, tacklingAggression: $tacklingAggression, transitionOnWin: $transitionOnWin, transitionOnLoss: $transitionOnLoss, teamMentality: $teamMentality, passingRisk: $passingRisk, dribblingRisk: $dribblingRisk, shootingPolicy: $shootingPolicy, compactness: $compactness, verticalStretch: $verticalStretch, overloadFocus: $overloadFocus, setPieceAttack: $setPieceAttack, setPieceDefense: $setPieceDefense, freeKickStrategy: $freeKickStrategy)';
+  return 'TeamTactic(id: $id, buildUpStyle: $buildUpStyle, tempo: $tempo, width: $width, finalThirdFocus: $finalThirdFocus, attackingFocus: $attackingFocus, defensiveLine: $defensiveLine, lineOfEngagement: $lineOfEngagement, pressingIntensity: $pressingIntensity, defensiveWidth: $defensiveWidth, markingStyle: $markingStyle, tacklingAggression: $tacklingAggression, transitionOnWin: $transitionOnWin, transitionOnLoss: $transitionOnLoss, teamMentality: $teamMentality, passingRisk: $passingRisk, dribblingRisk: $dribblingRisk, shootingPolicy: $shootingPolicy, compactness: $compactness, verticalStretch: $verticalStretch, overloadFocus: $overloadFocus, setPieceAttack: $setPieceAttack, setPieceDefense: $setPieceDefense, freeKickStrategy: $freeKickStrategy)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $TacticCopyWith<$Res>  {
-  factory $TacticCopyWith(Tactic value, $Res Function(Tactic) _then) = _$TacticCopyWithImpl;
+abstract mixin class $TeamTacticCopyWith<$Res>  {
+  factory $TeamTacticCopyWith(TeamTactic value, $Res Function(TeamTactic) _then) = _$TeamTacticCopyWithImpl;
 @useResult
 $Res call({
  int id, BuildUpStyle buildUpStyle, Tempo tempo, Width width, FinalThirdFocus finalThirdFocus, AttackingFocus attackingFocus, DefensiveLine defensiveLine, LineOfEngagement lineOfEngagement, PressingIntensity pressingIntensity, DefensiveWidth defensiveWidth, MarkingStyle markingStyle, TacklingAggression tacklingAggression, TransitionOnWin transitionOnWin, TransitionOnLoss transitionOnLoss, TeamMentality teamMentality, PassingRisk passingRisk, DribblingRisk dribblingRisk, ShootingPolicy shootingPolicy, Compactness compactness, VerticalStretch verticalStretch, OverloadFocus overloadFocus, SetPieceAttack setPieceAttack, SetPieceDefense setPieceDefense, FreeKickStrategy freeKickStrategy
@@ -63,14 +63,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$TacticCopyWithImpl<$Res>
-    implements $TacticCopyWith<$Res> {
-  _$TacticCopyWithImpl(this._self, this._then);
+class _$TeamTacticCopyWithImpl<$Res>
+    implements $TeamTacticCopyWith<$Res> {
+  _$TeamTacticCopyWithImpl(this._self, this._then);
 
-  final Tactic _self;
-  final $Res Function(Tactic) _then;
+  final TeamTactic _self;
+  final $Res Function(TeamTactic) _then;
 
-/// Create a copy of Tactic
+/// Create a copy of TeamTactic
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? buildUpStyle = null,Object? tempo = null,Object? width = null,Object? finalThirdFocus = null,Object? attackingFocus = null,Object? defensiveLine = null,Object? lineOfEngagement = null,Object? pressingIntensity = null,Object? defensiveWidth = null,Object? markingStyle = null,Object? tacklingAggression = null,Object? transitionOnWin = null,Object? transitionOnLoss = null,Object? teamMentality = null,Object? passingRisk = null,Object? dribblingRisk = null,Object? shootingPolicy = null,Object? compactness = null,Object? verticalStretch = null,Object? overloadFocus = null,Object? setPieceAttack = null,Object? setPieceDefense = null,Object? freeKickStrategy = null,}) {
   return _then(_self.copyWith(
@@ -105,8 +105,8 @@ as FreeKickStrategy,
 }
 
 
-/// Adds pattern-matching-related methods to [Tactic].
-extension TacticPatterns on Tactic {
+/// Adds pattern-matching-related methods to [TeamTactic].
+extension TeamTacticPatterns on TeamTactic {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -119,10 +119,10 @@ extension TacticPatterns on Tactic {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Tactic value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TeamTactic value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Tactic() when $default != null:
+case _TeamTactic() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -141,10 +141,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Tactic value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TeamTactic value)  $default,){
 final _that = this;
 switch (_that) {
-case _Tactic():
+case _TeamTactic():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -162,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Tactic value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TeamTactic value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Tactic() when $default != null:
+case _TeamTactic() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -185,7 +185,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  BuildUpStyle buildUpStyle,  Tempo tempo,  Width width,  FinalThirdFocus finalThirdFocus,  AttackingFocus attackingFocus,  DefensiveLine defensiveLine,  LineOfEngagement lineOfEngagement,  PressingIntensity pressingIntensity,  DefensiveWidth defensiveWidth,  MarkingStyle markingStyle,  TacklingAggression tacklingAggression,  TransitionOnWin transitionOnWin,  TransitionOnLoss transitionOnLoss,  TeamMentality teamMentality,  PassingRisk passingRisk,  DribblingRisk dribblingRisk,  ShootingPolicy shootingPolicy,  Compactness compactness,  VerticalStretch verticalStretch,  OverloadFocus overloadFocus,  SetPieceAttack setPieceAttack,  SetPieceDefense setPieceDefense,  FreeKickStrategy freeKickStrategy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Tactic() when $default != null:
+case _TeamTactic() when $default != null:
 return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalThirdFocus,_that.attackingFocus,_that.defensiveLine,_that.lineOfEngagement,_that.pressingIntensity,_that.defensiveWidth,_that.markingStyle,_that.tacklingAggression,_that.transitionOnWin,_that.transitionOnLoss,_that.teamMentality,_that.passingRisk,_that.dribblingRisk,_that.shootingPolicy,_that.compactness,_that.verticalStretch,_that.overloadFocus,_that.setPieceAttack,_that.setPieceDefense,_that.freeKickStrategy);case _:
   return orElse();
 
@@ -206,7 +206,7 @@ return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalT
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  BuildUpStyle buildUpStyle,  Tempo tempo,  Width width,  FinalThirdFocus finalThirdFocus,  AttackingFocus attackingFocus,  DefensiveLine defensiveLine,  LineOfEngagement lineOfEngagement,  PressingIntensity pressingIntensity,  DefensiveWidth defensiveWidth,  MarkingStyle markingStyle,  TacklingAggression tacklingAggression,  TransitionOnWin transitionOnWin,  TransitionOnLoss transitionOnLoss,  TeamMentality teamMentality,  PassingRisk passingRisk,  DribblingRisk dribblingRisk,  ShootingPolicy shootingPolicy,  Compactness compactness,  VerticalStretch verticalStretch,  OverloadFocus overloadFocus,  SetPieceAttack setPieceAttack,  SetPieceDefense setPieceDefense,  FreeKickStrategy freeKickStrategy)  $default,) {final _that = this;
 switch (_that) {
-case _Tactic():
+case _TeamTactic():
 return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalThirdFocus,_that.attackingFocus,_that.defensiveLine,_that.lineOfEngagement,_that.pressingIntensity,_that.defensiveWidth,_that.markingStyle,_that.tacklingAggression,_that.transitionOnWin,_that.transitionOnLoss,_that.teamMentality,_that.passingRisk,_that.dribblingRisk,_that.shootingPolicy,_that.compactness,_that.verticalStretch,_that.overloadFocus,_that.setPieceAttack,_that.setPieceDefense,_that.freeKickStrategy);case _:
   throw StateError('Unexpected subclass');
 
@@ -226,7 +226,7 @@ return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalT
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  BuildUpStyle buildUpStyle,  Tempo tempo,  Width width,  FinalThirdFocus finalThirdFocus,  AttackingFocus attackingFocus,  DefensiveLine defensiveLine,  LineOfEngagement lineOfEngagement,  PressingIntensity pressingIntensity,  DefensiveWidth defensiveWidth,  MarkingStyle markingStyle,  TacklingAggression tacklingAggression,  TransitionOnWin transitionOnWin,  TransitionOnLoss transitionOnLoss,  TeamMentality teamMentality,  PassingRisk passingRisk,  DribblingRisk dribblingRisk,  ShootingPolicy shootingPolicy,  Compactness compactness,  VerticalStretch verticalStretch,  OverloadFocus overloadFocus,  SetPieceAttack setPieceAttack,  SetPieceDefense setPieceDefense,  FreeKickStrategy freeKickStrategy)?  $default,) {final _that = this;
 switch (_that) {
-case _Tactic() when $default != null:
+case _TeamTactic() when $default != null:
 return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalThirdFocus,_that.attackingFocus,_that.defensiveLine,_that.lineOfEngagement,_that.pressingIntensity,_that.defensiveWidth,_that.markingStyle,_that.tacklingAggression,_that.transitionOnWin,_that.transitionOnLoss,_that.teamMentality,_that.passingRisk,_that.dribblingRisk,_that.shootingPolicy,_that.compactness,_that.verticalStretch,_that.overloadFocus,_that.setPieceAttack,_that.setPieceDefense,_that.freeKickStrategy);case _:
   return null;
 
@@ -238,9 +238,9 @@ return $default(_that.id,_that.buildUpStyle,_that.tempo,_that.width,_that.finalT
 /// @nodoc
 @JsonSerializable()
 
-class _Tactic extends Tactic {
-  const _Tactic({required this.id, required this.buildUpStyle, required this.tempo, required this.width, required this.finalThirdFocus, required this.attackingFocus, required this.defensiveLine, required this.lineOfEngagement, required this.pressingIntensity, required this.defensiveWidth, required this.markingStyle, required this.tacklingAggression, required this.transitionOnWin, required this.transitionOnLoss, required this.teamMentality, required this.passingRisk, required this.dribblingRisk, required this.shootingPolicy, required this.compactness, required this.verticalStretch, required this.overloadFocus, required this.setPieceAttack, required this.setPieceDefense, required this.freeKickStrategy}): super._();
-  factory _Tactic.fromJson(Map<String, dynamic> json) => _$TacticFromJson(json);
+class _TeamTactic extends TeamTactic {
+  const _TeamTactic({required this.id, required this.buildUpStyle, required this.tempo, required this.width, required this.finalThirdFocus, required this.attackingFocus, required this.defensiveLine, required this.lineOfEngagement, required this.pressingIntensity, required this.defensiveWidth, required this.markingStyle, required this.tacklingAggression, required this.transitionOnWin, required this.transitionOnLoss, required this.teamMentality, required this.passingRisk, required this.dribblingRisk, required this.shootingPolicy, required this.compactness, required this.verticalStretch, required this.overloadFocus, required this.setPieceAttack, required this.setPieceDefense, required this.freeKickStrategy}): super._();
+  factory _TeamTactic.fromJson(Map<String, dynamic> json) => _$TeamTacticFromJson(json);
 
 @override final  int id;
 // Team Tactics: Attacking Tactics (SPEC Part 2.A)
@@ -274,20 +274,20 @@ class _Tactic extends Tactic {
 @override final  SetPieceDefense setPieceDefense;
 @override final  FreeKickStrategy freeKickStrategy;
 
-/// Create a copy of Tactic
+/// Create a copy of TeamTactic
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$TacticCopyWith<_Tactic> get copyWith => __$TacticCopyWithImpl<_Tactic>(this, _$identity);
+_$TeamTacticCopyWith<_TeamTactic> get copyWith => __$TeamTacticCopyWithImpl<_TeamTactic>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$TacticToJson(this, );
+  return _$TeamTacticToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Tactic&&(identical(other.id, id) || other.id == id)&&(identical(other.buildUpStyle, buildUpStyle) || other.buildUpStyle == buildUpStyle)&&(identical(other.tempo, tempo) || other.tempo == tempo)&&(identical(other.width, width) || other.width == width)&&(identical(other.finalThirdFocus, finalThirdFocus) || other.finalThirdFocus == finalThirdFocus)&&(identical(other.attackingFocus, attackingFocus) || other.attackingFocus == attackingFocus)&&(identical(other.defensiveLine, defensiveLine) || other.defensiveLine == defensiveLine)&&(identical(other.lineOfEngagement, lineOfEngagement) || other.lineOfEngagement == lineOfEngagement)&&(identical(other.pressingIntensity, pressingIntensity) || other.pressingIntensity == pressingIntensity)&&(identical(other.defensiveWidth, defensiveWidth) || other.defensiveWidth == defensiveWidth)&&(identical(other.markingStyle, markingStyle) || other.markingStyle == markingStyle)&&(identical(other.tacklingAggression, tacklingAggression) || other.tacklingAggression == tacklingAggression)&&(identical(other.transitionOnWin, transitionOnWin) || other.transitionOnWin == transitionOnWin)&&(identical(other.transitionOnLoss, transitionOnLoss) || other.transitionOnLoss == transitionOnLoss)&&(identical(other.teamMentality, teamMentality) || other.teamMentality == teamMentality)&&(identical(other.passingRisk, passingRisk) || other.passingRisk == passingRisk)&&(identical(other.dribblingRisk, dribblingRisk) || other.dribblingRisk == dribblingRisk)&&(identical(other.shootingPolicy, shootingPolicy) || other.shootingPolicy == shootingPolicy)&&(identical(other.compactness, compactness) || other.compactness == compactness)&&(identical(other.verticalStretch, verticalStretch) || other.verticalStretch == verticalStretch)&&(identical(other.overloadFocus, overloadFocus) || other.overloadFocus == overloadFocus)&&(identical(other.setPieceAttack, setPieceAttack) || other.setPieceAttack == setPieceAttack)&&(identical(other.setPieceDefense, setPieceDefense) || other.setPieceDefense == setPieceDefense)&&(identical(other.freeKickStrategy, freeKickStrategy) || other.freeKickStrategy == freeKickStrategy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamTactic&&(identical(other.id, id) || other.id == id)&&(identical(other.buildUpStyle, buildUpStyle) || other.buildUpStyle == buildUpStyle)&&(identical(other.tempo, tempo) || other.tempo == tempo)&&(identical(other.width, width) || other.width == width)&&(identical(other.finalThirdFocus, finalThirdFocus) || other.finalThirdFocus == finalThirdFocus)&&(identical(other.attackingFocus, attackingFocus) || other.attackingFocus == attackingFocus)&&(identical(other.defensiveLine, defensiveLine) || other.defensiveLine == defensiveLine)&&(identical(other.lineOfEngagement, lineOfEngagement) || other.lineOfEngagement == lineOfEngagement)&&(identical(other.pressingIntensity, pressingIntensity) || other.pressingIntensity == pressingIntensity)&&(identical(other.defensiveWidth, defensiveWidth) || other.defensiveWidth == defensiveWidth)&&(identical(other.markingStyle, markingStyle) || other.markingStyle == markingStyle)&&(identical(other.tacklingAggression, tacklingAggression) || other.tacklingAggression == tacklingAggression)&&(identical(other.transitionOnWin, transitionOnWin) || other.transitionOnWin == transitionOnWin)&&(identical(other.transitionOnLoss, transitionOnLoss) || other.transitionOnLoss == transitionOnLoss)&&(identical(other.teamMentality, teamMentality) || other.teamMentality == teamMentality)&&(identical(other.passingRisk, passingRisk) || other.passingRisk == passingRisk)&&(identical(other.dribblingRisk, dribblingRisk) || other.dribblingRisk == dribblingRisk)&&(identical(other.shootingPolicy, shootingPolicy) || other.shootingPolicy == shootingPolicy)&&(identical(other.compactness, compactness) || other.compactness == compactness)&&(identical(other.verticalStretch, verticalStretch) || other.verticalStretch == verticalStretch)&&(identical(other.overloadFocus, overloadFocus) || other.overloadFocus == overloadFocus)&&(identical(other.setPieceAttack, setPieceAttack) || other.setPieceAttack == setPieceAttack)&&(identical(other.setPieceDefense, setPieceDefense) || other.setPieceDefense == setPieceDefense)&&(identical(other.freeKickStrategy, freeKickStrategy) || other.freeKickStrategy == freeKickStrategy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -296,15 +296,15 @@ int get hashCode => Object.hashAll([runtimeType,id,buildUpStyle,tempo,width,fina
 
 @override
 String toString() {
-  return 'Tactic(id: $id, buildUpStyle: $buildUpStyle, tempo: $tempo, width: $width, finalThirdFocus: $finalThirdFocus, attackingFocus: $attackingFocus, defensiveLine: $defensiveLine, lineOfEngagement: $lineOfEngagement, pressingIntensity: $pressingIntensity, defensiveWidth: $defensiveWidth, markingStyle: $markingStyle, tacklingAggression: $tacklingAggression, transitionOnWin: $transitionOnWin, transitionOnLoss: $transitionOnLoss, teamMentality: $teamMentality, passingRisk: $passingRisk, dribblingRisk: $dribblingRisk, shootingPolicy: $shootingPolicy, compactness: $compactness, verticalStretch: $verticalStretch, overloadFocus: $overloadFocus, setPieceAttack: $setPieceAttack, setPieceDefense: $setPieceDefense, freeKickStrategy: $freeKickStrategy)';
+  return 'TeamTactic(id: $id, buildUpStyle: $buildUpStyle, tempo: $tempo, width: $width, finalThirdFocus: $finalThirdFocus, attackingFocus: $attackingFocus, defensiveLine: $defensiveLine, lineOfEngagement: $lineOfEngagement, pressingIntensity: $pressingIntensity, defensiveWidth: $defensiveWidth, markingStyle: $markingStyle, tacklingAggression: $tacklingAggression, transitionOnWin: $transitionOnWin, transitionOnLoss: $transitionOnLoss, teamMentality: $teamMentality, passingRisk: $passingRisk, dribblingRisk: $dribblingRisk, shootingPolicy: $shootingPolicy, compactness: $compactness, verticalStretch: $verticalStretch, overloadFocus: $overloadFocus, setPieceAttack: $setPieceAttack, setPieceDefense: $setPieceDefense, freeKickStrategy: $freeKickStrategy)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$TacticCopyWith<$Res> implements $TacticCopyWith<$Res> {
-  factory _$TacticCopyWith(_Tactic value, $Res Function(_Tactic) _then) = __$TacticCopyWithImpl;
+abstract mixin class _$TeamTacticCopyWith<$Res> implements $TeamTacticCopyWith<$Res> {
+  factory _$TeamTacticCopyWith(_TeamTactic value, $Res Function(_TeamTactic) _then) = __$TeamTacticCopyWithImpl;
 @override @useResult
 $Res call({
  int id, BuildUpStyle buildUpStyle, Tempo tempo, Width width, FinalThirdFocus finalThirdFocus, AttackingFocus attackingFocus, DefensiveLine defensiveLine, LineOfEngagement lineOfEngagement, PressingIntensity pressingIntensity, DefensiveWidth defensiveWidth, MarkingStyle markingStyle, TacklingAggression tacklingAggression, TransitionOnWin transitionOnWin, TransitionOnLoss transitionOnLoss, TeamMentality teamMentality, PassingRisk passingRisk, DribblingRisk dribblingRisk, ShootingPolicy shootingPolicy, Compactness compactness, VerticalStretch verticalStretch, OverloadFocus overloadFocus, SetPieceAttack setPieceAttack, SetPieceDefense setPieceDefense, FreeKickStrategy freeKickStrategy
@@ -315,17 +315,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$TacticCopyWithImpl<$Res>
-    implements _$TacticCopyWith<$Res> {
-  __$TacticCopyWithImpl(this._self, this._then);
+class __$TeamTacticCopyWithImpl<$Res>
+    implements _$TeamTacticCopyWith<$Res> {
+  __$TeamTacticCopyWithImpl(this._self, this._then);
 
-  final _Tactic _self;
-  final $Res Function(_Tactic) _then;
+  final _TeamTactic _self;
+  final $Res Function(_TeamTactic) _then;
 
-/// Create a copy of Tactic
+/// Create a copy of TeamTactic
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? buildUpStyle = null,Object? tempo = null,Object? width = null,Object? finalThirdFocus = null,Object? attackingFocus = null,Object? defensiveLine = null,Object? lineOfEngagement = null,Object? pressingIntensity = null,Object? defensiveWidth = null,Object? markingStyle = null,Object? tacklingAggression = null,Object? transitionOnWin = null,Object? transitionOnLoss = null,Object? teamMentality = null,Object? passingRisk = null,Object? dribblingRisk = null,Object? shootingPolicy = null,Object? compactness = null,Object? verticalStretch = null,Object? overloadFocus = null,Object? setPieceAttack = null,Object? setPieceDefense = null,Object? freeKickStrategy = null,}) {
-  return _then(_Tactic(
+  return _then(_TeamTactic(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,buildUpStyle: null == buildUpStyle ? _self.buildUpStyle : buildUpStyle // ignore: cast_nullable_to_non_nullable
 as BuildUpStyle,tempo: null == tempo ? _self.tempo : tempo // ignore: cast_nullable_to_non_nullable
