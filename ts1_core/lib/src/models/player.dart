@@ -50,7 +50,4 @@ extension PlayerStats on Player {
 
   /// Weight in pounds
   double get weightLb => double.parse((weightKg * 2.20462).toStringAsFixed(1));
-
-  /// Simple overall summary
-  String get overallSummary => "$name ($position) - $footedness";
 }

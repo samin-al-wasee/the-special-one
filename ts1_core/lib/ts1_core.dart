@@ -10,8 +10,15 @@ import 'src/models/player.dart';
 export 'src/ts1_core_base.dart';
 export 'src/enums/player_attributes.dart';
 export 'src/enums/position.dart';
+export 'src/enums/tactical_attributes.dart';
 export 'src/enums/role.dart';
 export 'src/enums/duty.dart';
+export 'src/models/formation_slot.dart';
+export 'src/models/formation_shape.dart';
+export 'src/models/role_assignment.dart';
+export 'src/models/lineup_slot_assignment.dart';
+export 'src/models/lineup.dart';
+export 'src/models/tactic.dart';
 export 'src/models/player.dart';
 
 /// Creates a few sample players and prints them to stdout.
