@@ -8,6 +8,9 @@ import 'src/enums/player/position.dart';
 import 'src/models/player/player.dart';
 
 export 'src/ts1_core_base.dart';
+export 'src/builders/structural_profile_builder.dart';
+export 'src/builders/tactical_identity_builder.dart';
+export 'src/builders/team_strength_profile_builder.dart';
 export 'src/enums/player/player_attributes.dart';
 export 'src/enums/player/position.dart';
 export 'src/enums/team/tactic/tactical_attributes.dart';
@@ -15,9 +18,12 @@ export 'src/enums/player/role.dart';
 export 'src/enums/player/duty.dart';
 export 'src/models/team/lineup/formation/slot/formation_slot.dart';
 export 'src/models/team/lineup/formation/shape/formation_shape.dart';
+export 'src/models/team/lineup/formation/structural_profile.dart';
 export 'src/models/team/lineup/slot_assignment/role_assignment/role_assignment.dart';
 export 'src/models/team/lineup/slot_assignment/lineup_slot_assignment.dart';
 export 'src/models/team/lineup/team_lineup.dart';
+export 'src/models/team/strength_profile/team_strength_profile.dart';
+export 'src/models/team/tactic/tactical_identity/tactical_identity.dart';
 export 'src/models/team/tactic/team_tactic.dart';
 export 'src/models/player/player.dart';
 
