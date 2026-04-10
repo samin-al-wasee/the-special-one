@@ -19,12 +19,12 @@ abstract class Match with _$Match {
     required Team homeTeam,
     required Team awayTeam,
     required DateTime kickoffAt,
-    String? venue,
-    String? weather,
+    required MatchContext context,
+    required MatchState matchState,
+    @Default('Unknown') String venue,
+    @Default('Unknown') String weather,
     @Default(90) int totalRegulationMinutes,
     @Default(30) int microPhaseSeconds,
-    @Default(MatchContext()) MatchContext context,
-    @Default(MatchState()) MatchState matchState,
   }) = _Match;
 
   factory Match.fromJson(Map<String, dynamic> json) => _$MatchFromJson(json);

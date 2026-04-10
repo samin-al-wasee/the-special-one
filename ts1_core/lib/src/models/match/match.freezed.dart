@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Match {
 
- int get id; Team get homeTeam; Team get awayTeam; DateTime get kickoffAt; String? get venue; String? get weather; int get totalRegulationMinutes; int get microPhaseSeconds; MatchContext get context; MatchState get matchState;
+ int get id; Team get homeTeam; Team get awayTeam; DateTime get kickoffAt; MatchContext get context; MatchState get matchState; String get venue; String get weather; int get totalRegulationMinutes; int get microPhaseSeconds;
 /// Create a copy of Match
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MatchCopyWith<Match> get copyWith => _$MatchCopyWithImpl<Match>(this as Match, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Match&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.kickoffAt, kickoffAt) || other.kickoffAt == kickoffAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.weather, weather) || other.weather == weather)&&(identical(other.totalRegulationMinutes, totalRegulationMinutes) || other.totalRegulationMinutes == totalRegulationMinutes)&&(identical(other.microPhaseSeconds, microPhaseSeconds) || other.microPhaseSeconds == microPhaseSeconds)&&(identical(other.context, context) || other.context == context)&&(identical(other.matchState, matchState) || other.matchState == matchState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Match&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.kickoffAt, kickoffAt) || other.kickoffAt == kickoffAt)&&(identical(other.context, context) || other.context == context)&&(identical(other.matchState, matchState) || other.matchState == matchState)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.weather, weather) || other.weather == weather)&&(identical(other.totalRegulationMinutes, totalRegulationMinutes) || other.totalRegulationMinutes == totalRegulationMinutes)&&(identical(other.microPhaseSeconds, microPhaseSeconds) || other.microPhaseSeconds == microPhaseSeconds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,kickoffAt,venue,weather,totalRegulationMinutes,microPhaseSeconds,context,matchState);
+int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,kickoffAt,context,matchState,venue,weather,totalRegulationMinutes,microPhaseSeconds);
 
 @override
 String toString() {
-  return 'Match(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, kickoffAt: $kickoffAt, venue: $venue, weather: $weather, totalRegulationMinutes: $totalRegulationMinutes, microPhaseSeconds: $microPhaseSeconds, context: $context, matchState: $matchState)';
+  return 'Match(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, kickoffAt: $kickoffAt, context: $context, matchState: $matchState, venue: $venue, weather: $weather, totalRegulationMinutes: $totalRegulationMinutes, microPhaseSeconds: $microPhaseSeconds)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MatchCopyWith<$Res>  {
   factory $MatchCopyWith(Match value, $Res Function(Match) _then) = _$MatchCopyWithImpl;
 @useResult
 $Res call({
- int id, Team homeTeam, Team awayTeam, DateTime kickoffAt, String? venue, String? weather, int totalRegulationMinutes, int microPhaseSeconds, MatchContext context, MatchState matchState
+ int id, Team homeTeam, Team awayTeam, DateTime kickoffAt, MatchContext context, MatchState matchState, String venue, String weather, int totalRegulationMinutes, int microPhaseSeconds
 });
 
 
@@ -65,19 +65,19 @@ class _$MatchCopyWithImpl<$Res>
 
 /// Create a copy of Match
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? kickoffAt = null,Object? venue = freezed,Object? weather = freezed,Object? totalRegulationMinutes = null,Object? microPhaseSeconds = null,Object? context = null,Object? matchState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? kickoffAt = null,Object? context = null,Object? matchState = null,Object? venue = null,Object? weather = null,Object? totalRegulationMinutes = null,Object? microPhaseSeconds = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
 as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
 as Team,kickoffAt: null == kickoffAt ? _self.kickoffAt : kickoffAt // ignore: cast_nullable_to_non_nullable
-as DateTime,venue: freezed == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
-as String?,weather: freezed == weather ? _self.weather : weather // ignore: cast_nullable_to_non_nullable
-as String?,totalRegulationMinutes: null == totalRegulationMinutes ? _self.totalRegulationMinutes : totalRegulationMinutes // ignore: cast_nullable_to_non_nullable
-as int,microPhaseSeconds: null == microPhaseSeconds ? _self.microPhaseSeconds : microPhaseSeconds // ignore: cast_nullable_to_non_nullable
-as int,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
+as DateTime,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as MatchContext,matchState: null == matchState ? _self.matchState : matchState // ignore: cast_nullable_to_non_nullable
-as MatchState,
+as MatchState,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
+as String,weather: null == weather ? _self.weather : weather // ignore: cast_nullable_to_non_nullable
+as String,totalRegulationMinutes: null == totalRegulationMinutes ? _self.totalRegulationMinutes : totalRegulationMinutes // ignore: cast_nullable_to_non_nullable
+as int,microPhaseSeconds: null == microPhaseSeconds ? _self.microPhaseSeconds : microPhaseSeconds // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 /// Create a copy of Match
@@ -198,10 +198,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  String? venue,  String? weather,  int totalRegulationMinutes,  int microPhaseSeconds,  MatchContext context,  MatchState matchState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  MatchContext context,  MatchState matchState,  String venue,  String weather,  int totalRegulationMinutes,  int microPhaseSeconds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Match() when $default != null:
-return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds,_that.context,_that.matchState);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.context,_that.matchState,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds);case _:
   return orElse();
 
 }
@@ -219,10 +219,10 @@ return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.ven
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  String? venue,  String? weather,  int totalRegulationMinutes,  int microPhaseSeconds,  MatchContext context,  MatchState matchState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  MatchContext context,  MatchState matchState,  String venue,  String weather,  int totalRegulationMinutes,  int microPhaseSeconds)  $default,) {final _that = this;
 switch (_that) {
 case _Match():
-return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds,_that.context,_that.matchState);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.context,_that.matchState,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -239,10 +239,10 @@ return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.ven
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  String? venue,  String? weather,  int totalRegulationMinutes,  int microPhaseSeconds,  MatchContext context,  MatchState matchState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  Team homeTeam,  Team awayTeam,  DateTime kickoffAt,  MatchContext context,  MatchState matchState,  String venue,  String weather,  int totalRegulationMinutes,  int microPhaseSeconds)?  $default,) {final _that = this;
 switch (_that) {
 case _Match() when $default != null:
-return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds,_that.context,_that.matchState);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.context,_that.matchState,_that.venue,_that.weather,_that.totalRegulationMinutes,_that.microPhaseSeconds);case _:
   return null;
 
 }
@@ -254,19 +254,19 @@ return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.kickoffAt,_that.ven
 @JsonSerializable()
 
 class _Match extends Match {
-  const _Match({required this.id, required this.homeTeam, required this.awayTeam, required this.kickoffAt, this.venue, this.weather, this.totalRegulationMinutes = 90, this.microPhaseSeconds = 30, this.context = const MatchContext(), this.matchState = const MatchState()}): super._();
+  const _Match({required this.id, required this.homeTeam, required this.awayTeam, required this.kickoffAt, required this.context, required this.matchState, this.venue = 'Unknown', this.weather = 'Unknown', this.totalRegulationMinutes = 90, this.microPhaseSeconds = 30}): super._();
   factory _Match.fromJson(Map<String, dynamic> json) => _$MatchFromJson(json);
 
 @override final  int id;
 @override final  Team homeTeam;
 @override final  Team awayTeam;
 @override final  DateTime kickoffAt;
-@override final  String? venue;
-@override final  String? weather;
+@override final  MatchContext context;
+@override final  MatchState matchState;
+@override@JsonKey() final  String venue;
+@override@JsonKey() final  String weather;
 @override@JsonKey() final  int totalRegulationMinutes;
 @override@JsonKey() final  int microPhaseSeconds;
-@override@JsonKey() final  MatchContext context;
-@override@JsonKey() final  MatchState matchState;
 
 /// Create a copy of Match
 /// with the given fields replaced by the non-null parameter values.
@@ -281,16 +281,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Match&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.kickoffAt, kickoffAt) || other.kickoffAt == kickoffAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.weather, weather) || other.weather == weather)&&(identical(other.totalRegulationMinutes, totalRegulationMinutes) || other.totalRegulationMinutes == totalRegulationMinutes)&&(identical(other.microPhaseSeconds, microPhaseSeconds) || other.microPhaseSeconds == microPhaseSeconds)&&(identical(other.context, context) || other.context == context)&&(identical(other.matchState, matchState) || other.matchState == matchState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Match&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.kickoffAt, kickoffAt) || other.kickoffAt == kickoffAt)&&(identical(other.context, context) || other.context == context)&&(identical(other.matchState, matchState) || other.matchState == matchState)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.weather, weather) || other.weather == weather)&&(identical(other.totalRegulationMinutes, totalRegulationMinutes) || other.totalRegulationMinutes == totalRegulationMinutes)&&(identical(other.microPhaseSeconds, microPhaseSeconds) || other.microPhaseSeconds == microPhaseSeconds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,kickoffAt,venue,weather,totalRegulationMinutes,microPhaseSeconds,context,matchState);
+int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,kickoffAt,context,matchState,venue,weather,totalRegulationMinutes,microPhaseSeconds);
 
 @override
 String toString() {
-  return 'Match(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, kickoffAt: $kickoffAt, venue: $venue, weather: $weather, totalRegulationMinutes: $totalRegulationMinutes, microPhaseSeconds: $microPhaseSeconds, context: $context, matchState: $matchState)';
+  return 'Match(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, kickoffAt: $kickoffAt, context: $context, matchState: $matchState, venue: $venue, weather: $weather, totalRegulationMinutes: $totalRegulationMinutes, microPhaseSeconds: $microPhaseSeconds)';
 }
 
 
@@ -301,7 +301,7 @@ abstract mixin class _$MatchCopyWith<$Res> implements $MatchCopyWith<$Res> {
   factory _$MatchCopyWith(_Match value, $Res Function(_Match) _then) = __$MatchCopyWithImpl;
 @override @useResult
 $Res call({
- int id, Team homeTeam, Team awayTeam, DateTime kickoffAt, String? venue, String? weather, int totalRegulationMinutes, int microPhaseSeconds, MatchContext context, MatchState matchState
+ int id, Team homeTeam, Team awayTeam, DateTime kickoffAt, MatchContext context, MatchState matchState, String venue, String weather, int totalRegulationMinutes, int microPhaseSeconds
 });
 
 
@@ -318,19 +318,19 @@ class __$MatchCopyWithImpl<$Res>
 
 /// Create a copy of Match
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? kickoffAt = null,Object? venue = freezed,Object? weather = freezed,Object? totalRegulationMinutes = null,Object? microPhaseSeconds = null,Object? context = null,Object? matchState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? kickoffAt = null,Object? context = null,Object? matchState = null,Object? venue = null,Object? weather = null,Object? totalRegulationMinutes = null,Object? microPhaseSeconds = null,}) {
   return _then(_Match(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
 as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
 as Team,kickoffAt: null == kickoffAt ? _self.kickoffAt : kickoffAt // ignore: cast_nullable_to_non_nullable
-as DateTime,venue: freezed == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
-as String?,weather: freezed == weather ? _self.weather : weather // ignore: cast_nullable_to_non_nullable
-as String?,totalRegulationMinutes: null == totalRegulationMinutes ? _self.totalRegulationMinutes : totalRegulationMinutes // ignore: cast_nullable_to_non_nullable
-as int,microPhaseSeconds: null == microPhaseSeconds ? _self.microPhaseSeconds : microPhaseSeconds // ignore: cast_nullable_to_non_nullable
-as int,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
+as DateTime,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as MatchContext,matchState: null == matchState ? _self.matchState : matchState // ignore: cast_nullable_to_non_nullable
-as MatchState,
+as MatchState,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
+as String,weather: null == weather ? _self.weather : weather // ignore: cast_nullable_to_non_nullable
+as String,totalRegulationMinutes: null == totalRegulationMinutes ? _self.totalRegulationMinutes : totalRegulationMinutes // ignore: cast_nullable_to_non_nullable
+as int,microPhaseSeconds: null == microPhaseSeconds ? _self.microPhaseSeconds : microPhaseSeconds // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
