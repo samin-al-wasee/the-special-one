@@ -300,7 +300,7 @@ return $default(_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPh
 @JsonSerializable()
 
 class _MatchState extends MatchState {
-  const _MatchState({this.status = MatchStatus.scheduled, this.clock = const MatchClock(), this.currentPhaseIndex = 0, this.currentPhaseType = MatchPhaseType.neutralPossession, this.currentPhaseState = MatchPhaseState.neutralPossession, this.scoreline = const Scoreline(), this.shootoutScore = const ShootoutScore(), this.currentInitiative, this.currentPossession, this.currentTerritoryControl, this.homeStats = const TeamMatchStats(), this.awayStats = const TeamMatchStats(), this.dynamics = const MatchDynamics(), this.matchupState = const MatchupState(), final  List<PhaseResolutionSnapshot> phaseHistory = const <PhaseResolutionSnapshot>[], final  List<MatchEventCard> eventCards = const <MatchEventCard>[], final  List<TacticalInsight> tacticalInsights = const <TacticalInsight>[], final  List<SubstitutionRecord> substitutions = const <SubstitutionRecord>[], final  List<ManagerIntervention> interventions = const <ManagerIntervention>[]}): _phaseHistory = phaseHistory,_eventCards = eventCards,_tacticalInsights = tacticalInsights,_substitutions = substitutions,_interventions = interventions,super._();
+  const _MatchState({this.status = MatchStatus.scheduled, this.clock = const MatchClock(), this.currentPhaseIndex = 0, this.currentPhaseType = MatchPhaseType.neutralPossession, this.currentPhaseState = MatchPhaseState.neutralPossession, this.scoreline = const Scoreline(), this.shootoutScore = const ShootoutScore(), this.currentInitiative, this.currentPossession, this.currentTerritoryControl, this.homeStats = const TeamMatchStats(), this.awayStats = const TeamMatchStats(), required this.dynamics, required this.matchupState, final  List<PhaseResolutionSnapshot> phaseHistory = const <PhaseResolutionSnapshot>[], final  List<MatchEventCard> eventCards = const <MatchEventCard>[], final  List<TacticalInsight> tacticalInsights = const <TacticalInsight>[], final  List<SubstitutionRecord> substitutions = const <SubstitutionRecord>[], final  List<ManagerIntervention> interventions = const <ManagerIntervention>[]}): _phaseHistory = phaseHistory,_eventCards = eventCards,_tacticalInsights = tacticalInsights,_substitutions = substitutions,_interventions = interventions,super._();
   factory _MatchState.fromJson(Map<String, dynamic> json) => _$MatchStateFromJson(json);
 
 // ==================== MATCH FLOW SYSTEM ====================
@@ -320,9 +320,9 @@ class _MatchState extends MatchState {
 @override@JsonKey() final  TeamMatchStats homeStats;
 @override@JsonKey() final  TeamMatchStats awayStats;
 // ==================== POSITIONAL / DYNAMICS SYSTEM ====================
-@override@JsonKey() final  MatchDynamics dynamics;
+@override final  MatchDynamics dynamics;
 // ==================== MATCHUP ADVANTAGE SYSTEM ====================
-@override@JsonKey() final  MatchupState matchupState;
+@override final  MatchupState matchupState;
 // ==================== PHASE HISTORY SYSTEM ====================
  final  List<PhaseResolutionSnapshot> _phaseHistory;
 // ==================== PHASE HISTORY SYSTEM ====================

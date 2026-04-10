@@ -43,10 +43,10 @@ abstract class MatchState with _$MatchState {
     @Default(TeamMatchStats()) TeamMatchStats awayStats,
 
     // ==================== POSITIONAL / DYNAMICS SYSTEM ====================
-    @Default(MatchDynamics()) MatchDynamics dynamics,
+    required MatchDynamics dynamics,
 
     // ==================== MATCHUP ADVANTAGE SYSTEM ====================
-    @Default(MatchupState()) MatchupState matchupState,
+    required MatchupState matchupState,
 
     // ==================== PHASE HISTORY SYSTEM ====================
     @Default(<PhaseResolutionSnapshot>[])

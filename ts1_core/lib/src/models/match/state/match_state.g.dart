@@ -47,12 +47,10 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
   awayStats: json['awayStats'] == null
       ? const TeamMatchStats()
       : TeamMatchStats.fromJson(json['awayStats'] as Map<String, dynamic>),
-  dynamics: json['dynamics'] == null
-      ? const MatchDynamics()
-      : MatchDynamics.fromJson(json['dynamics'] as Map<String, dynamic>),
-  matchupState: json['matchupState'] == null
-      ? const MatchupState()
-      : MatchupState.fromJson(json['matchupState'] as Map<String, dynamic>),
+  dynamics: MatchDynamics.fromJson(json['dynamics'] as Map<String, dynamic>),
+  matchupState: MatchupState.fromJson(
+    json['matchupState'] as Map<String, dynamic>,
+  ),
   phaseHistory:
       (json['phaseHistory'] as List<dynamic>?)
           ?.map(
