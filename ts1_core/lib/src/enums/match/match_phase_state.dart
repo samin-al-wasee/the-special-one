@@ -1,0 +1,16 @@
+enum MatchPhaseState {
+  neutralPossession,
+  buildUp,
+  progression,
+  finalThird,
+  duel,
+  chance,
+  outcome,
+  transition,
+  setPiecePreparation,
+  setPieceDelivery,
+  foulStop,
+  stoppage,
+  restart,
+  turnover,
+}
