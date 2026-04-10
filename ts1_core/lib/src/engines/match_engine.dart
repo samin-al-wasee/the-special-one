@@ -19,6 +19,22 @@ class MatchEngine {
   static const int defaultTotalRegulationMinutes = 90;
   static const int defaultMicroPhaseSeconds = 30;
 
+  /// Creates a pre-match [Match] entity with context and seeded state.
+  ///
+  /// Responsibilities:
+  /// - Build tactical/strength context from both teams.
+  /// - Seed [MatchState] with pre-match defaults.
+  /// - Attach simulation metadata (timing, venue, weather).
+  ///
+  /// Parameters:
+  /// - [id]: Unique match identifier used in deterministic seeding.
+  /// - [homeTeam], [awayTeam]: Teams participating in the match.
+  /// - [kickoffAt]: Scheduled kickoff time.
+  /// - [venue], [weather]: Match environment metadata.
+  /// - [totalRegulationMinutes]: Regulation time, defaults to 90.
+  /// - [microPhaseSeconds]: Duration of one simulation tick.
+  ///
+  /// Returns a fully initialized match in scheduled state.
   static Match bootstrapMatch({
     required int id,
     required Team homeTeam,
@@ -49,6 +65,17 @@ class MatchEngine {
     );
   }
 
+  /// Transitions a bootstrapped match into kickoff state.
+  ///
+  /// Responsibilities:
+  /// - Apply kickoff state factory.
+  /// - Seed phase/event kickoff records.
+  ///
+  /// Parameters:
+  /// - [match]: Existing match entity.
+  /// - [kickoffSide]: Team starting with initiative/possession.
+  ///
+  /// Returns a copied match with kickoff state applied.
   static Match kickoffMatch(
     Match match, {
     TeamSide kickoffSide = TeamSide.home,
@@ -61,6 +88,20 @@ class MatchEngine {
     return match.copyWith(matchState: kickoffState);
   }
 
+  /// Advances the simulation by a single micro-phase.
+  ///
+  /// Step flow:
+  /// 1. Validate match is still live.
+  /// 2. Advance clock and status transitions.
+  /// 3. If only status changed, return early.
+  /// 4. Resolve football phase dynamics and outcomes.
+  ///
+  /// Parameters:
+  /// - [match]: Current match snapshot.
+  /// - [allowExtraTime]: Enables extra time when level at 90.
+  /// - [allowPenalties]: Enables penalties when still level.
+  ///
+  /// Returns updated match after one simulation tick.
   static Match advanceMicroPhase(
     Match match, {
     bool allowExtraTime = false,
@@ -94,6 +135,18 @@ class MatchEngine {
     return match.copyWith(matchState: resolvedState);
   }
 
+  /// Runs repeated micro-phases until terminal state or safety limit.
+  ///
+  /// Responsibilities:
+  /// - Loop [advanceMicroPhase] calls.
+  /// - Stop when finished, stalled, or phase limit reached.
+  ///
+  /// Parameters:
+  /// - [match]: Match snapshot to simulate forward.
+  /// - [allowExtraTime], [allowPenalties]: Knockout toggles.
+  /// - [maxMicroPhases]: Optional hard cap for safety/testing.
+  ///
+  /// Returns the final simulated match snapshot.
   static Match simulateMatch(
     Match match, {
     bool allowExtraTime = false,
@@ -124,6 +177,22 @@ class MatchEngine {
     return current;
   }
 
+  /// Resolves one football phase outcome and mutates state immutably.
+  ///
+  /// Step flow:
+  /// 1. Build deterministic random source for this phase.
+  /// 2. Resolve initiative, possession, territory.
+  /// 3. Resolve phase type/state and attack shape.
+  /// 4. Resolve zone, chance type, chance quality, and outcome.
+  /// 5. Create and apply [PhaseResolutionSnapshot].
+  /// 6. Update possession split, zone dominance, and dynamics.
+  /// 7. Optionally emit event card and tactical insight.
+  ///
+  /// Parameters:
+  /// - [match]: Match-level context and identities.
+  /// - [state]: Current mutable match state snapshot.
+  ///
+  /// Returns next immutable [MatchState] after phase resolution.
   static MatchState _resolveMicroPhase({
     required Match match,
     required MatchState state,
@@ -217,6 +286,10 @@ class MatchEngine {
     return nextState;
   }
 
+  /// Chooses the next phase type from current phase context.
+  ///
+  /// Restart/set-piece states are funneled back into open-play cycles to
+  /// avoid persistent set-piece loops.
   static MatchPhaseType _resolvePhaseType(MatchState state) {
     if (state.currentPhaseType == MatchPhaseType.setPiece ||
         state.currentPhaseState == MatchPhaseState.restart) {
@@ -247,6 +320,7 @@ class MatchEngine {
     }
   }
 
+  /// Maps phase type into its canonical phase state label.
   static MatchPhaseState _resolvePhaseState(MatchPhaseType phaseType) {
     switch (phaseType) {
       case MatchPhaseType.neutralPossession:
@@ -274,6 +348,13 @@ class MatchEngine {
     }
   }
 
+  /// Resolves which team drives initiative for the current phase.
+  ///
+  /// Uses momentum, confidence, fatigue, and matchup edges to compute:
+  /// - control bias when no prior initiative exists,
+  /// - retention probability when initiative exists.
+  ///
+  /// This creates controlled turnover while preserving tactical identity.
   static TeamSide _resolveInitiative(
     Match match,
     MatchState state,
@@ -317,6 +398,7 @@ class MatchEngine {
     return match.opponentOf(previous);
   }
 
+  /// Selects attacking route using weighted tactical identity biases.
   static AttackRoute _resolveAttackRoute(
     Match match,
     TeamSide initiative,
@@ -339,6 +421,7 @@ class MatchEngine {
     return _weightedPick(weights, random);
   }
 
+  /// Selects attack mode from tactical identity and phase context.
   static AttackMode _resolveAttackMode(
     Match match,
     TeamSide initiative,
@@ -368,6 +451,7 @@ class MatchEngine {
     return AttackMode.possessionBuildUp;
   }
 
+  /// Maps phase type to attack context label for downstream analysis.
   static AttackContext _resolveAttackContext(MatchPhaseType phaseType) {
     if (phaseType == MatchPhaseType.setPiece) {
       return AttackContext.setpieceSequence;
@@ -378,6 +462,7 @@ class MatchEngine {
     return AttackContext.normalOpenPlay;
   }
 
+  /// Computes attack intensity from identity risk and progression traits.
   static double _resolveAttackIntensity(Match match, TeamSide initiative) {
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
@@ -390,6 +475,7 @@ class MatchEngine {
     );
   }
 
+  /// Resolves action zone from route and width tendencies.
   static PitchZone _resolveZone(
     Match match,
     TeamSide initiative,
@@ -421,6 +507,9 @@ class MatchEngine {
     return routeZone;
   }
 
+  /// Decides whether a chance occurs and which chance archetype appears.
+  ///
+  /// Includes phase-specific trigger probabilities to reduce chance inflation.
   static ChanceType? _resolveChanceType(
     MatchPhaseType phaseType,
     AttackState attackState,
@@ -465,6 +554,8 @@ class MatchEngine {
     return null;
   }
 
+  /// Estimates chance quality using attacking edge, defensive resistance,
+  /// tactical intensity, and bounded variance.
   static double _resolveChanceQuality(
     Match match,
     TeamSide initiative,
@@ -499,6 +590,10 @@ class MatchEngine {
     );
   }
 
+  /// Converts chance quality into a football outcome via weighted sampling.
+  ///
+  /// Lower-quality chances bias toward blocks/clearances/off-target,
+  /// while higher-quality chances increase goal/save/woodwork likelihood.
   static ChanceOutcome _resolveChanceOutcome(
     double chanceQuality,
     math.Random random,
@@ -517,6 +612,9 @@ class MatchEngine {
     return _weightedPick(weights, random);
   }
 
+  /// Applies post-phase dynamic updates (fatigue and momentum swings).
+  ///
+  /// Momentum deltas are intentionally modest to avoid runaway dominance.
   static MatchDynamics _applyLiveDynamics({
     required Match match,
     required MatchState state,
@@ -539,6 +637,9 @@ class MatchEngine {
         );
   }
 
+  /// Builds a narrative event card for timeline output.
+  ///
+  /// Filtering rules reduce noisy low-value events and repeated neutral phases.
   static MatchEventCard? _buildEventCard({
     required PhaseResolutionSnapshot snapshot,
     required TeamSide initiative,
@@ -622,6 +723,9 @@ class MatchEngine {
     );
   }
 
+  /// Builds tactical insight messages with duplicate/cooldown protection.
+  ///
+  /// Emits only when thresholds are met and recent insight history allows it.
   static TacticalInsight? _buildInsight({
     required MatchState state,
     required PhaseResolutionSnapshot snapshot,
@@ -696,6 +800,9 @@ class MatchEngine {
     return null;
   }
 
+  /// Produces deterministic phase-local randomness from match and time state.
+  ///
+  /// Note: With identical match/state inputs, results are reproducible.
   static math.Random _phaseRandom(Match match, MatchState state) {
     final seed =
         match.id * 1000003 +
@@ -705,6 +812,9 @@ class MatchEngine {
     return math.Random(seed);
   }
 
+  /// Generic weighted random picker used by route/outcome sampling.
+  ///
+  /// Falls back to the first key when all weights are non-positive.
   static T _weightedPick<T>(Map<T, double> weights, math.Random random) {
     final entries = weights.entries.where((entry) => entry.value > 0).toList();
     final total = entries.fold<double>(0.0, (sum, entry) => sum + entry.value);
@@ -724,6 +834,7 @@ class MatchEngine {
     return entries.last.key;
   }
 
+  /// Clamps a scalar into [0, 1] range.
   static double _clamp01(double value) {
     return value.clamp(0.0, 1.0).toDouble();
   }
