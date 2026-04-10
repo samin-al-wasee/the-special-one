@@ -1,6 +1,15 @@
+import 'dart:math' as math;
+
 import 'package:ts1_core/src/builders/match_context_builder.dart';
+import 'package:ts1_core/src/enums/match_enums.dart';
 import 'package:ts1_core/src/factories/match_state_factory.dart';
+import 'package:ts1_core/src/models/match/attack/attack_state.dart';
+import 'package:ts1_core/src/models/match/dynamics/match_dynamics.dart';
+import 'package:ts1_core/src/models/match/events/match_event_card.dart';
 import 'package:ts1_core/src/models/match/match.dart';
+import 'package:ts1_core/src/models/match/insights/tactical_insight.dart';
+import 'package:ts1_core/src/models/match/phase/phase_resolution_snapshot.dart';
+import 'package:ts1_core/src/models/match/state/match_state.dart';
 import 'package:ts1_core/src/models/team/team.dart';
 
 /// Static bootstrap utility for creating [Match] objects.
@@ -38,5 +47,610 @@ class MatchEngine {
       context: context,
       matchState: seededState,
     );
+  }
+
+  static Match kickoffMatch(
+    Match match, {
+    TeamSide kickoffSide = TeamSide.home,
+  }) {
+    final kickoffState = MatchStateFactory.kickoff(
+      context: match.context,
+      kickoffSide: kickoffSide,
+    );
+
+    return match.copyWith(matchState: kickoffState);
+  }
+
+  static Match advanceMicroPhase(
+    Match match, {
+    bool allowExtraTime = false,
+    bool allowPenalties = false,
+  }) {
+    final currentState = match.matchState;
+    if (currentState.isFinished || !currentState.status.isLive) {
+      return match;
+    }
+
+    final progressedState = currentState.advanceClockOnePhase(
+      match.microPhaseSeconds,
+      regulationMinutes: match.totalRegulationMinutes,
+      allowExtraTime: allowExtraTime,
+      allowPenalties: allowPenalties,
+    );
+
+    if (progressedState == currentState) {
+      return match.copyWith(matchState: progressedState);
+    }
+
+    if (progressedState.status != currentState.status) {
+      return match.copyWith(matchState: progressedState);
+    }
+
+    final resolvedState = _resolveMicroPhase(
+      match: match,
+      state: progressedState,
+    );
+
+    return match.copyWith(matchState: resolvedState);
+  }
+
+  static Match simulateMatch(
+    Match match, {
+    bool allowExtraTime = false,
+    bool allowPenalties = false,
+    int? maxMicroPhases,
+  }) {
+    var current = match;
+    final phaseLimit = maxMicroPhases ?? (match.expectedMicroPhases * 2);
+
+    for (var index = 0; index < phaseLimit; index++) {
+      if (current.matchState.isFinished) {
+        break;
+      }
+
+      final next = advanceMicroPhase(
+        current,
+        allowExtraTime: allowExtraTime,
+        allowPenalties: allowPenalties,
+      );
+
+      if (next.matchState == current.matchState) {
+        break;
+      }
+
+      current = next;
+    }
+
+    return current;
+  }
+
+  static MatchState _resolveMicroPhase({
+    required Match match,
+    required MatchState state,
+  }) {
+    final random = _phaseRandom(match, state);
+    final initiative = _resolveInitiative(match, state, random);
+    final possession = state.currentPossession ?? initiative;
+    final territory = state.currentTerritoryControl ?? possession;
+    final phaseType = _resolvePhaseType(state);
+    final phaseState = _resolvePhaseState(phaseType);
+    final attackState = AttackState(
+      route: _resolveAttackRoute(match, initiative, random),
+      mode: _resolveAttackMode(match, initiative, phaseType),
+      context: _resolveAttackContext(phaseType),
+      phaseCount: state.currentPhaseIndex + 1,
+      intensity: _resolveAttackIntensity(match, initiative),
+    );
+    final zone = _resolveZone(match, initiative, attackState, random);
+    final chanceType = _resolveChanceType(phaseType, attackState, random);
+    final chanceQuality = chanceType == null
+        ? null
+        : _resolveChanceQuality(match, initiative, attackState, random);
+    final chanceOutcome = chanceType == null
+        ? null
+        : _resolveChanceOutcome(chanceQuality ?? 0.0, random);
+    final snapshot = PhaseResolutionSnapshot(
+      phaseIndex: state.currentPhaseIndex + 1,
+      minute: state.clock.minute,
+      phaseType: phaseType,
+      phaseState: phaseState,
+      initiativeTeam: initiative,
+      possessionTeam: possession,
+      territoryTeam: territory,
+      attackState: attackState,
+      chanceType: chanceType,
+      chanceOutcome: chanceOutcome,
+      chanceQuality: chanceQuality,
+      zone: zone,
+      isImportant:
+          chanceType != null ||
+          chanceOutcome == ChanceOutcome.goal ||
+          phaseType == MatchPhaseType.setPiece,
+    );
+
+    var nextState = state.applyPhaseSnapshot(snapshot);
+    nextState = nextState.applyPossessionSplit(
+      initiative == TeamSide.home ? 0.56 : 0.44,
+    );
+
+    nextState = nextState.updateZoneDominance(initiative, zone, 0.04);
+
+    nextState = nextState.copyWith(
+      dynamics: _applyLiveDynamics(
+        match: match,
+        state: nextState,
+        initiative: initiative,
+        chanceOutcome: chanceOutcome,
+        chanceQuality: chanceQuality,
+      ),
+    );
+
+    final eventCard = _buildEventCard(
+      snapshot: snapshot,
+      initiative: initiative,
+      chanceType: chanceType,
+      chanceOutcome: chanceOutcome,
+      chanceQuality: chanceQuality,
+      zone: zone,
+    );
+    if (eventCard != null) {
+      nextState = nextState.registerEventCard(eventCard);
+    }
+
+    final insight = _buildInsight(
+      snapshot: snapshot,
+      initiative: initiative,
+      chanceType: chanceType,
+      chanceOutcome: chanceOutcome,
+      chanceQuality: chanceQuality,
+      zone: zone,
+    );
+    if (insight != null) {
+      nextState = nextState.registerInsight(insight);
+    }
+
+    return nextState;
+  }
+
+  static MatchPhaseType _resolvePhaseType(MatchState state) {
+    if (state.currentPhaseType == MatchPhaseType.setPiece ||
+        state.currentPhaseState == MatchPhaseState.restart) {
+      return MatchPhaseType.setPiece;
+    }
+
+    switch ((state.currentPhaseIndex + 1) % 5) {
+      case 0:
+        return MatchPhaseType.buildUp;
+      case 1:
+        return MatchPhaseType.progression;
+      case 2:
+        return MatchPhaseType.finalThird;
+      case 3:
+        return MatchPhaseType.chance;
+      default:
+        return MatchPhaseType.outcome;
+    }
+  }
+
+  static MatchPhaseState _resolvePhaseState(MatchPhaseType phaseType) {
+    switch (phaseType) {
+      case MatchPhaseType.neutralPossession:
+        return MatchPhaseState.neutralPossession;
+      case MatchPhaseType.defensiveOrganization:
+        return MatchPhaseState.restart;
+      case MatchPhaseType.buildUp:
+        return MatchPhaseState.buildUp;
+      case MatchPhaseType.progression:
+        return MatchPhaseState.progression;
+      case MatchPhaseType.finalThird:
+        return MatchPhaseState.finalThird;
+      case MatchPhaseType.chance:
+        return MatchPhaseState.chance;
+      case MatchPhaseType.outcome:
+        return MatchPhaseState.outcome;
+      case MatchPhaseType.transition:
+        return MatchPhaseState.transition;
+      case MatchPhaseType.setPiece:
+        return MatchPhaseState.restart;
+      case MatchPhaseType.intervention:
+        return MatchPhaseState.stoppage;
+      case MatchPhaseType.specialIncident:
+        return MatchPhaseState.stoppage;
+    }
+  }
+
+  static TeamSide _resolveInitiative(
+    Match match,
+    MatchState state,
+    math.Random random,
+  ) {
+    final currentInitiative = state.currentInitiative;
+    if (currentInitiative != null) {
+      return currentInitiative;
+    }
+
+    final homeBias = _clamp01(
+      0.5 +
+          (state.matchupState.homeAttackVsAwayDefense * 0.12) +
+          (state.matchupState.midfieldControlEdge * 0.10) +
+          (state.dynamics.homeMomentum * 0.10) +
+          (state.dynamics.homeConfidence - 0.5) * 0.10,
+    );
+    return random.nextDouble() < homeBias ? TeamSide.home : TeamSide.away;
+  }
+
+  static AttackRoute _resolveAttackRoute(
+    Match match,
+    TeamSide initiative,
+    math.Random random,
+  ) {
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+
+    final weights = <AttackRoute, double>{
+      AttackRoute.leftFlank: identity.attackLeftBias,
+      AttackRoute.rightFlank: identity.attackRightBias,
+      AttackRoute.centralProgression: identity.attackCentralBias,
+      AttackRoute.halfSpaces:
+          (identity.cutbackBias + identity.throughBallBias) / 2,
+      AttackRoute.directCentralLane:
+          (identity.directnessBias + identity.riskTaking) / 2,
+    };
+
+    return _weightedPick(weights, random);
+  }
+
+  static AttackMode _resolveAttackMode(
+    Match match,
+    TeamSide initiative,
+    MatchPhaseType phaseType,
+  ) {
+    if (phaseType == MatchPhaseType.setPiece) {
+      return AttackMode.setPlayExecution;
+    }
+
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+
+    if (identity.counterTriggerBias >= 0.65 &&
+        phaseType == MatchPhaseType.transition) {
+      return AttackMode.counterAttack;
+    }
+    if (identity.pressIntensityBias >= 0.70) {
+      return AttackMode.highPressAttack;
+    }
+    if (identity.directnessBias >= 0.65) {
+      return AttackMode.directPlay;
+    }
+    if (identity.counterTriggerBias >= 0.55) {
+      return AttackMode.quickTransition;
+    }
+    return AttackMode.possessionBuildUp;
+  }
+
+  static AttackContext _resolveAttackContext(MatchPhaseType phaseType) {
+    if (phaseType == MatchPhaseType.setPiece) {
+      return AttackContext.setpieceSequence;
+    }
+    if (phaseType == MatchPhaseType.transition) {
+      return AttackContext.defensiveTransition;
+    }
+    return AttackContext.normalOpenPlay;
+  }
+
+  static double _resolveAttackIntensity(Match match, TeamSide initiative) {
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+    return _clamp01(
+      0.45 +
+          (identity.riskTaking * 0.2) +
+          (identity.verticalProgressionBias * 0.1) +
+          (identity.shortPassBias * -0.05),
+    );
+  }
+
+  static PitchZone _resolveZone(
+    Match match,
+    TeamSide initiative,
+    AttackState attackState,
+    math.Random random,
+  ) {
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+
+    final routeZone = switch (attackState.route) {
+      AttackRoute.leftFlank => random.nextBool() ? PitchZone.lw : PitchZone.lhs,
+      AttackRoute.rightFlank =>
+        random.nextBool() ? PitchZone.rw : PitchZone.rhs,
+      AttackRoute.centralProgression =>
+        random.nextBool() ? PitchZone.cm : PitchZone.cf,
+      AttackRoute.halfSpaces =>
+        random.nextBool() ? PitchZone.lhs : PitchZone.rhs,
+      AttackRoute.directCentralLane =>
+        random.nextBool() ? PitchZone.cf : PitchZone.cm,
+    };
+
+    if (identity.widthBias >= 0.65) {
+      return initiative == TeamSide.home
+          ? (random.nextBool() ? PitchZone.lw : PitchZone.rw)
+          : (random.nextBool() ? PitchZone.lm : PitchZone.rm);
+    }
+
+    return routeZone;
+  }
+
+  static ChanceType? _resolveChanceType(
+    MatchPhaseType phaseType,
+    AttackState attackState,
+    math.Random random,
+  ) {
+    if (phaseType == MatchPhaseType.setPiece) {
+      return ChanceType.corner;
+    }
+
+    if (phaseType == MatchPhaseType.finalThird ||
+        phaseType == MatchPhaseType.chance) {
+      switch (attackState.route) {
+        case AttackRoute.leftFlank:
+        case AttackRoute.rightFlank:
+          return random.nextBool()
+              ? ChanceType.wideCrossHeader
+              : ChanceType.cutback;
+        case AttackRoute.centralProgression:
+          return random.nextBool()
+              ? ChanceType.highXgCentralShot
+              : ChanceType.throughBallOneVsOne;
+        case AttackRoute.halfSpaces:
+          return random.nextBool()
+              ? ChanceType.overloadCombination
+              : ChanceType.cutback;
+        case AttackRoute.directCentralLane:
+          return random.nextBool()
+              ? ChanceType.transitionBreakaway
+              : ChanceType.lowXgLongShot;
+      }
+    }
+
+    if (phaseType == MatchPhaseType.outcome) {
+      return ChanceType.blockedShot;
+    }
+
+    return null;
+  }
+
+  static double _resolveChanceQuality(
+    Match match,
+    TeamSide initiative,
+    AttackState attackState,
+    math.Random random,
+  ) {
+    final attackingStrength = initiative == TeamSide.home
+        ? match.context.homeStrengthProfile
+        : match.context.awayStrengthProfile;
+    final defendingStrength = initiative == TeamSide.home
+        ? match.context.awayStrengthProfile
+        : match.context.homeStrengthProfile;
+
+    final technicalEdge =
+        (attackingStrength.finishingQuality +
+            attackingStrength.chanceConversion +
+            attackingStrength.buildUpQuality) /
+        300.0;
+    final defensivePenalty =
+        (defendingStrength.defensiveCompactness +
+            defendingStrength.transitionDefense +
+            defendingStrength.centralDefense) /
+        300.0;
+    final tacticalBoost = attackState.intensity * 0.2;
+
+    return _clamp01(
+      0.28 +
+          technicalEdge +
+          tacticalBoost -
+          (defensivePenalty * 0.35) +
+          (random.nextDouble() * 0.15),
+    );
+  }
+
+  static ChanceOutcome _resolveChanceOutcome(
+    double chanceQuality,
+    math.Random random,
+  ) {
+    final roll = random.nextDouble();
+    if (chanceQuality >= 0.78 || roll < chanceQuality * 0.55) {
+      return ChanceOutcome.goal;
+    }
+    if (chanceQuality >= 0.62) {
+      return roll < 0.5 ? ChanceOutcome.save : ChanceOutcome.block;
+    }
+    if (chanceQuality >= 0.46) {
+      return roll < 0.5 ? ChanceOutcome.save : ChanceOutcome.offTarget;
+    }
+    if (chanceQuality >= 0.30) {
+      return roll < 0.5 ? ChanceOutcome.block : ChanceOutcome.clearance;
+    }
+    return roll < 0.5 ? ChanceOutcome.turnover : ChanceOutcome.offTarget;
+  }
+
+  static MatchDynamics _applyLiveDynamics({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required ChanceOutcome? chanceOutcome,
+    required double? chanceQuality,
+  }) {
+    final homePressBias = match.context.homeTacticalIdentity.pressIntensityBias;
+    final awayPressBias = match.context.awayTacticalIdentity.pressIntensityBias;
+    return state.dynamics
+        .increaseFatigue(TeamSide.home, 0.004 + (homePressBias * 0.003))
+        .increaseFatigue(TeamSide.away, 0.004 + (awayPressBias * 0.003))
+        .swingMomentum(
+          initiative,
+          chanceOutcome == ChanceOutcome.goal
+              ? 0.18
+              : chanceQuality == null
+              ? 0.02
+              : (chanceQuality * 0.04),
+        );
+  }
+
+  static MatchEventCard? _buildEventCard({
+    required PhaseResolutionSnapshot snapshot,
+    required TeamSide initiative,
+    required ChanceType? chanceType,
+    required ChanceOutcome? chanceOutcome,
+    required double? chanceQuality,
+    required PitchZone? zone,
+  }) {
+    if (!snapshot.isImportant) {
+      return null;
+    }
+
+    final title = switch (chanceOutcome) {
+      ChanceOutcome.goal => 'Goal',
+      ChanceOutcome.save => 'Saved Chance',
+      ChanceOutcome.block => 'Blocked Chance',
+      ChanceOutcome.offTarget => 'Off Target',
+      ChanceOutcome.woodwork => 'Woodwork',
+      ChanceOutcome.rebound => 'Rebound',
+      ChanceOutcome.deflectionCorner => 'Corner Won',
+      ChanceOutcome.claimedByKeeper => 'Claimed by Keeper',
+      ChanceOutcome.offside => 'Offside',
+      ChanceOutcome.foulWon => 'Foul Won',
+      ChanceOutcome.turnover => 'Turnover',
+      ChanceOutcome.clearance => 'Clearance',
+      null => switch (snapshot.phaseType) {
+        MatchPhaseType.setPiece => 'Set Piece',
+        MatchPhaseType.transition => 'Transition',
+        _ => 'Dangerous Phase',
+      },
+    };
+
+    final description = switch (chanceOutcome) {
+      ChanceOutcome.goal => 'A high-quality chance is converted.',
+      ChanceOutcome.save =>
+        'The chance is on target, but the goalkeeper stops it.',
+      ChanceOutcome.block => 'The attempt is blocked before reaching goal.',
+      ChanceOutcome.offTarget => 'The attack ends with a miss.',
+      ChanceOutcome.woodwork => 'The ball strikes the woodwork.',
+      ChanceOutcome.rebound => 'The ball spills into a dangerous rebound.',
+      ChanceOutcome.deflectionCorner =>
+        'The shot is deflected behind for a corner.',
+      ChanceOutcome.claimedByKeeper =>
+        'The goalkeeper claims the ball cleanly.',
+      ChanceOutcome.offside => 'The move is cut short by an offside flag.',
+      ChanceOutcome.foulWon => 'The attacking side wins a foul.',
+      ChanceOutcome.turnover => 'Possession changes hands during the move.',
+      ChanceOutcome.clearance => 'The defense clears the danger.',
+      null => 'The phase develops through ${snapshot.phaseType.name}.',
+    };
+
+    return MatchEventCard(
+      minute: snapshot.minute,
+      title: title,
+      description: description,
+      phaseType: snapshot.phaseType,
+      teamSide: initiative,
+      zone: zone,
+      attackState: snapshot.attackState,
+      chanceType: chanceType,
+      chanceOutcome: chanceOutcome,
+      chanceQuality: chanceQuality,
+      tacticalInsight: chanceOutcome == ChanceOutcome.goal
+          ? 'A decisive attacking phase.'
+          : null,
+      isMajor:
+          chanceOutcome == ChanceOutcome.goal ||
+          (chanceQuality != null && chanceQuality >= 0.7),
+    );
+  }
+
+  static TacticalInsight? _buildInsight({
+    required PhaseResolutionSnapshot snapshot,
+    required TeamSide initiative,
+    required ChanceType? chanceType,
+    required ChanceOutcome? chanceOutcome,
+    required double? chanceQuality,
+    required PitchZone? zone,
+  }) {
+    if (chanceOutcome == ChanceOutcome.goal) {
+      return TacticalInsight(
+        minute: snapshot.minute,
+        level: TacticalSignalLevel.critical,
+        message: 'Goal from ${zone?.name ?? 'open play'}.',
+        suggestedAction:
+            'Protect the lead and reduce exposure in the same zone.',
+        relatedTeam: initiative,
+      );
+    }
+
+    if (chanceQuality != null && chanceQuality >= 0.7) {
+      return TacticalInsight(
+        minute: snapshot.minute,
+        level: TacticalSignalLevel.positive,
+        message:
+            'Strong attacking phase in ${zone?.name ?? 'the final third'}.',
+        suggestedAction: 'Repeat the same route while the space remains open.',
+        relatedTeam: initiative,
+      );
+    }
+
+    if (chanceType != null && chanceQuality != null && chanceQuality <= 0.25) {
+      return TacticalInsight(
+        minute: snapshot.minute,
+        level: TacticalSignalLevel.warning,
+        message: 'The move is low quality and being squeezed out.',
+        suggestedAction: 'Shift the attack route or slow the tempo.',
+        relatedTeam: initiative,
+      );
+    }
+
+    if (chanceOutcome == ChanceOutcome.turnover) {
+      return TacticalInsight(
+        minute: snapshot.minute,
+        level: TacticalSignalLevel.warning,
+        message: 'The current route is turning over too often.',
+        suggestedAction: 'Reduce risk or use a different flank.',
+        relatedTeam: initiative,
+      );
+    }
+
+    return null;
+  }
+
+  static math.Random _phaseRandom(Match match, MatchState state) {
+    final seed =
+        match.id * 1000003 +
+        (state.currentPhaseIndex * 997) +
+        state.clock.minute * 31 +
+        state.clock.second;
+    return math.Random(seed);
+  }
+
+  static T _weightedPick<T>(Map<T, double> weights, math.Random random) {
+    final entries = weights.entries.where((entry) => entry.value > 0).toList();
+    final total = entries.fold<double>(0.0, (sum, entry) => sum + entry.value);
+
+    if (entries.isEmpty || total <= 0) {
+      return weights.keys.first;
+    }
+
+    var threshold = random.nextDouble() * total;
+    for (final entry in entries) {
+      threshold -= entry.value;
+      if (threshold <= 0) {
+        return entry.key;
+      }
+    }
+
+    return entries.last.key;
+  }
+
+  static double _clamp01(double value) {
+    return value.clamp(0.0, 1.0).toDouble();
   }
 }
