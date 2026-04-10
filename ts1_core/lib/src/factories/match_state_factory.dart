@@ -2,6 +2,8 @@ import 'package:ts1_core/src/builders/match_dynamics_builder.dart';
 import 'package:ts1_core/src/builders/matchup_state_builder.dart';
 import 'package:ts1_core/src/enums/match_enums.dart';
 import 'package:ts1_core/src/models/match/context/match_context.dart';
+import 'package:ts1_core/src/models/match/events/match_event_card.dart';
+import 'package:ts1_core/src/models/match/phase/phase_resolution_snapshot.dart';
 import 'package:ts1_core/src/models/match/state/match_state.dart';
 
 /// Factory for initializing [MatchState] in specific lifecycle scenarios.
@@ -24,6 +26,25 @@ class MatchStateFactory {
     required MatchContext context,
     TeamSide kickoffSide = TeamSide.home,
   }) {
+    final initialSnapshot = PhaseResolutionSnapshot(
+      phaseIndex: 0,
+      minute: 0,
+      phaseType: MatchPhaseType.setPiece,
+      phaseState: MatchPhaseState.restart,
+      initiativeTeam: kickoffSide,
+      possessionTeam: kickoffSide,
+      territoryTeam: kickoffSide,
+    );
+
+    final kickoffEvent = MatchEventCard(
+      minute: 0,
+      title: 'Kickoff',
+      description: 'The match starts with ${kickoffSide.name} in possession.',
+      phaseType: MatchPhaseType.setPiece,
+      teamSide: kickoffSide,
+      isMajor: true,
+    );
+
     return _buildState(
       status: MatchStatus.firstHalf,
       currentPhaseType: MatchPhaseType.setPiece,
@@ -31,6 +52,8 @@ class MatchStateFactory {
       currentInitiative: kickoffSide,
       currentPossession: kickoffSide,
       currentTerritoryControl: kickoffSide,
+      initialPhaseSnapshot: initialSnapshot,
+      initialEventCard: kickoffEvent,
       context: context,
     );
   }
@@ -43,12 +66,21 @@ class MatchStateFactory {
     required TeamSide? currentPossession,
     required TeamSide? currentTerritoryControl,
     required MatchContext context,
+    PhaseResolutionSnapshot? initialPhaseSnapshot,
+    MatchEventCard? initialEventCard,
   }) {
     final matchupState = MatchupStateBuilder.fromContext(context);
     final dynamics = MatchDynamicsBuilder.fromContext(
       context,
       matchupState: matchupState,
     );
+
+    final phaseHistory = initialPhaseSnapshot != null
+        ? [initialPhaseSnapshot]
+        : <PhaseResolutionSnapshot>[];
+    final eventCards = initialEventCard != null
+        ? [initialEventCard]
+        : <MatchEventCard>[];
 
     return MatchState(
       status: status,
@@ -60,6 +92,8 @@ class MatchStateFactory {
       currentTerritoryControl: currentTerritoryControl,
       matchupState: matchupState,
       dynamics: dynamics,
+      phaseHistory: phaseHistory,
+      eventCards: eventCards,
     );
   }
 }
