@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/match/match_enums.dart';
+import 'package:ts1_core/src/enums/match_enums.dart';
 
 part 'attack_state.freezed.dart';
 part 'attack_state.g.dart';

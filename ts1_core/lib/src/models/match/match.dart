@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/enums/match/match_enums.dart';
+import 'package:ts1_core/src/enums/match_enums.dart';
 import 'package:ts1_core/src/models/match/context/match_context.dart';
 import 'package:ts1_core/src/models/match/state/match_state.dart';
 import 'package:ts1_core/src/models/team/team.dart';

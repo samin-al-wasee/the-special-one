@@ -6,7 +6,7 @@ library;
 import 'package:ts1_core/src/engines/match_engine.dart';
 import 'package:ts1_core/src/enums/team/tactic/tactical_attributes.dart';
 
-import 'src/enums/match/match_enums.dart';
+import 'src/enums/match_enums.dart';
 import 'src/enums/player/player_attributes.dart';
 import 'src/enums/player/position.dart';
 import 'src/models/player/player.dart';

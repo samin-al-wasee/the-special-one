@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ts1_core/src/models/match/dynamics/match_dynamics.dart';
-import 'package:ts1_core/src/enums/match/match_enums.dart';
+import 'package:ts1_core/src/enums/match_enums.dart';
 import 'package:ts1_core/src/models/match/events/match_event_card.dart';
 import 'package:ts1_core/src/models/match/insights/tactical_insight.dart';
 import 'package:ts1_core/src/models/match/interventions/manager_intervention.dart';
