@@ -4,6 +4,7 @@ import 'package:ts1_core/src/builders/tactical_identity_builder.dart';
 import 'package:ts1_core/src/builders/team_strength_profile_builder.dart';
 import 'package:ts1_core/src/models/match/context/match_context.dart';
 import 'package:ts1_core/src/models/match/match.dart';
+import 'package:ts1_core/src/models/team/team.dart';
 
 /// Builds a fully-derived [MatchContext] from a [Match] entity.
 ///
@@ -12,9 +13,13 @@ class MatchContextBuilder {
   const MatchContextBuilder._();
 
   static MatchContext buildFromMatch(Match match) {
-    final homeTeam = match.homeTeam;
-    final awayTeam = match.awayTeam;
+    return buildFromTeams(homeTeam: match.homeTeam, awayTeam: match.awayTeam);
+  }
 
+  static MatchContext buildFromTeams({
+    required Team homeTeam,
+    required Team awayTeam,
+  }) {
     final homeTacticalIdentity = TacticalIdentityBuilder.buildForTeam(homeTeam);
     final awayTacticalIdentity = TacticalIdentityBuilder.buildForTeam(awayTeam);
 
