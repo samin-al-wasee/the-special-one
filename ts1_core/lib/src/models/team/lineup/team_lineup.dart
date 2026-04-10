@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ts1_core/src/catalog/role_catalog.dart';
 import 'package:ts1_core/src/enums/player/duty.dart';
+import 'package:ts1_core/src/enums/player/position.dart';
 import 'package:ts1_core/src/enums/player/role.dart';
 import 'package:ts1_core/src/models/team/lineup/formation/shape/formation_shape.dart';
 import 'package:ts1_core/src/models/team/lineup/slot_assignment/lineup_slot_assignment.dart';
@@ -22,7 +23,8 @@ abstract class TeamLineup with _$TeamLineup {
     Player? captain,
   }) = _TeamLineup;
 
-  factory TeamLineup.fromJson(Map<String, dynamic> json) => _$TeamLineupFromJson(json);
+  factory TeamLineup.fromJson(Map<String, dynamic> json) =>
+      _$TeamLineupFromJson(json);
 
   const TeamLineup._();
 
@@ -37,6 +39,7 @@ abstract class TeamLineup with _$TeamLineup {
     final assignedSlots = [
       for (final assignment in slotAssignments) assignment.formationSlot.slotId,
     ];
+    final assignedSlotSet = assignedSlots.toSet();
 
     if (assignedSlots.toSet().length != assignedSlots.length) {
       throw ArgumentError('Duplicate slot assignment detected in lineup.');
@@ -50,11 +53,73 @@ abstract class TeamLineup with _$TeamLineup {
       throw ArgumentError('Unknown formation slot ids: $unknownSlots');
     }
 
+    final missingSlots = [
+      for (final slotId in slotIds)
+        if (!assignedSlotSet.contains(slotId)) slotId,
+    ];
+    if (missingSlots.isNotEmpty) {
+      throw ArgumentError('Missing formation slot assignments: $missingSlots');
+    }
+
     final starters = starterIds();
     if (starters.toSet().length != starters.length) {
       throw ArgumentError(
         'Same player was assigned to multiple formation slots.',
       );
+    }
+
+    for (final assignment in slotAssignments) {
+      final slotId = assignment.formationSlot.slotId;
+      final canonicalSlot = formationShape.slotById(slotId);
+      if (canonicalSlot == null) {
+        continue;
+      }
+
+      // Prevent stale/contradictory slot snapshots in assignment payloads.
+      if (assignment.formationSlot != canonicalSlot) {
+        throw ArgumentError(
+          'Slot snapshot mismatch for "$slotId". Use formationShape.slotById(slotId) as source of truth.',
+        );
+      }
+
+      if (!canonicalSlot.hasCanonicalBandMapping()) {
+        throw ArgumentError(
+          'Non-canonical zone-band mapping in slot "$slotId": ${canonicalSlot.baseZone}/${canonicalSlot.lateralBand}/${canonicalSlot.verticalBand}.',
+        );
+      }
+
+      final role = assignment.roleAssignment.roleName;
+      final duty = assignment.roleAssignment.duty;
+      final playerPosition = assignment.player.position;
+
+      final supportedPositions =
+          roleSupportedPositions[role] ?? const <Position>{};
+      if (supportedPositions.isNotEmpty &&
+          !supportedPositions.contains(playerPosition)) {
+        throw ArgumentError(
+          'Role-position mismatch for slot "$slotId": role "$role" does not support position "$playerPosition".',
+        );
+      }
+
+      final supportedDuties = roleSupportedDuties[role] ?? const <Duty>{};
+      if (supportedDuties.isNotEmpty && !supportedDuties.contains(duty)) {
+        throw ArgumentError(
+          'Role-duty mismatch for slot "$slotId": duty "$duty" is not valid for role "$role".',
+        );
+      }
+    }
+
+    if (captain != null) {
+      final availablePlayerIds = <int>{
+        ...starterIds(),
+        for (final player in bench) player.id,
+        for (final player in reserves) player.id,
+      };
+      if (!availablePlayerIds.contains(captain!.id)) {
+        throw ArgumentError(
+          'Captain must belong to starters, bench, or reserves.',
+        );
+      }
     }
   }
 
@@ -120,7 +185,9 @@ abstract class TeamLineup with _$TeamLineup {
         chosenIdx = 0;
       }
       if (chosenIdx < 0) {
-        break;
+        throw StateError(
+          'Cannot build lineup: not enough players to fill formation slot ${slot.slotId}.',
+        );
       }
 
       final player = unassigned.removeAt(chosenIdx);

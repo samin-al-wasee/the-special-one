@@ -43,9 +43,9 @@ enum Role {
   final String label;
 
   static Role fromLabel(String value) {
-    final normalized = value.trim();
+    final normalized = value.trim().toLowerCase();
     return Role.values.firstWhere(
-      (role) => role.label == normalized,
+      (role) => role.label.toLowerCase() == normalized,
       orElse: () => throw ArgumentError('Unknown role: $value'),
     );
   }

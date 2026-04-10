@@ -18,9 +18,9 @@ enum Position {
   String get code => label;
 
   static Position fromLabel(String value) {
-    final normalized = value.trim().toUpperCase();
+    final normalized = value.trim().toLowerCase();
     return Position.values.firstWhere(
-      (position) => position.label == normalized,
+      (position) => position.label.toLowerCase() == normalized,
       orElse: () => throw ArgumentError('Unknown Position: $value'),
     );
   }

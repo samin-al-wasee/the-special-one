@@ -9,9 +9,9 @@ enum Duty {
   final String label;
 
   static Duty fromLabel(String value) {
-    final normalized = value.trim();
+    final normalized = value.trim().toLowerCase();
     return Duty.values.firstWhere(
-      (duty) => duty.label == normalized,
+      (duty) => duty.label.toLowerCase() == normalized,
       orElse: () => throw ArgumentError('Unknown duty: $value'),
     );
   }

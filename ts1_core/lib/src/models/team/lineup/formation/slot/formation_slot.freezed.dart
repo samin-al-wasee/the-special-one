@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FormationSlot {
 
- int get id; String get slotId; String get baseZone; String get line; String get lateralBand; String get verticalBand; List<Position> get preferredPositions; List<String> get adjacencySlots; List<String> get supportLinks; List<String> get attackingLaneAccess; List<String> get defensiveResponsibility;
+ int get id; String get slotId; PitchZone get baseZone; String get line; SlotLateralBand get lateralBand; SlotVerticalBand get verticalBand; List<Position> get preferredPositions; List<String> get adjacencySlots; List<String> get supportLinks; List<String> get attackingLaneAccess; List<String> get defensiveResponsibility;
 /// Create a copy of FormationSlot
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FormationSlotCopyWith<$Res>  {
   factory $FormationSlotCopyWith(FormationSlot value, $Res Function(FormationSlot) _then) = _$FormationSlotCopyWithImpl;
 @useResult
 $Res call({
- int id, String slotId, String baseZone, String line, String lateralBand, String verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
+ int id, String slotId, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
 });
 
 
@@ -70,10 +70,10 @@ class _$FormationSlotCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slotId: null == slotId ? _self.slotId : slotId // ignore: cast_nullable_to_non_nullable
 as String,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
-as String,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
+as PitchZone,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
 as String,lateralBand: null == lateralBand ? _self.lateralBand : lateralBand // ignore: cast_nullable_to_non_nullable
-as String,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable
-as String,preferredPositions: null == preferredPositions ? _self.preferredPositions : preferredPositions // ignore: cast_nullable_to_non_nullable
+as SlotLateralBand,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable
+as SlotVerticalBand,preferredPositions: null == preferredPositions ? _self.preferredPositions : preferredPositions // ignore: cast_nullable_to_non_nullable
 as List<Position>,adjacencySlots: null == adjacencySlots ? _self.adjacencySlots : adjacencySlots // ignore: cast_nullable_to_non_nullable
 as List<String>,supportLinks: null == supportLinks ? _self.supportLinks : supportLinks // ignore: cast_nullable_to_non_nullable
 as List<String>,attackingLaneAccess: null == attackingLaneAccess ? _self.attackingLaneAccess : attackingLaneAccess // ignore: cast_nullable_to_non_nullable
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slotId,  String baseZone,  String line,  String lateralBand,  String verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FormationSlot() when $default != null:
 return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
@@ -184,7 +184,7 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slotId,  String baseZone,  String line,  String lateralBand,  String verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)  $default,) {final _that = this;
 switch (_that) {
 case _FormationSlot():
 return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
@@ -204,7 +204,7 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slotId,  String baseZone,  String line,  String lateralBand,  String verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,) {final _that = this;
 switch (_that) {
 case _FormationSlot() when $default != null:
 return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
@@ -218,16 +218,16 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 /// @nodoc
 @JsonSerializable()
 
-class _FormationSlot implements FormationSlot {
-  const _FormationSlot({required this.id, required this.slotId, required this.baseZone, required this.line, required this.lateralBand, required this.verticalBand, final  List<Position> preferredPositions = const [], final  List<String> adjacencySlots = const [], final  List<String> supportLinks = const [], final  List<String> attackingLaneAccess = const [], final  List<String> defensiveResponsibility = const []}): _preferredPositions = preferredPositions,_adjacencySlots = adjacencySlots,_supportLinks = supportLinks,_attackingLaneAccess = attackingLaneAccess,_defensiveResponsibility = defensiveResponsibility;
+class _FormationSlot extends FormationSlot {
+  const _FormationSlot({required this.id, required this.slotId, required this.baseZone, required this.line, required this.lateralBand, required this.verticalBand, final  List<Position> preferredPositions = const [], final  List<String> adjacencySlots = const [], final  List<String> supportLinks = const [], final  List<String> attackingLaneAccess = const [], final  List<String> defensiveResponsibility = const []}): _preferredPositions = preferredPositions,_adjacencySlots = adjacencySlots,_supportLinks = supportLinks,_attackingLaneAccess = attackingLaneAccess,_defensiveResponsibility = defensiveResponsibility,super._();
   factory _FormationSlot.fromJson(Map<String, dynamic> json) => _$FormationSlotFromJson(json);
 
 @override final  int id;
 @override final  String slotId;
-@override final  String baseZone;
+@override final  PitchZone baseZone;
 @override final  String line;
-@override final  String lateralBand;
-@override final  String verticalBand;
+@override final  SlotLateralBand lateralBand;
+@override final  SlotVerticalBand verticalBand;
  final  List<Position> _preferredPositions;
 @override@JsonKey() List<Position> get preferredPositions {
   if (_preferredPositions is EqualUnmodifiableListView) return _preferredPositions;
@@ -297,7 +297,7 @@ abstract mixin class _$FormationSlotCopyWith<$Res> implements $FormationSlotCopy
   factory _$FormationSlotCopyWith(_FormationSlot value, $Res Function(_FormationSlot) _then) = __$FormationSlotCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String slotId, String baseZone, String line, String lateralBand, String verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
+ int id, String slotId, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
 });
 
 
@@ -319,10 +319,10 @@ class __$FormationSlotCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slotId: null == slotId ? _self.slotId : slotId // ignore: cast_nullable_to_non_nullable
 as String,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
-as String,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
+as PitchZone,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
 as String,lateralBand: null == lateralBand ? _self.lateralBand : lateralBand // ignore: cast_nullable_to_non_nullable
-as String,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable
-as String,preferredPositions: null == preferredPositions ? _self._preferredPositions : preferredPositions // ignore: cast_nullable_to_non_nullable
+as SlotLateralBand,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable
+as SlotVerticalBand,preferredPositions: null == preferredPositions ? _self._preferredPositions : preferredPositions // ignore: cast_nullable_to_non_nullable
 as List<Position>,adjacencySlots: null == adjacencySlots ? _self._adjacencySlots : adjacencySlots // ignore: cast_nullable_to_non_nullable
 as List<String>,supportLinks: null == supportLinks ? _self._supportLinks : supportLinks // ignore: cast_nullable_to_non_nullable
 as List<String>,attackingLaneAccess: null == attackingLaneAccess ? _self._attackingLaneAccess : attackingLaneAccess // ignore: cast_nullable_to_non_nullable

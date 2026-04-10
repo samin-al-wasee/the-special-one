@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:ts1_core/src/enums/player/player_attributes.dart';
 import 'package:ts1_core/src/models/player/player.dart';
+import 'package:ts1_core/src/models/team/lineup/formation/slot/formation_slot.dart';
 import 'package:ts1_core/src/models/team/lineup/formation/structural_profile.dart';
 import 'package:ts1_core/src/models/team/lineup/team_lineup.dart';
 
@@ -13,10 +14,6 @@ double _avg(Iterable<double> values, {double defaultValue = 0.5}) {
     return defaultValue;
   }
   return vals.reduce((a, b) => a + b) / vals.length;
-}
-
-String _normBand(String raw) {
-  return raw.trim().toLowerCase().replaceAll('-', '_').replaceAll(' ', '_');
 }
 
 class StructuralProfileBuilder {
@@ -141,21 +138,19 @@ class StructuralProfileBuilder {
       fits.add(posFit);
       roleFits.add(_roleFit(player, assignment.roleAssignment.roleName.label));
 
-      final lateralBand = _normBand(slot.lateralBand);
-      final verticalBand = _normBand(slot.verticalBand);
-
-      if (lateralBand.contains('wide')) {
+      if (slot.lateralBand == SlotLateralBand.leftWide ||
+          slot.lateralBand == SlotLateralBand.rightWide) {
         lateralWide += 1;
       }
-      if (lateralBand == 'center' ||
-          lateralBand == 'left_halfspace' ||
-          lateralBand == 'right_halfspace') {
+      if (slot.lateralBand == SlotLateralBand.center ||
+          slot.lateralBand == SlotLateralBand.leftHalfSpace ||
+          slot.lateralBand == SlotLateralBand.rightHalfSpace) {
         lateralCenter += 1;
       }
-      if (verticalBand == 'high') {
+      if (slot.verticalBand == SlotVerticalBand.high) {
         highLineCount += 1;
       }
-      if (verticalBand == 'deep') {
+      if (slot.verticalBand == SlotVerticalBand.deep) {
         deepLineCount += 1;
       }
 
@@ -225,8 +220,8 @@ class StructuralProfileBuilder {
       if (slot == null) {
         continue;
       }
-      final lateralBand = _normBand(slot.lateralBand);
-      if (lateralBand == 'left_halfspace' || lateralBand == 'right_halfspace') {
+      if (slot.lateralBand == SlotLateralBand.leftHalfSpace ||
+          slot.lateralBand == SlotLateralBand.rightHalfSpace) {
         halfSpaceSlotHits += 1;
       }
     }

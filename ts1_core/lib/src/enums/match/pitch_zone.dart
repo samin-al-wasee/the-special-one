@@ -1,0 +1,17 @@
+enum PitchZone {
+  lw,
+  lhs,
+  cf,
+  rhs,
+  rw,
+  lm,
+  lcm,
+  cm,
+  rcm,
+  rm,
+  lb,
+  lcb,
+  cb,
+  rcb,
+  rb,
+}
