@@ -200,7 +200,11 @@ class MatchEngine {
     final random = _phaseRandom(match, state);
     final initiative = _resolveInitiative(match, state, random);
     final possession = initiative;
-    final territory = random.nextDouble() < 0.72
+    final territoryRetention = _resolveTerritoryRetentionProbability(
+      state: state,
+      initiative: initiative,
+    );
+    final territory = random.nextDouble() < territoryRetention
         ? initiative
         : match.opponentOf(initiative);
     final phaseType = _resolvePhaseType(state);
@@ -396,6 +400,56 @@ class MatchEngine {
     }
 
     return match.opponentOf(previous);
+  }
+
+  /// Computes the probability that territorial control stays with initiative.
+  ///
+  /// Uses live dynamics and matchup edges already present in state:
+  /// - momentum/confidence (positive)
+  /// - fatigue/discipline pressure (negative)
+  /// - midfield/transition/wing control (directional)
+  ///
+  /// Returns value clamped to [0, 1].
+  static double _resolveTerritoryRetentionProbability({
+    required MatchState state,
+    required TeamSide initiative,
+  }) {
+    final dynamics = state.dynamics;
+    final matchup = state.matchupState;
+
+    final momentum = initiative == TeamSide.home
+        ? dynamics.homeMomentum
+        : dynamics.awayMomentum;
+    final confidence = initiative == TeamSide.home
+        ? dynamics.homeConfidence
+        : dynamics.awayConfidence;
+    final fatigue = initiative == TeamSide.home
+        ? dynamics.homeFatigue
+        : dynamics.awayFatigue;
+    final disciplinePressure = initiative == TeamSide.home
+        ? dynamics.homeDisciplinePressure
+        : dynamics.awayDisciplinePressure;
+
+    final directionalMidfield = initiative == TeamSide.home
+        ? matchup.midfieldControlEdge
+        : -matchup.midfieldControlEdge;
+    final directionalTransition = initiative == TeamSide.home
+        ? matchup.transitionControlEdge
+        : -matchup.transitionControlEdge;
+    final directionalWing = initiative == TeamSide.home
+        ? matchup.wingControlEdge
+        : -matchup.wingControlEdge;
+
+    return _clamp01(
+      0.52 +
+          (momentum * 0.12) +
+          ((confidence - 0.5) * 0.16) +
+          (directionalMidfield * 0.14) +
+          (directionalTransition * 0.08) +
+          (directionalWing * 0.06) -
+          (fatigue * 0.20) -
+          (disciplinePressure * 0.08),
+    );
   }
 
   /// Selects attacking route using weighted tactical identity biases.
