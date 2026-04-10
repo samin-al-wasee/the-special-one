@@ -24,6 +24,7 @@ export 'src/ts1_core_base.dart';
 export 'src/builders/structural_profile_builder.dart';
 export 'src/builders/tactical_identity_builder.dart';
 export 'src/builders/team_strength_profile_builder.dart';
+export 'src/factories/formation_factory.dart';
 export 'src/engines/match_engine.dart';
 export 'src/enums/player/player_attributes.dart';
 export 'src/enums/player/position.dart';
