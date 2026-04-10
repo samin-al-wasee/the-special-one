@@ -8,6 +8,7 @@ part of 'match_event_card.dart';
 
 _MatchEventCard _$MatchEventCardFromJson(Map<String, dynamic> json) =>
     _MatchEventCard(
+      id: (json['id'] as num).toInt(),
       minute: (json['minute'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String,
@@ -29,6 +30,7 @@ _MatchEventCard _$MatchEventCardFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MatchEventCardToJson(_MatchEventCard instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'minute': instance.minute,
       'title': instance.title,
       'description': instance.description,

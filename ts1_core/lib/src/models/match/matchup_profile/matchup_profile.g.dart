@@ -9,6 +9,7 @@ part of 'matchup_profile.dart';
 _MatchupProfile _$MatchupProfileFromJson(
   Map<String, dynamic> json,
 ) => _MatchupProfile(
+  id: (json['id'] as num).toInt(),
   buildupEdge: (json['buildupEdge'] as num?)?.toDouble() ?? 0.0,
   pressingEdge: (json['pressingEdge'] as num?)?.toDouble() ?? 0.0,
   counterpressingEdge: (json['counterpressingEdge'] as num?)?.toDouble() ?? 0.0,
@@ -30,6 +31,7 @@ _MatchupProfile _$MatchupProfileFromJson(
 
 Map<String, dynamic> _$MatchupProfileToJson(_MatchupProfile instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'buildupEdge': instance.buildupEdge,
       'pressingEdge': instance.pressingEdge,
       'counterpressingEdge': instance.counterpressingEdge,

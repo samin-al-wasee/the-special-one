@@ -11,6 +11,7 @@ part 'matchup_state.g.dart';
 @freezed
 abstract class MatchupState with _$MatchupState {
   const factory MatchupState({
+    required int id,
     // Attack vs defense interaction per direction.
     @Default(0.0) double homeAttackVsAwayDefense,
     @Default(0.0) double awayAttackVsHomeDefense,

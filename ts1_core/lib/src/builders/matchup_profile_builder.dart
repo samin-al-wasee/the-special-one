@@ -193,6 +193,7 @@ class MatchupProfileBuilder {
     );
 
     var profile = MatchupProfile(
+      id: 0,
       buildupEdge: buildupEdge,
       pressingEdge: pressingEdge,
       counterpressingEdge: counterpressingEdge,

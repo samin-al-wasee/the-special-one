@@ -9,6 +9,7 @@ part of 'phase_resolution_snapshot.dart';
 _PhaseResolutionSnapshot _$PhaseResolutionSnapshotFromJson(
   Map<String, dynamic> json,
 ) => _PhaseResolutionSnapshot(
+  id: (json['id'] as num).toInt(),
   phaseIndex: (json['phaseIndex'] as num).toInt(),
   minute: (json['minute'] as num).toInt(),
   phaseType: $enumDecode(_$MatchPhaseTypeEnumMap, json['phaseType']),
@@ -38,6 +39,7 @@ _PhaseResolutionSnapshot _$PhaseResolutionSnapshotFromJson(
 Map<String, dynamic> _$PhaseResolutionSnapshotToJson(
   _PhaseResolutionSnapshot instance,
 ) => <String, dynamic>{
+  'id': instance.id,
   'phaseIndex': instance.phaseIndex,
   'minute': instance.minute,
   'phaseType': _$MatchPhaseTypeEnumMap[instance.phaseType]!,

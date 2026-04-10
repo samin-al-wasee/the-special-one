@@ -20,6 +20,8 @@ part 'phase_resolution_snapshot.g.dart';
 @freezed
 abstract class PhaseResolutionSnapshot with _$PhaseResolutionSnapshot {
   const factory PhaseResolutionSnapshot({
+    required int id,
+
     /// Sequential phase number in the match (0-indexed).
     required int phaseIndex,
 

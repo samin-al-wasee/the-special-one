@@ -293,6 +293,7 @@ class TacticalIdentityBuilder {
     );
 
     return TacticalIdentity(
+      id: tactic.id,
       riskTaking: riskTaking,
       directnessBias: directnessBias,
       verticalProgressionBias: verticalProgressionBias,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchupProfile {
 
-// ==================== POSSESSION and BUILD-UP ====================
+ int get id;// ==================== POSSESSION and BUILD-UP ====================
 // How A's build-up style matches against B's press resistance
  double get buildupEdge;// How effective A's pressing is vs B's build-up structure
  double get pressingEdge;// Counterpressing (when possession lost)
@@ -53,16 +53,16 @@ $MatchupProfileCopyWith<MatchupProfile> get copyWith => _$MatchupProfileCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchupProfile&&(identical(other.buildupEdge, buildupEdge) || other.buildupEdge == buildupEdge)&&(identical(other.pressingEdge, pressingEdge) || other.pressingEdge == pressingEdge)&&(identical(other.counterpressingEdge, counterpressingEdge) || other.counterpressingEdge == counterpressingEdge)&&(identical(other.compactnessEdge, compactnessEdge) || other.compactnessEdge == compactnessEdge)&&(identical(other.defensiveLineEdge, defensiveLineEdge) || other.defensiveLineEdge == defensiveLineEdge)&&(identical(other.wideEdge, wideEdge) || other.wideEdge == wideEdge)&&(identical(other.centralEdge, centralEdge) || other.centralEdge == centralEdge)&&(identical(other.fullbackEdge, fullbackEdge) || other.fullbackEdge == fullbackEdge)&&(identical(other.finalThirdEdge, finalThirdEdge) || other.finalThirdEdge == finalThirdEdge)&&(identical(other.shootingRiskEdge, shootingRiskEdge) || other.shootingRiskEdge == shootingRiskEdge)&&(identical(other.transitionOutEdge, transitionOutEdge) || other.transitionOutEdge == transitionOutEdge)&&(identical(other.transitionInEdge, transitionInEdge) || other.transitionInEdge == transitionInEdge)&&(identical(other.aerialEdge, aerialEdge) || other.aerialEdge == aerialEdge)&&(identical(other.setpieceDefenseEdge, setpieceDefenseEdge) || other.setpieceDefenseEdge == setpieceDefenseEdge)&&(identical(other.tempoEdge, tempoEdge) || other.tempoEdge == tempoEdge)&&(identical(other.playmakerEdge, playmakerEdge) || other.playmakerEdge == playmakerEdge)&&(identical(other.strikerSupportEdge, strikerSupportEdge) || other.strikerSupportEdge == strikerSupportEdge));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchupProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.buildupEdge, buildupEdge) || other.buildupEdge == buildupEdge)&&(identical(other.pressingEdge, pressingEdge) || other.pressingEdge == pressingEdge)&&(identical(other.counterpressingEdge, counterpressingEdge) || other.counterpressingEdge == counterpressingEdge)&&(identical(other.compactnessEdge, compactnessEdge) || other.compactnessEdge == compactnessEdge)&&(identical(other.defensiveLineEdge, defensiveLineEdge) || other.defensiveLineEdge == defensiveLineEdge)&&(identical(other.wideEdge, wideEdge) || other.wideEdge == wideEdge)&&(identical(other.centralEdge, centralEdge) || other.centralEdge == centralEdge)&&(identical(other.fullbackEdge, fullbackEdge) || other.fullbackEdge == fullbackEdge)&&(identical(other.finalThirdEdge, finalThirdEdge) || other.finalThirdEdge == finalThirdEdge)&&(identical(other.shootingRiskEdge, shootingRiskEdge) || other.shootingRiskEdge == shootingRiskEdge)&&(identical(other.transitionOutEdge, transitionOutEdge) || other.transitionOutEdge == transitionOutEdge)&&(identical(other.transitionInEdge, transitionInEdge) || other.transitionInEdge == transitionInEdge)&&(identical(other.aerialEdge, aerialEdge) || other.aerialEdge == aerialEdge)&&(identical(other.setpieceDefenseEdge, setpieceDefenseEdge) || other.setpieceDefenseEdge == setpieceDefenseEdge)&&(identical(other.tempoEdge, tempoEdge) || other.tempoEdge == tempoEdge)&&(identical(other.playmakerEdge, playmakerEdge) || other.playmakerEdge == playmakerEdge)&&(identical(other.strikerSupportEdge, strikerSupportEdge) || other.strikerSupportEdge == strikerSupportEdge));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,buildupEdge,pressingEdge,counterpressingEdge,compactnessEdge,defensiveLineEdge,wideEdge,centralEdge,fullbackEdge,finalThirdEdge,shootingRiskEdge,transitionOutEdge,transitionInEdge,aerialEdge,setpieceDefenseEdge,tempoEdge,playmakerEdge,strikerSupportEdge);
+int get hashCode => Object.hash(runtimeType,id,buildupEdge,pressingEdge,counterpressingEdge,compactnessEdge,defensiveLineEdge,wideEdge,centralEdge,fullbackEdge,finalThirdEdge,shootingRiskEdge,transitionOutEdge,transitionInEdge,aerialEdge,setpieceDefenseEdge,tempoEdge,playmakerEdge,strikerSupportEdge);
 
 @override
 String toString() {
-  return 'MatchupProfile(buildupEdge: $buildupEdge, pressingEdge: $pressingEdge, counterpressingEdge: $counterpressingEdge, compactnessEdge: $compactnessEdge, defensiveLineEdge: $defensiveLineEdge, wideEdge: $wideEdge, centralEdge: $centralEdge, fullbackEdge: $fullbackEdge, finalThirdEdge: $finalThirdEdge, shootingRiskEdge: $shootingRiskEdge, transitionOutEdge: $transitionOutEdge, transitionInEdge: $transitionInEdge, aerialEdge: $aerialEdge, setpieceDefenseEdge: $setpieceDefenseEdge, tempoEdge: $tempoEdge, playmakerEdge: $playmakerEdge, strikerSupportEdge: $strikerSupportEdge)';
+  return 'MatchupProfile(id: $id, buildupEdge: $buildupEdge, pressingEdge: $pressingEdge, counterpressingEdge: $counterpressingEdge, compactnessEdge: $compactnessEdge, defensiveLineEdge: $defensiveLineEdge, wideEdge: $wideEdge, centralEdge: $centralEdge, fullbackEdge: $fullbackEdge, finalThirdEdge: $finalThirdEdge, shootingRiskEdge: $shootingRiskEdge, transitionOutEdge: $transitionOutEdge, transitionInEdge: $transitionInEdge, aerialEdge: $aerialEdge, setpieceDefenseEdge: $setpieceDefenseEdge, tempoEdge: $tempoEdge, playmakerEdge: $playmakerEdge, strikerSupportEdge: $strikerSupportEdge)';
 }
 
 
@@ -73,7 +73,7 @@ abstract mixin class $MatchupProfileCopyWith<$Res>  {
   factory $MatchupProfileCopyWith(MatchupProfile value, $Res Function(MatchupProfile) _then) = _$MatchupProfileCopyWithImpl;
 @useResult
 $Res call({
- double buildupEdge, double pressingEdge, double counterpressingEdge, double compactnessEdge, double defensiveLineEdge, double wideEdge, double centralEdge, double fullbackEdge, double finalThirdEdge, double shootingRiskEdge, double transitionOutEdge, double transitionInEdge, double aerialEdge, double setpieceDefenseEdge, double tempoEdge, double playmakerEdge, double strikerSupportEdge
+ int id, double buildupEdge, double pressingEdge, double counterpressingEdge, double compactnessEdge, double defensiveLineEdge, double wideEdge, double centralEdge, double fullbackEdge, double finalThirdEdge, double shootingRiskEdge, double transitionOutEdge, double transitionInEdge, double aerialEdge, double setpieceDefenseEdge, double tempoEdge, double playmakerEdge, double strikerSupportEdge
 });
 
 
@@ -90,9 +90,10 @@ class _$MatchupProfileCopyWithImpl<$Res>
 
 /// Create a copy of MatchupProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? buildupEdge = null,Object? pressingEdge = null,Object? counterpressingEdge = null,Object? compactnessEdge = null,Object? defensiveLineEdge = null,Object? wideEdge = null,Object? centralEdge = null,Object? fullbackEdge = null,Object? finalThirdEdge = null,Object? shootingRiskEdge = null,Object? transitionOutEdge = null,Object? transitionInEdge = null,Object? aerialEdge = null,Object? setpieceDefenseEdge = null,Object? tempoEdge = null,Object? playmakerEdge = null,Object? strikerSupportEdge = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? buildupEdge = null,Object? pressingEdge = null,Object? counterpressingEdge = null,Object? compactnessEdge = null,Object? defensiveLineEdge = null,Object? wideEdge = null,Object? centralEdge = null,Object? fullbackEdge = null,Object? finalThirdEdge = null,Object? shootingRiskEdge = null,Object? transitionOutEdge = null,Object? transitionInEdge = null,Object? aerialEdge = null,Object? setpieceDefenseEdge = null,Object? tempoEdge = null,Object? playmakerEdge = null,Object? strikerSupportEdge = null,}) {
   return _then(_self.copyWith(
-buildupEdge: null == buildupEdge ? _self.buildupEdge : buildupEdge // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,buildupEdge: null == buildupEdge ? _self.buildupEdge : buildupEdge // ignore: cast_nullable_to_non_nullable
 as double,pressingEdge: null == pressingEdge ? _self.pressingEdge : pressingEdge // ignore: cast_nullable_to_non_nullable
 as double,counterpressingEdge: null == counterpressingEdge ? _self.counterpressingEdge : counterpressingEdge // ignore: cast_nullable_to_non_nullable
 as double,compactnessEdge: null == compactnessEdge ? _self.compactnessEdge : compactnessEdge // ignore: cast_nullable_to_non_nullable
@@ -194,10 +195,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchupProfile() when $default != null:
-return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
+return $default(_that.id,_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
   return orElse();
 
 }
@@ -215,10 +216,10 @@ return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)  $default,) {final _that = this;
 switch (_that) {
 case _MatchupProfile():
-return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
+return $default(_that.id,_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -235,10 +236,10 @@ return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double buildupEdge,  double pressingEdge,  double counterpressingEdge,  double compactnessEdge,  double defensiveLineEdge,  double wideEdge,  double centralEdge,  double fullbackEdge,  double finalThirdEdge,  double shootingRiskEdge,  double transitionOutEdge,  double transitionInEdge,  double aerialEdge,  double setpieceDefenseEdge,  double tempoEdge,  double playmakerEdge,  double strikerSupportEdge)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchupProfile() when $default != null:
-return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
+return $default(_that.id,_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_that.compactnessEdge,_that.defensiveLineEdge,_that.wideEdge,_that.centralEdge,_that.fullbackEdge,_that.finalThirdEdge,_that.shootingRiskEdge,_that.transitionOutEdge,_that.transitionInEdge,_that.aerialEdge,_that.setpieceDefenseEdge,_that.tempoEdge,_that.playmakerEdge,_that.strikerSupportEdge);case _:
   return null;
 
 }
@@ -250,9 +251,10 @@ return $default(_that.buildupEdge,_that.pressingEdge,_that.counterpressingEdge,_
 @JsonSerializable()
 
 class _MatchupProfile extends MatchupProfile {
-  const _MatchupProfile({this.buildupEdge = 0.0, this.pressingEdge = 0.0, this.counterpressingEdge = 0.0, this.compactnessEdge = 0.0, this.defensiveLineEdge = 0.0, this.wideEdge = 0.0, this.centralEdge = 0.0, this.fullbackEdge = 0.0, this.finalThirdEdge = 0.0, this.shootingRiskEdge = 0.0, this.transitionOutEdge = 0.0, this.transitionInEdge = 0.0, this.aerialEdge = 0.0, this.setpieceDefenseEdge = 0.0, this.tempoEdge = 0.0, this.playmakerEdge = 0.0, this.strikerSupportEdge = 0.0}): super._();
+  const _MatchupProfile({required this.id, this.buildupEdge = 0.0, this.pressingEdge = 0.0, this.counterpressingEdge = 0.0, this.compactnessEdge = 0.0, this.defensiveLineEdge = 0.0, this.wideEdge = 0.0, this.centralEdge = 0.0, this.fullbackEdge = 0.0, this.finalThirdEdge = 0.0, this.shootingRiskEdge = 0.0, this.transitionOutEdge = 0.0, this.transitionInEdge = 0.0, this.aerialEdge = 0.0, this.setpieceDefenseEdge = 0.0, this.tempoEdge = 0.0, this.playmakerEdge = 0.0, this.strikerSupportEdge = 0.0}): super._();
   factory _MatchupProfile.fromJson(Map<String, dynamic> json) => _$MatchupProfileFromJson(json);
 
+@override final  int id;
 // ==================== POSSESSION and BUILD-UP ====================
 // How A's build-up style matches against B's press resistance
 @override@JsonKey() final  double buildupEdge;
@@ -309,16 +311,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchupProfile&&(identical(other.buildupEdge, buildupEdge) || other.buildupEdge == buildupEdge)&&(identical(other.pressingEdge, pressingEdge) || other.pressingEdge == pressingEdge)&&(identical(other.counterpressingEdge, counterpressingEdge) || other.counterpressingEdge == counterpressingEdge)&&(identical(other.compactnessEdge, compactnessEdge) || other.compactnessEdge == compactnessEdge)&&(identical(other.defensiveLineEdge, defensiveLineEdge) || other.defensiveLineEdge == defensiveLineEdge)&&(identical(other.wideEdge, wideEdge) || other.wideEdge == wideEdge)&&(identical(other.centralEdge, centralEdge) || other.centralEdge == centralEdge)&&(identical(other.fullbackEdge, fullbackEdge) || other.fullbackEdge == fullbackEdge)&&(identical(other.finalThirdEdge, finalThirdEdge) || other.finalThirdEdge == finalThirdEdge)&&(identical(other.shootingRiskEdge, shootingRiskEdge) || other.shootingRiskEdge == shootingRiskEdge)&&(identical(other.transitionOutEdge, transitionOutEdge) || other.transitionOutEdge == transitionOutEdge)&&(identical(other.transitionInEdge, transitionInEdge) || other.transitionInEdge == transitionInEdge)&&(identical(other.aerialEdge, aerialEdge) || other.aerialEdge == aerialEdge)&&(identical(other.setpieceDefenseEdge, setpieceDefenseEdge) || other.setpieceDefenseEdge == setpieceDefenseEdge)&&(identical(other.tempoEdge, tempoEdge) || other.tempoEdge == tempoEdge)&&(identical(other.playmakerEdge, playmakerEdge) || other.playmakerEdge == playmakerEdge)&&(identical(other.strikerSupportEdge, strikerSupportEdge) || other.strikerSupportEdge == strikerSupportEdge));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchupProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.buildupEdge, buildupEdge) || other.buildupEdge == buildupEdge)&&(identical(other.pressingEdge, pressingEdge) || other.pressingEdge == pressingEdge)&&(identical(other.counterpressingEdge, counterpressingEdge) || other.counterpressingEdge == counterpressingEdge)&&(identical(other.compactnessEdge, compactnessEdge) || other.compactnessEdge == compactnessEdge)&&(identical(other.defensiveLineEdge, defensiveLineEdge) || other.defensiveLineEdge == defensiveLineEdge)&&(identical(other.wideEdge, wideEdge) || other.wideEdge == wideEdge)&&(identical(other.centralEdge, centralEdge) || other.centralEdge == centralEdge)&&(identical(other.fullbackEdge, fullbackEdge) || other.fullbackEdge == fullbackEdge)&&(identical(other.finalThirdEdge, finalThirdEdge) || other.finalThirdEdge == finalThirdEdge)&&(identical(other.shootingRiskEdge, shootingRiskEdge) || other.shootingRiskEdge == shootingRiskEdge)&&(identical(other.transitionOutEdge, transitionOutEdge) || other.transitionOutEdge == transitionOutEdge)&&(identical(other.transitionInEdge, transitionInEdge) || other.transitionInEdge == transitionInEdge)&&(identical(other.aerialEdge, aerialEdge) || other.aerialEdge == aerialEdge)&&(identical(other.setpieceDefenseEdge, setpieceDefenseEdge) || other.setpieceDefenseEdge == setpieceDefenseEdge)&&(identical(other.tempoEdge, tempoEdge) || other.tempoEdge == tempoEdge)&&(identical(other.playmakerEdge, playmakerEdge) || other.playmakerEdge == playmakerEdge)&&(identical(other.strikerSupportEdge, strikerSupportEdge) || other.strikerSupportEdge == strikerSupportEdge));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,buildupEdge,pressingEdge,counterpressingEdge,compactnessEdge,defensiveLineEdge,wideEdge,centralEdge,fullbackEdge,finalThirdEdge,shootingRiskEdge,transitionOutEdge,transitionInEdge,aerialEdge,setpieceDefenseEdge,tempoEdge,playmakerEdge,strikerSupportEdge);
+int get hashCode => Object.hash(runtimeType,id,buildupEdge,pressingEdge,counterpressingEdge,compactnessEdge,defensiveLineEdge,wideEdge,centralEdge,fullbackEdge,finalThirdEdge,shootingRiskEdge,transitionOutEdge,transitionInEdge,aerialEdge,setpieceDefenseEdge,tempoEdge,playmakerEdge,strikerSupportEdge);
 
 @override
 String toString() {
-  return 'MatchupProfile(buildupEdge: $buildupEdge, pressingEdge: $pressingEdge, counterpressingEdge: $counterpressingEdge, compactnessEdge: $compactnessEdge, defensiveLineEdge: $defensiveLineEdge, wideEdge: $wideEdge, centralEdge: $centralEdge, fullbackEdge: $fullbackEdge, finalThirdEdge: $finalThirdEdge, shootingRiskEdge: $shootingRiskEdge, transitionOutEdge: $transitionOutEdge, transitionInEdge: $transitionInEdge, aerialEdge: $aerialEdge, setpieceDefenseEdge: $setpieceDefenseEdge, tempoEdge: $tempoEdge, playmakerEdge: $playmakerEdge, strikerSupportEdge: $strikerSupportEdge)';
+  return 'MatchupProfile(id: $id, buildupEdge: $buildupEdge, pressingEdge: $pressingEdge, counterpressingEdge: $counterpressingEdge, compactnessEdge: $compactnessEdge, defensiveLineEdge: $defensiveLineEdge, wideEdge: $wideEdge, centralEdge: $centralEdge, fullbackEdge: $fullbackEdge, finalThirdEdge: $finalThirdEdge, shootingRiskEdge: $shootingRiskEdge, transitionOutEdge: $transitionOutEdge, transitionInEdge: $transitionInEdge, aerialEdge: $aerialEdge, setpieceDefenseEdge: $setpieceDefenseEdge, tempoEdge: $tempoEdge, playmakerEdge: $playmakerEdge, strikerSupportEdge: $strikerSupportEdge)';
 }
 
 
@@ -329,7 +331,7 @@ abstract mixin class _$MatchupProfileCopyWith<$Res> implements $MatchupProfileCo
   factory _$MatchupProfileCopyWith(_MatchupProfile value, $Res Function(_MatchupProfile) _then) = __$MatchupProfileCopyWithImpl;
 @override @useResult
 $Res call({
- double buildupEdge, double pressingEdge, double counterpressingEdge, double compactnessEdge, double defensiveLineEdge, double wideEdge, double centralEdge, double fullbackEdge, double finalThirdEdge, double shootingRiskEdge, double transitionOutEdge, double transitionInEdge, double aerialEdge, double setpieceDefenseEdge, double tempoEdge, double playmakerEdge, double strikerSupportEdge
+ int id, double buildupEdge, double pressingEdge, double counterpressingEdge, double compactnessEdge, double defensiveLineEdge, double wideEdge, double centralEdge, double fullbackEdge, double finalThirdEdge, double shootingRiskEdge, double transitionOutEdge, double transitionInEdge, double aerialEdge, double setpieceDefenseEdge, double tempoEdge, double playmakerEdge, double strikerSupportEdge
 });
 
 
@@ -346,9 +348,10 @@ class __$MatchupProfileCopyWithImpl<$Res>
 
 /// Create a copy of MatchupProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? buildupEdge = null,Object? pressingEdge = null,Object? counterpressingEdge = null,Object? compactnessEdge = null,Object? defensiveLineEdge = null,Object? wideEdge = null,Object? centralEdge = null,Object? fullbackEdge = null,Object? finalThirdEdge = null,Object? shootingRiskEdge = null,Object? transitionOutEdge = null,Object? transitionInEdge = null,Object? aerialEdge = null,Object? setpieceDefenseEdge = null,Object? tempoEdge = null,Object? playmakerEdge = null,Object? strikerSupportEdge = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? buildupEdge = null,Object? pressingEdge = null,Object? counterpressingEdge = null,Object? compactnessEdge = null,Object? defensiveLineEdge = null,Object? wideEdge = null,Object? centralEdge = null,Object? fullbackEdge = null,Object? finalThirdEdge = null,Object? shootingRiskEdge = null,Object? transitionOutEdge = null,Object? transitionInEdge = null,Object? aerialEdge = null,Object? setpieceDefenseEdge = null,Object? tempoEdge = null,Object? playmakerEdge = null,Object? strikerSupportEdge = null,}) {
   return _then(_MatchupProfile(
-buildupEdge: null == buildupEdge ? _self.buildupEdge : buildupEdge // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,buildupEdge: null == buildupEdge ? _self.buildupEdge : buildupEdge // ignore: cast_nullable_to_non_nullable
 as double,pressingEdge: null == pressingEdge ? _self.pressingEdge : pressingEdge // ignore: cast_nullable_to_non_nullable
 as double,counterpressingEdge: null == counterpressingEdge ? _self.counterpressingEdge : counterpressingEdge // ignore: cast_nullable_to_non_nullable
 as double,compactnessEdge: null == compactnessEdge ? _self.compactnessEdge : compactnessEdge // ignore: cast_nullable_to_non_nullable

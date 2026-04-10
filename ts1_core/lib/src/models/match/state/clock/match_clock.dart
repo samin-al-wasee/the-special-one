@@ -6,6 +6,7 @@ part 'match_clock.g.dart';
 @freezed
 abstract class MatchClock with _$MatchClock {
   const factory MatchClock({
+    required int id,
     @Default(0) int minute,
     @Default(0) int second,
     @Default(0) int extraTimeFirstHalf,

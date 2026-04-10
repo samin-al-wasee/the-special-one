@@ -239,6 +239,7 @@ class StructuralProfileBuilder {
     );
 
     return StructuralProfile(
+      id: lineup.id,
       widthCoverage: widthCoverage,
       centralDensity: centralDensity,
       supportNetworkQuality: supportNetworkQuality,

@@ -7,6 +7,7 @@ part 'manager_intervention.g.dart';
 @freezed
 abstract class ManagerIntervention with _$ManagerIntervention {
   const factory ManagerIntervention({
+    required int id,
     required int minute,
     required TeamSide teamSide,
     required MatchCommandType command,

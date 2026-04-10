@@ -18,6 +18,8 @@ part 'match_event_card.g.dart';
 @freezed
 abstract class MatchEventCard with _$MatchEventCard {
   const factory MatchEventCard({
+    required int id,
+
     /// Match minute when event occurred (0-120+).
     required int minute,
 

@@ -6,6 +6,7 @@ part 'team_strength_profile.g.dart';
 @freezed
 abstract class TeamStrengthProfile with _$TeamStrengthProfile {
   const factory TeamStrengthProfile({
+    required int id,
     // Build-up and core play
     required double buildUpQuality,
     required double pressResistance,

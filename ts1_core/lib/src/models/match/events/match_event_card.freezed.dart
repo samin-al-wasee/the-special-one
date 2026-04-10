@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchEventCard {
 
-/// Match minute when event occurred (0-120+).
+ int get id;/// Match minute when event occurred (0-120+).
  int get minute;/// Event summary title (e.g., "Good Chance Missed", "Goal", "Tackle").
  String get title;/// Detailed description of what happened.
  String get description;/// Phase type during which event occurred.
@@ -42,16 +42,16 @@ $MatchEventCardCopyWith<MatchEventCard> get copyWith => _$MatchEventCardCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchEventCard&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.tacticalInsight, tacticalInsight) || other.tacticalInsight == tacticalInsight)&&(identical(other.isMajor, isMajor) || other.isMajor == isMajor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchEventCard&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.tacticalInsight, tacticalInsight) || other.tacticalInsight == tacticalInsight)&&(identical(other.isMajor, isMajor) || other.isMajor == isMajor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,title,description,phaseType,teamSide,zone,attackState,chanceType,chanceOutcome,chanceQuality,tacticalInsight,isMajor);
+int get hashCode => Object.hash(runtimeType,id,minute,title,description,phaseType,teamSide,zone,attackState,chanceType,chanceOutcome,chanceQuality,tacticalInsight,isMajor);
 
 @override
 String toString() {
-  return 'MatchEventCard(minute: $minute, title: $title, description: $description, phaseType: $phaseType, teamSide: $teamSide, zone: $zone, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, tacticalInsight: $tacticalInsight, isMajor: $isMajor)';
+  return 'MatchEventCard(id: $id, minute: $minute, title: $title, description: $description, phaseType: $phaseType, teamSide: $teamSide, zone: $zone, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, tacticalInsight: $tacticalInsight, isMajor: $isMajor)';
 }
 
 
@@ -62,7 +62,7 @@ abstract mixin class $MatchEventCardCopyWith<$Res>  {
   factory $MatchEventCardCopyWith(MatchEventCard value, $Res Function(MatchEventCard) _then) = _$MatchEventCardCopyWithImpl;
 @useResult
 $Res call({
- int minute, String title, String description, MatchPhaseType phaseType, TeamSide teamSide, PitchZone? zone, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, String? tacticalInsight, bool isMajor
+ int id, int minute, String title, String description, MatchPhaseType phaseType, TeamSide teamSide, PitchZone? zone, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, String? tacticalInsight, bool isMajor
 });
 
 
@@ -79,9 +79,10 @@ class _$MatchEventCardCopyWithImpl<$Res>
 
 /// Create a copy of MatchEventCard
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? minute = null,Object? title = null,Object? description = null,Object? phaseType = null,Object? teamSide = null,Object? zone = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? tacticalInsight = freezed,Object? isMajor = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? minute = null,Object? title = null,Object? description = null,Object? phaseType = null,Object? teamSide = null,Object? zone = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? tacticalInsight = freezed,Object? isMajor = null,}) {
   return _then(_self.copyWith(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,phaseType: null == phaseType ? _self.phaseType : phaseType // ignore: cast_nullable_to_non_nullable
@@ -190,10 +191,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchEventCard() when $default != null:
-return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
+return $default(_that.id,_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
   return orElse();
 
 }
@@ -211,10 +212,10 @@ return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)  $default,) {final _that = this;
 switch (_that) {
 case _MatchEventCard():
-return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
+return $default(_that.id,_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -231,10 +232,10 @@ return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int minute,  String title,  String description,  MatchPhaseType phaseType,  TeamSide teamSide,  PitchZone? zone,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  String? tacticalInsight,  bool isMajor)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchEventCard() when $default != null:
-return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
+return $default(_that.id,_that.minute,_that.title,_that.description,_that.phaseType,_that.teamSide,_that.zone,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.tacticalInsight,_that.isMajor);case _:
   return null;
 
 }
@@ -246,9 +247,10 @@ return $default(_that.minute,_that.title,_that.description,_that.phaseType,_that
 @JsonSerializable()
 
 class _MatchEventCard extends MatchEventCard {
-  const _MatchEventCard({required this.minute, required this.title, required this.description, required this.phaseType, required this.teamSide, this.zone, this.attackState, this.chanceType, this.chanceOutcome, this.chanceQuality, this.tacticalInsight, this.isMajor = false}): super._();
+  const _MatchEventCard({required this.id, required this.minute, required this.title, required this.description, required this.phaseType, required this.teamSide, this.zone, this.attackState, this.chanceType, this.chanceOutcome, this.chanceQuality, this.tacticalInsight, this.isMajor = false}): super._();
   factory _MatchEventCard.fromJson(Map<String, dynamic> json) => _$MatchEventCardFromJson(json);
 
+@override final  int id;
 /// Match minute when event occurred (0-120+).
 @override final  int minute;
 /// Event summary title (e.g., "Good Chance Missed", "Goal", "Tackle").
@@ -289,16 +291,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchEventCard&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.tacticalInsight, tacticalInsight) || other.tacticalInsight == tacticalInsight)&&(identical(other.isMajor, isMajor) || other.isMajor == isMajor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchEventCard&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.tacticalInsight, tacticalInsight) || other.tacticalInsight == tacticalInsight)&&(identical(other.isMajor, isMajor) || other.isMajor == isMajor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,title,description,phaseType,teamSide,zone,attackState,chanceType,chanceOutcome,chanceQuality,tacticalInsight,isMajor);
+int get hashCode => Object.hash(runtimeType,id,minute,title,description,phaseType,teamSide,zone,attackState,chanceType,chanceOutcome,chanceQuality,tacticalInsight,isMajor);
 
 @override
 String toString() {
-  return 'MatchEventCard(minute: $minute, title: $title, description: $description, phaseType: $phaseType, teamSide: $teamSide, zone: $zone, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, tacticalInsight: $tacticalInsight, isMajor: $isMajor)';
+  return 'MatchEventCard(id: $id, minute: $minute, title: $title, description: $description, phaseType: $phaseType, teamSide: $teamSide, zone: $zone, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, tacticalInsight: $tacticalInsight, isMajor: $isMajor)';
 }
 
 
@@ -309,7 +311,7 @@ abstract mixin class _$MatchEventCardCopyWith<$Res> implements $MatchEventCardCo
   factory _$MatchEventCardCopyWith(_MatchEventCard value, $Res Function(_MatchEventCard) _then) = __$MatchEventCardCopyWithImpl;
 @override @useResult
 $Res call({
- int minute, String title, String description, MatchPhaseType phaseType, TeamSide teamSide, PitchZone? zone, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, String? tacticalInsight, bool isMajor
+ int id, int minute, String title, String description, MatchPhaseType phaseType, TeamSide teamSide, PitchZone? zone, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, String? tacticalInsight, bool isMajor
 });
 
 
@@ -326,9 +328,10 @@ class __$MatchEventCardCopyWithImpl<$Res>
 
 /// Create a copy of MatchEventCard
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? minute = null,Object? title = null,Object? description = null,Object? phaseType = null,Object? teamSide = null,Object? zone = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? tacticalInsight = freezed,Object? isMajor = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? minute = null,Object? title = null,Object? description = null,Object? phaseType = null,Object? teamSide = null,Object? zone = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? tacticalInsight = freezed,Object? isMajor = null,}) {
   return _then(_MatchEventCard(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,phaseType: null == phaseType ? _self.phaseType : phaseType // ignore: cast_nullable_to_non_nullable

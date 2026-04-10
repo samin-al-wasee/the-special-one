@@ -7,6 +7,7 @@ part 'match_dynamics.g.dart';
 @freezed
 abstract class MatchDynamics with _$MatchDynamics {
   const factory MatchDynamics({
+    required int id,
     @Default(0.0) double homeMomentum,
     @Default(0.0) double awayMomentum,
     @Default(0.5) double homeConfidence,
@@ -51,7 +52,11 @@ abstract class MatchDynamics with _$MatchDynamics {
     return copyWith(exploitationCounters: next);
   }
 
-  MatchDynamics updateZoneDominance(TeamSide side, PitchZone zone, double delta) {
+  MatchDynamics updateZoneDominance(
+    TeamSide side,
+    PitchZone zone,
+    double delta,
+  ) {
     if (side == TeamSide.home) {
       final next = Map<PitchZone, double>.from(homeZoneDominance);
       next[zone] = ((next[zone] ?? 0.0) + delta).clamp(-1.0, 1.0);

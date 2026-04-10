@@ -7,6 +7,7 @@ part of 'attack_state.dart';
 // **************************************************************************
 
 _AttackState _$AttackStateFromJson(Map<String, dynamic> json) => _AttackState(
+  id: (json['id'] as num).toInt(),
   route: $enumDecode(_$AttackRouteEnumMap, json['route']),
   mode: $enumDecode(_$AttackModeEnumMap, json['mode']),
   context: $enumDecode(_$AttackContextEnumMap, json['context']),
@@ -16,6 +17,7 @@ _AttackState _$AttackStateFromJson(Map<String, dynamic> json) => _AttackState(
 
 Map<String, dynamic> _$AttackStateToJson(_AttackState instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'route': _$AttackRouteEnumMap[instance.route]!,
       'mode': _$AttackModeEnumMap[instance.mode]!,
       'context': _$AttackContextEnumMap[instance.context]!,

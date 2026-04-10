@@ -7,6 +7,7 @@ part 'substitution_record.g.dart';
 @freezed
 abstract class SubstitutionRecord with _$SubstitutionRecord {
   const factory SubstitutionRecord({
+    required int id,
     required int minute,
     required TeamSide teamSide,
     required int playerOutId,

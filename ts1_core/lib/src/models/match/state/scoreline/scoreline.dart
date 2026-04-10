@@ -6,8 +6,11 @@ part 'scoreline.g.dart';
 
 @freezed
 abstract class Scoreline with _$Scoreline {
-  const factory Scoreline({@Default(0) int home, @Default(0) int away}) =
-      _Scoreline;
+  const factory Scoreline({
+    required int id,
+    @Default(0) int home,
+    @Default(0) int away,
+  }) = _Scoreline;
 
   factory Scoreline.fromJson(Map<String, dynamic> json) =>
       _$ScorelineFromJson(json);

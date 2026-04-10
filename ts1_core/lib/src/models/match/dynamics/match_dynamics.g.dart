@@ -9,6 +9,7 @@ part of 'match_dynamics.dart';
 _MatchDynamics _$MatchDynamicsFromJson(
   Map<String, dynamic> json,
 ) => _MatchDynamics(
+  id: (json['id'] as num).toInt(),
   homeMomentum: (json['homeMomentum'] as num?)?.toDouble() ?? 0.0,
   awayMomentum: (json['awayMomentum'] as num?)?.toDouble() ?? 0.0,
   homeConfidence: (json['homeConfidence'] as num?)?.toDouble() ?? 0.5,
@@ -40,6 +41,7 @@ _MatchDynamics _$MatchDynamicsFromJson(
 
 Map<String, dynamic> _$MatchDynamicsToJson(_MatchDynamics instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'homeMomentum': instance.homeMomentum,
       'awayMomentum': instance.awayMomentum,
       'homeConfidence': instance.homeConfidence,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttackState {
 
-/// Where the ball is progressing spatially.
+ int get id;/// Where the ball is progressing spatially.
 /// Determines pitch zones available for play.
  AttackRoute get route;/// How the attacking team is executing tactically.
 /// Determines tempo, passing style, and risk appetite.
@@ -38,16 +38,16 @@ $AttackStateCopyWith<AttackState> get copyWith => _$AttackStateCopyWithImpl<Atta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttackState&&(identical(other.route, route) || other.route == route)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.context, context) || other.context == context)&&(identical(other.phaseCount, phaseCount) || other.phaseCount == phaseCount)&&(identical(other.intensity, intensity) || other.intensity == intensity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttackState&&(identical(other.id, id) || other.id == id)&&(identical(other.route, route) || other.route == route)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.context, context) || other.context == context)&&(identical(other.phaseCount, phaseCount) || other.phaseCount == phaseCount)&&(identical(other.intensity, intensity) || other.intensity == intensity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,route,mode,context,phaseCount,intensity);
+int get hashCode => Object.hash(runtimeType,id,route,mode,context,phaseCount,intensity);
 
 @override
 String toString() {
-  return 'AttackState(route: $route, mode: $mode, context: $context, phaseCount: $phaseCount, intensity: $intensity)';
+  return 'AttackState(id: $id, route: $route, mode: $mode, context: $context, phaseCount: $phaseCount, intensity: $intensity)';
 }
 
 
@@ -58,7 +58,7 @@ abstract mixin class $AttackStateCopyWith<$Res>  {
   factory $AttackStateCopyWith(AttackState value, $Res Function(AttackState) _then) = _$AttackStateCopyWithImpl;
 @useResult
 $Res call({
- AttackRoute route, AttackMode mode, AttackContext context, int phaseCount, double intensity
+ int id, AttackRoute route, AttackMode mode, AttackContext context, int phaseCount, double intensity
 });
 
 
@@ -75,9 +75,10 @@ class _$AttackStateCopyWithImpl<$Res>
 
 /// Create a copy of AttackState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? route = null,Object? mode = null,Object? context = null,Object? phaseCount = null,Object? intensity = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? route = null,Object? mode = null,Object? context = null,Object? phaseCount = null,Object? intensity = null,}) {
   return _then(_self.copyWith(
-route: null == route ? _self.route : route // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,route: null == route ? _self.route : route // ignore: cast_nullable_to_non_nullable
 as AttackRoute,mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
 as AttackMode,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as AttackContext,phaseCount: null == phaseCount ? _self.phaseCount : phaseCount // ignore: cast_nullable_to_non_nullable
@@ -167,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttackState() when $default != null:
-return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
+return $default(_that.id,_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
   return orElse();
 
 }
@@ -188,10 +189,10 @@ return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.inte
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)  $default,) {final _that = this;
 switch (_that) {
 case _AttackState():
-return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
+return $default(_that.id,_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +209,10 @@ return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.inte
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  AttackRoute route,  AttackMode mode,  AttackContext context,  int phaseCount,  double intensity)?  $default,) {final _that = this;
 switch (_that) {
 case _AttackState() when $default != null:
-return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
+return $default(_that.id,_that.route,_that.mode,_that.context,_that.phaseCount,_that.intensity);case _:
   return null;
 
 }
@@ -223,9 +224,10 @@ return $default(_that.route,_that.mode,_that.context,_that.phaseCount,_that.inte
 @JsonSerializable()
 
 class _AttackState extends AttackState {
-  const _AttackState({required this.route, required this.mode, required this.context, this.phaseCount = 0, this.intensity = 0.5}): super._();
+  const _AttackState({required this.id, required this.route, required this.mode, required this.context, this.phaseCount = 0, this.intensity = 0.5}): super._();
   factory _AttackState.fromJson(Map<String, dynamic> json) => _$AttackStateFromJson(json);
 
+@override final  int id;
 /// Where the ball is progressing spatially.
 /// Determines pitch zones available for play.
 @override final  AttackRoute route;
@@ -255,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttackState&&(identical(other.route, route) || other.route == route)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.context, context) || other.context == context)&&(identical(other.phaseCount, phaseCount) || other.phaseCount == phaseCount)&&(identical(other.intensity, intensity) || other.intensity == intensity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttackState&&(identical(other.id, id) || other.id == id)&&(identical(other.route, route) || other.route == route)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.context, context) || other.context == context)&&(identical(other.phaseCount, phaseCount) || other.phaseCount == phaseCount)&&(identical(other.intensity, intensity) || other.intensity == intensity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,route,mode,context,phaseCount,intensity);
+int get hashCode => Object.hash(runtimeType,id,route,mode,context,phaseCount,intensity);
 
 @override
 String toString() {
-  return 'AttackState(route: $route, mode: $mode, context: $context, phaseCount: $phaseCount, intensity: $intensity)';
+  return 'AttackState(id: $id, route: $route, mode: $mode, context: $context, phaseCount: $phaseCount, intensity: $intensity)';
 }
 
 
@@ -275,7 +277,7 @@ abstract mixin class _$AttackStateCopyWith<$Res> implements $AttackStateCopyWith
   factory _$AttackStateCopyWith(_AttackState value, $Res Function(_AttackState) _then) = __$AttackStateCopyWithImpl;
 @override @useResult
 $Res call({
- AttackRoute route, AttackMode mode, AttackContext context, int phaseCount, double intensity
+ int id, AttackRoute route, AttackMode mode, AttackContext context, int phaseCount, double intensity
 });
 
 
@@ -292,9 +294,10 @@ class __$AttackStateCopyWithImpl<$Res>
 
 /// Create a copy of AttackState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? route = null,Object? mode = null,Object? context = null,Object? phaseCount = null,Object? intensity = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? route = null,Object? mode = null,Object? context = null,Object? phaseCount = null,Object? intensity = null,}) {
   return _then(_AttackState(
-route: null == route ? _self.route : route // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,route: null == route ? _self.route : route // ignore: cast_nullable_to_non_nullable
 as AttackRoute,mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
 as AttackMode,context: null == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as AttackContext,phaseCount: null == phaseCount ? _self.phaseCount : phaseCount // ignore: cast_nullable_to_non_nullable

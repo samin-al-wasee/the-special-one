@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StructuralProfile {
 
- double get widthCoverage; double get centralDensity; double get supportNetworkQuality; double get boxPresence; double get restDefenseStability; double get pressShapeCohesion; double get transitionProtection; double get halfSpaceAccess; double get flankIsolationRisk; double get slotFitScore; double get roleCoherence;
+ int get id; double get widthCoverage; double get centralDensity; double get supportNetworkQuality; double get boxPresence; double get restDefenseStability; double get pressShapeCohesion; double get transitionProtection; double get halfSpaceAccess; double get flankIsolationRisk; double get slotFitScore; double get roleCoherence;
 /// Create a copy of StructuralProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $StructuralProfileCopyWith<StructuralProfile> get copyWith => _$StructuralProfil
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StructuralProfile&&(identical(other.widthCoverage, widthCoverage) || other.widthCoverage == widthCoverage)&&(identical(other.centralDensity, centralDensity) || other.centralDensity == centralDensity)&&(identical(other.supportNetworkQuality, supportNetworkQuality) || other.supportNetworkQuality == supportNetworkQuality)&&(identical(other.boxPresence, boxPresence) || other.boxPresence == boxPresence)&&(identical(other.restDefenseStability, restDefenseStability) || other.restDefenseStability == restDefenseStability)&&(identical(other.pressShapeCohesion, pressShapeCohesion) || other.pressShapeCohesion == pressShapeCohesion)&&(identical(other.transitionProtection, transitionProtection) || other.transitionProtection == transitionProtection)&&(identical(other.halfSpaceAccess, halfSpaceAccess) || other.halfSpaceAccess == halfSpaceAccess)&&(identical(other.flankIsolationRisk, flankIsolationRisk) || other.flankIsolationRisk == flankIsolationRisk)&&(identical(other.slotFitScore, slotFitScore) || other.slotFitScore == slotFitScore)&&(identical(other.roleCoherence, roleCoherence) || other.roleCoherence == roleCoherence));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StructuralProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.widthCoverage, widthCoverage) || other.widthCoverage == widthCoverage)&&(identical(other.centralDensity, centralDensity) || other.centralDensity == centralDensity)&&(identical(other.supportNetworkQuality, supportNetworkQuality) || other.supportNetworkQuality == supportNetworkQuality)&&(identical(other.boxPresence, boxPresence) || other.boxPresence == boxPresence)&&(identical(other.restDefenseStability, restDefenseStability) || other.restDefenseStability == restDefenseStability)&&(identical(other.pressShapeCohesion, pressShapeCohesion) || other.pressShapeCohesion == pressShapeCohesion)&&(identical(other.transitionProtection, transitionProtection) || other.transitionProtection == transitionProtection)&&(identical(other.halfSpaceAccess, halfSpaceAccess) || other.halfSpaceAccess == halfSpaceAccess)&&(identical(other.flankIsolationRisk, flankIsolationRisk) || other.flankIsolationRisk == flankIsolationRisk)&&(identical(other.slotFitScore, slotFitScore) || other.slotFitScore == slotFitScore)&&(identical(other.roleCoherence, roleCoherence) || other.roleCoherence == roleCoherence));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,widthCoverage,centralDensity,supportNetworkQuality,boxPresence,restDefenseStability,pressShapeCohesion,transitionProtection,halfSpaceAccess,flankIsolationRisk,slotFitScore,roleCoherence);
+int get hashCode => Object.hash(runtimeType,id,widthCoverage,centralDensity,supportNetworkQuality,boxPresence,restDefenseStability,pressShapeCohesion,transitionProtection,halfSpaceAccess,flankIsolationRisk,slotFitScore,roleCoherence);
 
 @override
 String toString() {
-  return 'StructuralProfile(widthCoverage: $widthCoverage, centralDensity: $centralDensity, supportNetworkQuality: $supportNetworkQuality, boxPresence: $boxPresence, restDefenseStability: $restDefenseStability, pressShapeCohesion: $pressShapeCohesion, transitionProtection: $transitionProtection, halfSpaceAccess: $halfSpaceAccess, flankIsolationRisk: $flankIsolationRisk, slotFitScore: $slotFitScore, roleCoherence: $roleCoherence)';
+  return 'StructuralProfile(id: $id, widthCoverage: $widthCoverage, centralDensity: $centralDensity, supportNetworkQuality: $supportNetworkQuality, boxPresence: $boxPresence, restDefenseStability: $restDefenseStability, pressShapeCohesion: $pressShapeCohesion, transitionProtection: $transitionProtection, halfSpaceAccess: $halfSpaceAccess, flankIsolationRisk: $flankIsolationRisk, slotFitScore: $slotFitScore, roleCoherence: $roleCoherence)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $StructuralProfileCopyWith<$Res>  {
   factory $StructuralProfileCopyWith(StructuralProfile value, $Res Function(StructuralProfile) _then) = _$StructuralProfileCopyWithImpl;
 @useResult
 $Res call({
- double widthCoverage, double centralDensity, double supportNetworkQuality, double boxPresence, double restDefenseStability, double pressShapeCohesion, double transitionProtection, double halfSpaceAccess, double flankIsolationRisk, double slotFitScore, double roleCoherence
+ int id, double widthCoverage, double centralDensity, double supportNetworkQuality, double boxPresence, double restDefenseStability, double pressShapeCohesion, double transitionProtection, double halfSpaceAccess, double flankIsolationRisk, double slotFitScore, double roleCoherence
 });
 
 
@@ -65,9 +65,10 @@ class _$StructuralProfileCopyWithImpl<$Res>
 
 /// Create a copy of StructuralProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? widthCoverage = null,Object? centralDensity = null,Object? supportNetworkQuality = null,Object? boxPresence = null,Object? restDefenseStability = null,Object? pressShapeCohesion = null,Object? transitionProtection = null,Object? halfSpaceAccess = null,Object? flankIsolationRisk = null,Object? slotFitScore = null,Object? roleCoherence = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? widthCoverage = null,Object? centralDensity = null,Object? supportNetworkQuality = null,Object? boxPresence = null,Object? restDefenseStability = null,Object? pressShapeCohesion = null,Object? transitionProtection = null,Object? halfSpaceAccess = null,Object? flankIsolationRisk = null,Object? slotFitScore = null,Object? roleCoherence = null,}) {
   return _then(_self.copyWith(
-widthCoverage: null == widthCoverage ? _self.widthCoverage : widthCoverage // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,widthCoverage: null == widthCoverage ? _self.widthCoverage : widthCoverage // ignore: cast_nullable_to_non_nullable
 as double,centralDensity: null == centralDensity ? _self.centralDensity : centralDensity // ignore: cast_nullable_to_non_nullable
 as double,supportNetworkQuality: null == supportNetworkQuality ? _self.supportNetworkQuality : supportNetworkQuality // ignore: cast_nullable_to_non_nullable
 as double,boxPresence: null == boxPresence ? _self.boxPresence : boxPresence // ignore: cast_nullable_to_non_nullable
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StructuralProfile() when $default != null:
-return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
+return $default(_that.id,_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQua
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)  $default,) {final _that = this;
 switch (_that) {
 case _StructuralProfile():
-return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
+return $default(_that.id,_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQua
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double widthCoverage,  double centralDensity,  double supportNetworkQuality,  double boxPresence,  double restDefenseStability,  double pressShapeCohesion,  double transitionProtection,  double halfSpaceAccess,  double flankIsolationRisk,  double slotFitScore,  double roleCoherence)?  $default,) {final _that = this;
 switch (_that) {
 case _StructuralProfile() when $default != null:
-return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
+return $default(_that.id,_that.widthCoverage,_that.centralDensity,_that.supportNetworkQuality,_that.boxPresence,_that.restDefenseStability,_that.pressShapeCohesion,_that.transitionProtection,_that.halfSpaceAccess,_that.flankIsolationRisk,_that.slotFitScore,_that.roleCoherence);case _:
   return null;
 
 }
@@ -219,9 +220,10 @@ return $default(_that.widthCoverage,_that.centralDensity,_that.supportNetworkQua
 @JsonSerializable()
 
 class _StructuralProfile implements StructuralProfile {
-  const _StructuralProfile({this.widthCoverage = 0.5, this.centralDensity = 0.5, this.supportNetworkQuality = 0.5, this.boxPresence = 0.5, this.restDefenseStability = 0.5, this.pressShapeCohesion = 0.5, this.transitionProtection = 0.5, this.halfSpaceAccess = 0.5, this.flankIsolationRisk = 0.5, this.slotFitScore = 0.5, this.roleCoherence = 0.5});
+  const _StructuralProfile({required this.id, this.widthCoverage = 0.5, this.centralDensity = 0.5, this.supportNetworkQuality = 0.5, this.boxPresence = 0.5, this.restDefenseStability = 0.5, this.pressShapeCohesion = 0.5, this.transitionProtection = 0.5, this.halfSpaceAccess = 0.5, this.flankIsolationRisk = 0.5, this.slotFitScore = 0.5, this.roleCoherence = 0.5});
   factory _StructuralProfile.fromJson(Map<String, dynamic> json) => _$StructuralProfileFromJson(json);
 
+@override final  int id;
 @override@JsonKey() final  double widthCoverage;
 @override@JsonKey() final  double centralDensity;
 @override@JsonKey() final  double supportNetworkQuality;
@@ -247,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StructuralProfile&&(identical(other.widthCoverage, widthCoverage) || other.widthCoverage == widthCoverage)&&(identical(other.centralDensity, centralDensity) || other.centralDensity == centralDensity)&&(identical(other.supportNetworkQuality, supportNetworkQuality) || other.supportNetworkQuality == supportNetworkQuality)&&(identical(other.boxPresence, boxPresence) || other.boxPresence == boxPresence)&&(identical(other.restDefenseStability, restDefenseStability) || other.restDefenseStability == restDefenseStability)&&(identical(other.pressShapeCohesion, pressShapeCohesion) || other.pressShapeCohesion == pressShapeCohesion)&&(identical(other.transitionProtection, transitionProtection) || other.transitionProtection == transitionProtection)&&(identical(other.halfSpaceAccess, halfSpaceAccess) || other.halfSpaceAccess == halfSpaceAccess)&&(identical(other.flankIsolationRisk, flankIsolationRisk) || other.flankIsolationRisk == flankIsolationRisk)&&(identical(other.slotFitScore, slotFitScore) || other.slotFitScore == slotFitScore)&&(identical(other.roleCoherence, roleCoherence) || other.roleCoherence == roleCoherence));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StructuralProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.widthCoverage, widthCoverage) || other.widthCoverage == widthCoverage)&&(identical(other.centralDensity, centralDensity) || other.centralDensity == centralDensity)&&(identical(other.supportNetworkQuality, supportNetworkQuality) || other.supportNetworkQuality == supportNetworkQuality)&&(identical(other.boxPresence, boxPresence) || other.boxPresence == boxPresence)&&(identical(other.restDefenseStability, restDefenseStability) || other.restDefenseStability == restDefenseStability)&&(identical(other.pressShapeCohesion, pressShapeCohesion) || other.pressShapeCohesion == pressShapeCohesion)&&(identical(other.transitionProtection, transitionProtection) || other.transitionProtection == transitionProtection)&&(identical(other.halfSpaceAccess, halfSpaceAccess) || other.halfSpaceAccess == halfSpaceAccess)&&(identical(other.flankIsolationRisk, flankIsolationRisk) || other.flankIsolationRisk == flankIsolationRisk)&&(identical(other.slotFitScore, slotFitScore) || other.slotFitScore == slotFitScore)&&(identical(other.roleCoherence, roleCoherence) || other.roleCoherence == roleCoherence));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,widthCoverage,centralDensity,supportNetworkQuality,boxPresence,restDefenseStability,pressShapeCohesion,transitionProtection,halfSpaceAccess,flankIsolationRisk,slotFitScore,roleCoherence);
+int get hashCode => Object.hash(runtimeType,id,widthCoverage,centralDensity,supportNetworkQuality,boxPresence,restDefenseStability,pressShapeCohesion,transitionProtection,halfSpaceAccess,flankIsolationRisk,slotFitScore,roleCoherence);
 
 @override
 String toString() {
-  return 'StructuralProfile(widthCoverage: $widthCoverage, centralDensity: $centralDensity, supportNetworkQuality: $supportNetworkQuality, boxPresence: $boxPresence, restDefenseStability: $restDefenseStability, pressShapeCohesion: $pressShapeCohesion, transitionProtection: $transitionProtection, halfSpaceAccess: $halfSpaceAccess, flankIsolationRisk: $flankIsolationRisk, slotFitScore: $slotFitScore, roleCoherence: $roleCoherence)';
+  return 'StructuralProfile(id: $id, widthCoverage: $widthCoverage, centralDensity: $centralDensity, supportNetworkQuality: $supportNetworkQuality, boxPresence: $boxPresence, restDefenseStability: $restDefenseStability, pressShapeCohesion: $pressShapeCohesion, transitionProtection: $transitionProtection, halfSpaceAccess: $halfSpaceAccess, flankIsolationRisk: $flankIsolationRisk, slotFitScore: $slotFitScore, roleCoherence: $roleCoherence)';
 }
 
 
@@ -267,7 +269,7 @@ abstract mixin class _$StructuralProfileCopyWith<$Res> implements $StructuralPro
   factory _$StructuralProfileCopyWith(_StructuralProfile value, $Res Function(_StructuralProfile) _then) = __$StructuralProfileCopyWithImpl;
 @override @useResult
 $Res call({
- double widthCoverage, double centralDensity, double supportNetworkQuality, double boxPresence, double restDefenseStability, double pressShapeCohesion, double transitionProtection, double halfSpaceAccess, double flankIsolationRisk, double slotFitScore, double roleCoherence
+ int id, double widthCoverage, double centralDensity, double supportNetworkQuality, double boxPresence, double restDefenseStability, double pressShapeCohesion, double transitionProtection, double halfSpaceAccess, double flankIsolationRisk, double slotFitScore, double roleCoherence
 });
 
 
@@ -284,9 +286,10 @@ class __$StructuralProfileCopyWithImpl<$Res>
 
 /// Create a copy of StructuralProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? widthCoverage = null,Object? centralDensity = null,Object? supportNetworkQuality = null,Object? boxPresence = null,Object? restDefenseStability = null,Object? pressShapeCohesion = null,Object? transitionProtection = null,Object? halfSpaceAccess = null,Object? flankIsolationRisk = null,Object? slotFitScore = null,Object? roleCoherence = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? widthCoverage = null,Object? centralDensity = null,Object? supportNetworkQuality = null,Object? boxPresence = null,Object? restDefenseStability = null,Object? pressShapeCohesion = null,Object? transitionProtection = null,Object? halfSpaceAccess = null,Object? flankIsolationRisk = null,Object? slotFitScore = null,Object? roleCoherence = null,}) {
   return _then(_StructuralProfile(
-widthCoverage: null == widthCoverage ? _self.widthCoverage : widthCoverage // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,widthCoverage: null == widthCoverage ? _self.widthCoverage : widthCoverage // ignore: cast_nullable_to_non_nullable
 as double,centralDensity: null == centralDensity ? _self.centralDensity : centralDensity // ignore: cast_nullable_to_non_nullable
 as double,supportNetworkQuality: null == supportNetworkQuality ? _self.supportNetworkQuality : supportNetworkQuality // ignore: cast_nullable_to_non_nullable
 as double,boxPresence: null == boxPresence ? _self.boxPresence : boxPresence // ignore: cast_nullable_to_non_nullable

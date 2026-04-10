@@ -210,6 +210,7 @@ class MatchEngine {
     final phaseType = _resolvePhaseType(state);
     final phaseState = _resolvePhaseState(phaseType);
     final attackState = AttackState(
+      id: state.currentPhaseIndex + 1,
       route: _resolveAttackRoute(match, initiative, random),
       mode: _resolveAttackMode(match, initiative, phaseType),
       context: _resolveAttackContext(phaseType),
@@ -225,6 +226,7 @@ class MatchEngine {
         ? null
         : _resolveChanceOutcome(chanceQuality ?? 0.0, random);
     final snapshot = PhaseResolutionSnapshot(
+      id: state.currentPhaseIndex + 1,
       phaseIndex: state.currentPhaseIndex + 1,
       minute: state.clock.minute,
       phaseType: phaseType,
@@ -758,6 +760,7 @@ class MatchEngine {
     };
 
     return MatchEventCard(
+      id: snapshot.phaseIndex,
       minute: snapshot.minute,
       title: title,
       description: description,
@@ -802,6 +805,7 @@ class MatchEngine {
       }
 
       return TacticalInsight(
+        id: (state.tacticalInsights.length + 1),
         minute: snapshot.minute,
         level: TacticalSignalLevel.critical,
         message: 'Goal from ${zone?.name ?? 'open play'}.',
@@ -822,6 +826,7 @@ class MatchEngine {
       }
 
       return TacticalInsight(
+        id: (state.tacticalInsights.length + 1),
         minute: snapshot.minute,
         level: TacticalSignalLevel.positive,
         message:
@@ -833,6 +838,7 @@ class MatchEngine {
 
     if (chanceType != null && chanceQuality != null && chanceQuality <= 0.25) {
       return TacticalInsight(
+        id: (state.tacticalInsights.length + 1),
         minute: snapshot.minute,
         level: TacticalSignalLevel.warning,
         message: 'The move is low quality and being squeezed out.',
@@ -843,6 +849,7 @@ class MatchEngine {
 
     if (chanceOutcome == ChanceOutcome.turnover) {
       return TacticalInsight(
+        id: (state.tacticalInsights.length + 1),
         minute: snapshot.minute,
         level: TacticalSignalLevel.warning,
         message: 'The current route is turning over too often.',

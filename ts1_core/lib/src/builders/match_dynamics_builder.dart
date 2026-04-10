@@ -16,6 +16,7 @@ class MatchDynamicsBuilder {
     final matchup =
         matchupState ??
         const MatchupState(
+          id: 0,
           homeAttackVsAwayDefense: 0.0,
           awayAttackVsHomeDefense: 0.0,
           midfieldControlEdge: 0.0,
@@ -49,6 +50,7 @@ class MatchDynamicsBuilder {
     );
 
     return MatchDynamics(
+      id: context.id,
       homeMomentum: homeMomentum,
       awayMomentum: -homeMomentum,
       homeConfidence: homeConfidence,

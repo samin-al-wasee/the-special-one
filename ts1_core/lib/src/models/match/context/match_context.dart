@@ -10,10 +10,12 @@ part 'match_context.g.dart';
 @freezed
 abstract class MatchContext with _$MatchContext {
   const factory MatchContext({
-    @Default(TacticalIdentity()) TacticalIdentity homeTacticalIdentity,
-    @Default(TacticalIdentity()) TacticalIdentity awayTacticalIdentity,
+    required int id,
+    @Default(TacticalIdentity(id: 0)) TacticalIdentity homeTacticalIdentity,
+    @Default(TacticalIdentity(id: 0)) TacticalIdentity awayTacticalIdentity,
     @Default(
       TeamStrengthProfile(
+        id: 0,
         buildUpQuality: 50,
         pressResistance: 50,
         wideAttack: 50,
@@ -42,6 +44,7 @@ abstract class MatchContext with _$MatchContext {
     TeamStrengthProfile homeStrengthProfile,
     @Default(
       TeamStrengthProfile(
+        id: 0,
         buildUpQuality: 50,
         pressResistance: 50,
         wideAttack: 50,
@@ -68,10 +71,10 @@ abstract class MatchContext with _$MatchContext {
       ),
     )
     TeamStrengthProfile awayStrengthProfile,
-    @Default(StructuralProfile()) StructuralProfile homeStructuralProfile,
-    @Default(StructuralProfile()) StructuralProfile awayStructuralProfile,
-    @Default(MatchupProfile()) MatchupProfile homeToAwayMatchupProfile,
-    @Default(MatchupProfile()) MatchupProfile awayToHomeMatchupProfile,
+    @Default(StructuralProfile(id: 0)) StructuralProfile homeStructuralProfile,
+    @Default(StructuralProfile(id: 0)) StructuralProfile awayStructuralProfile,
+    @Default(MatchupProfile(id: 0)) MatchupProfile homeToAwayMatchupProfile,
+    @Default(MatchupProfile(id: 0)) MatchupProfile awayToHomeMatchupProfile,
   }) = _MatchContext;
 
   factory MatchContext.fromJson(Map<String, dynamic> json) =>

@@ -17,6 +17,7 @@ class TeamStrengthProfileBuilder {
 
     if (players.isEmpty) {
       return const TeamStrengthProfile(
+        id: 0,
         buildUpQuality: 0.0,
         pressResistance: 0.0,
         wideAttack: 0.0,
@@ -240,6 +241,7 @@ class TeamStrengthProfileBuilder {
     final scaling = (chemistryFactor + moraleFactor) / 2.0;
 
     return TeamStrengthProfile(
+      id: team.id,
       buildUpQuality: _round1(buildUpQuality * scaling),
       pressResistance: _round1(pressResistance * scaling),
       wideAttack: _round1(wideAttack * scaling),

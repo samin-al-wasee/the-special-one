@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShootoutScore {
 
- int get home; int get away;
+ int get id; int get home; int get away;
 /// Create a copy of ShootoutScore
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $ShootoutScoreCopyWith<ShootoutScore> get copyWith => _$ShootoutScoreCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShootoutScore&&(identical(other.home, home) || other.home == home)&&(identical(other.away, away) || other.away == away));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShootoutScore&&(identical(other.id, id) || other.id == id)&&(identical(other.home, home) || other.home == home)&&(identical(other.away, away) || other.away == away));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,home,away);
+int get hashCode => Object.hash(runtimeType,id,home,away);
 
 
 
@@ -44,7 +44,7 @@ abstract mixin class $ShootoutScoreCopyWith<$Res>  {
   factory $ShootoutScoreCopyWith(ShootoutScore value, $Res Function(ShootoutScore) _then) = _$ShootoutScoreCopyWithImpl;
 @useResult
 $Res call({
- int home, int away
+ int id, int home, int away
 });
 
 
@@ -61,9 +61,10 @@ class _$ShootoutScoreCopyWithImpl<$Res>
 
 /// Create a copy of ShootoutScore
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? home = null,Object? away = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? home = null,Object? away = null,}) {
   return _then(_self.copyWith(
-home: null == home ? _self.home : home // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,home: null == home ? _self.home : home // ignore: cast_nullable_to_non_nullable
 as int,away: null == away ? _self.away : away // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -150,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int home,  int away)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int home,  int away)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShootoutScore() when $default != null:
-return $default(_that.home,_that.away);case _:
+return $default(_that.id,_that.home,_that.away);case _:
   return orElse();
 
 }
@@ -171,10 +172,10 @@ return $default(_that.home,_that.away);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int home,  int away)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int home,  int away)  $default,) {final _that = this;
 switch (_that) {
 case _ShootoutScore():
-return $default(_that.home,_that.away);case _:
+return $default(_that.id,_that.home,_that.away);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +192,10 @@ return $default(_that.home,_that.away);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int home,  int away)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int home,  int away)?  $default,) {final _that = this;
 switch (_that) {
 case _ShootoutScore() when $default != null:
-return $default(_that.home,_that.away);case _:
+return $default(_that.id,_that.home,_that.away);case _:
   return null;
 
 }
@@ -206,9 +207,10 @@ return $default(_that.home,_that.away);case _:
 @JsonSerializable()
 
 class _ShootoutScore extends ShootoutScore {
-  const _ShootoutScore({this.home = 0, this.away = 0}): super._();
+  const _ShootoutScore({required this.id, this.home = 0, this.away = 0}): super._();
   factory _ShootoutScore.fromJson(Map<String, dynamic> json) => _$ShootoutScoreFromJson(json);
 
+@override final  int id;
 @override@JsonKey() final  int home;
 @override@JsonKey() final  int away;
 
@@ -225,12 +227,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShootoutScore&&(identical(other.home, home) || other.home == home)&&(identical(other.away, away) || other.away == away));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShootoutScore&&(identical(other.id, id) || other.id == id)&&(identical(other.home, home) || other.home == home)&&(identical(other.away, away) || other.away == away));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,home,away);
+int get hashCode => Object.hash(runtimeType,id,home,away);
 
 
 
@@ -241,7 +243,7 @@ abstract mixin class _$ShootoutScoreCopyWith<$Res> implements $ShootoutScoreCopy
   factory _$ShootoutScoreCopyWith(_ShootoutScore value, $Res Function(_ShootoutScore) _then) = __$ShootoutScoreCopyWithImpl;
 @override @useResult
 $Res call({
- int home, int away
+ int id, int home, int away
 });
 
 
@@ -258,9 +260,10 @@ class __$ShootoutScoreCopyWithImpl<$Res>
 
 /// Create a copy of ShootoutScore
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? home = null,Object? away = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? home = null,Object? away = null,}) {
   return _then(_ShootoutScore(
-home: null == home ? _self.home : home // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,home: null == home ? _self.home : home // ignore: cast_nullable_to_non_nullable
 as int,away: null == away ? _self.away : away // ignore: cast_nullable_to_non_nullable
 as int,
   ));

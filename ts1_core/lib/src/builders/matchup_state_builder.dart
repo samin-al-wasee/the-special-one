@@ -10,6 +10,7 @@ class MatchupStateBuilder {
     final awayProfile = context.awayToHomeMatchupProfile;
 
     return MatchupState(
+      id: context.id,
       homeAttackVsAwayDefense: _clampEdge(_attackEdge(homeProfile)),
       awayAttackVsHomeDefense: _clampEdge(-_attackEdge(awayProfile)),
       midfieldControlEdge: _clampEdge(

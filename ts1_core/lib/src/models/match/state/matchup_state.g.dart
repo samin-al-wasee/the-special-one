@@ -9,6 +9,7 @@ part of 'matchup_state.dart';
 _MatchupState _$MatchupStateFromJson(
   Map<String, dynamic> json,
 ) => _MatchupState(
+  id: (json['id'] as num).toInt(),
   homeAttackVsAwayDefense:
       (json['homeAttackVsAwayDefense'] as num?)?.toDouble() ?? 0.0,
   awayAttackVsHomeDefense:
@@ -22,6 +23,7 @@ _MatchupState _$MatchupStateFromJson(
 
 Map<String, dynamic> _$MatchupStateToJson(_MatchupState instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'homeAttackVsAwayDefense': instance.homeAttackVsAwayDefense,
       'awayAttackVsHomeDefense': instance.awayAttackVsHomeDefense,
       'midfieldControlEdge': instance.midfieldControlEdge,

@@ -46,7 +46,8 @@ abstract class TeamTactic with _$TeamTactic {
     required FreeKickStrategy freeKickStrategy,
   }) = _TeamTactic;
 
-  factory TeamTactic.fromJson(Map<String, dynamic> json) => _$TeamTacticFromJson(json);
+  factory TeamTactic.fromJson(Map<String, dynamic> json) =>
+      _$TeamTacticFromJson(json);
 
   const TeamTactic._();
 

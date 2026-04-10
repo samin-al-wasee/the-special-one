@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhaseResolutionSnapshot {
 
-/// Sequential phase number in the match (0-indexed).
+ int get id;/// Sequential phase number in the match (0-indexed).
  int get phaseIndex;/// Match minute when phase occurred (0-120+).
  int get minute;/// Category of phase type (e.g., attacking, defensive, transition).
  MatchPhaseType get phaseType;/// Specific phase state/outcome (goal, chance missed, clearance, etc).
@@ -43,16 +43,16 @@ $PhaseResolutionSnapshotCopyWith<PhaseResolutionSnapshot> get copyWith => _$Phas
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhaseResolutionSnapshot&&(identical(other.phaseIndex, phaseIndex) || other.phaseIndex == phaseIndex)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.phaseState, phaseState) || other.phaseState == phaseState)&&(identical(other.initiativeTeam, initiativeTeam) || other.initiativeTeam == initiativeTeam)&&(identical(other.possessionTeam, possessionTeam) || other.possessionTeam == possessionTeam)&&(identical(other.territoryTeam, territoryTeam) || other.territoryTeam == territoryTeam)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.isImportant, isImportant) || other.isImportant == isImportant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhaseResolutionSnapshot&&(identical(other.id, id) || other.id == id)&&(identical(other.phaseIndex, phaseIndex) || other.phaseIndex == phaseIndex)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.phaseState, phaseState) || other.phaseState == phaseState)&&(identical(other.initiativeTeam, initiativeTeam) || other.initiativeTeam == initiativeTeam)&&(identical(other.possessionTeam, possessionTeam) || other.possessionTeam == possessionTeam)&&(identical(other.territoryTeam, territoryTeam) || other.territoryTeam == territoryTeam)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.isImportant, isImportant) || other.isImportant == isImportant));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,phaseIndex,minute,phaseType,phaseState,initiativeTeam,possessionTeam,territoryTeam,attackState,chanceType,chanceOutcome,chanceQuality,zone,isImportant);
+int get hashCode => Object.hash(runtimeType,id,phaseIndex,minute,phaseType,phaseState,initiativeTeam,possessionTeam,territoryTeam,attackState,chanceType,chanceOutcome,chanceQuality,zone,isImportant);
 
 @override
 String toString() {
-  return 'PhaseResolutionSnapshot(phaseIndex: $phaseIndex, minute: $minute, phaseType: $phaseType, phaseState: $phaseState, initiativeTeam: $initiativeTeam, possessionTeam: $possessionTeam, territoryTeam: $territoryTeam, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, zone: $zone, isImportant: $isImportant)';
+  return 'PhaseResolutionSnapshot(id: $id, phaseIndex: $phaseIndex, minute: $minute, phaseType: $phaseType, phaseState: $phaseState, initiativeTeam: $initiativeTeam, possessionTeam: $possessionTeam, territoryTeam: $territoryTeam, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, zone: $zone, isImportant: $isImportant)';
 }
 
 
@@ -63,7 +63,7 @@ abstract mixin class $PhaseResolutionSnapshotCopyWith<$Res>  {
   factory $PhaseResolutionSnapshotCopyWith(PhaseResolutionSnapshot value, $Res Function(PhaseResolutionSnapshot) _then) = _$PhaseResolutionSnapshotCopyWithImpl;
 @useResult
 $Res call({
- int phaseIndex, int minute, MatchPhaseType phaseType, MatchPhaseState phaseState, TeamSide? initiativeTeam, TeamSide? possessionTeam, TeamSide? territoryTeam, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, PitchZone? zone, bool isImportant
+ int id, int phaseIndex, int minute, MatchPhaseType phaseType, MatchPhaseState phaseState, TeamSide? initiativeTeam, TeamSide? possessionTeam, TeamSide? territoryTeam, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, PitchZone? zone, bool isImportant
 });
 
 
@@ -80,9 +80,10 @@ class _$PhaseResolutionSnapshotCopyWithImpl<$Res>
 
 /// Create a copy of PhaseResolutionSnapshot
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? phaseIndex = null,Object? minute = null,Object? phaseType = null,Object? phaseState = null,Object? initiativeTeam = freezed,Object? possessionTeam = freezed,Object? territoryTeam = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? zone = freezed,Object? isImportant = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phaseIndex = null,Object? minute = null,Object? phaseType = null,Object? phaseState = null,Object? initiativeTeam = freezed,Object? possessionTeam = freezed,Object? territoryTeam = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? zone = freezed,Object? isImportant = null,}) {
   return _then(_self.copyWith(
-phaseIndex: null == phaseIndex ? _self.phaseIndex : phaseIndex // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,phaseIndex: null == phaseIndex ? _self.phaseIndex : phaseIndex // ignore: cast_nullable_to_non_nullable
 as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,phaseType: null == phaseType ? _self.phaseType : phaseType // ignore: cast_nullable_to_non_nullable
 as MatchPhaseType,phaseState: null == phaseState ? _self.phaseState : phaseState // ignore: cast_nullable_to_non_nullable
@@ -192,10 +193,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhaseResolutionSnapshot() when $default != null:
-return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
+return $default(_that.id,_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
   return orElse();
 
 }
@@ -213,10 +214,10 @@ return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)  $default,) {final _that = this;
 switch (_that) {
 case _PhaseResolutionSnapshot():
-return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
+return $default(_that.id,_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -233,10 +234,10 @@ return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int phaseIndex,  int minute,  MatchPhaseType phaseType,  MatchPhaseState phaseState,  TeamSide? initiativeTeam,  TeamSide? possessionTeam,  TeamSide? territoryTeam,  AttackState? attackState,  ChanceType? chanceType,  ChanceOutcome? chanceOutcome,  double? chanceQuality,  PitchZone? zone,  bool isImportant)?  $default,) {final _that = this;
 switch (_that) {
 case _PhaseResolutionSnapshot() when $default != null:
-return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
+return $default(_that.id,_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_that.initiativeTeam,_that.possessionTeam,_that.territoryTeam,_that.attackState,_that.chanceType,_that.chanceOutcome,_that.chanceQuality,_that.zone,_that.isImportant);case _:
   return null;
 
 }
@@ -248,9 +249,10 @@ return $default(_that.phaseIndex,_that.minute,_that.phaseType,_that.phaseState,_
 @JsonSerializable()
 
 class _PhaseResolutionSnapshot extends PhaseResolutionSnapshot {
-  const _PhaseResolutionSnapshot({required this.phaseIndex, required this.minute, required this.phaseType, required this.phaseState, this.initiativeTeam, this.possessionTeam, this.territoryTeam, this.attackState, this.chanceType, this.chanceOutcome, this.chanceQuality, this.zone, this.isImportant = false}): super._();
+  const _PhaseResolutionSnapshot({required this.id, required this.phaseIndex, required this.minute, required this.phaseType, required this.phaseState, this.initiativeTeam, this.possessionTeam, this.territoryTeam, this.attackState, this.chanceType, this.chanceOutcome, this.chanceQuality, this.zone, this.isImportant = false}): super._();
   factory _PhaseResolutionSnapshot.fromJson(Map<String, dynamic> json) => _$PhaseResolutionSnapshotFromJson(json);
 
+@override final  int id;
 /// Sequential phase number in the match (0-indexed).
 @override final  int phaseIndex;
 /// Match minute when phase occurred (0-120+).
@@ -293,16 +295,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhaseResolutionSnapshot&&(identical(other.phaseIndex, phaseIndex) || other.phaseIndex == phaseIndex)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.phaseState, phaseState) || other.phaseState == phaseState)&&(identical(other.initiativeTeam, initiativeTeam) || other.initiativeTeam == initiativeTeam)&&(identical(other.possessionTeam, possessionTeam) || other.possessionTeam == possessionTeam)&&(identical(other.territoryTeam, territoryTeam) || other.territoryTeam == territoryTeam)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.isImportant, isImportant) || other.isImportant == isImportant));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhaseResolutionSnapshot&&(identical(other.id, id) || other.id == id)&&(identical(other.phaseIndex, phaseIndex) || other.phaseIndex == phaseIndex)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.phaseType, phaseType) || other.phaseType == phaseType)&&(identical(other.phaseState, phaseState) || other.phaseState == phaseState)&&(identical(other.initiativeTeam, initiativeTeam) || other.initiativeTeam == initiativeTeam)&&(identical(other.possessionTeam, possessionTeam) || other.possessionTeam == possessionTeam)&&(identical(other.territoryTeam, territoryTeam) || other.territoryTeam == territoryTeam)&&(identical(other.attackState, attackState) || other.attackState == attackState)&&(identical(other.chanceType, chanceType) || other.chanceType == chanceType)&&(identical(other.chanceOutcome, chanceOutcome) || other.chanceOutcome == chanceOutcome)&&(identical(other.chanceQuality, chanceQuality) || other.chanceQuality == chanceQuality)&&(identical(other.zone, zone) || other.zone == zone)&&(identical(other.isImportant, isImportant) || other.isImportant == isImportant));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,phaseIndex,minute,phaseType,phaseState,initiativeTeam,possessionTeam,territoryTeam,attackState,chanceType,chanceOutcome,chanceQuality,zone,isImportant);
+int get hashCode => Object.hash(runtimeType,id,phaseIndex,minute,phaseType,phaseState,initiativeTeam,possessionTeam,territoryTeam,attackState,chanceType,chanceOutcome,chanceQuality,zone,isImportant);
 
 @override
 String toString() {
-  return 'PhaseResolutionSnapshot(phaseIndex: $phaseIndex, minute: $minute, phaseType: $phaseType, phaseState: $phaseState, initiativeTeam: $initiativeTeam, possessionTeam: $possessionTeam, territoryTeam: $territoryTeam, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, zone: $zone, isImportant: $isImportant)';
+  return 'PhaseResolutionSnapshot(id: $id, phaseIndex: $phaseIndex, minute: $minute, phaseType: $phaseType, phaseState: $phaseState, initiativeTeam: $initiativeTeam, possessionTeam: $possessionTeam, territoryTeam: $territoryTeam, attackState: $attackState, chanceType: $chanceType, chanceOutcome: $chanceOutcome, chanceQuality: $chanceQuality, zone: $zone, isImportant: $isImportant)';
 }
 
 
@@ -313,7 +315,7 @@ abstract mixin class _$PhaseResolutionSnapshotCopyWith<$Res> implements $PhaseRe
   factory _$PhaseResolutionSnapshotCopyWith(_PhaseResolutionSnapshot value, $Res Function(_PhaseResolutionSnapshot) _then) = __$PhaseResolutionSnapshotCopyWithImpl;
 @override @useResult
 $Res call({
- int phaseIndex, int minute, MatchPhaseType phaseType, MatchPhaseState phaseState, TeamSide? initiativeTeam, TeamSide? possessionTeam, TeamSide? territoryTeam, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, PitchZone? zone, bool isImportant
+ int id, int phaseIndex, int minute, MatchPhaseType phaseType, MatchPhaseState phaseState, TeamSide? initiativeTeam, TeamSide? possessionTeam, TeamSide? territoryTeam, AttackState? attackState, ChanceType? chanceType, ChanceOutcome? chanceOutcome, double? chanceQuality, PitchZone? zone, bool isImportant
 });
 
 
@@ -330,9 +332,10 @@ class __$PhaseResolutionSnapshotCopyWithImpl<$Res>
 
 /// Create a copy of PhaseResolutionSnapshot
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? phaseIndex = null,Object? minute = null,Object? phaseType = null,Object? phaseState = null,Object? initiativeTeam = freezed,Object? possessionTeam = freezed,Object? territoryTeam = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? zone = freezed,Object? isImportant = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phaseIndex = null,Object? minute = null,Object? phaseType = null,Object? phaseState = null,Object? initiativeTeam = freezed,Object? possessionTeam = freezed,Object? territoryTeam = freezed,Object? attackState = freezed,Object? chanceType = freezed,Object? chanceOutcome = freezed,Object? chanceQuality = freezed,Object? zone = freezed,Object? isImportant = null,}) {
   return _then(_PhaseResolutionSnapshot(
-phaseIndex: null == phaseIndex ? _self.phaseIndex : phaseIndex // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,phaseIndex: null == phaseIndex ? _self.phaseIndex : phaseIndex // ignore: cast_nullable_to_non_nullable
 as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,phaseType: null == phaseType ? _self.phaseType : phaseType // ignore: cast_nullable_to_non_nullable
 as MatchPhaseType,phaseState: null == phaseState ? _self.phaseState : phaseState // ignore: cast_nullable_to_non_nullable

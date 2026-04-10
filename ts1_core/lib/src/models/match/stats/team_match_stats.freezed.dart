@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TeamMatchStats {
 
- double get possession; int get shots; int get shotsOnTarget; int get chancesCreated; double get expectedGoals; int get passesCompleted; int get passesAttempted; int get turnovers; int get fouls; int get yellowCards; int get redCards; int get corners; int get offsides;
+ int get id; double get possession; int get shots; int get shotsOnTarget; int get chancesCreated; double get expectedGoals; int get passesCompleted; int get passesAttempted; int get turnovers; int get fouls; int get yellowCards; int get redCards; int get corners; int get offsides;
 /// Create a copy of TeamMatchStats
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TeamMatchStatsCopyWith<TeamMatchStats> get copyWith => _$TeamMatchStatsCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamMatchStats&&(identical(other.possession, possession) || other.possession == possession)&&(identical(other.shots, shots) || other.shots == shots)&&(identical(other.shotsOnTarget, shotsOnTarget) || other.shotsOnTarget == shotsOnTarget)&&(identical(other.chancesCreated, chancesCreated) || other.chancesCreated == chancesCreated)&&(identical(other.expectedGoals, expectedGoals) || other.expectedGoals == expectedGoals)&&(identical(other.passesCompleted, passesCompleted) || other.passesCompleted == passesCompleted)&&(identical(other.passesAttempted, passesAttempted) || other.passesAttempted == passesAttempted)&&(identical(other.turnovers, turnovers) || other.turnovers == turnovers)&&(identical(other.fouls, fouls) || other.fouls == fouls)&&(identical(other.yellowCards, yellowCards) || other.yellowCards == yellowCards)&&(identical(other.redCards, redCards) || other.redCards == redCards)&&(identical(other.corners, corners) || other.corners == corners)&&(identical(other.offsides, offsides) || other.offsides == offsides));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamMatchStats&&(identical(other.id, id) || other.id == id)&&(identical(other.possession, possession) || other.possession == possession)&&(identical(other.shots, shots) || other.shots == shots)&&(identical(other.shotsOnTarget, shotsOnTarget) || other.shotsOnTarget == shotsOnTarget)&&(identical(other.chancesCreated, chancesCreated) || other.chancesCreated == chancesCreated)&&(identical(other.expectedGoals, expectedGoals) || other.expectedGoals == expectedGoals)&&(identical(other.passesCompleted, passesCompleted) || other.passesCompleted == passesCompleted)&&(identical(other.passesAttempted, passesAttempted) || other.passesAttempted == passesAttempted)&&(identical(other.turnovers, turnovers) || other.turnovers == turnovers)&&(identical(other.fouls, fouls) || other.fouls == fouls)&&(identical(other.yellowCards, yellowCards) || other.yellowCards == yellowCards)&&(identical(other.redCards, redCards) || other.redCards == redCards)&&(identical(other.corners, corners) || other.corners == corners)&&(identical(other.offsides, offsides) || other.offsides == offsides));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,possession,shots,shotsOnTarget,chancesCreated,expectedGoals,passesCompleted,passesAttempted,turnovers,fouls,yellowCards,redCards,corners,offsides);
+int get hashCode => Object.hash(runtimeType,id,possession,shots,shotsOnTarget,chancesCreated,expectedGoals,passesCompleted,passesAttempted,turnovers,fouls,yellowCards,redCards,corners,offsides);
 
 @override
 String toString() {
-  return 'TeamMatchStats(possession: $possession, shots: $shots, shotsOnTarget: $shotsOnTarget, chancesCreated: $chancesCreated, expectedGoals: $expectedGoals, passesCompleted: $passesCompleted, passesAttempted: $passesAttempted, turnovers: $turnovers, fouls: $fouls, yellowCards: $yellowCards, redCards: $redCards, corners: $corners, offsides: $offsides)';
+  return 'TeamMatchStats(id: $id, possession: $possession, shots: $shots, shotsOnTarget: $shotsOnTarget, chancesCreated: $chancesCreated, expectedGoals: $expectedGoals, passesCompleted: $passesCompleted, passesAttempted: $passesAttempted, turnovers: $turnovers, fouls: $fouls, yellowCards: $yellowCards, redCards: $redCards, corners: $corners, offsides: $offsides)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TeamMatchStatsCopyWith<$Res>  {
   factory $TeamMatchStatsCopyWith(TeamMatchStats value, $Res Function(TeamMatchStats) _then) = _$TeamMatchStatsCopyWithImpl;
 @useResult
 $Res call({
- double possession, int shots, int shotsOnTarget, int chancesCreated, double expectedGoals, int passesCompleted, int passesAttempted, int turnovers, int fouls, int yellowCards, int redCards, int corners, int offsides
+ int id, double possession, int shots, int shotsOnTarget, int chancesCreated, double expectedGoals, int passesCompleted, int passesAttempted, int turnovers, int fouls, int yellowCards, int redCards, int corners, int offsides
 });
 
 
@@ -65,9 +65,10 @@ class _$TeamMatchStatsCopyWithImpl<$Res>
 
 /// Create a copy of TeamMatchStats
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? possession = null,Object? shots = null,Object? shotsOnTarget = null,Object? chancesCreated = null,Object? expectedGoals = null,Object? passesCompleted = null,Object? passesAttempted = null,Object? turnovers = null,Object? fouls = null,Object? yellowCards = null,Object? redCards = null,Object? corners = null,Object? offsides = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? possession = null,Object? shots = null,Object? shotsOnTarget = null,Object? chancesCreated = null,Object? expectedGoals = null,Object? passesCompleted = null,Object? passesAttempted = null,Object? turnovers = null,Object? fouls = null,Object? yellowCards = null,Object? redCards = null,Object? corners = null,Object? offsides = null,}) {
   return _then(_self.copyWith(
-possession: null == possession ? _self.possession : possession // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,possession: null == possession ? _self.possession : possession // ignore: cast_nullable_to_non_nullable
 as double,shots: null == shots ? _self.shots : shots // ignore: cast_nullable_to_non_nullable
 as int,shotsOnTarget: null == shotsOnTarget ? _self.shotsOnTarget : shotsOnTarget // ignore: cast_nullable_to_non_nullable
 as int,chancesCreated: null == chancesCreated ? _self.chancesCreated : chancesCreated // ignore: cast_nullable_to_non_nullable
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeamMatchStats() when $default != null:
-return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
+return $default(_that.id,_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)  $default,) {final _that = this;
 switch (_that) {
 case _TeamMatchStats():
-return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
+return $default(_that.id,_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +207,10 @@ return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double possession,  int shots,  int shotsOnTarget,  int chancesCreated,  double expectedGoals,  int passesCompleted,  int passesAttempted,  int turnovers,  int fouls,  int yellowCards,  int redCards,  int corners,  int offsides)?  $default,) {final _that = this;
 switch (_that) {
 case _TeamMatchStats() when $default != null:
-return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
+return $default(_that.id,_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCreated,_that.expectedGoals,_that.passesCompleted,_that.passesAttempted,_that.turnovers,_that.fouls,_that.yellowCards,_that.redCards,_that.corners,_that.offsides);case _:
   return null;
 
 }
@@ -221,9 +222,10 @@ return $default(_that.possession,_that.shots,_that.shotsOnTarget,_that.chancesCr
 @JsonSerializable()
 
 class _TeamMatchStats extends TeamMatchStats {
-  const _TeamMatchStats({this.possession = 50.0, this.shots = 0, this.shotsOnTarget = 0, this.chancesCreated = 0, this.expectedGoals = 0.0, this.passesCompleted = 0, this.passesAttempted = 0, this.turnovers = 0, this.fouls = 0, this.yellowCards = 0, this.redCards = 0, this.corners = 0, this.offsides = 0}): super._();
+  const _TeamMatchStats({required this.id, this.possession = 50.0, this.shots = 0, this.shotsOnTarget = 0, this.chancesCreated = 0, this.expectedGoals = 0.0, this.passesCompleted = 0, this.passesAttempted = 0, this.turnovers = 0, this.fouls = 0, this.yellowCards = 0, this.redCards = 0, this.corners = 0, this.offsides = 0}): super._();
   factory _TeamMatchStats.fromJson(Map<String, dynamic> json) => _$TeamMatchStatsFromJson(json);
 
+@override final  int id;
 @override@JsonKey() final  double possession;
 @override@JsonKey() final  int shots;
 @override@JsonKey() final  int shotsOnTarget;
@@ -251,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamMatchStats&&(identical(other.possession, possession) || other.possession == possession)&&(identical(other.shots, shots) || other.shots == shots)&&(identical(other.shotsOnTarget, shotsOnTarget) || other.shotsOnTarget == shotsOnTarget)&&(identical(other.chancesCreated, chancesCreated) || other.chancesCreated == chancesCreated)&&(identical(other.expectedGoals, expectedGoals) || other.expectedGoals == expectedGoals)&&(identical(other.passesCompleted, passesCompleted) || other.passesCompleted == passesCompleted)&&(identical(other.passesAttempted, passesAttempted) || other.passesAttempted == passesAttempted)&&(identical(other.turnovers, turnovers) || other.turnovers == turnovers)&&(identical(other.fouls, fouls) || other.fouls == fouls)&&(identical(other.yellowCards, yellowCards) || other.yellowCards == yellowCards)&&(identical(other.redCards, redCards) || other.redCards == redCards)&&(identical(other.corners, corners) || other.corners == corners)&&(identical(other.offsides, offsides) || other.offsides == offsides));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamMatchStats&&(identical(other.id, id) || other.id == id)&&(identical(other.possession, possession) || other.possession == possession)&&(identical(other.shots, shots) || other.shots == shots)&&(identical(other.shotsOnTarget, shotsOnTarget) || other.shotsOnTarget == shotsOnTarget)&&(identical(other.chancesCreated, chancesCreated) || other.chancesCreated == chancesCreated)&&(identical(other.expectedGoals, expectedGoals) || other.expectedGoals == expectedGoals)&&(identical(other.passesCompleted, passesCompleted) || other.passesCompleted == passesCompleted)&&(identical(other.passesAttempted, passesAttempted) || other.passesAttempted == passesAttempted)&&(identical(other.turnovers, turnovers) || other.turnovers == turnovers)&&(identical(other.fouls, fouls) || other.fouls == fouls)&&(identical(other.yellowCards, yellowCards) || other.yellowCards == yellowCards)&&(identical(other.redCards, redCards) || other.redCards == redCards)&&(identical(other.corners, corners) || other.corners == corners)&&(identical(other.offsides, offsides) || other.offsides == offsides));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,possession,shots,shotsOnTarget,chancesCreated,expectedGoals,passesCompleted,passesAttempted,turnovers,fouls,yellowCards,redCards,corners,offsides);
+int get hashCode => Object.hash(runtimeType,id,possession,shots,shotsOnTarget,chancesCreated,expectedGoals,passesCompleted,passesAttempted,turnovers,fouls,yellowCards,redCards,corners,offsides);
 
 @override
 String toString() {
-  return 'TeamMatchStats(possession: $possession, shots: $shots, shotsOnTarget: $shotsOnTarget, chancesCreated: $chancesCreated, expectedGoals: $expectedGoals, passesCompleted: $passesCompleted, passesAttempted: $passesAttempted, turnovers: $turnovers, fouls: $fouls, yellowCards: $yellowCards, redCards: $redCards, corners: $corners, offsides: $offsides)';
+  return 'TeamMatchStats(id: $id, possession: $possession, shots: $shots, shotsOnTarget: $shotsOnTarget, chancesCreated: $chancesCreated, expectedGoals: $expectedGoals, passesCompleted: $passesCompleted, passesAttempted: $passesAttempted, turnovers: $turnovers, fouls: $fouls, yellowCards: $yellowCards, redCards: $redCards, corners: $corners, offsides: $offsides)';
 }
 
 
@@ -271,7 +273,7 @@ abstract mixin class _$TeamMatchStatsCopyWith<$Res> implements $TeamMatchStatsCo
   factory _$TeamMatchStatsCopyWith(_TeamMatchStats value, $Res Function(_TeamMatchStats) _then) = __$TeamMatchStatsCopyWithImpl;
 @override @useResult
 $Res call({
- double possession, int shots, int shotsOnTarget, int chancesCreated, double expectedGoals, int passesCompleted, int passesAttempted, int turnovers, int fouls, int yellowCards, int redCards, int corners, int offsides
+ int id, double possession, int shots, int shotsOnTarget, int chancesCreated, double expectedGoals, int passesCompleted, int passesAttempted, int turnovers, int fouls, int yellowCards, int redCards, int corners, int offsides
 });
 
 
@@ -288,9 +290,10 @@ class __$TeamMatchStatsCopyWithImpl<$Res>
 
 /// Create a copy of TeamMatchStats
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? possession = null,Object? shots = null,Object? shotsOnTarget = null,Object? chancesCreated = null,Object? expectedGoals = null,Object? passesCompleted = null,Object? passesAttempted = null,Object? turnovers = null,Object? fouls = null,Object? yellowCards = null,Object? redCards = null,Object? corners = null,Object? offsides = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? possession = null,Object? shots = null,Object? shotsOnTarget = null,Object? chancesCreated = null,Object? expectedGoals = null,Object? passesCompleted = null,Object? passesAttempted = null,Object? turnovers = null,Object? fouls = null,Object? yellowCards = null,Object? redCards = null,Object? corners = null,Object? offsides = null,}) {
   return _then(_TeamMatchStats(
-possession: null == possession ? _self.possession : possession // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,possession: null == possession ? _self.possession : possession // ignore: cast_nullable_to_non_nullable
 as double,shots: null == shots ? _self.shots : shots // ignore: cast_nullable_to_non_nullable
 as int,shotsOnTarget: null == shotsOnTarget ? _self.shotsOnTarget : shotsOnTarget // ignore: cast_nullable_to_non_nullable
 as int,chancesCreated: null == chancesCreated ? _self.chancesCreated : chancesCreated // ignore: cast_nullable_to_non_nullable

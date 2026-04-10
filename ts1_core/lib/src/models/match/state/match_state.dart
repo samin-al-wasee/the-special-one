@@ -21,17 +21,19 @@ part 'match_state.g.dart';
 @freezed
 abstract class MatchState with _$MatchState {
   const factory MatchState({
+    required int id,
+
     // ==================== MATCH FLOW SYSTEM ====================
     @Default(MatchStatus.scheduled) MatchStatus status,
-    @Default(MatchClock()) MatchClock clock,
+    @Default(MatchClock(id: 0)) MatchClock clock,
     @Default(0) int currentPhaseIndex,
     @Default(MatchPhaseType.neutralPossession) MatchPhaseType currentPhaseType,
     @Default(MatchPhaseState.neutralPossession)
     MatchPhaseState currentPhaseState,
 
     // ==================== SCORE and RESULT SYSTEM ====================
-    @Default(Scoreline()) Scoreline scoreline,
-    @Default(ShootoutScore()) ShootoutScore shootoutScore,
+    @Default(Scoreline(id: 0)) Scoreline scoreline,
+    @Default(ShootoutScore(id: 0)) ShootoutScore shootoutScore,
 
     // ==================== TACTICAL FLOW SYSTEM ====================
     TeamSide? currentInitiative,
@@ -39,8 +41,8 @@ abstract class MatchState with _$MatchState {
     TeamSide? currentTerritoryControl,
 
     // ==================== TEAM PERFORMANCE SYSTEM ====================
-    @Default(TeamMatchStats()) TeamMatchStats homeStats,
-    @Default(TeamMatchStats()) TeamMatchStats awayStats,
+    @Default(TeamMatchStats(id: 0)) TeamMatchStats homeStats,
+    @Default(TeamMatchStats(id: 0)) TeamMatchStats awayStats,
 
     // ==================== POSITIONAL / DYNAMICS SYSTEM ====================
     required MatchDynamics dynamics,
@@ -183,6 +185,7 @@ abstract class MatchState with _$MatchState {
       interventions: [
         ...interventions,
         ManagerIntervention(
+          id: interventions.length + 1,
           minute: clock.minute,
           teamSide: side,
           command: command,
@@ -204,6 +207,7 @@ abstract class MatchState with _$MatchState {
       substitutions: [
         ...substitutions,
         SubstitutionRecord(
+          id: substitutions.length + 1,
           minute: clock.minute,
           teamSide: side,
           playerOutId: playerOutId,

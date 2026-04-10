@@ -7,11 +7,12 @@ part of 'match_state.dart';
 // **************************************************************************
 
 _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
+  id: (json['id'] as num).toInt(),
   status:
       $enumDecodeNullable(_$MatchStatusEnumMap, json['status']) ??
       MatchStatus.scheduled,
   clock: json['clock'] == null
-      ? const MatchClock()
+      ? const MatchClock(id: 0)
       : MatchClock.fromJson(json['clock'] as Map<String, dynamic>),
   currentPhaseIndex: (json['currentPhaseIndex'] as num?)?.toInt() ?? 0,
   currentPhaseType:
@@ -24,10 +25,10 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
       ) ??
       MatchPhaseState.neutralPossession,
   scoreline: json['scoreline'] == null
-      ? const Scoreline()
+      ? const Scoreline(id: 0)
       : Scoreline.fromJson(json['scoreline'] as Map<String, dynamic>),
   shootoutScore: json['shootoutScore'] == null
-      ? const ShootoutScore()
+      ? const ShootoutScore(id: 0)
       : ShootoutScore.fromJson(json['shootoutScore'] as Map<String, dynamic>),
   currentInitiative: $enumDecodeNullable(
     _$TeamSideEnumMap,
@@ -42,10 +43,10 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
     json['currentTerritoryControl'],
   ),
   homeStats: json['homeStats'] == null
-      ? const TeamMatchStats()
+      ? const TeamMatchStats(id: 0)
       : TeamMatchStats.fromJson(json['homeStats'] as Map<String, dynamic>),
   awayStats: json['awayStats'] == null
-      ? const TeamMatchStats()
+      ? const TeamMatchStats(id: 0)
       : TeamMatchStats.fromJson(json['awayStats'] as Map<String, dynamic>),
   dynamics: MatchDynamics.fromJson(json['dynamics'] as Map<String, dynamic>),
   matchupState: MatchupState.fromJson(
@@ -83,6 +84,7 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
 Map<String, dynamic> _$MatchStateToJson(
   _MatchState instance,
 ) => <String, dynamic>{
+  'id': instance.id,
   'status': _$MatchStatusEnumMap[instance.status]!,
   'clock': instance.clock,
   'currentPhaseIndex': instance.currentPhaseIndex,

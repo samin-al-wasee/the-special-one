@@ -8,6 +8,7 @@ part of 'manager_intervention.dart';
 
 _ManagerIntervention _$ManagerInterventionFromJson(Map<String, dynamic> json) =>
     _ManagerIntervention(
+      id: (json['id'] as num).toInt(),
       minute: (json['minute'] as num).toInt(),
       teamSide: $enumDecode(_$TeamSideEnumMap, json['teamSide']),
       command: $enumDecode(_$MatchCommandTypeEnumMap, json['command']),
@@ -18,6 +19,7 @@ _ManagerIntervention _$ManagerInterventionFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ManagerInterventionToJson(
   _ManagerIntervention instance,
 ) => <String, dynamic>{
+  'id': instance.id,
   'minute': instance.minute,
   'teamSide': _$TeamSideEnumMap[instance.teamSide]!,
   'command': _$MatchCommandTypeEnumMap[instance.command]!,

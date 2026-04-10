@@ -9,6 +9,7 @@ part of 'structural_profile.dart';
 _StructuralProfile _$StructuralProfileFromJson(
   Map<String, dynamic> json,
 ) => _StructuralProfile(
+  id: (json['id'] as num).toInt(),
   widthCoverage: (json['widthCoverage'] as num?)?.toDouble() ?? 0.5,
   centralDensity: (json['centralDensity'] as num?)?.toDouble() ?? 0.5,
   supportNetworkQuality:
@@ -27,6 +28,7 @@ _StructuralProfile _$StructuralProfileFromJson(
 
 Map<String, dynamic> _$StructuralProfileToJson(_StructuralProfile instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'widthCoverage': instance.widthCoverage,
       'centralDensity': instance.centralDensity,
       'supportNetworkQuality': instance.supportNetworkQuality,

@@ -9,6 +9,7 @@ part of 'team_strength_profile.dart';
 _TeamStrengthProfile _$TeamStrengthProfileFromJson(
   Map<String, dynamic> json,
 ) => _TeamStrengthProfile(
+  id: (json['id'] as num).toInt(),
   buildUpQuality: (json['buildUpQuality'] as num).toDouble(),
   pressResistance: (json['pressResistance'] as num).toDouble(),
   wideAttack: (json['wideAttack'] as num).toDouble(),
@@ -37,6 +38,7 @@ _TeamStrengthProfile _$TeamStrengthProfileFromJson(
 Map<String, dynamic> _$TeamStrengthProfileToJson(
   _TeamStrengthProfile instance,
 ) => <String, dynamic>{
+  'id': instance.id,
   'buildUpQuality': instance.buildUpQuality,
   'pressResistance': instance.pressResistance,
   'wideAttack': instance.wideAttack,

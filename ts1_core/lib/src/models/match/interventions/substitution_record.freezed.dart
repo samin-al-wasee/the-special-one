@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SubstitutionRecord {
 
- int get minute; TeamSide get teamSide; int get playerOutId; int get playerInId; SubstitutionType get type; String? get reason;
+ int get id; int get minute; TeamSide get teamSide; int get playerOutId; int get playerInId; SubstitutionType get type; String? get reason;
 /// Create a copy of SubstitutionRecord
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SubstitutionRecordCopyWith<SubstitutionRecord> get copyWith => _$SubstitutionRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubstitutionRecord&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.playerOutId, playerOutId) || other.playerOutId == playerOutId)&&(identical(other.playerInId, playerInId) || other.playerInId == playerInId)&&(identical(other.type, type) || other.type == type)&&(identical(other.reason, reason) || other.reason == reason));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubstitutionRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.playerOutId, playerOutId) || other.playerOutId == playerOutId)&&(identical(other.playerInId, playerInId) || other.playerInId == playerInId)&&(identical(other.type, type) || other.type == type)&&(identical(other.reason, reason) || other.reason == reason));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,teamSide,playerOutId,playerInId,type,reason);
+int get hashCode => Object.hash(runtimeType,id,minute,teamSide,playerOutId,playerInId,type,reason);
 
 @override
 String toString() {
-  return 'SubstitutionRecord(minute: $minute, teamSide: $teamSide, playerOutId: $playerOutId, playerInId: $playerInId, type: $type, reason: $reason)';
+  return 'SubstitutionRecord(id: $id, minute: $minute, teamSide: $teamSide, playerOutId: $playerOutId, playerInId: $playerInId, type: $type, reason: $reason)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SubstitutionRecordCopyWith<$Res>  {
   factory $SubstitutionRecordCopyWith(SubstitutionRecord value, $Res Function(SubstitutionRecord) _then) = _$SubstitutionRecordCopyWithImpl;
 @useResult
 $Res call({
- int minute, TeamSide teamSide, int playerOutId, int playerInId, SubstitutionType type, String? reason
+ int id, int minute, TeamSide teamSide, int playerOutId, int playerInId, SubstitutionType type, String? reason
 });
 
 
@@ -65,9 +65,10 @@ class _$SubstitutionRecordCopyWithImpl<$Res>
 
 /// Create a copy of SubstitutionRecord
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? minute = null,Object? teamSide = null,Object? playerOutId = null,Object? playerInId = null,Object? type = null,Object? reason = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? minute = null,Object? teamSide = null,Object? playerOutId = null,Object? playerInId = null,Object? type = null,Object? reason = freezed,}) {
   return _then(_self.copyWith(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,teamSide: null == teamSide ? _self.teamSide : teamSide // ignore: cast_nullable_to_non_nullable
 as TeamSide,playerOutId: null == playerOutId ? _self.playerOutId : playerOutId // ignore: cast_nullable_to_non_nullable
 as int,playerInId: null == playerInId ? _self.playerInId : playerInId // ignore: cast_nullable_to_non_nullable
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SubstitutionRecord() when $default != null:
-return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)  $default,) {final _that = this;
 switch (_that) {
 case _SubstitutionRecord():
-return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int minute,  TeamSide teamSide,  int playerOutId,  int playerInId,  SubstitutionType type,  String? reason)?  $default,) {final _that = this;
 switch (_that) {
 case _SubstitutionRecord() when $default != null:
-return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_that.type,_that.reason);case _:
   return null;
 
 }
@@ -214,9 +215,10 @@ return $default(_that.minute,_that.teamSide,_that.playerOutId,_that.playerInId,_
 @JsonSerializable()
 
 class _SubstitutionRecord extends SubstitutionRecord {
-  const _SubstitutionRecord({required this.minute, required this.teamSide, required this.playerOutId, required this.playerInId, required this.type, this.reason}): super._();
+  const _SubstitutionRecord({required this.id, required this.minute, required this.teamSide, required this.playerOutId, required this.playerInId, required this.type, this.reason}): super._();
   factory _SubstitutionRecord.fromJson(Map<String, dynamic> json) => _$SubstitutionRecordFromJson(json);
 
+@override final  int id;
 @override final  int minute;
 @override final  TeamSide teamSide;
 @override final  int playerOutId;
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubstitutionRecord&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.playerOutId, playerOutId) || other.playerOutId == playerOutId)&&(identical(other.playerInId, playerInId) || other.playerInId == playerInId)&&(identical(other.type, type) || other.type == type)&&(identical(other.reason, reason) || other.reason == reason));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubstitutionRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.playerOutId, playerOutId) || other.playerOutId == playerOutId)&&(identical(other.playerInId, playerInId) || other.playerInId == playerInId)&&(identical(other.type, type) || other.type == type)&&(identical(other.reason, reason) || other.reason == reason));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,teamSide,playerOutId,playerInId,type,reason);
+int get hashCode => Object.hash(runtimeType,id,minute,teamSide,playerOutId,playerInId,type,reason);
 
 @override
 String toString() {
-  return 'SubstitutionRecord(minute: $minute, teamSide: $teamSide, playerOutId: $playerOutId, playerInId: $playerInId, type: $type, reason: $reason)';
+  return 'SubstitutionRecord(id: $id, minute: $minute, teamSide: $teamSide, playerOutId: $playerOutId, playerInId: $playerInId, type: $type, reason: $reason)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$SubstitutionRecordCopyWith<$Res> implements $Substitution
   factory _$SubstitutionRecordCopyWith(_SubstitutionRecord value, $Res Function(_SubstitutionRecord) _then) = __$SubstitutionRecordCopyWithImpl;
 @override @useResult
 $Res call({
- int minute, TeamSide teamSide, int playerOutId, int playerInId, SubstitutionType type, String? reason
+ int id, int minute, TeamSide teamSide, int playerOutId, int playerInId, SubstitutionType type, String? reason
 });
 
 
@@ -274,9 +276,10 @@ class __$SubstitutionRecordCopyWithImpl<$Res>
 
 /// Create a copy of SubstitutionRecord
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? minute = null,Object? teamSide = null,Object? playerOutId = null,Object? playerInId = null,Object? type = null,Object? reason = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? minute = null,Object? teamSide = null,Object? playerOutId = null,Object? playerInId = null,Object? type = null,Object? reason = freezed,}) {
   return _then(_SubstitutionRecord(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,teamSide: null == teamSide ? _self.teamSide : teamSide // ignore: cast_nullable_to_non_nullable
 as TeamSide,playerOutId: null == playerOutId ? _self.playerOutId : playerOutId // ignore: cast_nullable_to_non_nullable
 as int,playerInId: null == playerInId ? _self.playerInId : playerInId // ignore: cast_nullable_to_non_nullable

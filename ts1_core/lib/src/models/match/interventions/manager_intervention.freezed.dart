@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ManagerIntervention {
 
- int get minute; TeamSide get teamSide; MatchCommandType get command; String? get note; int? get expiresAtMinute;
+ int get id; int get minute; TeamSide get teamSide; MatchCommandType get command; String? get note; int? get expiresAtMinute;
 /// Create a copy of ManagerIntervention
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ManagerInterventionCopyWith<ManagerIntervention> get copyWith => _$ManagerInter
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ManagerIntervention&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.command, command) || other.command == command)&&(identical(other.note, note) || other.note == note)&&(identical(other.expiresAtMinute, expiresAtMinute) || other.expiresAtMinute == expiresAtMinute));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ManagerIntervention&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.command, command) || other.command == command)&&(identical(other.note, note) || other.note == note)&&(identical(other.expiresAtMinute, expiresAtMinute) || other.expiresAtMinute == expiresAtMinute));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,teamSide,command,note,expiresAtMinute);
+int get hashCode => Object.hash(runtimeType,id,minute,teamSide,command,note,expiresAtMinute);
 
 @override
 String toString() {
-  return 'ManagerIntervention(minute: $minute, teamSide: $teamSide, command: $command, note: $note, expiresAtMinute: $expiresAtMinute)';
+  return 'ManagerIntervention(id: $id, minute: $minute, teamSide: $teamSide, command: $command, note: $note, expiresAtMinute: $expiresAtMinute)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ManagerInterventionCopyWith<$Res>  {
   factory $ManagerInterventionCopyWith(ManagerIntervention value, $Res Function(ManagerIntervention) _then) = _$ManagerInterventionCopyWithImpl;
 @useResult
 $Res call({
- int minute, TeamSide teamSide, MatchCommandType command, String? note, int? expiresAtMinute
+ int id, int minute, TeamSide teamSide, MatchCommandType command, String? note, int? expiresAtMinute
 });
 
 
@@ -65,9 +65,10 @@ class _$ManagerInterventionCopyWithImpl<$Res>
 
 /// Create a copy of ManagerIntervention
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? minute = null,Object? teamSide = null,Object? command = null,Object? note = freezed,Object? expiresAtMinute = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? minute = null,Object? teamSide = null,Object? command = null,Object? note = freezed,Object? expiresAtMinute = freezed,}) {
   return _then(_self.copyWith(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,teamSide: null == teamSide ? _self.teamSide : teamSide // ignore: cast_nullable_to_non_nullable
 as TeamSide,command: null == command ? _self.command : command // ignore: cast_nullable_to_non_nullable
 as MatchCommandType,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ManagerIntervention() when $default != null:
-return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expir
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)  $default,) {final _that = this;
 switch (_that) {
 case _ManagerIntervention():
-return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expir
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int minute,  TeamSide teamSide,  MatchCommandType command,  String? note,  int? expiresAtMinute)?  $default,) {final _that = this;
 switch (_that) {
 case _ManagerIntervention() when $default != null:
-return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
+return $default(_that.id,_that.minute,_that.teamSide,_that.command,_that.note,_that.expiresAtMinute);case _:
   return null;
 
 }
@@ -213,9 +214,10 @@ return $default(_that.minute,_that.teamSide,_that.command,_that.note,_that.expir
 @JsonSerializable()
 
 class _ManagerIntervention extends ManagerIntervention {
-  const _ManagerIntervention({required this.minute, required this.teamSide, required this.command, this.note, this.expiresAtMinute}): super._();
+  const _ManagerIntervention({required this.id, required this.minute, required this.teamSide, required this.command, this.note, this.expiresAtMinute}): super._();
   factory _ManagerIntervention.fromJson(Map<String, dynamic> json) => _$ManagerInterventionFromJson(json);
 
+@override final  int id;
 @override final  int minute;
 @override final  TeamSide teamSide;
 @override final  MatchCommandType command;
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ManagerIntervention&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.command, command) || other.command == command)&&(identical(other.note, note) || other.note == note)&&(identical(other.expiresAtMinute, expiresAtMinute) || other.expiresAtMinute == expiresAtMinute));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ManagerIntervention&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.teamSide, teamSide) || other.teamSide == teamSide)&&(identical(other.command, command) || other.command == command)&&(identical(other.note, note) || other.note == note)&&(identical(other.expiresAtMinute, expiresAtMinute) || other.expiresAtMinute == expiresAtMinute));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,teamSide,command,note,expiresAtMinute);
+int get hashCode => Object.hash(runtimeType,id,minute,teamSide,command,note,expiresAtMinute);
 
 @override
 String toString() {
-  return 'ManagerIntervention(minute: $minute, teamSide: $teamSide, command: $command, note: $note, expiresAtMinute: $expiresAtMinute)';
+  return 'ManagerIntervention(id: $id, minute: $minute, teamSide: $teamSide, command: $command, note: $note, expiresAtMinute: $expiresAtMinute)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$ManagerInterventionCopyWith<$Res> implements $ManagerInte
   factory _$ManagerInterventionCopyWith(_ManagerIntervention value, $Res Function(_ManagerIntervention) _then) = __$ManagerInterventionCopyWithImpl;
 @override @useResult
 $Res call({
- int minute, TeamSide teamSide, MatchCommandType command, String? note, int? expiresAtMinute
+ int id, int minute, TeamSide teamSide, MatchCommandType command, String? note, int? expiresAtMinute
 });
 
 
@@ -272,9 +274,10 @@ class __$ManagerInterventionCopyWithImpl<$Res>
 
 /// Create a copy of ManagerIntervention
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? minute = null,Object? teamSide = null,Object? command = null,Object? note = freezed,Object? expiresAtMinute = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? minute = null,Object? teamSide = null,Object? command = null,Object? note = freezed,Object? expiresAtMinute = freezed,}) {
   return _then(_ManagerIntervention(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,teamSide: null == teamSide ? _self.teamSide : teamSide // ignore: cast_nullable_to_non_nullable
 as TeamSide,command: null == command ? _self.command : command // ignore: cast_nullable_to_non_nullable
 as MatchCommandType,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchContext {
 
- TacticalIdentity get homeTacticalIdentity; TacticalIdentity get awayTacticalIdentity; TeamStrengthProfile get homeStrengthProfile; TeamStrengthProfile get awayStrengthProfile; StructuralProfile get homeStructuralProfile; StructuralProfile get awayStructuralProfile; MatchupProfile get homeToAwayMatchupProfile; MatchupProfile get awayToHomeMatchupProfile;
+ int get id; TacticalIdentity get homeTacticalIdentity; TacticalIdentity get awayTacticalIdentity; TeamStrengthProfile get homeStrengthProfile; TeamStrengthProfile get awayStrengthProfile; StructuralProfile get homeStructuralProfile; StructuralProfile get awayStructuralProfile; MatchupProfile get homeToAwayMatchupProfile; MatchupProfile get awayToHomeMatchupProfile;
 /// Create a copy of MatchContext
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MatchContextCopyWith<MatchContext> get copyWith => _$MatchContextCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchContext&&(identical(other.homeTacticalIdentity, homeTacticalIdentity) || other.homeTacticalIdentity == homeTacticalIdentity)&&(identical(other.awayTacticalIdentity, awayTacticalIdentity) || other.awayTacticalIdentity == awayTacticalIdentity)&&(identical(other.homeStrengthProfile, homeStrengthProfile) || other.homeStrengthProfile == homeStrengthProfile)&&(identical(other.awayStrengthProfile, awayStrengthProfile) || other.awayStrengthProfile == awayStrengthProfile)&&(identical(other.homeStructuralProfile, homeStructuralProfile) || other.homeStructuralProfile == homeStructuralProfile)&&(identical(other.awayStructuralProfile, awayStructuralProfile) || other.awayStructuralProfile == awayStructuralProfile)&&(identical(other.homeToAwayMatchupProfile, homeToAwayMatchupProfile) || other.homeToAwayMatchupProfile == homeToAwayMatchupProfile)&&(identical(other.awayToHomeMatchupProfile, awayToHomeMatchupProfile) || other.awayToHomeMatchupProfile == awayToHomeMatchupProfile));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchContext&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTacticalIdentity, homeTacticalIdentity) || other.homeTacticalIdentity == homeTacticalIdentity)&&(identical(other.awayTacticalIdentity, awayTacticalIdentity) || other.awayTacticalIdentity == awayTacticalIdentity)&&(identical(other.homeStrengthProfile, homeStrengthProfile) || other.homeStrengthProfile == homeStrengthProfile)&&(identical(other.awayStrengthProfile, awayStrengthProfile) || other.awayStrengthProfile == awayStrengthProfile)&&(identical(other.homeStructuralProfile, homeStructuralProfile) || other.homeStructuralProfile == homeStructuralProfile)&&(identical(other.awayStructuralProfile, awayStructuralProfile) || other.awayStructuralProfile == awayStructuralProfile)&&(identical(other.homeToAwayMatchupProfile, homeToAwayMatchupProfile) || other.homeToAwayMatchupProfile == homeToAwayMatchupProfile)&&(identical(other.awayToHomeMatchupProfile, awayToHomeMatchupProfile) || other.awayToHomeMatchupProfile == awayToHomeMatchupProfile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,homeTacticalIdentity,awayTacticalIdentity,homeStrengthProfile,awayStrengthProfile,homeStructuralProfile,awayStructuralProfile,homeToAwayMatchupProfile,awayToHomeMatchupProfile);
+int get hashCode => Object.hash(runtimeType,id,homeTacticalIdentity,awayTacticalIdentity,homeStrengthProfile,awayStrengthProfile,homeStructuralProfile,awayStructuralProfile,homeToAwayMatchupProfile,awayToHomeMatchupProfile);
 
 @override
 String toString() {
-  return 'MatchContext(homeTacticalIdentity: $homeTacticalIdentity, awayTacticalIdentity: $awayTacticalIdentity, homeStrengthProfile: $homeStrengthProfile, awayStrengthProfile: $awayStrengthProfile, homeStructuralProfile: $homeStructuralProfile, awayStructuralProfile: $awayStructuralProfile, homeToAwayMatchupProfile: $homeToAwayMatchupProfile, awayToHomeMatchupProfile: $awayToHomeMatchupProfile)';
+  return 'MatchContext(id: $id, homeTacticalIdentity: $homeTacticalIdentity, awayTacticalIdentity: $awayTacticalIdentity, homeStrengthProfile: $homeStrengthProfile, awayStrengthProfile: $awayStrengthProfile, homeStructuralProfile: $homeStructuralProfile, awayStructuralProfile: $awayStructuralProfile, homeToAwayMatchupProfile: $homeToAwayMatchupProfile, awayToHomeMatchupProfile: $awayToHomeMatchupProfile)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MatchContextCopyWith<$Res>  {
   factory $MatchContextCopyWith(MatchContext value, $Res Function(MatchContext) _then) = _$MatchContextCopyWithImpl;
 @useResult
 $Res call({
- TacticalIdentity homeTacticalIdentity, TacticalIdentity awayTacticalIdentity, TeamStrengthProfile homeStrengthProfile, TeamStrengthProfile awayStrengthProfile, StructuralProfile homeStructuralProfile, StructuralProfile awayStructuralProfile, MatchupProfile homeToAwayMatchupProfile, MatchupProfile awayToHomeMatchupProfile
+ int id, TacticalIdentity homeTacticalIdentity, TacticalIdentity awayTacticalIdentity, TeamStrengthProfile homeStrengthProfile, TeamStrengthProfile awayStrengthProfile, StructuralProfile homeStructuralProfile, StructuralProfile awayStructuralProfile, MatchupProfile homeToAwayMatchupProfile, MatchupProfile awayToHomeMatchupProfile
 });
 
 
@@ -65,9 +65,10 @@ class _$MatchContextCopyWithImpl<$Res>
 
 /// Create a copy of MatchContext
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? homeTacticalIdentity = null,Object? awayTacticalIdentity = null,Object? homeStrengthProfile = null,Object? awayStrengthProfile = null,Object? homeStructuralProfile = null,Object? awayStructuralProfile = null,Object? homeToAwayMatchupProfile = null,Object? awayToHomeMatchupProfile = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? homeTacticalIdentity = null,Object? awayTacticalIdentity = null,Object? homeStrengthProfile = null,Object? awayStrengthProfile = null,Object? homeStructuralProfile = null,Object? awayStructuralProfile = null,Object? homeToAwayMatchupProfile = null,Object? awayToHomeMatchupProfile = null,}) {
   return _then(_self.copyWith(
-homeTacticalIdentity: null == homeTacticalIdentity ? _self.homeTacticalIdentity : homeTacticalIdentity // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,homeTacticalIdentity: null == homeTacticalIdentity ? _self.homeTacticalIdentity : homeTacticalIdentity // ignore: cast_nullable_to_non_nullable
 as TacticalIdentity,awayTacticalIdentity: null == awayTacticalIdentity ? _self.awayTacticalIdentity : awayTacticalIdentity // ignore: cast_nullable_to_non_nullable
 as TacticalIdentity,homeStrengthProfile: null == homeStrengthProfile ? _self.homeStrengthProfile : homeStrengthProfile // ignore: cast_nullable_to_non_nullable
 as TeamStrengthProfile,awayStrengthProfile: null == awayStrengthProfile ? _self.awayStrengthProfile : awayStrengthProfile // ignore: cast_nullable_to_non_nullable
@@ -232,10 +233,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchContext() when $default != null:
-return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
+return $default(_that.id,_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
   return orElse();
 
 }
@@ -253,10 +254,10 @@ return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.home
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)  $default,) {final _that = this;
 switch (_that) {
 case _MatchContext():
-return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
+return $default(_that.id,_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -273,10 +274,10 @@ return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.home
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  TacticalIdentity homeTacticalIdentity,  TacticalIdentity awayTacticalIdentity,  TeamStrengthProfile homeStrengthProfile,  TeamStrengthProfile awayStrengthProfile,  StructuralProfile homeStructuralProfile,  StructuralProfile awayStructuralProfile,  MatchupProfile homeToAwayMatchupProfile,  MatchupProfile awayToHomeMatchupProfile)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchContext() when $default != null:
-return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
+return $default(_that.id,_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.homeStrengthProfile,_that.awayStrengthProfile,_that.homeStructuralProfile,_that.awayStructuralProfile,_that.homeToAwayMatchupProfile,_that.awayToHomeMatchupProfile);case _:
   return null;
 
 }
@@ -288,9 +289,10 @@ return $default(_that.homeTacticalIdentity,_that.awayTacticalIdentity,_that.home
 @JsonSerializable()
 
 class _MatchContext implements MatchContext {
-  const _MatchContext({this.homeTacticalIdentity = const TacticalIdentity(), this.awayTacticalIdentity = const TacticalIdentity(), this.homeStrengthProfile = const TeamStrengthProfile(buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.awayStrengthProfile = const TeamStrengthProfile(buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.homeStructuralProfile = const StructuralProfile(), this.awayStructuralProfile = const StructuralProfile(), this.homeToAwayMatchupProfile = const MatchupProfile(), this.awayToHomeMatchupProfile = const MatchupProfile()});
+  const _MatchContext({required this.id, this.homeTacticalIdentity = const TacticalIdentity(id: 0), this.awayTacticalIdentity = const TacticalIdentity(id: 0), this.homeStrengthProfile = const TeamStrengthProfile(id: 0, buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.awayStrengthProfile = const TeamStrengthProfile(id: 0, buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.homeStructuralProfile = const StructuralProfile(id: 0), this.awayStructuralProfile = const StructuralProfile(id: 0), this.homeToAwayMatchupProfile = const MatchupProfile(id: 0), this.awayToHomeMatchupProfile = const MatchupProfile(id: 0)});
   factory _MatchContext.fromJson(Map<String, dynamic> json) => _$MatchContextFromJson(json);
 
+@override final  int id;
 @override@JsonKey() final  TacticalIdentity homeTacticalIdentity;
 @override@JsonKey() final  TacticalIdentity awayTacticalIdentity;
 @override@JsonKey() final  TeamStrengthProfile homeStrengthProfile;
@@ -313,16 +315,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchContext&&(identical(other.homeTacticalIdentity, homeTacticalIdentity) || other.homeTacticalIdentity == homeTacticalIdentity)&&(identical(other.awayTacticalIdentity, awayTacticalIdentity) || other.awayTacticalIdentity == awayTacticalIdentity)&&(identical(other.homeStrengthProfile, homeStrengthProfile) || other.homeStrengthProfile == homeStrengthProfile)&&(identical(other.awayStrengthProfile, awayStrengthProfile) || other.awayStrengthProfile == awayStrengthProfile)&&(identical(other.homeStructuralProfile, homeStructuralProfile) || other.homeStructuralProfile == homeStructuralProfile)&&(identical(other.awayStructuralProfile, awayStructuralProfile) || other.awayStructuralProfile == awayStructuralProfile)&&(identical(other.homeToAwayMatchupProfile, homeToAwayMatchupProfile) || other.homeToAwayMatchupProfile == homeToAwayMatchupProfile)&&(identical(other.awayToHomeMatchupProfile, awayToHomeMatchupProfile) || other.awayToHomeMatchupProfile == awayToHomeMatchupProfile));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchContext&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTacticalIdentity, homeTacticalIdentity) || other.homeTacticalIdentity == homeTacticalIdentity)&&(identical(other.awayTacticalIdentity, awayTacticalIdentity) || other.awayTacticalIdentity == awayTacticalIdentity)&&(identical(other.homeStrengthProfile, homeStrengthProfile) || other.homeStrengthProfile == homeStrengthProfile)&&(identical(other.awayStrengthProfile, awayStrengthProfile) || other.awayStrengthProfile == awayStrengthProfile)&&(identical(other.homeStructuralProfile, homeStructuralProfile) || other.homeStructuralProfile == homeStructuralProfile)&&(identical(other.awayStructuralProfile, awayStructuralProfile) || other.awayStructuralProfile == awayStructuralProfile)&&(identical(other.homeToAwayMatchupProfile, homeToAwayMatchupProfile) || other.homeToAwayMatchupProfile == homeToAwayMatchupProfile)&&(identical(other.awayToHomeMatchupProfile, awayToHomeMatchupProfile) || other.awayToHomeMatchupProfile == awayToHomeMatchupProfile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,homeTacticalIdentity,awayTacticalIdentity,homeStrengthProfile,awayStrengthProfile,homeStructuralProfile,awayStructuralProfile,homeToAwayMatchupProfile,awayToHomeMatchupProfile);
+int get hashCode => Object.hash(runtimeType,id,homeTacticalIdentity,awayTacticalIdentity,homeStrengthProfile,awayStrengthProfile,homeStructuralProfile,awayStructuralProfile,homeToAwayMatchupProfile,awayToHomeMatchupProfile);
 
 @override
 String toString() {
-  return 'MatchContext(homeTacticalIdentity: $homeTacticalIdentity, awayTacticalIdentity: $awayTacticalIdentity, homeStrengthProfile: $homeStrengthProfile, awayStrengthProfile: $awayStrengthProfile, homeStructuralProfile: $homeStructuralProfile, awayStructuralProfile: $awayStructuralProfile, homeToAwayMatchupProfile: $homeToAwayMatchupProfile, awayToHomeMatchupProfile: $awayToHomeMatchupProfile)';
+  return 'MatchContext(id: $id, homeTacticalIdentity: $homeTacticalIdentity, awayTacticalIdentity: $awayTacticalIdentity, homeStrengthProfile: $homeStrengthProfile, awayStrengthProfile: $awayStrengthProfile, homeStructuralProfile: $homeStructuralProfile, awayStructuralProfile: $awayStructuralProfile, homeToAwayMatchupProfile: $homeToAwayMatchupProfile, awayToHomeMatchupProfile: $awayToHomeMatchupProfile)';
 }
 
 
@@ -333,7 +335,7 @@ abstract mixin class _$MatchContextCopyWith<$Res> implements $MatchContextCopyWi
   factory _$MatchContextCopyWith(_MatchContext value, $Res Function(_MatchContext) _then) = __$MatchContextCopyWithImpl;
 @override @useResult
 $Res call({
- TacticalIdentity homeTacticalIdentity, TacticalIdentity awayTacticalIdentity, TeamStrengthProfile homeStrengthProfile, TeamStrengthProfile awayStrengthProfile, StructuralProfile homeStructuralProfile, StructuralProfile awayStructuralProfile, MatchupProfile homeToAwayMatchupProfile, MatchupProfile awayToHomeMatchupProfile
+ int id, TacticalIdentity homeTacticalIdentity, TacticalIdentity awayTacticalIdentity, TeamStrengthProfile homeStrengthProfile, TeamStrengthProfile awayStrengthProfile, StructuralProfile homeStructuralProfile, StructuralProfile awayStructuralProfile, MatchupProfile homeToAwayMatchupProfile, MatchupProfile awayToHomeMatchupProfile
 });
 
 
@@ -350,9 +352,10 @@ class __$MatchContextCopyWithImpl<$Res>
 
 /// Create a copy of MatchContext
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? homeTacticalIdentity = null,Object? awayTacticalIdentity = null,Object? homeStrengthProfile = null,Object? awayStrengthProfile = null,Object? homeStructuralProfile = null,Object? awayStructuralProfile = null,Object? homeToAwayMatchupProfile = null,Object? awayToHomeMatchupProfile = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? homeTacticalIdentity = null,Object? awayTacticalIdentity = null,Object? homeStrengthProfile = null,Object? awayStrengthProfile = null,Object? homeStructuralProfile = null,Object? awayStructuralProfile = null,Object? homeToAwayMatchupProfile = null,Object? awayToHomeMatchupProfile = null,}) {
   return _then(_MatchContext(
-homeTacticalIdentity: null == homeTacticalIdentity ? _self.homeTacticalIdentity : homeTacticalIdentity // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,homeTacticalIdentity: null == homeTacticalIdentity ? _self.homeTacticalIdentity : homeTacticalIdentity // ignore: cast_nullable_to_non_nullable
 as TacticalIdentity,awayTacticalIdentity: null == awayTacticalIdentity ? _self.awayTacticalIdentity : awayTacticalIdentity // ignore: cast_nullable_to_non_nullable
 as TacticalIdentity,homeStrengthProfile: null == homeStrengthProfile ? _self.homeStrengthProfile : homeStrengthProfile // ignore: cast_nullable_to_non_nullable
 as TeamStrengthProfile,awayStrengthProfile: null == awayStrengthProfile ? _self.awayStrengthProfile : awayStrengthProfile // ignore: cast_nullable_to_non_nullable

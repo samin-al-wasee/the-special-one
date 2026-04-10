@@ -50,6 +50,7 @@ class MatchContextBuilder {
     );
 
     return MatchContext(
+      id: (homeTeam.id * 1000003) + awayTeam.id,
       homeTacticalIdentity: homeTacticalIdentity,
       awayTacticalIdentity: awayTacticalIdentity,
       homeStrengthProfile: homeStrengthProfile,

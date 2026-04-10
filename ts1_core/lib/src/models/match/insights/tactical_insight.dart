@@ -7,6 +7,7 @@ part 'tactical_insight.g.dart';
 @freezed
 abstract class TacticalInsight with _$TacticalInsight {
   const factory TacticalInsight({
+    required int id,
     required int minute,
     required TacticalSignalLevel level,
     required String message,

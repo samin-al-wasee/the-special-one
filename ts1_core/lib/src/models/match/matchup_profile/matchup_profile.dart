@@ -23,6 +23,8 @@ abstract class MatchupProfile with _$MatchupProfile {
   /// - Wing vs Central Routes
   /// - Fullback vs Winger Duel
   const factory MatchupProfile({
+    required int id,
+
     // ==================== POSSESSION and BUILD-UP ====================
     // How A's build-up style matches against B's press resistance
     @Default(0.0) double buildupEdge,

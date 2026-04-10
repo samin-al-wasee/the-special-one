@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchupState {
 
-// Attack vs defense interaction per direction.
+ int get id;// Attack vs defense interaction per direction.
  double get homeAttackVsAwayDefense; double get awayAttackVsHomeDefense;// Midfield and territorial control.
  double get midfieldControlEdge;// Transition and route control.
  double get transitionControlEdge; double get wingControlEdge;// Set-piece confrontation outcome edge.
@@ -32,16 +32,16 @@ $MatchupStateCopyWith<MatchupState> get copyWith => _$MatchupStateCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchupState&&(identical(other.homeAttackVsAwayDefense, homeAttackVsAwayDefense) || other.homeAttackVsAwayDefense == homeAttackVsAwayDefense)&&(identical(other.awayAttackVsHomeDefense, awayAttackVsHomeDefense) || other.awayAttackVsHomeDefense == awayAttackVsHomeDefense)&&(identical(other.midfieldControlEdge, midfieldControlEdge) || other.midfieldControlEdge == midfieldControlEdge)&&(identical(other.transitionControlEdge, transitionControlEdge) || other.transitionControlEdge == transitionControlEdge)&&(identical(other.wingControlEdge, wingControlEdge) || other.wingControlEdge == wingControlEdge)&&(identical(other.setPieceControlEdge, setPieceControlEdge) || other.setPieceControlEdge == setPieceControlEdge));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchupState&&(identical(other.id, id) || other.id == id)&&(identical(other.homeAttackVsAwayDefense, homeAttackVsAwayDefense) || other.homeAttackVsAwayDefense == homeAttackVsAwayDefense)&&(identical(other.awayAttackVsHomeDefense, awayAttackVsHomeDefense) || other.awayAttackVsHomeDefense == awayAttackVsHomeDefense)&&(identical(other.midfieldControlEdge, midfieldControlEdge) || other.midfieldControlEdge == midfieldControlEdge)&&(identical(other.transitionControlEdge, transitionControlEdge) || other.transitionControlEdge == transitionControlEdge)&&(identical(other.wingControlEdge, wingControlEdge) || other.wingControlEdge == wingControlEdge)&&(identical(other.setPieceControlEdge, setPieceControlEdge) || other.setPieceControlEdge == setPieceControlEdge));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,homeAttackVsAwayDefense,awayAttackVsHomeDefense,midfieldControlEdge,transitionControlEdge,wingControlEdge,setPieceControlEdge);
+int get hashCode => Object.hash(runtimeType,id,homeAttackVsAwayDefense,awayAttackVsHomeDefense,midfieldControlEdge,transitionControlEdge,wingControlEdge,setPieceControlEdge);
 
 @override
 String toString() {
-  return 'MatchupState(homeAttackVsAwayDefense: $homeAttackVsAwayDefense, awayAttackVsHomeDefense: $awayAttackVsHomeDefense, midfieldControlEdge: $midfieldControlEdge, transitionControlEdge: $transitionControlEdge, wingControlEdge: $wingControlEdge, setPieceControlEdge: $setPieceControlEdge)';
+  return 'MatchupState(id: $id, homeAttackVsAwayDefense: $homeAttackVsAwayDefense, awayAttackVsHomeDefense: $awayAttackVsHomeDefense, midfieldControlEdge: $midfieldControlEdge, transitionControlEdge: $transitionControlEdge, wingControlEdge: $wingControlEdge, setPieceControlEdge: $setPieceControlEdge)';
 }
 
 
@@ -52,7 +52,7 @@ abstract mixin class $MatchupStateCopyWith<$Res>  {
   factory $MatchupStateCopyWith(MatchupState value, $Res Function(MatchupState) _then) = _$MatchupStateCopyWithImpl;
 @useResult
 $Res call({
- double homeAttackVsAwayDefense, double awayAttackVsHomeDefense, double midfieldControlEdge, double transitionControlEdge, double wingControlEdge, double setPieceControlEdge
+ int id, double homeAttackVsAwayDefense, double awayAttackVsHomeDefense, double midfieldControlEdge, double transitionControlEdge, double wingControlEdge, double setPieceControlEdge
 });
 
 
@@ -69,9 +69,10 @@ class _$MatchupStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchupState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? homeAttackVsAwayDefense = null,Object? awayAttackVsHomeDefense = null,Object? midfieldControlEdge = null,Object? transitionControlEdge = null,Object? wingControlEdge = null,Object? setPieceControlEdge = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? homeAttackVsAwayDefense = null,Object? awayAttackVsHomeDefense = null,Object? midfieldControlEdge = null,Object? transitionControlEdge = null,Object? wingControlEdge = null,Object? setPieceControlEdge = null,}) {
   return _then(_self.copyWith(
-homeAttackVsAwayDefense: null == homeAttackVsAwayDefense ? _self.homeAttackVsAwayDefense : homeAttackVsAwayDefense // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,homeAttackVsAwayDefense: null == homeAttackVsAwayDefense ? _self.homeAttackVsAwayDefense : homeAttackVsAwayDefense // ignore: cast_nullable_to_non_nullable
 as double,awayAttackVsHomeDefense: null == awayAttackVsHomeDefense ? _self.awayAttackVsHomeDefense : awayAttackVsHomeDefense // ignore: cast_nullable_to_non_nullable
 as double,midfieldControlEdge: null == midfieldControlEdge ? _self.midfieldControlEdge : midfieldControlEdge // ignore: cast_nullable_to_non_nullable
 as double,transitionControlEdge: null == transitionControlEdge ? _self.transitionControlEdge : transitionControlEdge // ignore: cast_nullable_to_non_nullable
@@ -162,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchupState() when $default != null:
-return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
+return $default(_that.id,_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
   return orElse();
 
 }
@@ -183,10 +184,10 @@ return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)  $default,) {final _that = this;
 switch (_that) {
 case _MatchupState():
-return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
+return $default(_that.id,_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +204,10 @@ return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double homeAttackVsAwayDefense,  double awayAttackVsHomeDefense,  double midfieldControlEdge,  double transitionControlEdge,  double wingControlEdge,  double setPieceControlEdge)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchupState() when $default != null:
-return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
+return $default(_that.id,_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_that.midfieldControlEdge,_that.transitionControlEdge,_that.wingControlEdge,_that.setPieceControlEdge);case _:
   return null;
 
 }
@@ -218,9 +219,10 @@ return $default(_that.homeAttackVsAwayDefense,_that.awayAttackVsHomeDefense,_tha
 @JsonSerializable()
 
 class _MatchupState implements MatchupState {
-  const _MatchupState({this.homeAttackVsAwayDefense = 0.0, this.awayAttackVsHomeDefense = 0.0, this.midfieldControlEdge = 0.0, this.transitionControlEdge = 0.0, this.wingControlEdge = 0.0, this.setPieceControlEdge = 0.0});
+  const _MatchupState({required this.id, this.homeAttackVsAwayDefense = 0.0, this.awayAttackVsHomeDefense = 0.0, this.midfieldControlEdge = 0.0, this.transitionControlEdge = 0.0, this.wingControlEdge = 0.0, this.setPieceControlEdge = 0.0});
   factory _MatchupState.fromJson(Map<String, dynamic> json) => _$MatchupStateFromJson(json);
 
+@override final  int id;
 // Attack vs defense interaction per direction.
 @override@JsonKey() final  double homeAttackVsAwayDefense;
 @override@JsonKey() final  double awayAttackVsHomeDefense;
@@ -245,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchupState&&(identical(other.homeAttackVsAwayDefense, homeAttackVsAwayDefense) || other.homeAttackVsAwayDefense == homeAttackVsAwayDefense)&&(identical(other.awayAttackVsHomeDefense, awayAttackVsHomeDefense) || other.awayAttackVsHomeDefense == awayAttackVsHomeDefense)&&(identical(other.midfieldControlEdge, midfieldControlEdge) || other.midfieldControlEdge == midfieldControlEdge)&&(identical(other.transitionControlEdge, transitionControlEdge) || other.transitionControlEdge == transitionControlEdge)&&(identical(other.wingControlEdge, wingControlEdge) || other.wingControlEdge == wingControlEdge)&&(identical(other.setPieceControlEdge, setPieceControlEdge) || other.setPieceControlEdge == setPieceControlEdge));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchupState&&(identical(other.id, id) || other.id == id)&&(identical(other.homeAttackVsAwayDefense, homeAttackVsAwayDefense) || other.homeAttackVsAwayDefense == homeAttackVsAwayDefense)&&(identical(other.awayAttackVsHomeDefense, awayAttackVsHomeDefense) || other.awayAttackVsHomeDefense == awayAttackVsHomeDefense)&&(identical(other.midfieldControlEdge, midfieldControlEdge) || other.midfieldControlEdge == midfieldControlEdge)&&(identical(other.transitionControlEdge, transitionControlEdge) || other.transitionControlEdge == transitionControlEdge)&&(identical(other.wingControlEdge, wingControlEdge) || other.wingControlEdge == wingControlEdge)&&(identical(other.setPieceControlEdge, setPieceControlEdge) || other.setPieceControlEdge == setPieceControlEdge));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,homeAttackVsAwayDefense,awayAttackVsHomeDefense,midfieldControlEdge,transitionControlEdge,wingControlEdge,setPieceControlEdge);
+int get hashCode => Object.hash(runtimeType,id,homeAttackVsAwayDefense,awayAttackVsHomeDefense,midfieldControlEdge,transitionControlEdge,wingControlEdge,setPieceControlEdge);
 
 @override
 String toString() {
-  return 'MatchupState(homeAttackVsAwayDefense: $homeAttackVsAwayDefense, awayAttackVsHomeDefense: $awayAttackVsHomeDefense, midfieldControlEdge: $midfieldControlEdge, transitionControlEdge: $transitionControlEdge, wingControlEdge: $wingControlEdge, setPieceControlEdge: $setPieceControlEdge)';
+  return 'MatchupState(id: $id, homeAttackVsAwayDefense: $homeAttackVsAwayDefense, awayAttackVsHomeDefense: $awayAttackVsHomeDefense, midfieldControlEdge: $midfieldControlEdge, transitionControlEdge: $transitionControlEdge, wingControlEdge: $wingControlEdge, setPieceControlEdge: $setPieceControlEdge)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$MatchupStateCopyWith<$Res> implements $MatchupStateCopyWi
   factory _$MatchupStateCopyWith(_MatchupState value, $Res Function(_MatchupState) _then) = __$MatchupStateCopyWithImpl;
 @override @useResult
 $Res call({
- double homeAttackVsAwayDefense, double awayAttackVsHomeDefense, double midfieldControlEdge, double transitionControlEdge, double wingControlEdge, double setPieceControlEdge
+ int id, double homeAttackVsAwayDefense, double awayAttackVsHomeDefense, double midfieldControlEdge, double transitionControlEdge, double wingControlEdge, double setPieceControlEdge
 });
 
 
@@ -282,9 +284,10 @@ class __$MatchupStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchupState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? homeAttackVsAwayDefense = null,Object? awayAttackVsHomeDefense = null,Object? midfieldControlEdge = null,Object? transitionControlEdge = null,Object? wingControlEdge = null,Object? setPieceControlEdge = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? homeAttackVsAwayDefense = null,Object? awayAttackVsHomeDefense = null,Object? midfieldControlEdge = null,Object? transitionControlEdge = null,Object? wingControlEdge = null,Object? setPieceControlEdge = null,}) {
   return _then(_MatchupState(
-homeAttackVsAwayDefense: null == homeAttackVsAwayDefense ? _self.homeAttackVsAwayDefense : homeAttackVsAwayDefense // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,homeAttackVsAwayDefense: null == homeAttackVsAwayDefense ? _self.homeAttackVsAwayDefense : homeAttackVsAwayDefense // ignore: cast_nullable_to_non_nullable
 as double,awayAttackVsHomeDefense: null == awayAttackVsHomeDefense ? _self.awayAttackVsHomeDefense : awayAttackVsHomeDefense // ignore: cast_nullable_to_non_nullable
 as double,midfieldControlEdge: null == midfieldControlEdge ? _self.midfieldControlEdge : midfieldControlEdge // ignore: cast_nullable_to_non_nullable
 as double,transitionControlEdge: null == transitionControlEdge ? _self.transitionControlEdge : transitionControlEdge // ignore: cast_nullable_to_non_nullable

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MatchClock {
 
- int get minute; int get second; int get extraTimeFirstHalf; int get extraTimeSecondHalf;
+ int get id; int get minute; int get second; int get extraTimeFirstHalf; int get extraTimeSecondHalf;
 /// Create a copy of MatchClock
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $MatchClockCopyWith<MatchClock> get copyWith => _$MatchClockCopyWithImpl<MatchCl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchClock&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.second, second) || other.second == second)&&(identical(other.extraTimeFirstHalf, extraTimeFirstHalf) || other.extraTimeFirstHalf == extraTimeFirstHalf)&&(identical(other.extraTimeSecondHalf, extraTimeSecondHalf) || other.extraTimeSecondHalf == extraTimeSecondHalf));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchClock&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.second, second) || other.second == second)&&(identical(other.extraTimeFirstHalf, extraTimeFirstHalf) || other.extraTimeFirstHalf == extraTimeFirstHalf)&&(identical(other.extraTimeSecondHalf, extraTimeSecondHalf) || other.extraTimeSecondHalf == extraTimeSecondHalf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,second,extraTimeFirstHalf,extraTimeSecondHalf);
+int get hashCode => Object.hash(runtimeType,id,minute,second,extraTimeFirstHalf,extraTimeSecondHalf);
 
 
 
@@ -44,7 +44,7 @@ abstract mixin class $MatchClockCopyWith<$Res>  {
   factory $MatchClockCopyWith(MatchClock value, $Res Function(MatchClock) _then) = _$MatchClockCopyWithImpl;
 @useResult
 $Res call({
- int minute, int second, int extraTimeFirstHalf, int extraTimeSecondHalf
+ int id, int minute, int second, int extraTimeFirstHalf, int extraTimeSecondHalf
 });
 
 
@@ -61,9 +61,10 @@ class _$MatchClockCopyWithImpl<$Res>
 
 /// Create a copy of MatchClock
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? minute = null,Object? second = null,Object? extraTimeFirstHalf = null,Object? extraTimeSecondHalf = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? minute = null,Object? second = null,Object? extraTimeFirstHalf = null,Object? extraTimeSecondHalf = null,}) {
   return _then(_self.copyWith(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,second: null == second ? _self.second : second // ignore: cast_nullable_to_non_nullable
 as int,extraTimeFirstHalf: null == extraTimeFirstHalf ? _self.extraTimeFirstHalf : extraTimeFirstHalf // ignore: cast_nullable_to_non_nullable
 as int,extraTimeSecondHalf: null == extraTimeSecondHalf ? _self.extraTimeSecondHalf : extraTimeSecondHalf // ignore: cast_nullable_to_non_nullable
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchClock() when $default != null:
-return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
+return $default(_that.id,_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTi
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)  $default,) {final _that = this;
 switch (_that) {
 case _MatchClock():
-return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
+return $default(_that.id,_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTi
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int minute,  int second,  int extraTimeFirstHalf,  int extraTimeSecondHalf)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchClock() when $default != null:
-return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
+return $default(_that.id,_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTimeSecondHalf);case _:
   return null;
 
 }
@@ -208,9 +209,10 @@ return $default(_that.minute,_that.second,_that.extraTimeFirstHalf,_that.extraTi
 @JsonSerializable()
 
 class _MatchClock extends MatchClock {
-  const _MatchClock({this.minute = 0, this.second = 0, this.extraTimeFirstHalf = 0, this.extraTimeSecondHalf = 0}): super._();
+  const _MatchClock({required this.id, this.minute = 0, this.second = 0, this.extraTimeFirstHalf = 0, this.extraTimeSecondHalf = 0}): super._();
   factory _MatchClock.fromJson(Map<String, dynamic> json) => _$MatchClockFromJson(json);
 
+@override final  int id;
 @override@JsonKey() final  int minute;
 @override@JsonKey() final  int second;
 @override@JsonKey() final  int extraTimeFirstHalf;
@@ -229,12 +231,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchClock&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.second, second) || other.second == second)&&(identical(other.extraTimeFirstHalf, extraTimeFirstHalf) || other.extraTimeFirstHalf == extraTimeFirstHalf)&&(identical(other.extraTimeSecondHalf, extraTimeSecondHalf) || other.extraTimeSecondHalf == extraTimeSecondHalf));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchClock&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.second, second) || other.second == second)&&(identical(other.extraTimeFirstHalf, extraTimeFirstHalf) || other.extraTimeFirstHalf == extraTimeFirstHalf)&&(identical(other.extraTimeSecondHalf, extraTimeSecondHalf) || other.extraTimeSecondHalf == extraTimeSecondHalf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,second,extraTimeFirstHalf,extraTimeSecondHalf);
+int get hashCode => Object.hash(runtimeType,id,minute,second,extraTimeFirstHalf,extraTimeSecondHalf);
 
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$MatchClockCopyWith<$Res> implements $MatchClockCopyWith<$
   factory _$MatchClockCopyWith(_MatchClock value, $Res Function(_MatchClock) _then) = __$MatchClockCopyWithImpl;
 @override @useResult
 $Res call({
- int minute, int second, int extraTimeFirstHalf, int extraTimeSecondHalf
+ int id, int minute, int second, int extraTimeFirstHalf, int extraTimeSecondHalf
 });
 
 
@@ -262,9 +264,10 @@ class __$MatchClockCopyWithImpl<$Res>
 
 /// Create a copy of MatchClock
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? minute = null,Object? second = null,Object? extraTimeFirstHalf = null,Object? extraTimeSecondHalf = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? minute = null,Object? second = null,Object? extraTimeFirstHalf = null,Object? extraTimeSecondHalf = null,}) {
   return _then(_MatchClock(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,second: null == second ? _self.second : second // ignore: cast_nullable_to_non_nullable
 as int,extraTimeFirstHalf: null == extraTimeFirstHalf ? _self.extraTimeFirstHalf : extraTimeFirstHalf // ignore: cast_nullable_to_non_nullable
 as int,extraTimeSecondHalf: null == extraTimeSecondHalf ? _self.extraTimeSecondHalf : extraTimeSecondHalf // ignore: cast_nullable_to_non_nullable

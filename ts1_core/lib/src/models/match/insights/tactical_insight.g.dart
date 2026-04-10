@@ -8,6 +8,7 @@ part of 'tactical_insight.dart';
 
 _TacticalInsight _$TacticalInsightFromJson(Map<String, dynamic> json) =>
     _TacticalInsight(
+      id: (json['id'] as num).toInt(),
       minute: (json['minute'] as num).toInt(),
       level: $enumDecode(_$TacticalSignalLevelEnumMap, json['level']),
       message: json['message'] as String,
@@ -17,6 +18,7 @@ _TacticalInsight _$TacticalInsightFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TacticalInsightToJson(_TacticalInsight instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'minute': instance.minute,
       'level': _$TacticalSignalLevelEnumMap[instance.level]!,
       'message': instance.message,

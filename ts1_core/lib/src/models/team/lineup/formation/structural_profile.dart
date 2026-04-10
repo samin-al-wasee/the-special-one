@@ -9,6 +9,7 @@ part 'structural_profile.g.dart';
 @freezed
 abstract class StructuralProfile with _$StructuralProfile {
   const factory StructuralProfile({
+    required int id,
     @Default(0.5) double widthCoverage,
     @Default(0.5) double centralDensity,
     @Default(0.5) double supportNetworkQuality,

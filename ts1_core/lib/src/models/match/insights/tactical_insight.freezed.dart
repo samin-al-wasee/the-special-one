@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TacticalInsight {
 
- int get minute; TacticalSignalLevel get level; String get message; String? get suggestedAction; TeamSide? get relatedTeam;
+ int get id; int get minute; TacticalSignalLevel get level; String get message; String? get suggestedAction; TeamSide? get relatedTeam;
 /// Create a copy of TacticalInsight
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TacticalInsightCopyWith<TacticalInsight> get copyWith => _$TacticalInsightCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TacticalInsight&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.level, level) || other.level == level)&&(identical(other.message, message) || other.message == message)&&(identical(other.suggestedAction, suggestedAction) || other.suggestedAction == suggestedAction)&&(identical(other.relatedTeam, relatedTeam) || other.relatedTeam == relatedTeam));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TacticalInsight&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.level, level) || other.level == level)&&(identical(other.message, message) || other.message == message)&&(identical(other.suggestedAction, suggestedAction) || other.suggestedAction == suggestedAction)&&(identical(other.relatedTeam, relatedTeam) || other.relatedTeam == relatedTeam));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,level,message,suggestedAction,relatedTeam);
+int get hashCode => Object.hash(runtimeType,id,minute,level,message,suggestedAction,relatedTeam);
 
 @override
 String toString() {
-  return 'TacticalInsight(minute: $minute, level: $level, message: $message, suggestedAction: $suggestedAction, relatedTeam: $relatedTeam)';
+  return 'TacticalInsight(id: $id, minute: $minute, level: $level, message: $message, suggestedAction: $suggestedAction, relatedTeam: $relatedTeam)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TacticalInsightCopyWith<$Res>  {
   factory $TacticalInsightCopyWith(TacticalInsight value, $Res Function(TacticalInsight) _then) = _$TacticalInsightCopyWithImpl;
 @useResult
 $Res call({
- int minute, TacticalSignalLevel level, String message, String? suggestedAction, TeamSide? relatedTeam
+ int id, int minute, TacticalSignalLevel level, String message, String? suggestedAction, TeamSide? relatedTeam
 });
 
 
@@ -65,9 +65,10 @@ class _$TacticalInsightCopyWithImpl<$Res>
 
 /// Create a copy of TacticalInsight
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? minute = null,Object? level = null,Object? message = null,Object? suggestedAction = freezed,Object? relatedTeam = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? minute = null,Object? level = null,Object? message = null,Object? suggestedAction = freezed,Object? relatedTeam = freezed,}) {
   return _then(_self.copyWith(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as TacticalSignalLevel,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,suggestedAction: freezed == suggestedAction ? _self.suggestedAction : suggestedAction // ignore: cast_nullable_to_non_nullable
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TacticalInsight() when $default != null:
-return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
+return $default(_that.id,_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)  $default,) {final _that = this;
 switch (_that) {
 case _TacticalInsight():
-return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
+return $default(_that.id,_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int minute,  TacticalSignalLevel level,  String message,  String? suggestedAction,  TeamSide? relatedTeam)?  $default,) {final _that = this;
 switch (_that) {
 case _TacticalInsight() when $default != null:
-return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
+return $default(_that.id,_that.minute,_that.level,_that.message,_that.suggestedAction,_that.relatedTeam);case _:
   return null;
 
 }
@@ -213,9 +214,10 @@ return $default(_that.minute,_that.level,_that.message,_that.suggestedAction,_th
 @JsonSerializable()
 
 class _TacticalInsight extends TacticalInsight {
-  const _TacticalInsight({required this.minute, required this.level, required this.message, this.suggestedAction, this.relatedTeam}): super._();
+  const _TacticalInsight({required this.id, required this.minute, required this.level, required this.message, this.suggestedAction, this.relatedTeam}): super._();
   factory _TacticalInsight.fromJson(Map<String, dynamic> json) => _$TacticalInsightFromJson(json);
 
+@override final  int id;
 @override final  int minute;
 @override final  TacticalSignalLevel level;
 @override final  String message;
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TacticalInsight&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.level, level) || other.level == level)&&(identical(other.message, message) || other.message == message)&&(identical(other.suggestedAction, suggestedAction) || other.suggestedAction == suggestedAction)&&(identical(other.relatedTeam, relatedTeam) || other.relatedTeam == relatedTeam));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TacticalInsight&&(identical(other.id, id) || other.id == id)&&(identical(other.minute, minute) || other.minute == minute)&&(identical(other.level, level) || other.level == level)&&(identical(other.message, message) || other.message == message)&&(identical(other.suggestedAction, suggestedAction) || other.suggestedAction == suggestedAction)&&(identical(other.relatedTeam, relatedTeam) || other.relatedTeam == relatedTeam));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,minute,level,message,suggestedAction,relatedTeam);
+int get hashCode => Object.hash(runtimeType,id,minute,level,message,suggestedAction,relatedTeam);
 
 @override
 String toString() {
-  return 'TacticalInsight(minute: $minute, level: $level, message: $message, suggestedAction: $suggestedAction, relatedTeam: $relatedTeam)';
+  return 'TacticalInsight(id: $id, minute: $minute, level: $level, message: $message, suggestedAction: $suggestedAction, relatedTeam: $relatedTeam)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$TacticalInsightCopyWith<$Res> implements $TacticalInsight
   factory _$TacticalInsightCopyWith(_TacticalInsight value, $Res Function(_TacticalInsight) _then) = __$TacticalInsightCopyWithImpl;
 @override @useResult
 $Res call({
- int minute, TacticalSignalLevel level, String message, String? suggestedAction, TeamSide? relatedTeam
+ int id, int minute, TacticalSignalLevel level, String message, String? suggestedAction, TeamSide? relatedTeam
 });
 
 
@@ -272,9 +274,10 @@ class __$TacticalInsightCopyWithImpl<$Res>
 
 /// Create a copy of TacticalInsight
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? minute = null,Object? level = null,Object? message = null,Object? suggestedAction = freezed,Object? relatedTeam = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? minute = null,Object? level = null,Object? message = null,Object? suggestedAction = freezed,Object? relatedTeam = freezed,}) {
   return _then(_TacticalInsight(
-minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,minute: null == minute ? _self.minute : minute // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as TacticalSignalLevel,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,suggestedAction: freezed == suggestedAction ? _self.suggestedAction : suggestedAction // ignore: cast_nullable_to_non_nullable

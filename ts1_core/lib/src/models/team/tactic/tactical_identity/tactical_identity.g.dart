@@ -9,6 +9,7 @@ part of 'tactical_identity.dart';
 _TacticalIdentity _$TacticalIdentityFromJson(
   Map<String, dynamic> json,
 ) => _TacticalIdentity(
+  id: (json['id'] as num).toInt(),
   riskTaking: (json['riskTaking'] as num?)?.toDouble() ?? 0.50,
   directnessBias: (json['directnessBias'] as num?)?.toDouble() ?? 0.50,
   verticalProgressionBias:
@@ -50,6 +51,7 @@ _TacticalIdentity _$TacticalIdentityFromJson(
 
 Map<String, dynamic> _$TacticalIdentityToJson(_TacticalIdentity instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'riskTaking': instance.riskTaking,
       'directnessBias': instance.directnessBias,
       'verticalProgressionBias': instance.verticalProgressionBias,

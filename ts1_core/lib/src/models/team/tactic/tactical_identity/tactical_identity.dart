@@ -11,6 +11,7 @@ part 'tactical_identity.g.dart';
 @freezed
 abstract class TacticalIdentity with _$TacticalIdentity {
   const factory TacticalIdentity({
+    required int id,
     // ---- Possession / risk profile ----
     // 0..1: 0 = very controlled, 1 = very chaotic/risky
     @Default(0.50) double riskTaking,

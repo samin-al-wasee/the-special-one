@@ -27,6 +27,7 @@ class MatchStateFactory {
     TeamSide kickoffSide = TeamSide.home,
   }) {
     final initialSnapshot = PhaseResolutionSnapshot(
+      id: 0,
       phaseIndex: 0,
       minute: 0,
       phaseType: MatchPhaseType.setPiece,
@@ -37,6 +38,7 @@ class MatchStateFactory {
     );
 
     final kickoffEvent = MatchEventCard(
+      id: 0,
       minute: 0,
       title: 'Kickoff',
       description: 'The match starts with ${kickoffSide.name} in possession.',
@@ -83,6 +85,7 @@ class MatchStateFactory {
         : <MatchEventCard>[];
 
     return MatchState(
+      id: context.id,
       status: status,
       currentPhaseIndex: 0,
       currentPhaseType: currentPhaseType,

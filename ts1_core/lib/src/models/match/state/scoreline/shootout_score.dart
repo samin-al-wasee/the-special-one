@@ -6,8 +6,11 @@ part 'shootout_score.g.dart';
 
 @freezed
 abstract class ShootoutScore with _$ShootoutScore {
-  const factory ShootoutScore({@Default(0) int home, @Default(0) int away}) =
-      _ShootoutScore;
+  const factory ShootoutScore({
+    required int id,
+    @Default(0) int home,
+    @Default(0) int away,
+  }) = _ShootoutScore;
 
   factory ShootoutScore.fromJson(Map<String, dynamic> json) =>
       _$ShootoutScoreFromJson(json);

@@ -6,6 +6,7 @@ part 'team_match_stats.g.dart';
 @freezed
 abstract class TeamMatchStats with _$TeamMatchStats {
   const factory TeamMatchStats({
+    required int id,
     @Default(50.0) double possession,
     @Default(0) int shots,
     @Default(0) int shotsOnTarget,

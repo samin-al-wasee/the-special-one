@@ -43,6 +43,8 @@ part 'attack_state.g.dart';
 @freezed
 abstract class AttackState with _$AttackState {
   const factory AttackState({
+    required int id,
+
     /// Where the ball is progressing spatially.
     /// Determines pitch zones available for play.
     required AttackRoute route,
