@@ -9,10 +9,6 @@ import 'package:ts1_core/src/enums/team/tactic/tactical_attributes.dart';
 import 'src/enums/match/match_enums.dart';
 import 'src/enums/player/player_attributes.dart';
 import 'src/enums/player/position.dart';
-import 'src/models/match/attack/attack_state.dart';
-import 'src/models/match/context/match_context.dart';
-import 'src/models/match/match.dart';
-import 'src/models/match/state/match_state.dart';
 import 'src/models/player/player.dart';
 import 'src/models/team/lineup/formation/shape/formation_shape.dart';
 import 'src/models/team/lineup/formation/slot/formation_slot.dart';
@@ -24,7 +20,11 @@ export 'src/ts1_core_base.dart';
 export 'src/builders/structural_profile_builder.dart';
 export 'src/builders/tactical_identity_builder.dart';
 export 'src/builders/team_strength_profile_builder.dart';
+export 'src/builders/match_context_builder.dart';
+export 'src/builders/matchup_state_builder.dart';
+export 'src/builders/match_dynamics_builder.dart';
 export 'src/factories/formation_factory.dart';
+export 'src/factories/match_state_factory.dart';
 export 'src/engines/match_engine.dart';
 export 'src/enums/player/player_attributes.dart';
 export 'src/enums/player/position.dart';
@@ -79,58 +79,15 @@ void main() {
     tactic: _cautiousDemoTactic(2),
   );
 
-  final engine = MatchEngine.shared;
-  var match = Match(
+  final match = MatchEngine.bootstrapMatch(
     id: 1001,
     homeTeam: homeTeam,
     awayTeam: awayTeam,
     kickoffAt: DateTime(2026, 4, 10, 20, 0),
     venue: 'Demo Stadium',
     weather: 'Clear',
-    context: MatchContext(),
-    matchState: const MatchState(),
   );
-
-  match = engine.kickoffMatch(match, kickoffSide: TeamSide.home);
-  print('Kickoff');
-  print(match.matchState.summary(homeTeam.name, awayTeam.name));
-
-  final buildUp = engine.buildSnapshot(
-    state: match.matchState,
-    phaseIndex: 1,
-    phaseType: MatchPhaseType.buildUp,
-    phaseState: MatchPhaseState.buildUp,
-    initiativeTeam: TeamSide.home,
-    possessionTeam: TeamSide.home,
-    territoryTeam: TeamSide.home,
-    zone: PitchZone.cm,
-  );
-  match = engine.resolvePhase(match, buildUp);
-
-  final chance = engine.buildSnapshot(
-    state: match.matchState,
-    phaseIndex: 2,
-    phaseType: MatchPhaseType.chance,
-    phaseState: MatchPhaseState.chance,
-    initiativeTeam: TeamSide.home,
-    possessionTeam: TeamSide.home,
-    territoryTeam: TeamSide.home,
-    attackState: const AttackState(
-      route: AttackRoute.centralProgression,
-      mode: AttackMode.quickTransition,
-      context: AttackContext.defensiveTransition,
-      phaseCount: 1,
-      intensity: 0.78,
-    ),
-    chanceType: ChanceType.highXgCentralShot,
-    chanceOutcome: ChanceOutcome.goal,
-    chanceQuality: 0.78,
-    zone: PitchZone.cf,
-    isImportant: true,
-  );
-  match = engine.resolvePhase(match, chance);
-
-  print('After goal');
+  print('Match bootstrapped');
   print(match.matchState.summary(homeTeam.name, awayTeam.name));
 }
 
