@@ -130,8 +130,10 @@ class MatchEngine {
   }) {
     final random = _phaseRandom(match, state);
     final initiative = _resolveInitiative(match, state, random);
-    final possession = state.currentPossession ?? initiative;
-    final territory = state.currentTerritoryControl ?? possession;
+    final possession = initiative;
+    final territory = random.nextDouble() < 0.72
+        ? initiative
+        : match.opponentOf(initiative);
     final phaseType = _resolvePhaseType(state);
     final phaseState = _resolvePhaseState(phaseType);
     final attackState = AttackState(
@@ -163,9 +165,11 @@ class MatchEngine {
       chanceQuality: chanceQuality,
       zone: zone,
       isImportant:
-          chanceType != null ||
           chanceOutcome == ChanceOutcome.goal ||
-          phaseType == MatchPhaseType.setPiece,
+          chanceOutcome == ChanceOutcome.woodwork ||
+          chanceOutcome == ChanceOutcome.save ||
+          (chanceQuality != null && chanceQuality >= 0.58) ||
+          (phaseType == MatchPhaseType.setPiece && chanceType != null),
     );
 
     var nextState = state.applyPhaseSnapshot(snapshot);
@@ -198,6 +202,7 @@ class MatchEngine {
     }
 
     final insight = _buildInsight(
+      state: nextState,
       snapshot: snapshot,
       initiative: initiative,
       chanceType: chanceType,
@@ -215,7 +220,17 @@ class MatchEngine {
   static MatchPhaseType _resolvePhaseType(MatchState state) {
     if (state.currentPhaseType == MatchPhaseType.setPiece ||
         state.currentPhaseState == MatchPhaseState.restart) {
-      return MatchPhaseType.setPiece;
+      // Use set-piece as a one-step restart trigger, then flow back into open play.
+      switch ((state.currentPhaseIndex + 1) % 4) {
+        case 0:
+          return MatchPhaseType.transition;
+        case 1:
+          return MatchPhaseType.buildUp;
+        case 2:
+          return MatchPhaseType.progression;
+        default:
+          return MatchPhaseType.finalThird;
+      }
     }
 
     switch ((state.currentPhaseIndex + 1) % 5) {
@@ -264,19 +279,42 @@ class MatchEngine {
     MatchState state,
     math.Random random,
   ) {
-    final currentInitiative = state.currentInitiative;
-    if (currentInitiative != null) {
-      return currentInitiative;
-    }
-
-    final homeBias = _clamp01(
+    final homeControl = _clamp01(
       0.5 +
           (state.matchupState.homeAttackVsAwayDefense * 0.12) +
           (state.matchupState.midfieldControlEdge * 0.10) +
           (state.dynamics.homeMomentum * 0.10) +
-          (state.dynamics.homeConfidence - 0.5) * 0.10,
+          (state.dynamics.homeConfidence - 0.5) * 0.10 -
+          (state.dynamics.homeFatigue * 0.08) +
+          (state.dynamics.awayFatigue * 0.05),
     );
-    return random.nextDouble() < homeBias ? TeamSide.home : TeamSide.away;
+
+    final previous = state.currentInitiative;
+    if (previous == null) {
+      return random.nextDouble() < homeControl ? TeamSide.home : TeamSide.away;
+    }
+
+    final retainProbability = previous == TeamSide.home
+        ? _clamp01(
+            0.50 +
+                (state.dynamics.homeMomentum * 0.09) +
+                ((state.dynamics.homeConfidence - 0.5) * 0.08) -
+                (state.dynamics.homeFatigue * 0.12) +
+                ((homeControl - 0.5) * 0.20),
+          )
+        : _clamp01(
+            0.50 +
+                (state.dynamics.awayMomentum * 0.09) +
+                ((state.dynamics.awayConfidence - 0.5) * 0.08) -
+                (state.dynamics.awayFatigue * 0.12) +
+                (((1 - homeControl) - 0.5) * 0.20),
+          );
+
+    if (random.nextDouble() < retainProbability) {
+      return previous;
+    }
+
+    return match.opponentOf(previous);
   }
 
   static AttackRoute _resolveAttackRoute(
@@ -389,11 +427,16 @@ class MatchEngine {
     math.Random random,
   ) {
     if (phaseType == MatchPhaseType.setPiece) {
-      return ChanceType.corner;
+      return random.nextDouble() < 0.38 ? ChanceType.corner : null;
     }
 
     if (phaseType == MatchPhaseType.finalThird ||
         phaseType == MatchPhaseType.chance) {
+      final trigger = phaseType == MatchPhaseType.chance ? 0.58 : 0.42;
+      if (random.nextDouble() > trigger) {
+        return null;
+      }
+
       switch (attackState.route) {
         case AttackRoute.leftFlank:
         case AttackRoute.rightFlank:
@@ -416,7 +459,7 @@ class MatchEngine {
     }
 
     if (phaseType == MatchPhaseType.outcome) {
-      return ChanceType.blockedShot;
+      return random.nextDouble() < 0.18 ? ChanceType.blockedShot : null;
     }
 
     return null;
@@ -448,11 +491,11 @@ class MatchEngine {
     final tacticalBoost = attackState.intensity * 0.2;
 
     return _clamp01(
-      0.28 +
-          technicalEdge +
-          tacticalBoost -
-          (defensivePenalty * 0.35) +
-          (random.nextDouble() * 0.15),
+      0.10 +
+          (technicalEdge * 0.55) +
+          (tacticalBoost * 0.40) -
+          (defensivePenalty * 0.42) +
+          (random.nextDouble() * 0.14),
     );
   }
 
@@ -460,20 +503,18 @@ class MatchEngine {
     double chanceQuality,
     math.Random random,
   ) {
-    final roll = random.nextDouble();
-    if (chanceQuality >= 0.78 || roll < chanceQuality * 0.55) {
-      return ChanceOutcome.goal;
-    }
-    if (chanceQuality >= 0.62) {
-      return roll < 0.5 ? ChanceOutcome.save : ChanceOutcome.block;
-    }
-    if (chanceQuality >= 0.46) {
-      return roll < 0.5 ? ChanceOutcome.save : ChanceOutcome.offTarget;
-    }
-    if (chanceQuality >= 0.30) {
-      return roll < 0.5 ? ChanceOutcome.block : ChanceOutcome.clearance;
-    }
-    return roll < 0.5 ? ChanceOutcome.turnover : ChanceOutcome.offTarget;
+    final adjusted = _clamp01(chanceQuality);
+    final weights = <ChanceOutcome, double>{
+      ChanceOutcome.goal: 0.04 + (adjusted * 0.22),
+      ChanceOutcome.save: 0.18 + (adjusted * 0.18),
+      ChanceOutcome.block: 0.16 + ((1 - adjusted) * 0.18),
+      ChanceOutcome.offTarget: 0.22 + ((1 - adjusted) * 0.20),
+      ChanceOutcome.clearance: 0.18 + ((1 - adjusted) * 0.22),
+      ChanceOutcome.turnover: 0.14 + ((1 - adjusted) * 0.18),
+      ChanceOutcome.woodwork: 0.02 + (adjusted * 0.04),
+      ChanceOutcome.claimedByKeeper: 0.08 + (adjusted * 0.08),
+    };
+    return _weightedPick(weights, random);
   }
 
   static MatchDynamics _applyLiveDynamics({
@@ -491,10 +532,10 @@ class MatchEngine {
         .swingMomentum(
           initiative,
           chanceOutcome == ChanceOutcome.goal
-              ? 0.18
+              ? 0.10
               : chanceQuality == null
-              ? 0.02
-              : (chanceQuality * 0.04),
+              ? 0.01
+              : (chanceQuality * 0.02),
         );
   }
 
@@ -507,6 +548,18 @@ class MatchEngine {
     required PitchZone? zone,
   }) {
     if (!snapshot.isImportant) {
+      return null;
+    }
+
+    final neutralSetPiece =
+        snapshot.phaseType == MatchPhaseType.setPiece && chanceOutcome == null;
+    if (neutralSetPiece && snapshot.phaseIndex % 5 != 0) {
+      return null;
+    }
+
+    if (chanceOutcome != ChanceOutcome.goal &&
+        (chanceQuality == null || chanceQuality < 0.60) &&
+        snapshot.phaseIndex % 4 != 0) {
       return null;
     }
 
@@ -570,6 +623,7 @@ class MatchEngine {
   }
 
   static TacticalInsight? _buildInsight({
+    required MatchState state,
     required PhaseResolutionSnapshot snapshot,
     required TeamSide initiative,
     required ChanceType? chanceType,
@@ -577,7 +631,18 @@ class MatchEngine {
     required double? chanceQuality,
     required PitchZone? zone,
   }) {
+    final lastInsight = state.tacticalInsights.isEmpty
+        ? null
+        : state.tacticalInsights.last;
+
     if (chanceOutcome == ChanceOutcome.goal) {
+      if (lastInsight != null &&
+          lastInsight.relatedTeam == initiative &&
+          lastInsight.level == TacticalSignalLevel.critical &&
+          (snapshot.minute - lastInsight.minute).abs() <= 6) {
+        return null;
+      }
+
       return TacticalInsight(
         minute: snapshot.minute,
         level: TacticalSignalLevel.critical,
@@ -588,7 +653,16 @@ class MatchEngine {
       );
     }
 
-    if (chanceQuality != null && chanceQuality >= 0.7) {
+    if (chanceQuality != null &&
+        chanceQuality >= 0.78 &&
+        chanceOutcome != ChanceOutcome.goal) {
+      if (lastInsight != null &&
+          lastInsight.relatedTeam == initiative &&
+          lastInsight.level == TacticalSignalLevel.positive &&
+          (snapshot.minute - lastInsight.minute).abs() <= 8) {
+        return null;
+      }
+
       return TacticalInsight(
         minute: snapshot.minute,
         level: TacticalSignalLevel.positive,
