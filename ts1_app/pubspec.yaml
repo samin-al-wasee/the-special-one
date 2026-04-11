@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^3.3.1
   go_router: ^17.1.0
+  ts1_core:
+    path: ../ts1_core
   freezed_annotation: ^3.1.0
   json_annotation: ^4.11.0
   drift: ^2.32.1
