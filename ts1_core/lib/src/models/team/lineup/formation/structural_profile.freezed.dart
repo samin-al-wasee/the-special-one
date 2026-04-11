@@ -220,21 +220,21 @@ return $default(_that.id,_that.widthCoverage,_that.centralDensity,_that.supportN
 @JsonSerializable()
 
 class _StructuralProfile implements StructuralProfile {
-  const _StructuralProfile({required this.id, this.widthCoverage = 0.5, this.centralDensity = 0.5, this.supportNetworkQuality = 0.5, this.boxPresence = 0.5, this.restDefenseStability = 0.5, this.pressShapeCohesion = 0.5, this.transitionProtection = 0.5, this.halfSpaceAccess = 0.5, this.flankIsolationRisk = 0.5, this.slotFitScore = 0.5, this.roleCoherence = 0.5});
+  const _StructuralProfile({required this.id, required this.widthCoverage, required this.centralDensity, required this.supportNetworkQuality, required this.boxPresence, required this.restDefenseStability, required this.pressShapeCohesion, required this.transitionProtection, required this.halfSpaceAccess, required this.flankIsolationRisk, required this.slotFitScore, required this.roleCoherence});
   factory _StructuralProfile.fromJson(Map<String, dynamic> json) => _$StructuralProfileFromJson(json);
 
 @override final  int id;
-@override@JsonKey() final  double widthCoverage;
-@override@JsonKey() final  double centralDensity;
-@override@JsonKey() final  double supportNetworkQuality;
-@override@JsonKey() final  double boxPresence;
-@override@JsonKey() final  double restDefenseStability;
-@override@JsonKey() final  double pressShapeCohesion;
-@override@JsonKey() final  double transitionProtection;
-@override@JsonKey() final  double halfSpaceAccess;
-@override@JsonKey() final  double flankIsolationRisk;
-@override@JsonKey() final  double slotFitScore;
-@override@JsonKey() final  double roleCoherence;
+@override final  double widthCoverage;
+@override final  double centralDensity;
+@override final  double supportNetworkQuality;
+@override final  double boxPresence;
+@override final  double restDefenseStability;
+@override final  double pressShapeCohesion;
+@override final  double transitionProtection;
+@override final  double halfSpaceAccess;
+@override final  double flankIsolationRisk;
+@override final  double slotFitScore;
+@override final  double roleCoherence;
 
 /// Create a copy of StructuralProfile
 /// with the given fields replaced by the non-null parameter values.

@@ -27,62 +27,62 @@ abstract class MatchupProfile with _$MatchupProfile {
 
     // ==================== POSSESSION and BUILD-UP ====================
     // How A's build-up style matches against B's press resistance
-    @Default(0.0) double buildupEdge,
+    required double buildupEdge,
 
     // How effective A's pressing is vs B's build-up structure
-    @Default(0.0) double pressingEdge,
+    required double pressingEdge,
 
     // Counterpressing (when possession lost)
-    @Default(0.0) double counterpressingEdge,
+    required double counterpressingEdge,
 
     // ==================== SPACE CONTROL ====================
     // Compactness matchup: A's compactness vs B's ability to penetrate
-    @Default(0.0) double compactnessEdge,
+    required double compactnessEdge,
 
     // Defensive line height matchup: A's line vs B's offside trap vulnerability
-    @Default(0.0) double defensiveLineEdge,
+    required double defensiveLineEdge,
 
     // ==================== ROUTE and CHANCE CREATION ====================
     // Flank/wing progression: A's width strategy vs B's flank coverage
-    @Default(0.0) double wideEdge,
+    required double wideEdge,
 
     // Central control and through-ball effectiveness
-    @Default(0.0) double centralEdge,
+    required double centralEdge,
 
     // Fullback vs Winger duel (wing battleground)
-    @Default(0.0) double fullbackEdge,
+    required double fullbackEdge,
 
     // ==================== FINAL THIRD and SHOOTING ====================
     // How teams finish: A's final third approach vs B's defensive positioning
-    @Default(0.0) double finalThirdEdge,
+    required double finalThirdEdge,
 
     // Shot quality influenced by risk tolerance
-    @Default(0.0) double shootingRiskEdge,
+    required double shootingRiskEdge,
 
     // ==================== TRANSITIONS ====================
     // Transition speed when possession won
-    @Default(0.0) double transitionOutEdge,
+    required double transitionOutEdge,
 
     // Transition vulnerability when possession lost
-    @Default(0.0) double transitionInEdge,
+    required double transitionInEdge,
 
     // ==================== SET PIECES and AERIAL ====================
     // Aerial duels and set-piece effectiveness
-    @Default(0.0) double aerialEdge,
+    required double aerialEdge,
 
     // Defensive set-piece vulnerability
-    @Default(0.0) double setpieceDefenseEdge,
+    required double setpieceDefenseEdge,
 
     // ==================== TEMPO and FATIGUE ====================
     // Tempo compatibility: high pace vs controlled play
-    @Default(0.0) double tempoEdge,
+    required double tempoEdge,
 
     // ==================== KEY PLAYER INFLUENCE ====================
     // Playmaker presence and impact zones
-    @Default(0.0) double playmakerEdge,
+    required double playmakerEdge,
 
     // Striker effectiveness and support quality
-    @Default(0.0) double strikerSupportEdge,
+    required double strikerSupportEdge,
   }) = _MatchupProfile;
 
   const MatchupProfile._();

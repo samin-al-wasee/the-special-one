@@ -251,52 +251,52 @@ return $default(_that.id,_that.buildupEdge,_that.pressingEdge,_that.counterpress
 @JsonSerializable()
 
 class _MatchupProfile extends MatchupProfile {
-  const _MatchupProfile({required this.id, this.buildupEdge = 0.0, this.pressingEdge = 0.0, this.counterpressingEdge = 0.0, this.compactnessEdge = 0.0, this.defensiveLineEdge = 0.0, this.wideEdge = 0.0, this.centralEdge = 0.0, this.fullbackEdge = 0.0, this.finalThirdEdge = 0.0, this.shootingRiskEdge = 0.0, this.transitionOutEdge = 0.0, this.transitionInEdge = 0.0, this.aerialEdge = 0.0, this.setpieceDefenseEdge = 0.0, this.tempoEdge = 0.0, this.playmakerEdge = 0.0, this.strikerSupportEdge = 0.0}): super._();
+  const _MatchupProfile({required this.id, required this.buildupEdge, required this.pressingEdge, required this.counterpressingEdge, required this.compactnessEdge, required this.defensiveLineEdge, required this.wideEdge, required this.centralEdge, required this.fullbackEdge, required this.finalThirdEdge, required this.shootingRiskEdge, required this.transitionOutEdge, required this.transitionInEdge, required this.aerialEdge, required this.setpieceDefenseEdge, required this.tempoEdge, required this.playmakerEdge, required this.strikerSupportEdge}): super._();
   factory _MatchupProfile.fromJson(Map<String, dynamic> json) => _$MatchupProfileFromJson(json);
 
 @override final  int id;
 // ==================== POSSESSION and BUILD-UP ====================
 // How A's build-up style matches against B's press resistance
-@override@JsonKey() final  double buildupEdge;
+@override final  double buildupEdge;
 // How effective A's pressing is vs B's build-up structure
-@override@JsonKey() final  double pressingEdge;
+@override final  double pressingEdge;
 // Counterpressing (when possession lost)
-@override@JsonKey() final  double counterpressingEdge;
+@override final  double counterpressingEdge;
 // ==================== SPACE CONTROL ====================
 // Compactness matchup: A's compactness vs B's ability to penetrate
-@override@JsonKey() final  double compactnessEdge;
+@override final  double compactnessEdge;
 // Defensive line height matchup: A's line vs B's offside trap vulnerability
-@override@JsonKey() final  double defensiveLineEdge;
+@override final  double defensiveLineEdge;
 // ==================== ROUTE and CHANCE CREATION ====================
 // Flank/wing progression: A's width strategy vs B's flank coverage
-@override@JsonKey() final  double wideEdge;
+@override final  double wideEdge;
 // Central control and through-ball effectiveness
-@override@JsonKey() final  double centralEdge;
+@override final  double centralEdge;
 // Fullback vs Winger duel (wing battleground)
-@override@JsonKey() final  double fullbackEdge;
+@override final  double fullbackEdge;
 // ==================== FINAL THIRD and SHOOTING ====================
 // How teams finish: A's final third approach vs B's defensive positioning
-@override@JsonKey() final  double finalThirdEdge;
+@override final  double finalThirdEdge;
 // Shot quality influenced by risk tolerance
-@override@JsonKey() final  double shootingRiskEdge;
+@override final  double shootingRiskEdge;
 // ==================== TRANSITIONS ====================
 // Transition speed when possession won
-@override@JsonKey() final  double transitionOutEdge;
+@override final  double transitionOutEdge;
 // Transition vulnerability when possession lost
-@override@JsonKey() final  double transitionInEdge;
+@override final  double transitionInEdge;
 // ==================== SET PIECES and AERIAL ====================
 // Aerial duels and set-piece effectiveness
-@override@JsonKey() final  double aerialEdge;
+@override final  double aerialEdge;
 // Defensive set-piece vulnerability
-@override@JsonKey() final  double setpieceDefenseEdge;
+@override final  double setpieceDefenseEdge;
 // ==================== TEMPO and FATIGUE ====================
 // Tempo compatibility: high pace vs controlled play
-@override@JsonKey() final  double tempoEdge;
+@override final  double tempoEdge;
 // ==================== KEY PLAYER INFLUENCE ====================
 // Playmaker presence and impact zones
-@override@JsonKey() final  double playmakerEdge;
+@override final  double playmakerEdge;
 // Striker effectiveness and support quality
-@override@JsonKey() final  double strikerSupportEdge;
+@override final  double strikerSupportEdge;
 
 /// Create a copy of MatchupProfile
 /// with the given fields replaced by the non-null parameter values.

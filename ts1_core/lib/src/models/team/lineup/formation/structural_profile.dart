@@ -10,17 +10,17 @@ part 'structural_profile.g.dart';
 abstract class StructuralProfile with _$StructuralProfile {
   const factory StructuralProfile({
     required int id,
-    @Default(0.5) double widthCoverage,
-    @Default(0.5) double centralDensity,
-    @Default(0.5) double supportNetworkQuality,
-    @Default(0.5) double boxPresence,
-    @Default(0.5) double restDefenseStability,
-    @Default(0.5) double pressShapeCohesion,
-    @Default(0.5) double transitionProtection,
-    @Default(0.5) double halfSpaceAccess,
-    @Default(0.5) double flankIsolationRisk,
-    @Default(0.5) double slotFitScore,
-    @Default(0.5) double roleCoherence,
+    required double widthCoverage,
+    required double centralDensity,
+    required double supportNetworkQuality,
+    required double boxPresence,
+    required double restDefenseStability,
+    required double pressShapeCohesion,
+    required double transitionProtection,
+    required double halfSpaceAccess,
+    required double flankIsolationRisk,
+    required double slotFitScore,
+    required double roleCoherence,
   }) = _StructuralProfile;
 
   factory StructuralProfile.fromJson(Map<String, dynamic> json) =>

@@ -268,69 +268,69 @@ return $default(_that.id,_that.riskTaking,_that.directnessBias,_that.verticalPro
 @JsonSerializable()
 
 class _TacticalIdentity implements TacticalIdentity {
-  const _TacticalIdentity({required this.id, this.riskTaking = 0.50, this.directnessBias = 0.50, this.verticalProgressionBias = 0.50, this.shortPassBias = 0.50, this.widthBias = 0.50, this.attackLeftBias = 0.33, this.attackCentralBias = 0.34, this.attackRightBias = 0.33, this.throughBallBias = 0.35, this.crossBias = 0.30, this.cutbackBias = 0.25, this.dribbleCreationBias = 0.25, this.longShotBias = 0.20, this.shotPatience = 0.50, this.defensiveLineHeight = 0.50, this.pressIntensityBias = 0.50, this.pressTriggerRate = 0.50, this.defensiveWidthBias = 0.50, this.compactnessBias = 0.50, this.markingBias = 0.00, this.tacklingAggressionBias = 0.50, this.counterTriggerBias = 0.50, this.counterpressBias = 0.50, this.counterSpeedBias = 0.50, this.setPieceAttackingBias = 0.50, this.setPieceDefensiveBias = 0.00, this.possessionTilt = 0.0, this.passWeightMult = 1.0, this.turnoverWeightMult = 1.0, this.shotWeightMult = 1.0, this.shotConversionDelta = 0.0});
+  const _TacticalIdentity({required this.id, required this.riskTaking, required this.directnessBias, required this.verticalProgressionBias, required this.shortPassBias, required this.widthBias, required this.attackLeftBias, required this.attackCentralBias, required this.attackRightBias, required this.throughBallBias, required this.crossBias, required this.cutbackBias, required this.dribbleCreationBias, required this.longShotBias, required this.shotPatience, required this.defensiveLineHeight, required this.pressIntensityBias, required this.pressTriggerRate, required this.defensiveWidthBias, required this.compactnessBias, required this.markingBias, required this.tacklingAggressionBias, required this.counterTriggerBias, required this.counterpressBias, required this.counterSpeedBias, required this.setPieceAttackingBias, required this.setPieceDefensiveBias, required this.possessionTilt, required this.passWeightMult, required this.turnoverWeightMult, required this.shotWeightMult, required this.shotConversionDelta});
   factory _TacticalIdentity.fromJson(Map<String, dynamic> json) => _$TacticalIdentityFromJson(json);
 
 @override final  int id;
 // ---- Possession / risk profile ----
 // 0..1: 0 = very controlled, 1 = very chaotic/risky
-@override@JsonKey() final  double riskTaking;
+@override final  double riskTaking;
 // ---- Build-up / progression ----
 // 0..1: 0 = short/passive, 1 = direct/vertical
-@override@JsonKey() final  double directnessBias;
-@override@JsonKey() final  double verticalProgressionBias;
-@override@JsonKey() final  double shortPassBias;
+@override final  double directnessBias;
+@override final  double verticalProgressionBias;
+@override final  double shortPassBias;
 // ---- Width / attacking preference ----
 // 0..1: 0 = very narrow, 1 = very wide
-@override@JsonKey() final  double widthBias;
+@override final  double widthBias;
 // 0..1 each; consumers may renormalize to sum to 1
-@override@JsonKey() final  double attackLeftBias;
-@override@JsonKey() final  double attackCentralBias;
-@override@JsonKey() final  double attackRightBias;
+@override final  double attackLeftBias;
+@override final  double attackCentralBias;
+@override final  double attackRightBias;
 // ---- Chance type / final third ----
-@override@JsonKey() final  double throughBallBias;
-@override@JsonKey() final  double crossBias;
-@override@JsonKey() final  double cutbackBias;
-@override@JsonKey() final  double dribbleCreationBias;
-@override@JsonKey() final  double longShotBias;
+@override final  double throughBallBias;
+@override final  double crossBias;
+@override final  double cutbackBias;
+@override final  double dribbleCreationBias;
+@override final  double longShotBias;
 // 0..1: 0 = shoot quickly, 1 = patient shot selection
-@override@JsonKey() final  double shotPatience;
+@override final  double shotPatience;
 // ---- Defensive shape / pressing ----
 // 0..1: 0 = very deep, 1 = very high
-@override@JsonKey() final  double defensiveLineHeight;
+@override final  double defensiveLineHeight;
 // 0..1: 0 = very low press, 1 = very high press
-@override@JsonKey() final  double pressIntensityBias;
+@override final  double pressIntensityBias;
 // 0..1: how often pressing triggers occur
-@override@JsonKey() final  double pressTriggerRate;
+@override final  double pressTriggerRate;
 // 0..1: 0 = very narrow, 1 = very wide
-@override@JsonKey() final  double defensiveWidthBias;
+@override final  double defensiveWidthBias;
 // 0..1: 0 = very loose, 1 = very compact
-@override@JsonKey() final  double compactnessBias;
+@override final  double compactnessBias;
 // 0..1: 0 = zonal, 1 = man-oriented
-@override@JsonKey() final  double markingBias;
+@override final  double markingBias;
 // 0..1: 0 = cautious, 1 = aggressive
-@override@JsonKey() final  double tacklingAggressionBias;
+@override final  double tacklingAggressionBias;
 // ---- Transitions ----
 // 0..1: 0 = always hold/reset, 1 = counter immediately
-@override@JsonKey() final  double counterTriggerBias;
+@override final  double counterTriggerBias;
 // 0..1: 0 = fall back, 1 = counterpress always
-@override@JsonKey() final  double counterpressBias;
+@override final  double counterpressBias;
 // 0..1: 0 = slow, 1 = very fast
-@override@JsonKey() final  double counterSpeedBias;
+@override final  double counterSpeedBias;
 // ---- Set pieces ----
 // 0..1: 0 = short routines, 1 = delivery to box
-@override@JsonKey() final  double setPieceAttackingBias;
+@override final  double setPieceAttackingBias;
 // 0..1: 0 = zonal, 1 = man-oriented
-@override@JsonKey() final  double setPieceDefensiveBias;
+@override final  double setPieceDefensiveBias;
 // ---- Current minute-loop engine-facing knobs ----
 // -0.20 .. +0.20 (recommended)
-@override@JsonKey() final  double possessionTilt;
+@override final  double possessionTilt;
 // Multipliers applied to base event weights.
-@override@JsonKey() final  double passWeightMult;
-@override@JsonKey() final  double turnoverWeightMult;
-@override@JsonKey() final  double shotWeightMult;
+@override final  double passWeightMult;
+@override final  double turnoverWeightMult;
+@override final  double shotWeightMult;
 // Delta applied to base goal probability (recommended -0.10 .. +0.10).
-@override@JsonKey() final  double shotConversionDelta;
+@override final  double shotConversionDelta;
 
 /// Create a copy of TacticalIdentity
 /// with the given fields replaced by the non-null parameter values.

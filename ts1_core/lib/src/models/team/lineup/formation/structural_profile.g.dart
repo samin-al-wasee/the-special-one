@@ -6,25 +6,21 @@ part of 'structural_profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_StructuralProfile _$StructuralProfileFromJson(
-  Map<String, dynamic> json,
-) => _StructuralProfile(
-  id: (json['id'] as num).toInt(),
-  widthCoverage: (json['widthCoverage'] as num?)?.toDouble() ?? 0.5,
-  centralDensity: (json['centralDensity'] as num?)?.toDouble() ?? 0.5,
-  supportNetworkQuality:
-      (json['supportNetworkQuality'] as num?)?.toDouble() ?? 0.5,
-  boxPresence: (json['boxPresence'] as num?)?.toDouble() ?? 0.5,
-  restDefenseStability:
-      (json['restDefenseStability'] as num?)?.toDouble() ?? 0.5,
-  pressShapeCohesion: (json['pressShapeCohesion'] as num?)?.toDouble() ?? 0.5,
-  transitionProtection:
-      (json['transitionProtection'] as num?)?.toDouble() ?? 0.5,
-  halfSpaceAccess: (json['halfSpaceAccess'] as num?)?.toDouble() ?? 0.5,
-  flankIsolationRisk: (json['flankIsolationRisk'] as num?)?.toDouble() ?? 0.5,
-  slotFitScore: (json['slotFitScore'] as num?)?.toDouble() ?? 0.5,
-  roleCoherence: (json['roleCoherence'] as num?)?.toDouble() ?? 0.5,
-);
+_StructuralProfile _$StructuralProfileFromJson(Map<String, dynamic> json) =>
+    _StructuralProfile(
+      id: (json['id'] as num).toInt(),
+      widthCoverage: (json['widthCoverage'] as num).toDouble(),
+      centralDensity: (json['centralDensity'] as num).toDouble(),
+      supportNetworkQuality: (json['supportNetworkQuality'] as num).toDouble(),
+      boxPresence: (json['boxPresence'] as num).toDouble(),
+      restDefenseStability: (json['restDefenseStability'] as num).toDouble(),
+      pressShapeCohesion: (json['pressShapeCohesion'] as num).toDouble(),
+      transitionProtection: (json['transitionProtection'] as num).toDouble(),
+      halfSpaceAccess: (json['halfSpaceAccess'] as num).toDouble(),
+      flankIsolationRisk: (json['flankIsolationRisk'] as num).toDouble(),
+      slotFitScore: (json['slotFitScore'] as num).toDouble(),
+      roleCoherence: (json['roleCoherence'] as num).toDouble(),
+    );
 
 Map<String, dynamic> _$StructuralProfileToJson(_StructuralProfile instance) =>
     <String, dynamic>{
