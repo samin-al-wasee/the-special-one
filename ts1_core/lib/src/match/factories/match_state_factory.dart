@@ -60,6 +60,49 @@ class MatchStateFactory {
     );
   }
 
+  static MatchState secondHalfKickoff(
+    MatchState halfTimeMatchState, {
+    TeamSide kickoffSide = TeamSide.away,
+  }) {
+    final nextPhaseIndex = halfTimeMatchState.currentPhaseIndex + 1;
+    final minute = halfTimeMatchState.clock.minute;
+
+    final kickoffSnapshot = PhaseResolutionSnapshot(
+      id: nextPhaseIndex,
+      phaseIndex: nextPhaseIndex,
+      minute: minute,
+      phaseType: MatchPhaseType.setPiece,
+      phaseState: MatchPhaseState.restart,
+      initiativeTeam: kickoffSide,
+      possessionTeam: kickoffSide,
+      territoryTeam: kickoffSide,
+      isImportant: true,
+    );
+
+    final kickoffEvent = MatchEventCard(
+      id: nextPhaseIndex,
+      minute: minute,
+      title: 'Second Half Kickoff',
+      description:
+          'The second half starts with ${kickoffSide.name} in possession.',
+      phaseType: MatchPhaseType.setPiece,
+      teamSide: kickoffSide,
+      isMajor: true,
+    );
+
+    return halfTimeMatchState.copyWith(
+      status: MatchStatus.secondHalf,
+      currentPhaseIndex: nextPhaseIndex,
+      currentPhaseType: MatchPhaseType.setPiece,
+      currentPhaseState: MatchPhaseState.restart,
+      currentInitiative: kickoffSide,
+      currentPossession: kickoffSide,
+      currentTerritoryControl: kickoffSide,
+      phaseHistory: [...halfTimeMatchState.phaseHistory, kickoffSnapshot],
+      eventCards: [...halfTimeMatchState.eventCards, kickoffEvent],
+    );
+  }
+
   static MatchState _buildState({
     required MatchStatus status,
     required MatchPhaseType currentPhaseType,
