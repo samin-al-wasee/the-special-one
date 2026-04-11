@@ -161,13 +161,9 @@ class MatchFlowController extends ChangeNotifier {
   Match _advanceOneStep(Match current) {
     if (current.matchState.status == MatchStatus.halfTime) {
       return current.copyWith(
-        matchState: current.matchState.copyWith(
-          status: MatchStatus.secondHalf,
-          currentPhaseType: MatchPhaseType.neutralPossession,
-          currentPhaseState: MatchPhaseState.neutralPossession,
-          currentInitiative: null,
-          currentPossession: null,
-          currentTerritoryControl: null,
+        matchState: MatchStateFactory.secondHalfKickoff(
+          current.matchState,
+          kickoffSide: TeamSide.away,
         ),
       );
     }
