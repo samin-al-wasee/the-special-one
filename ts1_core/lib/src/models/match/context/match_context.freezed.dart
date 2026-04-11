@@ -289,18 +289,18 @@ return $default(_that.id,_that.homeTacticalIdentity,_that.awayTacticalIdentity,_
 @JsonSerializable()
 
 class _MatchContext implements MatchContext {
-  const _MatchContext({required this.id, this.homeTacticalIdentity = const TacticalIdentity(id: 0), this.awayTacticalIdentity = const TacticalIdentity(id: 0), this.homeStrengthProfile = const TeamStrengthProfile(id: 0, buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.awayStrengthProfile = const TeamStrengthProfile(id: 0, buildUpQuality: 50, pressResistance: 50, wideAttack: 50, centralCreativity: 50, aerialThreat: 50, defensiveCompactness: 50, transitionThreat: 50, pressingForce: 50, possessionSecurity: 50, turnoverLiability: 50, finishingQuality: 50, shotVolumeTendency: 50, chanceConversion: 50, transitionDefense: 50, wideDefense: 50, centralDefense: 50, setPieceAttackStrength: 50, setPieceDefenseStrength: 50, disciplineControl: 50, gkDistributionQuality: 50, gkShotStopping: 50, chemistry: 50, morale: 50), this.homeStructuralProfile = const StructuralProfile(id: 0), this.awayStructuralProfile = const StructuralProfile(id: 0), this.homeToAwayMatchupProfile = const MatchupProfile(id: 0), this.awayToHomeMatchupProfile = const MatchupProfile(id: 0)});
+  const _MatchContext({required this.id, required this.homeTacticalIdentity, required this.awayTacticalIdentity, required this.homeStrengthProfile, required this.awayStrengthProfile, required this.homeStructuralProfile, required this.awayStructuralProfile, required this.homeToAwayMatchupProfile, required this.awayToHomeMatchupProfile});
   factory _MatchContext.fromJson(Map<String, dynamic> json) => _$MatchContextFromJson(json);
 
 @override final  int id;
-@override@JsonKey() final  TacticalIdentity homeTacticalIdentity;
-@override@JsonKey() final  TacticalIdentity awayTacticalIdentity;
-@override@JsonKey() final  TeamStrengthProfile homeStrengthProfile;
-@override@JsonKey() final  TeamStrengthProfile awayStrengthProfile;
-@override@JsonKey() final  StructuralProfile homeStructuralProfile;
-@override@JsonKey() final  StructuralProfile awayStructuralProfile;
-@override@JsonKey() final  MatchupProfile homeToAwayMatchupProfile;
-@override@JsonKey() final  MatchupProfile awayToHomeMatchupProfile;
+@override final  TacticalIdentity homeTacticalIdentity;
+@override final  TacticalIdentity awayTacticalIdentity;
+@override final  TeamStrengthProfile homeStrengthProfile;
+@override final  TeamStrengthProfile awayStrengthProfile;
+@override final  StructuralProfile homeStructuralProfile;
+@override final  StructuralProfile awayStructuralProfile;
+@override final  MatchupProfile homeToAwayMatchupProfile;
+@override final  MatchupProfile awayToHomeMatchupProfile;
 
 /// Create a copy of MatchContext
 /// with the given fields replaced by the non-null parameter values.
