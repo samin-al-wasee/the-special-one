@@ -1,39 +1,33 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# ts1_core
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
+`ts1_core` is the simulation core for The Special One. Add it to another Dart or Flutter project and import `package:ts1_core/ts1_core.dart` to access the match engine, models, factories, and enums.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
+## Install
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+For a local workspace dependency:
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  ts1_core:
+    path: ../ts1_core
 ```
 
-## Additional information
+## Use
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```dart
+import 'package:ts1_core/ts1_core.dart';
+
+void main() {
+  final match = MatchEngine.bootstrapMatch(
+    id: 1,
+    homeTeam: homeTeam,
+    awayTeam: awayTeam,
+    kickoffAt: DateTime.now(),
+  );
+
+  final liveMatch = MatchEngine.kickoffMatch(match);
+  final finishedMatch = MatchEngine.simulateMatch(liveMatch);
+}
+```
+
+Build your teams with the exported `Team`, `Player`, `TeamLineup`, `TeamTactic`, `FormationFactory`, and `TacticalPresetFactory` types.

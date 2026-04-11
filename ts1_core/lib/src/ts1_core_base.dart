@@ -1,6 +1,45 @@
-// TODO: Put public facing types in this file.
-
-/// Checks if you are awesome. Spoiler: you are.
-class Awesome {
-  bool get isAwesome => true;
-}
+export 'builders/match_context_builder.dart';
+export 'builders/match_dynamics_builder.dart';
+export 'builders/matchup_profile_builder.dart';
+export 'builders/matchup_state_builder.dart';
+export 'builders/structural_profile_builder.dart';
+export 'builders/tactical_identity_builder.dart';
+export 'builders/team_strength_profile_builder.dart';
+export 'catalog/role_catalog.dart';
+export 'enums/match_enums.dart';
+export 'enums/player/duty.dart';
+export 'enums/player/player_attributes.dart';
+export 'enums/player/position.dart';
+export 'enums/player/role.dart';
+export 'enums/team/tactic/tactical_attributes.dart';
+export 'factories/formation_factory.dart';
+export 'factories/match_state_factory.dart';
+export 'factories/tactical_preset_factory.dart';
+export 'engines/match_engine.dart';
+export 'models/match/attack/attack_state.dart';
+export 'models/match/context/match_context.dart';
+export 'models/match/dynamics/match_dynamics.dart';
+export 'models/match/events/match_event_card.dart';
+export 'models/match/interventions/manager_intervention.dart';
+export 'models/match/interventions/substitution_record.dart';
+export 'models/match/insights/tactical_insight.dart';
+export 'models/match/match.dart';
+export 'models/match/matchup_profile/matchup_profile.dart';
+export 'models/match/phase/phase_resolution_snapshot.dart';
+export 'models/match/state/clock/match_clock.dart';
+export 'models/match/state/match_state.dart';
+export 'models/match/state/matchup_state.dart';
+export 'models/match/state/scoreline/scoreline.dart';
+export 'models/match/state/scoreline/shootout_score.dart';
+export 'models/match/stats/team_match_stats.dart';
+export 'models/player/player.dart';
+export 'models/team/lineup/formation/shape/formation_shape.dart';
+export 'models/team/lineup/formation/slot/formation_slot.dart';
+export 'models/team/lineup/formation/structural_profile.dart';
+export 'models/team/lineup/slot_assignment/lineup_slot_assignment.dart';
+export 'models/team/lineup/slot_assignment/role_assignment/role_assignment.dart';
+export 'models/team/lineup/team_lineup.dart';
+export 'models/team/strength_profile/team_strength_profile.dart';
+export 'models/team/tactic/tactical_identity/tactical_identity.dart';
+export 'models/team/tactic/team_tactic.dart';
+export 'models/team/team.dart';
