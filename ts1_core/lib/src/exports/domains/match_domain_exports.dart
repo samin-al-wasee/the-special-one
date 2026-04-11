@@ -1,0 +1,16 @@
+export 'package:ts1_core/src/match/models/attack/attack_state.dart';
+export 'package:ts1_core/src/match/models/context/match_context.dart';
+export 'package:ts1_core/src/match/models/dynamics/match_dynamics.dart';
+export 'package:ts1_core/src/match/models/events/match_event_card.dart';
+export 'package:ts1_core/src/match/models/interventions/manager_intervention.dart';
+export 'package:ts1_core/src/match/models/interventions/substitution_record.dart';
+export 'package:ts1_core/src/match/models/insights/tactical_insight.dart';
+export 'package:ts1_core/src/match/models/match.dart';
+export 'package:ts1_core/src/match/models/matchup_profile/matchup_profile.dart';
+export 'package:ts1_core/src/match/models/phase/phase_resolution_snapshot.dart';
+export 'package:ts1_core/src/match/models/state/clock/match_clock.dart';
+export 'package:ts1_core/src/match/models/state/match_state.dart';
+export 'package:ts1_core/src/match/models/state/matchup_state.dart';
+export 'package:ts1_core/src/match/models/state/scoreline/scoreline.dart';
+export 'package:ts1_core/src/match/models/state/scoreline/shootout_score.dart';
+export 'package:ts1_core/src/match/models/stats/team_match_stats.dart';
