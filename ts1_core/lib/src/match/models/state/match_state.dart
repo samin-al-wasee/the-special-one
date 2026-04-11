@@ -254,6 +254,51 @@ abstract class MatchState with _$MatchState {
         );
     var next = copyWith(clock: nextClock);
 
+    MatchState applyTransitionStatus(
+      MatchState state,
+      MatchStatus nextStatus, {
+      required String title,
+      required String description,
+    }) {
+      final transitionPhaseIndex = state.currentPhaseIndex + 1;
+      const transitionPhaseType = MatchPhaseType.intervention;
+      const transitionPhaseState = MatchPhaseState.stoppage;
+      final eventSide =
+          state.currentPossession ?? state.currentInitiative ?? TeamSide.home;
+
+      final snapshot = PhaseResolutionSnapshot(
+        id: transitionPhaseIndex,
+        phaseIndex: transitionPhaseIndex,
+        minute: state.clock.minute,
+        phaseType: transitionPhaseType,
+        phaseState: transitionPhaseState,
+        initiativeTeam: state.currentInitiative,
+        possessionTeam: state.currentPossession,
+        territoryTeam: state.currentTerritoryControl,
+        isImportant: true,
+      );
+
+      final event = MatchEventCard(
+        id: transitionPhaseIndex,
+        minute: state.clock.minute,
+        title: title,
+        description: description,
+        phaseType: transitionPhaseType,
+        teamSide: eventSide,
+        isMajor: true,
+        tacticalInsight: 'Status changed to ${nextStatus.name}.',
+      );
+
+      return state.copyWith(
+        status: nextStatus,
+        currentPhaseIndex: transitionPhaseIndex,
+        currentPhaseType: transitionPhaseType,
+        currentPhaseState: transitionPhaseState,
+        phaseHistory: [...state.phaseHistory, snapshot],
+        eventCards: [...state.eventCards, event],
+      );
+    }
+
     final firstHalfEndMinute = regulationMinutes ~/ 2;
     final regulationEndMinute = regulationMinutes;
     final extraTimeHalfEndMinute = regulationMinutes + extraTimeMinutesPerHalf;
@@ -262,32 +307,67 @@ abstract class MatchState with _$MatchState {
 
     if (next.status == MatchStatus.firstHalf &&
         next.clock.hasReachedMinute(firstHalfEndMinute)) {
-      return next.copyWith(status: MatchStatus.halfTime);
+      return applyTransitionStatus(
+        next,
+        MatchStatus.halfTime,
+        title: 'Half Time',
+        description: 'The first half ends and teams head to the dressing room.',
+      );
     }
 
     if (next.status == MatchStatus.secondHalf &&
         next.clock.hasReachedMinute(regulationEndMinute)) {
       if (allowExtraTime && next.scoreline.isLevel) {
-        return next.copyWith(status: MatchStatus.extraTime);
+        return applyTransitionStatus(
+          next,
+          MatchStatus.extraTime,
+          title: 'Extra Time Starts',
+          description: 'Regulation ends level; match proceeds to extra time.',
+        );
       }
       if (allowPenalties && next.scoreline.isLevel) {
-        return next.copyWith(status: MatchStatus.penalties);
+        return applyTransitionStatus(
+          next,
+          MatchStatus.penalties,
+          title: 'Penalty Shootout',
+          description: 'Regulation ends level; penalties will decide the match.',
+        );
       }
-      return next.copyWith(status: MatchStatus.fullTime);
+      return applyTransitionStatus(
+        next,
+        MatchStatus.fullTime,
+        title: 'Full Time',
+        description: 'Regulation time ends and the match is complete.',
+      );
     }
 
     if (next.status == MatchStatus.extraTime &&
         next.clock.hasReachedMinute(extraTimeHalfEndMinute) &&
         next.clock.extraTimeSecondHalf == 0) {
-      return next.copyWith(status: MatchStatus.extraTimeHalfTime);
+      return applyTransitionStatus(
+        next,
+        MatchStatus.extraTimeHalfTime,
+        title: 'Extra Time Half Time',
+        description: 'The first extra-time period ends.',
+      );
     }
 
     if (next.status == MatchStatus.extraTime &&
         next.clock.hasReachedMinute(extraTimeEndMinute)) {
       if (allowPenalties && next.scoreline.isLevel) {
-        return next.copyWith(status: MatchStatus.penalties);
+        return applyTransitionStatus(
+          next,
+          MatchStatus.penalties,
+          title: 'Penalty Shootout',
+          description: 'Extra time ends level; penalties will decide the match.',
+        );
       }
-      return next.copyWith(status: MatchStatus.fullTime);
+      return applyTransitionStatus(
+        next,
+        MatchStatus.fullTime,
+        title: 'Full Time',
+        description: 'Extra time ends and the match is complete.',
+      );
     }
 
     return next;
