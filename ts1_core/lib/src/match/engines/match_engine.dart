@@ -241,8 +241,16 @@ class MatchEngine {
         ? null
         : _resolveChanceQuality(match, initiative, attackState, random);
     final chanceOutcome = chanceType == null
-        ? null
-        : _resolveChanceOutcome(chanceQuality ?? 0.0, random);
+      ? null
+      : _resolveChanceOutcome(
+        match: match,
+        state: state,
+        initiative: initiative,
+        phaseType: phaseType,
+        chanceType: chanceType,
+        chanceQuality: chanceQuality ?? 0.0,
+        random: random,
+        );
     final phaseState = _resolvePhaseState(
       match: match,
       state: state,
@@ -936,25 +944,158 @@ class MatchEngine {
     );
   }
 
-  /// Converts chance quality into a football outcome via weighted sampling.
+  /// Converts chance context into an outcome via weighted sampling.
   ///
-  /// Lower-quality chances bias toward blocks/clearances/off-target,
-  /// while higher-quality chances increase goal/save/woodwork likelihood.
-  static ChanceOutcome _resolveChanceOutcome(
-    double chanceQuality,
-    math.Random random,
-  ) {
+  /// Outcome likelihoods are derived from chance quality plus tactical,
+  /// matchup, and phase-specific context.
+  static ChanceOutcome _resolveChanceOutcome({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required MatchPhaseType phaseType,
+    required ChanceType chanceType,
+    required double chanceQuality,
+    required math.Random random,
+  }) {
     final adjusted = _clamp01(chanceQuality);
-    final weights = <ChanceOutcome, double>{
-      ChanceOutcome.goal: 0.04 + (adjusted * 0.22),
-      ChanceOutcome.save: 0.18 + (adjusted * 0.18),
-      ChanceOutcome.block: 0.16 + ((1 - adjusted) * 0.18),
-      ChanceOutcome.offTarget: 0.22 + ((1 - adjusted) * 0.20),
-      ChanceOutcome.clearance: 0.18 + ((1 - adjusted) * 0.22),
-      ChanceOutcome.turnover: 0.14 + ((1 - adjusted) * 0.18),
-      ChanceOutcome.woodwork: 0.02 + (adjusted * 0.04),
-      ChanceOutcome.claimedByKeeper: 0.08 + (adjusted * 0.08),
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+    final attackingStrength = initiative == TeamSide.home
+        ? match.context.homeStrengthProfile
+        : match.context.awayStrengthProfile;
+    final defendingStrength = initiative == TeamSide.home
+        ? match.context.awayStrengthProfile
+        : match.context.homeStrengthProfile;
+
+    final attackEdge = _directionalMatchupEdge(
+      initiative == TeamSide.home
+          ? state.matchupState.homeAttackVsAwayDefense
+          : state.matchupState.awayAttackVsHomeDefense,
+      initiative,
+    );
+    final transitionEdge = _directionalMatchupEdge(
+      state.matchupState.transitionControlEdge,
+      initiative,
+    );
+    final momentum = _initiativeMomentum(state, initiative);
+    final confidence = _initiativeConfidence(state, initiative);
+    final fatigue = _initiativeFatigue(state, initiative);
+
+    final chanceTypeProfile = switch (chanceType) {
+      ChanceType.penalty => (0.36, 0.08, 0.05, 0.03, 0.02),
+      ChanceType.directFreeKick => (0.10, 0.20, 0.14, 0.18, 0.08),
+      ChanceType.indirectFreeKick => (0.08, 0.16, 0.20, 0.18, 0.10),
+      ChanceType.throughBallOneVsOne => (0.20, 0.26, 0.08, 0.08, 0.08),
+      ChanceType.highXgCentralShot => (0.18, 0.24, 0.14, 0.12, 0.08),
+      ChanceType.closeRangeTapIn => (0.24, 0.20, 0.08, 0.10, 0.06),
+      ChanceType.transitionBreakaway => (0.18, 0.20, 0.12, 0.14, 0.08),
+      ChanceType.corner => (0.08, 0.14, 0.18, 0.22, 0.08),
+      ChanceType.cornerSecondBall => (0.10, 0.14, 0.16, 0.20, 0.10),
+      ChanceType.wideCrossHeader => (0.10, 0.18, 0.16, 0.18, 0.08),
+      ChanceType.nearPostHeader => (0.11, 0.17, 0.16, 0.18, 0.08),
+      ChanceType.backPostHeader => (0.12, 0.17, 0.15, 0.17, 0.08),
+      ChanceType.farPostHeader => (0.11, 0.17, 0.16, 0.18, 0.08),
+      ChanceType.cutback => (0.14, 0.22, 0.14, 0.14, 0.08),
+      ChanceType.overloadCombination => (0.12, 0.20, 0.14, 0.16, 0.08),
+      ChanceType.dribbleIsolation => (0.11, 0.18, 0.15, 0.18, 0.08),
+      ChanceType.edgeOfBoxShot => (0.08, 0.16, 0.16, 0.22, 0.08),
+      ChanceType.lowXgLongShot => (0.05, 0.13, 0.16, 0.28, 0.08),
+      ChanceType.blockedShot => (0.04, 0.16, 0.26, 0.18, 0.12),
+      ChanceType.scramble => (0.10, 0.18, 0.20, 0.12, 0.10),
+      ChanceType.rebound => (0.13, 0.20, 0.16, 0.14, 0.10),
     };
+
+    final (baseGoal, baseSave, baseBlock, baseOffTarget, baseClearance) =
+        chanceTypeProfile;
+
+    final finishingEdge =
+        (attackingStrength.finishingQuality + attackingStrength.chanceConversion) /
+        200.0;
+    final keeperResilience =
+      (defendingStrength.gkShotStopping + defendingStrength.centralDefense) /
+      200.0;
+    final phaseGoalBias = phaseType == MatchPhaseType.chance
+        ? 0.04
+        : phaseType == MatchPhaseType.finalThird
+        ? 0.02
+        : 0.0;
+
+    final weights = <ChanceOutcome, double>{
+      ChanceOutcome.goal: _positiveWeight(
+        baseGoal +
+            (adjusted * 0.20) +
+            (finishingEdge * 0.08) +
+            (attackEdge * 0.08) +
+            (momentum * 0.05) +
+            (confidence * 0.05) +
+            phaseGoalBias -
+            (keeperResilience * 0.08),
+      ),
+      ChanceOutcome.save: _positiveWeight(
+        baseSave +
+            (adjusted * 0.16) +
+            (keeperResilience * 0.10) +
+            ((1 - finishingEdge) * 0.04),
+      ),
+      ChanceOutcome.block: _positiveWeight(
+        baseBlock +
+            ((1 - adjusted) * 0.14) +
+            (defendingStrength.defensiveCompactness / 100.0 * 0.10) +
+            ((1 - attackEdge) * 0.08),
+      ),
+      ChanceOutcome.offTarget: _positiveWeight(
+        baseOffTarget +
+            ((1 - adjusted) * 0.16) +
+            ((1 - finishingEdge) * 0.10) +
+            (fatigue * 0.06),
+      ),
+      ChanceOutcome.clearance: _positiveWeight(
+        baseClearance +
+            ((1 - adjusted) * 0.14) +
+        (defendingStrength.setPieceDefenseStrength / 100.0 * 0.08) +
+            (state.matchupState.setPieceControlEdge.abs() * 0.04),
+      ),
+      ChanceOutcome.turnover: _positiveWeight(
+        0.06 +
+            ((1 - adjusted) * 0.08) +
+            (fatigue * 0.08) +
+            ((1 - confidence) * 0.06),
+      ),
+      ChanceOutcome.woodwork: _positiveWeight(
+        0.01 + (adjusted * 0.05) + (identity.riskTaking * 0.03),
+      ),
+      ChanceOutcome.claimedByKeeper: _positiveWeight(
+        0.05 +
+            (keeperResilience * 0.08) +
+            ((1 - adjusted) * 0.08) +
+        (defendingStrength.setPieceDefenseStrength / 100.0 * 0.06),
+      ),
+      ChanceOutcome.deflectionCorner: _positiveWeight(
+        0.04 +
+            (defendingStrength.defensiveCompactness / 100.0 * 0.08) +
+            ((1 - adjusted) * 0.05),
+      ),
+      ChanceOutcome.rebound: _positiveWeight(
+        0.04 +
+            (adjusted * 0.05) +
+            ((1 - keeperResilience) * 0.05) +
+            (transitionEdge * 0.04),
+      ),
+      ChanceOutcome.offside: _positiveWeight(
+        0.02 +
+            (identity.verticalProgressionBias * 0.06) +
+            (transitionEdge * 0.04),
+      ),
+      ChanceOutcome.foulWon: _positiveWeight(
+        0.03 +
+            (identity.riskTaking * 0.05) +
+            (state.dynamics.homeDisciplinePressure +
+                    state.dynamics.awayDisciplinePressure) *
+                0.03,
+      ),
+    };
+
     return _weightedPick(weights, random);
   }
 
