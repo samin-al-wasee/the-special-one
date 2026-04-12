@@ -229,7 +229,14 @@ class MatchEngine {
       intensity: _resolveAttackIntensity(match, initiative),
     );
     final zone = _resolveZone(match, initiative, attackState, random);
-    final chanceType = _resolveChanceType(phaseType, attackState, random);
+    final chanceType = _resolveChanceType(
+      match: match,
+      state: state,
+      initiative: initiative,
+      phaseType: phaseType,
+      attackState: attackState,
+      random: random,
+    );
     final chanceQuality = chanceType == null
         ? null
         : _resolveChanceQuality(match, initiative, attackState, random);
@@ -711,49 +718,186 @@ class MatchEngine {
 
   /// Decides whether a chance occurs and which chance archetype appears.
   ///
-  /// Includes phase-specific trigger probabilities to reduce chance inflation.
-  static ChanceType? _resolveChanceType(
-    MatchPhaseType phaseType,
-    AttackState attackState,
-    math.Random random,
-  ) {
-    if (phaseType == MatchPhaseType.setPiece) {
-      return random.nextDouble() < 0.38 ? ChanceType.corner : null;
+  /// Trigger and archetype are both derived from tactical identity,
+  /// matchup edges, phase pressure, and route/context details.
+  static ChanceType? _resolveChanceType({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required MatchPhaseType phaseType,
+    required AttackState attackState,
+    required math.Random random,
+  }) {
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+    final structure = initiative == TeamSide.home
+        ? match.context.homeStructuralProfile
+        : match.context.awayStructuralProfile;
+    final strength = initiative == TeamSide.home
+        ? match.context.homeStrengthProfile
+        : match.context.awayStrengthProfile;
+    final oppositionDiscipline = initiative == TeamSide.home
+        ? state.dynamics.awayDisciplinePressure
+        : state.dynamics.homeDisciplinePressure;
+
+    final attackEdge = _directionalMatchupEdge(
+      initiative == TeamSide.home
+          ? state.matchupState.homeAttackVsAwayDefense
+          : state.matchupState.awayAttackVsHomeDefense,
+      initiative,
+    );
+    final transitionEdge = _directionalMatchupEdge(
+      state.matchupState.transitionControlEdge,
+      initiative,
+    );
+    final setPieceEdge = _directionalMatchupEdge(
+      state.matchupState.setPieceControlEdge,
+      initiative,
+    );
+    final wingEdge = _directionalMatchupEdge(
+      state.matchupState.wingControlEdge,
+      initiative,
+    );
+    final momentum = _initiativeMomentum(state, initiative);
+    final fatigue = _initiativeFatigue(state, initiative);
+    final confidence = _initiativeConfidence(state, initiative);
+    final inTerritory = state.currentTerritoryControl == initiative ? 1.0 : 0.0;
+
+    final triggerProbability = _clamp01(
+      0.02 +
+          switch (phaseType) {
+            MatchPhaseType.setPiece =>
+              0.16 +
+                  (identity.setPieceAttackingBias * 0.24) +
+                  (structure.boxPresence * 0.14) +
+                  (setPieceEdge * 0.16) +
+                  (oppositionDiscipline * 0.08) -
+                  (fatigue * 0.08),
+            MatchPhaseType.finalThird =>
+              0.18 +
+                  (attackEdge * 0.18) +
+                  (confidence * 0.14) +
+                  (identity.riskTaking * 0.10) +
+                  (inTerritory * 0.12),
+            MatchPhaseType.chance =>
+              0.26 +
+                  (attackEdge * 0.20) +
+                  (confidence * 0.16) +
+                  (identity.verticalProgressionBias * 0.10) +
+                  (momentum * 0.08),
+            MatchPhaseType.transition =>
+              0.10 +
+                  (transitionEdge * 0.22) +
+                  (identity.counterTriggerBias * 0.12) +
+                  (identity.counterSpeedBias * 0.10),
+            MatchPhaseType.outcome =>
+              0.08 +
+                  (attackEdge * 0.08) +
+                  (momentum * 0.08) +
+                  ((1 - fatigue) * 0.04),
+            _ => 0.0,
+          },
+    );
+
+    if (random.nextDouble() > triggerProbability) {
+      return null;
     }
 
-    if (phaseType == MatchPhaseType.finalThird ||
-        phaseType == MatchPhaseType.chance) {
-      final trigger = phaseType == MatchPhaseType.chance ? 0.58 : 0.42;
-      if (random.nextDouble() > trigger) {
+    switch (phaseType) {
+      case MatchPhaseType.setPiece:
+        return _weightedPick({
+          ChanceType.corner: _positiveWeight(
+            0.20 + (identity.widthBias * 0.10) + (structure.boxPresence * 0.08),
+          ),
+          ChanceType.cornerSecondBall: _positiveWeight(
+            0.10 + (structure.supportNetworkQuality * 0.10),
+          ),
+          ChanceType.directFreeKick: _positiveWeight(
+            0.12 + (identity.directnessBias * 0.12) + (setPieceEdge * 0.10),
+          ),
+          ChanceType.indirectFreeKick: _positiveWeight(
+            0.10 + ((1 - identity.directnessBias) * 0.10),
+          ),
+          ChanceType.penalty: _positiveWeight(
+            0.03 + (identity.riskTaking * 0.04) + (oppositionDiscipline * 0.06),
+          ),
+        }, random);
+      case MatchPhaseType.finalThird:
+      case MatchPhaseType.chance:
+      case MatchPhaseType.transition:
+      case MatchPhaseType.outcome:
+        final routeWeights = switch (attackState.route) {
+          AttackRoute.leftFlank || AttackRoute.rightFlank => {
+            ChanceType.wideCrossHeader: _positiveWeight(
+              0.20 + (wingEdge * 0.14) + (identity.widthBias * 0.10),
+            ),
+            ChanceType.nearPostHeader: _positiveWeight(0.10 + (wingEdge * 0.08)),
+            ChanceType.backPostHeader: _positiveWeight(0.10 + (wingEdge * 0.08)),
+            ChanceType.farPostHeader: _positiveWeight(0.07 + (wingEdge * 0.06)),
+            ChanceType.cutback: _positiveWeight(
+              0.16 + (identity.cutbackBias * 0.12) + (structure.halfSpaceAccess * 0.08),
+            ),
+            ChanceType.dribbleIsolation: _positiveWeight(
+              0.07 + (identity.riskTaking * 0.08),
+            ),
+          },
+          AttackRoute.centralProgression => {
+            ChanceType.highXgCentralShot: _positiveWeight(
+              0.20 + (attackEdge * 0.14) + (strength.chanceConversion / 100.0 * 0.10),
+            ),
+            ChanceType.throughBallOneVsOne: _positiveWeight(
+              0.16 + (identity.throughBallBias * 0.14) + (identity.verticalProgressionBias * 0.08),
+            ),
+            ChanceType.closeRangeTapIn: _positiveWeight(
+              0.10 + (structure.boxPresence * 0.10),
+            ),
+            ChanceType.edgeOfBoxShot: _positiveWeight(
+              0.08 + ((1 - identity.shortPassBias) * 0.08),
+            ),
+          },
+          AttackRoute.halfSpaces => {
+            ChanceType.overloadCombination: _positiveWeight(
+              0.18 + (structure.supportNetworkQuality * 0.12),
+            ),
+            ChanceType.cutback: _positiveWeight(
+              0.14 + (identity.cutbackBias * 0.12),
+            ),
+            ChanceType.throughBallOneVsOne: _positiveWeight(
+              0.12 + (identity.throughBallBias * 0.10),
+            ),
+            ChanceType.dribbleIsolation: _positiveWeight(
+              0.08 + (identity.riskTaking * 0.08),
+            ),
+          },
+          AttackRoute.directCentralLane => {
+            ChanceType.transitionBreakaway: _positiveWeight(
+              0.16 + (transitionEdge * 0.14) + (identity.counterSpeedBias * 0.10),
+            ),
+            ChanceType.lowXgLongShot: _positiveWeight(
+              0.12 + (identity.directnessBias * 0.12),
+            ),
+            ChanceType.highXgCentralShot: _positiveWeight(
+              0.10 + (attackEdge * 0.10),
+            ),
+            ChanceType.edgeOfBoxShot: _positiveWeight(
+              0.10 + (identity.riskTaking * 0.08),
+            ),
+          },
+        };
+
+        final chaosWeights = phaseType == MatchPhaseType.outcome
+            ? <ChanceType, double>{
+                ChanceType.blockedShot: _positiveWeight(0.14 + ((1 - attackEdge) * 0.10)),
+                ChanceType.scramble: _positiveWeight(0.10 + (structure.boxPresence * 0.08)),
+                ChanceType.rebound: _positiveWeight(0.08 + ((1 - fatigue) * 0.06)),
+              }
+            : <ChanceType, double>{};
+
+        return _weightedPick({...routeWeights, ...chaosWeights}, random);
+      default:
         return null;
-      }
-
-      switch (attackState.route) {
-        case AttackRoute.leftFlank:
-        case AttackRoute.rightFlank:
-          return random.nextBool()
-              ? ChanceType.wideCrossHeader
-              : ChanceType.cutback;
-        case AttackRoute.centralProgression:
-          return random.nextBool()
-              ? ChanceType.highXgCentralShot
-              : ChanceType.throughBallOneVsOne;
-        case AttackRoute.halfSpaces:
-          return random.nextBool()
-              ? ChanceType.overloadCombination
-              : ChanceType.cutback;
-        case AttackRoute.directCentralLane:
-          return random.nextBool()
-              ? ChanceType.transitionBreakaway
-              : ChanceType.lowXgLongShot;
-      }
     }
-
-    if (phaseType == MatchPhaseType.outcome) {
-      return random.nextDouble() < 0.18 ? ChanceType.blockedShot : null;
-    }
-
-    return null;
   }
 
   /// Estimates chance quality using attacking edge, defensive resistance,
