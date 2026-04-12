@@ -211,7 +211,13 @@ class MatchEngine {
     final attackState = AttackState(
       id: state.currentPhaseIndex + 1,
       route: _resolveAttackRoute(match, initiative, random),
-      mode: _resolveAttackMode(match, initiative, phaseType),
+      mode: _resolveAttackMode(
+        match: match,
+        state: state,
+        initiative: initiative,
+        phaseType: phaseType,
+        random: random,
+      ),
       context: _resolveAttackContext(phaseType),
       phaseCount: state.currentPhaseIndex + 1,
       intensity: _resolveAttackIntensity(match, initiative),
@@ -502,11 +508,13 @@ class MatchEngine {
   }
 
   /// Selects attack mode from tactical identity and phase context.
-  static AttackMode _resolveAttackMode(
-    Match match,
-    TeamSide initiative,
-    MatchPhaseType phaseType,
-  ) {
+  static AttackMode _resolveAttackMode({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required MatchPhaseType phaseType,
+    required math.Random random,
+  }) {
     if (phaseType == MatchPhaseType.setPiece) {
       return AttackMode.setPlayExecution;
     }
@@ -514,21 +522,57 @@ class MatchEngine {
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
+    final transitionEdge = _directionalMatchupEdge(
+      state.matchupState.transitionControlEdge,
+      initiative,
+    );
+    final midfieldEdge = _directionalMatchupEdge(
+      state.matchupState.midfieldControlEdge,
+      initiative,
+    );
+    final fatigue = _initiativeFatigue(state, initiative);
 
-    if (identity.counterTriggerBias >= 0.65 &&
-        phaseType == MatchPhaseType.transition) {
-      return AttackMode.counterAttack;
-    }
-    if (identity.pressIntensityBias >= 0.70) {
-      return AttackMode.highPressAttack;
-    }
-    if (identity.directnessBias >= 0.65) {
-      return AttackMode.directPlay;
-    }
-    if (identity.counterTriggerBias >= 0.55) {
-      return AttackMode.quickTransition;
-    }
-    return AttackMode.possessionBuildUp;
+    final weights = <AttackMode, double>{
+      AttackMode.possessionBuildUp: _positiveWeight(
+        0.14 +
+            (identity.shortPassBias * 0.22) +
+            ((1 - identity.directnessBias) * 0.14) +
+            ((1 - identity.counterTriggerBias) * 0.10) +
+            (_clamp01(midfieldEdge) * 0.10) +
+            ((1 - fatigue) * 0.06),
+      ),
+      AttackMode.quickTransition: _positiveWeight(
+        0.12 +
+            (identity.counterTriggerBias * 0.16) +
+            (identity.counterSpeedBias * 0.18) +
+            (identity.verticalProgressionBias * 0.08) +
+            (_clamp01(transitionEdge) * 0.12) +
+            ((phaseType == MatchPhaseType.transition ? 1.0 : 0.0) * 0.10),
+      ),
+      AttackMode.directPlay: _positiveWeight(
+        0.10 +
+            (identity.directnessBias * 0.24) +
+            (identity.verticalProgressionBias * 0.10) +
+            ((1 - identity.shortPassBias) * 0.10) +
+            (identity.riskTaking * 0.06),
+      ),
+      AttackMode.counterAttack: _positiveWeight(
+        0.06 +
+            (identity.counterTriggerBias * 0.18) +
+            (identity.counterSpeedBias * 0.16) +
+            (_clamp01(transitionEdge) * 0.14) +
+            ((phaseType == MatchPhaseType.transition ? 1.0 : 0.0) * 0.16),
+      ),
+      AttackMode.highPressAttack: _positiveWeight(
+        0.06 +
+            (identity.pressIntensityBias * 0.22) +
+            (identity.pressTriggerRate * 0.16) +
+            (identity.counterpressBias * 0.12) -
+            (fatigue * 0.10),
+      ),
+    };
+
+    return _weightedPick(weights, random);
   }
 
   /// Maps phase type to attack context label for downstream analysis.
