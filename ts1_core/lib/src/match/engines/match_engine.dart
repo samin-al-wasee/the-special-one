@@ -218,7 +218,13 @@ class MatchEngine {
         phaseType: phaseType,
         random: random,
       ),
-      context: _resolveAttackContext(phaseType),
+      context: _resolveAttackContext(
+        match: match,
+        state: state,
+        initiative: initiative,
+        phaseType: phaseType,
+        random: random,
+      ),
       phaseCount: state.currentPhaseIndex + 1,
       intensity: _resolveAttackIntensity(match, initiative),
     );
@@ -575,15 +581,87 @@ class MatchEngine {
     return _weightedPick(weights, random);
   }
 
-  /// Maps phase type to attack context label for downstream analysis.
-  static AttackContext _resolveAttackContext(MatchPhaseType phaseType) {
+  /// Resolves attack context from phase and live tactical state.
+  ///
+  /// Uses weighted branching for ambiguous scenarios so simulation can emit
+  /// richer context origins than a single fixed mapping.
+  static AttackContext _resolveAttackContext({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required MatchPhaseType phaseType,
+    required math.Random random,
+  }) {
+    final identity = initiative == TeamSide.home
+        ? match.context.homeTacticalIdentity
+        : match.context.awayTacticalIdentity;
+    final structure = initiative == TeamSide.home
+        ? match.context.homeStructuralProfile
+        : match.context.awayStructuralProfile;
+    final transitionEdge = _directionalMatchupEdge(
+      state.matchupState.transitionControlEdge,
+      initiative,
+    );
+    final setPieceEdge = _directionalMatchupEdge(
+      state.matchupState.setPieceControlEdge,
+      initiative,
+    );
+    final fatigue = _initiativeFatigue(state, initiative);
+    final discipline = _initiativeDisciplinePressure(state, initiative);
+    final momentum = _initiativeMomentum(state, initiative);
+
     if (phaseType == MatchPhaseType.setPiece) {
-      return AttackContext.setpieceSequence;
+      return _weightedPick({
+        AttackContext.cornerKick: _positiveWeight(
+          0.16 + (identity.widthBias * 0.10) + (structure.boxPresence * 0.10),
+        ),
+        AttackContext.directFreeKick: _positiveWeight(
+          0.10 + (identity.directnessBias * 0.12) + (setPieceEdge * 0.08),
+        ),
+        AttackContext.indirectFreeKick: _positiveWeight(
+          0.12 + ((1 - identity.directnessBias) * 0.12),
+        ),
+        AttackContext.throwIn: _positiveWeight(
+          0.12 + (identity.widthBias * 0.12),
+        ),
+        AttackContext.goalKick: _positiveWeight(
+          0.06 + ((1 - identity.pressIntensityBias) * 0.08),
+        ),
+        AttackContext.setpieceSequence: _positiveWeight(
+          0.14 + (identity.setPieceAttackingBias * 0.14),
+        ),
+      }, random);
     }
-    if (phaseType == MatchPhaseType.transition) {
-      return AttackContext.defensiveTransition;
+
+    if (phaseType == MatchPhaseType.transition ||
+        phaseType == MatchPhaseType.outcome) {
+      return _weightedPick({
+        AttackContext.defensiveTransition: _positiveWeight(
+          0.20 + (transitionEdge * 0.16) + (identity.counterTriggerBias * 0.12),
+        ),
+        AttackContext.secondBallRecovery: _positiveWeight(
+          0.10 + (structure.supportNetworkQuality * 0.10),
+        ),
+        AttackContext.transitionChaos: _positiveWeight(
+          0.08 + (fatigue * 0.12) + (discipline * 0.10),
+        ),
+        AttackContext.opponentsError: _positiveWeight(
+          0.06 + (momentum * 0.10) + (identity.pressTriggerRate * 0.10),
+        ),
+      }, random);
     }
-    return AttackContext.normalOpenPlay;
+
+    return _weightedPick({
+      AttackContext.normalOpenPlay: _positiveWeight(
+        0.30 + ((1 - fatigue) * 0.08) + ((1 - discipline) * 0.08),
+      ),
+      AttackContext.secondBallRecovery: _positiveWeight(
+        0.06 + (structure.supportNetworkQuality * 0.08),
+      ),
+      AttackContext.opponentsError: _positiveWeight(
+        0.03 + (identity.pressTriggerRate * 0.06) + (momentum * 0.06),
+      ),
+    }, random);
   }
 
   /// Computes attack intensity from identity risk and progression traits.
