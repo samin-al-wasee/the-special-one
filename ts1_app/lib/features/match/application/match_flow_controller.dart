@@ -17,8 +17,8 @@ class MatchFlowController extends ChangeNotifier {
 
   static const int _homeTeamId = 101;
   static const int _awayTeamId = 202;
-  static const String _homeTeamName = 'Home FC';
-  static const String _awayTeamName = 'Away FC';
+  static const String _homeTeamName = 'South American All Stars';
+  static const String _awayTeamName = 'European All Stars';
 
   TacticalPreset _homePreset = TacticalPreset.gegenpress;
   TacticalPreset _awayPreset = TacticalPreset.possessionControl;
