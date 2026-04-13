@@ -101,6 +101,8 @@ const _$PositionEnumMap = {
   Position.defensiveMidfielder: 'defensiveMidfielder',
   Position.centralMidfielder: 'centralMidfielder',
   Position.attackingMidfielder: 'attackingMidfielder',
+  Position.rightMidfielder: 'rightMidfielder',
+  Position.leftMidfielder: 'leftMidfielder',
   Position.rightWinger: 'rightWinger',
   Position.leftWinger: 'leftWinger',
   Position.striker: 'striker',

@@ -406,8 +406,8 @@ class _LineupTab extends StatelessWidget {
 class _PitchView extends StatelessWidget {
   const _PitchView({required this.home, required this.away});
 
-  static const int _halfDepthSections = 9;
-  static const int _playerRows = 8;
+  static const int _halfDepthSections = 7;
+  static const int _playerRows = 6;
 
   final Team home;
   final Team away;
@@ -524,7 +524,8 @@ class _PitchView extends StatelessWidget {
     final y = isHome ? baseInHalf : (height - baseInHalf);
 
     const laneFractions = <double>[0.14, 0.32, 0.50, 0.68, 0.86];
-    final laneIndex = (lane - 1).clamp(0, laneFractions.length - 1);
+    final mirroredLane = isHome ? (6 - lane) : lane;
+    final laneIndex = (mirroredLane - 1).clamp(0, laneFractions.length - 1);
     final xFraction = laneFractions[laneIndex];
     return Offset(width * xFraction, y);
   }
@@ -544,6 +545,49 @@ class _PitchView extends StatelessWidget {
     }
   }
 
+  bool _isRightSided(Position position) {
+    return position == Position.rightBack ||
+        position == Position.rightMidfielder ||
+        position == Position.rightWinger;
+  }
+
+  bool _isLeftSided(Position position) {
+    return position == Position.leftBack ||
+        position == Position.leftMidfielder ||
+        position == Position.leftWinger;
+  }
+
+  List<Position> _centralPositionsForSection(int section) {
+    return switch (section) {
+      2 => const [Position.centerBack],
+      4 => const [Position.centralMidfielder],
+      5 => const [Position.attackingMidfielder],
+      _ => const [],
+    };
+  }
+
+  int _middleLaneFor(
+    LineupSlotAssignment assignment,
+    List<LineupSlotAssignment> sectionPlayers,
+    List<Position> centralPositions,
+  ) {
+    final centralPlayers = sectionPlayers
+        .where((p) => centralPositions.contains(p.player.position))
+        .toList();
+    final playerIndex = centralPlayers.indexWhere(
+      (p) => p.player.id == assignment.player.id,
+    );
+    final middleLanes = switch (centralPlayers.length) {
+      1 => const <int>[3],
+      2 => const <int>[2, 4],
+      _ => const <int>[2, 3, 4],
+    };
+    final laneIndex = playerIndex < 0
+        ? 0
+        : playerIndex.clamp(0, middleLanes.length - 1);
+    return middleLanes[laneIndex];
+  }
+
   int _columnForAssignment({
     required LineupSlotAssignment assignment,
     required List<LineupSlotAssignment> sectionPlayers,
@@ -552,13 +596,18 @@ class _PitchView extends StatelessWidget {
   }) {
     final position = assignment.player.position;
 
-    if (section == 3 &&
-        (position == Position.rightBack || position == Position.leftBack)) {
-      return position == Position.leftBack ? 1 : 5;
-    }
-    if (section == 7 &&
-        (position == Position.rightWinger || position == Position.leftWinger)) {
-      return position == Position.leftWinger ? 1 : 5;
+    if (section == 2 || section == 4 || section == 5) {
+      if (_isLeftSided(position)) {
+        return 1;
+      }
+      if (_isRightSided(position)) {
+        return 5;
+      }
+
+      final centralPositions = _centralPositionsForSection(section);
+      if (centralPositions.contains(position)) {
+        return _middleLaneFor(assignment, sectionPlayers, centralPositions);
+      }
     }
 
     final defaults = _defaultColumnsForCount(sectionPlayers.length);
@@ -573,10 +622,12 @@ class _PitchView extends StatelessWidget {
       Position.rightBack => 3,
       Position.defensiveMidfielder => 4,
       Position.centralMidfielder => 5,
-      Position.attackingMidfielder => 6,
-      Position.leftWinger => 7,
-      Position.striker => 8,
-      Position.rightWinger => 9,
+      Position.rightMidfielder => 6,
+      Position.leftMidfielder => 7,
+      Position.attackingMidfielder => 8,
+      Position.leftWinger => 9,
+      Position.striker => 10,
+      Position.rightWinger => 11,
     };
   }
 
@@ -584,13 +635,13 @@ class _PitchView extends StatelessWidget {
     final position = assignment.player.position;
     return switch (position) {
       Position.goalKeeper => 1,
-      Position.centerBack => 2,
-      Position.rightBack || Position.leftBack => 3,
-      Position.defensiveMidfielder => 4,
-      Position.centralMidfielder => 5,
-      Position.attackingMidfielder => 6,
-      Position.rightWinger || Position.leftWinger => 7,
-      Position.striker => 8,
+      Position.centerBack || Position.rightBack || Position.leftBack => 2,
+      Position.defensiveMidfielder => 3,
+      Position.centralMidfielder => 4,
+      Position.rightMidfielder || Position.leftMidfielder => 4,
+      Position.attackingMidfielder => 5,
+      Position.rightWinger || Position.leftWinger => 5,
+      Position.striker => 6,
     };
   }
 
@@ -603,6 +654,8 @@ class _PitchView extends StatelessWidget {
       Position.defensiveMidfielder => 'DM',
       Position.centralMidfielder => 'CM',
       Position.attackingMidfielder => 'AM',
+      Position.rightMidfielder => 'RM',
+      Position.leftMidfielder => 'LM',
       Position.rightWinger => 'RW',
       Position.leftWinger => 'LW',
       Position.striker => 'ST',
@@ -939,6 +992,8 @@ class _TeamSquadPanel extends StatelessWidget {
       Position.defensiveMidfielder => 'DM',
       Position.centralMidfielder => 'CM',
       Position.attackingMidfielder => 'AM',
+      Position.rightMidfielder => 'RM',
+      Position.leftMidfielder => 'LM',
       Position.rightWinger => 'RW',
       Position.leftWinger => 'LW',
       Position.striker => 'ST',

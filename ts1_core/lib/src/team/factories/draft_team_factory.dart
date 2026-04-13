@@ -100,6 +100,8 @@ class DraftTeamFactory {
       Position.rightBack,
       Position.defensiveMidfielder,
       Position.centralMidfielder,
+      Position.leftMidfielder,
+      Position.rightMidfielder,
       Position.attackingMidfielder,
       Position.leftWinger,
       Position.rightWinger,
@@ -152,9 +154,11 @@ class DraftTeamFactory {
 
   static Footedness _footednessFor(int index, Position position) {
     switch (position) {
+      case Position.rightMidfielder:
       case Position.leftBack:
       case Position.leftWinger:
         return Footedness.left;
+      case Position.leftMidfielder:
       case Position.rightBack:
       case Position.rightWinger:
         return Footedness.right;
@@ -170,6 +174,9 @@ class DraftTeamFactory {
 
   static double _heightFor(Position position) {
     switch (position) {
+      case Position.rightMidfielder:
+      case Position.leftMidfielder:
+        return 178;
       case Position.goalKeeper:
         return 192;
       case Position.centerBack:
@@ -192,6 +199,9 @@ class DraftTeamFactory {
 
   static double _weightFor(Position position) {
     switch (position) {
+      case Position.rightMidfielder:
+      case Position.leftMidfielder:
+        return 73;
       case Position.goalKeeper:
         return 86;
       case Position.centerBack:
@@ -214,6 +224,14 @@ class DraftTeamFactory {
 
   static Map<TechnicalAttr, int> _technicalFor(Position position) {
     switch (position) {
+      case Position.rightMidfielder:
+      case Position.leftMidfielder:
+        return const {
+          TechnicalAttr.passing: 79,
+          TechnicalAttr.crossing: 78,
+          TechnicalAttr.dribbling: 77,
+          TechnicalAttr.firstTouch: 79,
+        };
       case Position.goalKeeper:
         return const {
           TechnicalAttr.firstTouch: 68,
@@ -269,6 +287,14 @@ class DraftTeamFactory {
 
   static Map<MentalAttr, int> _mentalFor(Position position) {
     switch (position) {
+      case Position.rightMidfielder:
+      case Position.leftMidfielder:
+        return const {
+          MentalAttr.decisions: 78,
+          MentalAttr.vision: 79,
+          MentalAttr.workRate: 80,
+          MentalAttr.positioning: 77,
+        };
       case Position.goalKeeper:
         return const {MentalAttr.decisions: 77, MentalAttr.composure: 76};
       case Position.centerBack:
@@ -292,6 +318,14 @@ class DraftTeamFactory {
 
   static Map<PhysicalAttr, int> _physicalFor(Position position) {
     switch (position) {
+      case Position.rightMidfielder:
+      case Position.leftMidfielder:
+        return const {
+          PhysicalAttr.pace: 80,
+          PhysicalAttr.acceleration: 79,
+          PhysicalAttr.stamina: 81,
+          PhysicalAttr.balance: 77,
+        };
       case Position.goalKeeper:
         return const {PhysicalAttr.jumping: 82, PhysicalAttr.strength: 80};
       case Position.centerBack:
