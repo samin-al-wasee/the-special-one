@@ -8,8 +8,8 @@ import 'package:ts1_core/ts1_core.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 
-class PreMatchLineupScreen extends ConsumerWidget {
-  const PreMatchLineupScreen({super.key});
+class LineupScreen extends ConsumerWidget {
+  const LineupScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,17 +33,15 @@ class PreMatchLineupScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   if (home != null && away != null)
-                    _MatchupHeader(
-                      home: home,
-                      away: away,
-                      kickoffAt: kickoffAt,
-                    )
+                    _MatchupHeader(home: home, away: away, kickoffAt: kickoffAt)
                   else
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Text(
@@ -60,9 +58,9 @@ class PreMatchLineupScreen extends ConsumerWidget {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: TabBar(
@@ -72,9 +70,12 @@ class PreMatchLineupScreen extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               indicatorSize: TabBarIndicatorSize.tab,
-                              labelColor: Theme.of(context).colorScheme.onPrimary,
-                              unselectedLabelColor:
-                                  Theme.of(context).colorScheme.onSurfaceVariant,
+                              labelColor: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary,
+                              unselectedLabelColor: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                               tabs: const [
                                 Tab(text: 'Tactics'),
                                 Tab(text: 'Lineup'),
@@ -90,12 +91,16 @@ class PreMatchLineupScreen extends ConsumerWidget {
                                 home != null && away != null
                                     ? _LineupTab(home: home, away: away)
                                     : const Center(
-                                        child: Text('Select tactics to generate teams'),
+                                        child: Text(
+                                          'Select tactics to generate teams',
+                                        ),
                                       ),
                                 home != null && away != null
                                     ? _TacticalTab(home: home, away: away)
                                     : const Center(
-                                        child: Text('Select tactics to generate teams'),
+                                        child: Text(
+                                          'Select tactics to generate teams',
+                                        ),
                                       ),
                               ],
                             ),
@@ -157,24 +162,24 @@ class _TacticsSetupTab extends StatelessWidget {
           Text(
             'Configure Teams',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: foreground,
-                ),
+              fontWeight: FontWeight.w700,
+              color: foreground,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Select presets and formations for each team. The lineup will update automatically.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: foreground.withValues(alpha: 0.75),
-                ),
+              color: foreground.withValues(alpha: 0.75),
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             'Home Team',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: foreground,
-                ),
+              fontWeight: FontWeight.w700,
+              color: foreground,
+            ),
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<TacticalPreset>(
@@ -248,9 +253,9 @@ class _TacticsSetupTab extends StatelessWidget {
           Text(
             'Away Team',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: foreground,
-                ),
+              fontWeight: FontWeight.w700,
+              color: foreground,
+            ),
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<TacticalPreset>(
@@ -326,7 +331,6 @@ class _TacticsSetupTab extends StatelessWidget {
   }
 }
 
-
 class _MatchupHeader extends StatelessWidget {
   const _MatchupHeader({
     required this.home,
@@ -344,7 +348,8 @@ class _MatchupHeader extends StatelessWidget {
       TimeOfDay.fromDateTime(kickoffAt),
       alwaysUse24HourFormat: true,
     );
-    final date = '${kickoffAt.day.toString().padLeft(2, '0')}/'
+    final date =
+        '${kickoffAt.day.toString().padLeft(2, '0')}/'
         '${kickoffAt.month.toString().padLeft(2, '0')}/'
         '${kickoffAt.year}';
 
@@ -444,14 +449,20 @@ class _PitchView extends StatelessWidget {
     final sections = <int, List<LineupSlotAssignment>>{};
     for (final assignment in team.lineup.slotAssignments) {
       final section = _depthSectionForAssignment(assignment);
-      sections.putIfAbsent(section, () => <LineupSlotAssignment>[]).add(assignment);
+      sections
+          .putIfAbsent(section, () => <LineupSlotAssignment>[])
+          .add(assignment);
     }
 
     final widgets = <Widget>[];
     final orderedSections = sections.keys.toList()..sort();
     for (final section in orderedSections) {
       final line = sections[section]!
-        ..sort((a, b) => _positionSortKey(a.player.position).compareTo(_positionSortKey(b.player.position)));
+        ..sort(
+          (a, b) => _positionSortKey(
+            a.player.position,
+          ).compareTo(_positionSortKey(b.player.position)),
+        );
 
       for (var i = 0; i < line.length; i++) {
         final assignment = line[i];
@@ -541,13 +552,12 @@ class _PitchView extends StatelessWidget {
   }) {
     final position = assignment.player.position;
 
-    // Exception rows:
-    // Fullbacks (RB/LB) always at 1 and 5.
-    if (section == 3 && (position == Position.rightBack || position == Position.leftBack)) {
+    if (section == 3 &&
+        (position == Position.rightBack || position == Position.leftBack)) {
       return position == Position.leftBack ? 1 : 5;
     }
-    // Wingers (RW/LW) always at 1 and 5.
-    if (section == 7 && (position == Position.rightWinger || position == Position.leftWinger)) {
+    if (section == 7 &&
+        (position == Position.rightWinger || position == Position.leftWinger)) {
       return position == Position.leftWinger ? 1 : 5;
     }
 
@@ -598,7 +608,6 @@ class _PitchView extends StatelessWidget {
       Position.striker => 'ST',
     };
   }
-
 }
 
 class _PlayerMarker extends StatelessWidget {
@@ -639,10 +648,7 @@ class _PlayerMarker extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!isHome) ...[
-            nameBar,
-            const SizedBox(height: 1),
-          ],
+          if (!isHome) ...[nameBar, const SizedBox(height: 1)],
           Container(
             width: 20,
             height: 20,
@@ -661,10 +667,7 @@ class _PlayerMarker extends StatelessWidget {
               ),
             ),
           ),
-          if (isHome) ...[
-            const SizedBox(height: 1),
-            nameBar,
-          ],
+          if (isHome) ...[const SizedBox(height: 1), nameBar],
         ],
       ),
     );
@@ -714,7 +717,12 @@ class _PitchPainter extends CustomPainter {
     }
   }
 
-  void _drawPenaltyArea(Canvas canvas, Size size, Paint line, {required bool top}) {
+  void _drawPenaltyArea(
+    Canvas canvas,
+    Size size,
+    Paint line, {
+    required bool top,
+  }) {
     final penaltyWidth = size.width * 0.46;
     final sixYardWidth = size.width * 0.22;
     final penaltyLeft = (size.width - penaltyWidth) / 2;
@@ -724,14 +732,24 @@ class _PitchPainter extends CustomPainter {
     final y = top ? 0.0 : size.height - penaltyHeight;
     final sixYardY = top ? 0.0 : size.height - sixYardHeight;
 
-    canvas.drawRect(Rect.fromLTWH(penaltyLeft, y, penaltyWidth, penaltyHeight), line);
-    canvas.drawRect(Rect.fromLTWH(sixYardLeft, sixYardY, sixYardWidth, sixYardHeight), line);
+    canvas.drawRect(
+      Rect.fromLTWH(penaltyLeft, y, penaltyWidth, penaltyHeight),
+      line,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(sixYardLeft, sixYardY, sixYardWidth, sixYardHeight),
+      line,
+    );
 
     final spot = Offset(
       size.width / 2,
       top ? size.height * 0.11 : size.height * 0.89,
     );
-    canvas.drawCircle(spot, 2.2, Paint()..color = Colors.white.withValues(alpha: 0.8));
+    canvas.drawCircle(
+      spot,
+      2.2,
+      Paint()..color = Colors.white.withValues(alpha: 0.8),
+    );
 
     final arcRect = Rect.fromCircle(center: spot, radius: size.width * 0.10);
     final penaltyLineY = top ? penaltyHeight : size.height - penaltyHeight;
@@ -798,12 +816,21 @@ class _InfoChip extends StatelessWidget {
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Column(
-        crossAxisAlignment:
-            rightAlign ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: rightAlign
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
-          Text(label, textAlign: align, style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            label,
+            textAlign: align,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           const SizedBox(height: 2),
-          Text(value, textAlign: align, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            value,
+            textAlign: align,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
         ],
       ),
     );
@@ -821,9 +848,13 @@ class _SquadInfoComparison extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: _TeamSquadPanel(team: home, titleAlign: TextAlign.left)),
+        Expanded(
+          child: _TeamSquadPanel(team: home, titleAlign: TextAlign.left),
+        ),
         const SizedBox(width: 10),
-        Expanded(child: _TeamSquadPanel(team: away, titleAlign: TextAlign.right)),
+        Expanded(
+          child: _TeamSquadPanel(team: away, titleAlign: TextAlign.right),
+        ),
       ],
     );
   }
@@ -837,8 +868,9 @@ class _TeamSquadPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxis =
-        titleAlign == TextAlign.right ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    final crossAxis = titleAlign == TextAlign.right
+        ? CrossAxisAlignment.end
+        : CrossAxisAlignment.start;
     final bench = team.lineup.bench;
     final reserves = team.lineup.reserves;
 
@@ -851,32 +883,48 @@ class _TeamSquadPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: crossAxis,
         children: [
-          Text(team.name, textAlign: titleAlign, style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            team.name,
+            textAlign: titleAlign,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           Text(
             'Coach: N/A',
             textAlign: titleAlign,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 10),
-          Text('Subs', textAlign: titleAlign, style: Theme.of(context).textTheme.titleSmall),
-          const SizedBox(height: 4),
-          ...bench.take(7).map(
-            (p) => Text(
-              '${_positionCode(p.position)}  ${p.name}',
-              textAlign: titleAlign,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+          Text(
+            'Subs',
+            textAlign: titleAlign,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
+          const SizedBox(height: 4),
+          ...bench
+              .take(7)
+              .map(
+                (p) => Text(
+                  '${_positionCode(p.position)}  ${p.name}',
+                  textAlign: titleAlign,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
           const SizedBox(height: 10),
-          Text('Reserves', textAlign: titleAlign, style: Theme.of(context).textTheme.titleSmall),
-          const SizedBox(height: 4),
-          ...reserves.take(7).map(
-            (p) => Text(
-              '${_positionCode(p.position)}  ${p.name}',
-              textAlign: titleAlign,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+          Text(
+            'Reserves',
+            textAlign: titleAlign,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
+          const SizedBox(height: 4),
+          ...reserves
+              .take(7)
+              .map(
+                (p) => Text(
+                  '${_positionCode(p.position)}  ${p.name}',
+                  textAlign: titleAlign,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
         ],
       ),
     );
@@ -921,7 +969,10 @@ class _TacticalTab extends StatelessWidget {
             return Row(
               children: [
                 Expanded(
-                  child: Text(home.name, style: Theme.of(context).textTheme.titleSmall),
+                  child: Text(
+                    home.name,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                 ),
                 Expanded(
                   child: Text(
@@ -946,10 +997,7 @@ class _TacticalTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: _TacticCell(
-                  text: row.homeValue,
-                  align: TextAlign.left,
-                ),
+                child: _TacticCell(text: row.homeValue, align: TextAlign.left),
               ),
               Expanded(
                 child: _TacticCell(
@@ -959,10 +1007,7 @@ class _TacticalTab extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: _TacticCell(
-                  text: row.awayValue,
-                  align: TextAlign.right,
-                ),
+                child: _TacticCell(text: row.awayValue, align: TextAlign.right),
               ),
             ],
           );
@@ -973,19 +1018,71 @@ class _TacticalTab extends StatelessWidget {
 
   List<_TacticRow> _tacticRows(TeamTactic homeTactic, TeamTactic awayTactic) {
     return [
-      _TacticRow('Build Up', _enumName(homeTactic.buildUpStyle), _enumName(awayTactic.buildUpStyle)),
-      _TacticRow('Tempo', _enumName(homeTactic.tempo), _enumName(awayTactic.tempo)),
-      _TacticRow('Width', _enumName(homeTactic.width), _enumName(awayTactic.width)),
-      _TacticRow('Final Third', _enumName(homeTactic.finalThirdFocus), _enumName(awayTactic.finalThirdFocus)),
-      _TacticRow('Attack Focus', _enumName(homeTactic.attackingFocus), _enumName(awayTactic.attackingFocus)),
-      _TacticRow('Defensive Line', _enumName(homeTactic.defensiveLine), _enumName(awayTactic.defensiveLine)),
-      _TacticRow('Engagement', _enumName(homeTactic.lineOfEngagement), _enumName(awayTactic.lineOfEngagement)),
-      _TacticRow('Pressing', _enumName(homeTactic.pressingIntensity), _enumName(awayTactic.pressingIntensity)),
-      _TacticRow('Transition Win', _enumName(homeTactic.transitionOnWin), _enumName(awayTactic.transitionOnWin)),
-      _TacticRow('Transition Loss', _enumName(homeTactic.transitionOnLoss), _enumName(awayTactic.transitionOnLoss)),
-      _TacticRow('Mentality', _enumName(homeTactic.teamMentality), _enumName(awayTactic.teamMentality)),
-      _TacticRow('Set Piece Attack', _enumName(homeTactic.setPieceAttack), _enumName(awayTactic.setPieceAttack)),
-      _TacticRow('Set Piece Defense', _enumName(homeTactic.setPieceDefense), _enumName(awayTactic.setPieceDefense)),
+      _TacticRow(
+        'Build Up',
+        _enumName(homeTactic.buildUpStyle),
+        _enumName(awayTactic.buildUpStyle),
+      ),
+      _TacticRow(
+        'Tempo',
+        _enumName(homeTactic.tempo),
+        _enumName(awayTactic.tempo),
+      ),
+      _TacticRow(
+        'Width',
+        _enumName(homeTactic.width),
+        _enumName(awayTactic.width),
+      ),
+      _TacticRow(
+        'Final Third',
+        _enumName(homeTactic.finalThirdFocus),
+        _enumName(awayTactic.finalThirdFocus),
+      ),
+      _TacticRow(
+        'Attack Focus',
+        _enumName(homeTactic.attackingFocus),
+        _enumName(awayTactic.attackingFocus),
+      ),
+      _TacticRow(
+        'Defensive Line',
+        _enumName(homeTactic.defensiveLine),
+        _enumName(awayTactic.defensiveLine),
+      ),
+      _TacticRow(
+        'Engagement',
+        _enumName(homeTactic.lineOfEngagement),
+        _enumName(awayTactic.lineOfEngagement),
+      ),
+      _TacticRow(
+        'Pressing',
+        _enumName(homeTactic.pressingIntensity),
+        _enumName(awayTactic.pressingIntensity),
+      ),
+      _TacticRow(
+        'Transition Win',
+        _enumName(homeTactic.transitionOnWin),
+        _enumName(awayTactic.transitionOnWin),
+      ),
+      _TacticRow(
+        'Transition Loss',
+        _enumName(homeTactic.transitionOnLoss),
+        _enumName(awayTactic.transitionOnLoss),
+      ),
+      _TacticRow(
+        'Mentality',
+        _enumName(homeTactic.teamMentality),
+        _enumName(awayTactic.teamMentality),
+      ),
+      _TacticRow(
+        'Set Piece Attack',
+        _enumName(homeTactic.setPieceAttack),
+        _enumName(awayTactic.setPieceAttack),
+      ),
+      _TacticRow(
+        'Set Piece Defense',
+        _enumName(homeTactic.setPieceDefense),
+        _enumName(awayTactic.setPieceDefense),
+      ),
     ];
   }
 
@@ -1107,7 +1204,10 @@ class _OscillatingMarqueeState extends State<_OscillatingMarquee>
         }
 
         const edgeSafety = 2.0;
-        final shift = (painter.width - available + edgeSafety).clamp(0.0, double.infinity);
+        final shift = (painter.width - available + edgeSafety).clamp(
+          0.0,
+          double.infinity,
+        );
         return ClipRect(
           child: AnimatedBuilder(
             animation: _controller,

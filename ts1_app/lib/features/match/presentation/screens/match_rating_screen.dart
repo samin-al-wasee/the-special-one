@@ -5,9 +5,10 @@ import 'package:ts1_core/ts1_core.dart';
 
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
+import '../widgets/responsive_pair_layout.dart';
 
-class MatchSummaryScreen extends ConsumerWidget {
-  const MatchSummaryScreen({super.key});
+class MatchRatingScreen extends ConsumerWidget {
+  const MatchRatingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,66 +34,29 @@ class MatchSummaryScreen extends ConsumerWidget {
                       children: [
                         Text(
                           'Final Score',
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
+                          style: Theme.of(context).textTheme.headlineMedium
+                              ?.copyWith(fontWeight: FontWeight.w800),
                         ),
                         const SizedBox(height: 12),
                         _FinalScoreCard(match: match),
                         const SizedBox(height: 18),
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            final stacked = constraints.maxWidth < 720;
-                            if (stacked) {
-                              return Column(
-                                children: [
-                                  _StarsCard(
-                                    teamName: match.homeTeam.name,
-                                    side: TeamSide.home,
-                                    rating: controller.ratingFor(TeamSide.home),
-                                    stars: controller.starsFor(TeamSide.home),
-                                    label: controller.ratingLabelFor(TeamSide.home),
-                                    homeStyle: true,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  _StarsCard(
-                                    teamName: match.awayTeam.name,
-                                    side: TeamSide.away,
-                                    rating: controller.ratingFor(TeamSide.away),
-                                    stars: controller.starsFor(TeamSide.away),
-                                    label: controller.ratingLabelFor(TeamSide.away),
-                                    homeStyle: false,
-                                  ),
-                                ],
-                              );
-                            }
-
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: _StarsCard(
-                                    teamName: match.homeTeam.name,
-                                    side: TeamSide.home,
-                                    rating: controller.ratingFor(TeamSide.home),
-                                    stars: controller.starsFor(TeamSide.home),
-                                    label: controller.ratingLabelFor(TeamSide.home),
-                                    homeStyle: true,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: _StarsCard(
-                                    teamName: match.awayTeam.name,
-                                    side: TeamSide.away,
-                                    rating: controller.ratingFor(TeamSide.away),
-                                    stars: controller.starsFor(TeamSide.away),
-                                    label: controller.ratingLabelFor(TeamSide.away),
-                                    homeStyle: false,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                        ResponsivePairLayout(
+                          first: _StarsCard(
+                            teamName: match.homeTeam.name,
+                            side: TeamSide.home,
+                            rating: controller.ratingFor(TeamSide.home),
+                            stars: controller.starsFor(TeamSide.home),
+                            label: controller.ratingLabelFor(TeamSide.home),
+                            homeStyle: true,
+                          ),
+                          second: _StarsCard(
+                            teamName: match.awayTeam.name,
+                            side: TeamSide.away,
+                            rating: controller.ratingFor(TeamSide.away),
+                            stars: controller.starsFor(TeamSide.away),
+                            label: controller.ratingLabelFor(TeamSide.away),
+                            homeStyle: false,
+                          ),
                         ),
                         const SizedBox(height: 18),
                         FilledButton(
@@ -135,17 +99,17 @@ class _FinalScoreCard extends StatelessWidget {
             '${match.homeTeam.name} ${score.home} - ${score.away} ${match.awayTeam.name}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Status: ${match.matchState.status.name}  •  Clock: ${match.matchState.clock}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
           ),
         ],
       ),
@@ -172,9 +136,13 @@ class _StarsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = homeStyle ? const Color(0xFFF6F8F1) : const Color(0xFF15171C);
+    final background = homeStyle
+        ? const Color(0xFFF6F8F1)
+        : const Color(0xFF15171C);
     final foreground = homeStyle ? Colors.black87 : Colors.white;
-    final accent = homeStyle ? const Color(0xFF166534) : const Color(0xFFF0F0F0);
+    final accent = homeStyle
+        ? const Color(0xFF166534)
+        : const Color(0xFFF0F0F0);
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -190,9 +158,9 @@ class _StarsCard extends StatelessWidget {
             teamName,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: foreground,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: foreground,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 12),
           Row(
@@ -210,9 +178,9 @@ class _StarsCard extends StatelessWidget {
             label,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: foreground,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: foreground,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -224,8 +192,8 @@ class _StarsCard extends StatelessWidget {
             'Side: ${side.name}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: foreground.withValues(alpha: 0.7),
-                ),
+              color: foreground.withValues(alpha: 0.7),
+            ),
           ),
         ],
       ),

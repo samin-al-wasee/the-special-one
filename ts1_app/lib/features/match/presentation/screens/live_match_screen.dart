@@ -6,8 +6,8 @@ import 'package:ts1_core/ts1_core.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 
-class MatchScreen extends ConsumerWidget {
-  const MatchScreen({super.key});
+class LiveMatchScreen extends ConsumerWidget {
+  const LiveMatchScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,17 +100,17 @@ class _MatchHeader extends StatelessWidget {
             '${match.homeTeam.name}  ${score.home} - ${score.away}  ${match.awayTeam.name}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             '${clock.toString()}  •  ${match.matchState.status.name}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
           ),
         ],
       ),
@@ -119,10 +119,7 @@ class _MatchHeader extends StatelessWidget {
 }
 
 class _TimelineList extends StatelessWidget {
-  const _TimelineList({
-    required this.phaseHistory,
-    required this.eventCards,
-  });
+  const _TimelineList({required this.phaseHistory, required this.eventCards});
 
   final List<PhaseResolutionSnapshot> phaseHistory;
   final List<MatchEventCard> eventCards;
@@ -137,14 +134,17 @@ class _TimelineList extends StatelessWidget {
 
     for (final phase in phaseHistory.reversed) {
       items.add(_TimelineItem.phase(phase));
-      final phaseEvents = eventsByPhase[phase.phaseIndex] ?? const <MatchEventCard>[];
+      final phaseEvents =
+          eventsByPhase[phase.phaseIndex] ?? const <MatchEventCard>[];
       for (final event in phaseEvents.reversed) {
         items.add(_TimelineItem.event(event));
       }
     }
 
     if (items.isEmpty) {
-      return const Center(child: Text('Advance the match to generate phases and event cards.'));
+      return const Center(
+        child: Text('Advance the match to generate phases and event cards.'),
+      );
     }
 
     return ListView.separated(
@@ -169,9 +169,12 @@ class _PhaseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final side = snapshot.initiativeTeam ?? snapshot.possessionTeam ?? TeamSide.home;
+    final side =
+        snapshot.initiativeTeam ?? snapshot.possessionTeam ?? TeamSide.home;
     final light = side == TeamSide.home;
-    final background = light ? const Color(0xFFF7F7F1) : const Color(0xFF17181D);
+    final background = light
+        ? const Color(0xFFF7F7F1)
+        : const Color(0xFF17181D);
     final foreground = light ? Colors.black87 : Colors.white;
     final accent = light ? const Color(0xFF1B5E20) : const Color(0xFFE6E6E6);
 
@@ -189,10 +192,7 @@ class _PhaseCard extends StatelessWidget {
             width: 12,
             height: 12,
             margin: const EdgeInsets.only(top: 5),
-            decoration: BoxDecoration(
-              color: accent,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -202,23 +202,23 @@ class _PhaseCard extends StatelessWidget {
                 Text(
                   '${snapshot.minute}′  Phase ${snapshot.phaseIndex}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: foreground,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: foreground,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '${side.name.toUpperCase()} • ${snapshot.phaseType.name} / ${snapshot.phaseState.name}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: foreground.withValues(alpha: 0.75),
-                      ),
+                    color: foreground.withValues(alpha: 0.75),
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Route: ${snapshot.attackState?.route.name ?? '-'}  |  Mode: ${snapshot.attackState?.mode.name ?? '-'}  |  Zone: ${snapshot.zone?.name ?? '-'}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: foreground.withValues(alpha: 0.80),
-                      ),
+                    color: foreground.withValues(alpha: 0.80),
+                  ),
                 ),
               ],
             ),
@@ -237,7 +237,9 @@ class _EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final light = event.teamSide == TeamSide.home;
-    final background = light ? const Color(0xFFF4FAF0) : const Color(0xFF0F1115);
+    final background = light
+        ? const Color(0xFFF4FAF0)
+        : const Color(0xFF0F1115);
     final foreground = light ? Colors.black87 : Colors.white;
     final accent = light ? const Color(0xFF166534) : const Color(0xFFF5F5F5);
 
@@ -265,25 +267,25 @@ class _EventCard extends StatelessWidget {
                 Text(
                   '${event.minute}′  ${event.title}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: foreground,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: foreground,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   event.description,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: foreground.withValues(alpha: 0.82),
-                        height: 1.35,
-                      ),
+                    color: foreground.withValues(alpha: 0.82),
+                    height: 1.35,
+                  ),
                 ),
                 if (event.chanceOutcome != null) ...[
                   const SizedBox(height: 6),
                   Text(
                     'Outcome: ${event.chanceOutcome!.name}  |  xG: ${event.chanceQuality?.toStringAsFixed(2) ?? '-'}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: foreground.withValues(alpha: 0.72),
-                        ),
+                      color: foreground.withValues(alpha: 0.72),
+                    ),
                   ),
                 ],
               ],
@@ -298,7 +300,8 @@ class _EventCard extends StatelessWidget {
 sealed class _TimelineItem {
   const _TimelineItem();
 
-  const factory _TimelineItem.phase(PhaseResolutionSnapshot snapshot) = _PhaseTimelineItem;
+  const factory _TimelineItem.phase(PhaseResolutionSnapshot snapshot) =
+      _PhaseTimelineItem;
   const factory _TimelineItem.event(MatchEventCard event) = _EventTimelineItem;
 
   T when<T>({
