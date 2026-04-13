@@ -182,6 +182,9 @@ class _LineupTab extends StatelessWidget {
 class _PitchView extends StatelessWidget {
   const _PitchView({required this.home, required this.away});
 
+  static const int _halfDepthSections = 9;
+  static const int _playerRows = 8;
+
   final Team home;
   final Team away;
 
@@ -219,45 +222,41 @@ class _PitchView extends StatelessWidget {
     double height, {
     required bool isHome,
   }) {
-    final assignments = team.lineup.slotAssignments.toList()
-      ..sort((a, b) {
-        final depthA = _depthSectionForAssignment(a);
-        final depthB = _depthSectionForAssignment(b);
-        if (depthA != depthB) {
-          return depthA.compareTo(depthB);
-        }
-        return _lateralLaneForAssignment(a).compareTo(_lateralLaneForAssignment(b));
-      });
-
-    final occupancy = <String, int>{};
-    final widgets = <Widget>[];
-    for (final assignment in assignments) {
+    final sections = <int, List<LineupSlotAssignment>>{};
+    for (final assignment in team.lineup.slotAssignments) {
       final section = _depthSectionForAssignment(assignment);
-      final lane = _lateralLaneForAssignment(assignment);
-      final key = '$section-$lane';
-      final usedCount = occupancy[key] ?? 0;
-      occupancy[key] = usedCount + 1;
+      sections.putIfAbsent(section, () => <LineupSlotAssignment>[]).add(assignment);
+    }
 
-      final center = _zoneOffset(
-        width: width,
-        height: height,
-        section: section,
-        lane: lane,
-        isHome: isHome,
-      );
+    final widgets = <Widget>[];
+    final orderedSections = sections.keys.toList()..sort();
+    for (final section in orderedSections) {
+      final line = sections[section]!
+        ..sort((a, b) => _positionSortKey(a.player.position).compareTo(_positionSortKey(b.player.position)));
 
-      final spreadOffsets = <double>[0, -10, 10, -18, 18, -24, 24];
-      final dx = usedCount < spreadOffsets.length
-          ? spreadOffsets[usedCount]
-          : (usedCount - 3) * 7.0;
-
-      widgets.add(
-        _positionedMarker(
-          player: assignment.player,
-          center: center.translate(dx, 0),
+      for (var i = 0; i < line.length; i++) {
+        final assignment = line[i];
+        final lane = _columnForAssignment(
+          assignment: assignment,
+          sectionPlayers: line,
+          indexInSection: i,
+          section: section,
+        );
+        final center = _zoneOffset(
+          width: width,
+          height: height,
+          section: section,
+          lane: lane,
           isHome: isHome,
-        ),
-      );
+        );
+        widgets.add(
+          _positionedMarker(
+            player: assignment.player,
+            center: center,
+            isHome: isHome,
+          ),
+        );
+      }
     }
 
     return widgets;
@@ -268,11 +267,12 @@ class _PitchView extends StatelessWidget {
     required Offset center,
     required bool isHome,
   }) {
+    final topOffset = isHome ? 10.0 : 21.0;
     return Positioned(
-      left: center.dx - 30,
-      top: center.dy - 20,
+      left: center.dx - 32,
+      top: center.dy - topOffset,
       child: _PlayerMarker(
-        name: _shortName(player.name),
+        name: player.name,
         positionCode: _positionCode(player.position),
         isHome: isHome,
       ),
@@ -287,12 +287,68 @@ class _PitchView extends StatelessWidget {
     required bool isHome,
   }) {
     final halfHeight = height / 2;
-    final sectionStep = halfHeight / 7;
-    final baseInHalf = sectionStep * (section - 0.5);
+    const verticalPadding = 14.0;
+    final usableHalf = halfHeight - (verticalPadding * 2);
+    final sectionStep = usableHalf / _playerRows;
+    final baseInHalf = verticalPadding + (sectionStep * (section - 0.5));
     final y = isHome ? (height - baseInHalf) : baseInHalf;
 
-    final xFraction = 0.10 + ((lane - 1) * 0.20);
+    const laneFractions = <double>[0.14, 0.32, 0.50, 0.68, 0.86];
+    final laneIndex = (lane - 1).clamp(0, laneFractions.length - 1);
+    final xFraction = laneFractions[laneIndex];
     return Offset(width * xFraction, y);
+  }
+
+  List<int> _defaultColumnsForCount(int count) {
+    switch (count) {
+      case <= 1:
+        return const [3];
+      case 2:
+        return const [2, 4];
+      case 3:
+        return const [2, 3, 4];
+      case 4:
+        return const [1, 2, 4, 5];
+      default:
+        return const [1, 2, 3, 4, 5];
+    }
+  }
+
+  int _columnForAssignment({
+    required LineupSlotAssignment assignment,
+    required List<LineupSlotAssignment> sectionPlayers,
+    required int indexInSection,
+    required int section,
+  }) {
+    final position = assignment.player.position;
+
+    // Exception rows:
+    // Fullbacks (RB/LB) always at 1 and 5.
+    if (section == 3 && (position == Position.rightBack || position == Position.leftBack)) {
+      return position == Position.leftBack ? 1 : 5;
+    }
+    // Wingers (RW/LW) always at 1 and 5.
+    if (section == 7 && (position == Position.rightWinger || position == Position.leftWinger)) {
+      return position == Position.leftWinger ? 1 : 5;
+    }
+
+    final defaults = _defaultColumnsForCount(sectionPlayers.length);
+    return indexInSection < defaults.length ? defaults[indexInSection] : 3;
+  }
+
+  int _positionSortKey(Position position) {
+    return switch (position) {
+      Position.goalKeeper => 0,
+      Position.leftBack => 1,
+      Position.centerBack => 2,
+      Position.rightBack => 3,
+      Position.defensiveMidfielder => 4,
+      Position.centralMidfielder => 5,
+      Position.attackingMidfielder => 6,
+      Position.leftWinger => 7,
+      Position.striker => 8,
+      Position.rightWinger => 9,
+    };
   }
 
   int _depthSectionForAssignment(LineupSlotAssignment assignment) {
@@ -303,18 +359,9 @@ class _PitchView extends StatelessWidget {
       Position.rightBack || Position.leftBack => 3,
       Position.defensiveMidfielder => 4,
       Position.centralMidfielder => 5,
-      Position.attackingMidfielder || Position.rightWinger || Position.leftWinger => 6,
-      Position.striker => 7,
-    };
-  }
-
-  int _lateralLaneForAssignment(LineupSlotAssignment assignment) {
-    return switch (assignment.formationSlot.baseZone) {
-      PitchZone.lw || PitchZone.lm || PitchZone.lb => 1,
-      PitchZone.lhs || PitchZone.lcm || PitchZone.lcb => 2,
-      PitchZone.cf || PitchZone.cm || PitchZone.cb => 3,
-      PitchZone.rhs || PitchZone.rcm || PitchZone.rcb => 4,
-      PitchZone.rw || PitchZone.rm || PitchZone.rb => 5,
+      Position.attackingMidfielder => 6,
+      Position.rightWinger || Position.leftWinger => 7,
+      Position.striker => 8,
     };
   }
 
@@ -333,16 +380,6 @@ class _PitchView extends StatelessWidget {
     };
   }
 
-  String _shortName(String name) {
-    final chunks = name.split(' ');
-    if (chunks.isEmpty) {
-      return 'Player';
-    }
-    if (chunks.length == 1) {
-      return chunks.first;
-    }
-    return chunks.last;
-  }
 }
 
 class _PlayerMarker extends StatelessWidget {
@@ -360,47 +397,57 @@ class _PlayerMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isHome ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC);
     final textColor = isHome ? Colors.white : Colors.black87;
+    final nameBar = Container(
+      width: 64,
+      height: 10,
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.30),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: _OscillatingMarquee(
+        text: name,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 7,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 36,
-          height: 36,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withValues(alpha: 0.75)),
-          ),
-          child: Text(
-            positionCode,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
+    return SizedBox(
+      width: 64,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!isHome) ...[
+            nameBar,
+            const SizedBox(height: 1),
+          ],
+          Container(
+            width: 20,
+            height: 20,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white.withValues(alpha: 0.75)),
+            ),
+            child: Text(
+              positionCode,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 7,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 3),
-        Container(
-          constraints: const BoxConstraints(maxWidth: 60),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.28),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(
-            name,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
+          if (isHome) ...[
+            const SizedBox(height: 1),
+            nameBar,
+          ],
+        ],
+      ),
     );
   }
 }
@@ -434,8 +481,8 @@ class _PitchPainter extends CustomPainter {
     _drawPenaltyArea(canvas, size, line, top: true);
     _drawPenaltyArea(canvas, size, line, top: false);
 
-    for (var i = 1; i < 7; i++) {
-      final y = (size.height / 2 / 7) * i;
+    for (var i = 1; i < _PitchView._halfDepthSections; i++) {
+      final y = (size.height / 2 / _PitchView._halfDepthSections) * i;
       final guide = Paint()
         ..color = Colors.white.withValues(alpha: 0.06)
         ..strokeWidth = 1;
@@ -679,15 +726,25 @@ class _TacticalTab extends StatelessWidget {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: Text(row.homeValue)),
               Expanded(
-                child: Text(
-                  row.category,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                child: _TacticCell(
+                  text: row.homeValue,
+                  align: TextAlign.left,
                 ),
               ),
-              Expanded(child: Text(row.awayValue, textAlign: TextAlign.right)),
+              Expanded(
+                child: _TacticCell(
+                  text: row.category,
+                  align: TextAlign.center,
+                  bold: true,
+                ),
+              ),
+              Expanded(
+                child: _TacticCell(
+                  text: row.awayValue,
+                  align: TextAlign.right,
+                ),
+              ),
             ],
           );
         },
@@ -729,4 +786,145 @@ class _TacticRow {
   final String category;
   final String homeValue;
   final String awayValue;
+}
+
+class _TacticCell extends StatelessWidget {
+  const _TacticCell({
+    required this.text,
+    required this.align,
+    this.bold = false,
+  });
+
+  final String text;
+  final TextAlign align;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) {
+    final cellWidth = align == TextAlign.center ? 120.0 : 110.0;
+    final cellAlignment = align == TextAlign.right
+        ? Alignment.centerRight
+        : align == TextAlign.center
+        ? Alignment.center
+        : Alignment.centerLeft;
+
+    return SizedBox(
+      height: 20,
+      child: Align(
+        alignment: cellAlignment,
+        child: SizedBox(
+          width: cellWidth,
+          child: _OscillatingMarquee(
+            text: text,
+            textAlign: align,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OscillatingMarquee extends StatefulWidget {
+  const _OscillatingMarquee({
+    required this.text,
+    required this.style,
+    this.textAlign = TextAlign.left,
+  });
+
+  final String text;
+  final TextStyle style;
+  final TextAlign textAlign;
+
+  @override
+  State<_OscillatingMarquee> createState() => _OscillatingMarqueeState();
+}
+
+class _OscillatingMarqueeState extends State<_OscillatingMarquee>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 6),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final painter = TextPainter(
+          text: TextSpan(text: widget.text, style: widget.style),
+          maxLines: 1,
+          textDirection: Directionality.of(context),
+        )..layout();
+
+        final available = constraints.maxWidth;
+        final overflow = painter.width > available;
+        if (!overflow) {
+          return Align(
+            alignment: _alignmentFor(widget.textAlign),
+            child: Text(
+              widget.text,
+              style: widget.style,
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+              textAlign: widget.textAlign,
+            ),
+          );
+        }
+
+        const edgeSafety = 2.0;
+        final shift = (painter.width - available + edgeSafety).clamp(0.0, double.infinity);
+        return ClipRect(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(-shift * _controller.value, 0),
+                child: child,
+              );
+            },
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 1),
+                child: Text(
+                  widget.text,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: widget.style,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Alignment _alignmentFor(TextAlign align) {
+    switch (align) {
+      case TextAlign.right:
+      case TextAlign.end:
+        return Alignment.centerRight;
+      case TextAlign.center:
+        return Alignment.center;
+      default:
+        return Alignment.centerLeft;
+    }
+  }
 }
