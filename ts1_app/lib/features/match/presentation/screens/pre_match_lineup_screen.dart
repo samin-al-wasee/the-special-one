@@ -14,82 +14,98 @@ class PreMatchLineupScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(matchFlowProvider);
-    final home = controller.draftHomeTeam;
-    final away = controller.draftAwayTeam;
-    final kickoffAt = controller.match?.kickoffAt ?? DateTime.now();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lineups & Tactics'),
         actions: const [ThemeModeButton()],
       ),
-      body: home == null || away == null
-          ? Center(
+      body: AnimatedBuilder(
+        animation: controller,
+        builder: (context, _) {
+          final home = controller.draftHomeTeam;
+          final away = controller.draftAwayTeam;
+          final kickoffAt = controller.match?.kickoffAt ?? DateTime.now();
+
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('No prepared teams yet.'),
-                  const SizedBox(height: 12),
-                  FilledButton(
-                    onPressed: () => context.go('/setup'),
-                    child: const Text('Back to Setup'),
-                  ),
-                ],
-              ),
-            )
-          : SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
+                  if (home != null && away != null)
                     _MatchupHeader(
                       home: home,
                       away: away,
                       kickoffAt: kickoffAt,
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: DefaultTabController(
-                        length: 2,
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: TabBar(
-                                dividerColor: Colors.transparent,
-                                indicator: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                labelColor: Theme.of(context).colorScheme.onPrimary,
-                                unselectedLabelColor:
-                                    Theme.of(context).colorScheme.onSurfaceVariant,
-                                tabs: const [
-                                  Tab(text: 'Lineup'),
-                                  Tab(text: 'Tactical Info'),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Expanded(
-                              child: TabBarView(
-                                children: [
-                                  _LineupTab(home: home, away: away),
-                                  _TacticalTab(home: home, away: away),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                    )
+                  else
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Text(
+                        'Configure Teams',
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: DefaultTabController(
+                      length: 3,
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TabBar(
+                              dividerColor: Colors.transparent,
+                              indicator: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelColor: Theme.of(context).colorScheme.onPrimary,
+                              unselectedLabelColor:
+                                  Theme.of(context).colorScheme.onSurfaceVariant,
+                              tabs: const [
+                                Tab(text: 'Tactics'),
+                                Tab(text: 'Lineup'),
+                                Tab(text: 'Tactical Info'),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                _TacticsSetupTab(controller: controller),
+                                home != null && away != null
+                                    ? _LineupTab(home: home, away: away)
+                                    : const Center(
+                                        child: Text('Select tactics to generate teams'),
+                                      ),
+                                home != null && away != null
+                                    ? _TacticalTab(home: home, away: away)
+                                    : const Center(
+                                        child: Text('Select tactics to generate teams'),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (home != null && away != null)
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
@@ -99,14 +115,217 @@ class PreMatchLineupScreen extends ConsumerWidget {
                         },
                         child: const Text('Kick Off'),
                       ),
+                    )
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: null,
+                        child: const Text('Kick Off (Select tactics first)'),
+                      ),
                     ),
-                  ],
-                ),
+                ],
               ),
             ),
+          );
+        },
+      ),
     );
   }
 }
+
+class _TacticsSetupTab extends StatelessWidget {
+  const _TacticsSetupTab({required this.controller});
+
+  final MatchFlowController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final lightBackground = const Color(0xFFF7F7F1);
+    final darkBackground = const Color(0xFF121317);
+    final background = isDark ? darkBackground : lightBackground;
+    final foreground = isDark ? Colors.white : Colors.black87;
+    final border = isDark ? const Color(0xFFEAEAEA) : const Color(0xFF1B5E20);
+    final menuTextStyle = TextStyle(color: foreground);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Configure Teams',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: foreground,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Select presets and formations for each team. The lineup will update automatically.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: foreground.withValues(alpha: 0.75),
+                ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Home Team',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: foreground,
+                ),
+          ),
+          const SizedBox(height: 12),
+          DropdownButtonFormField<TacticalPreset>(
+            initialValue: controller.homePreset,
+            dropdownColor: background,
+            style: menuTextStyle,
+            iconEnabledColor: foreground,
+            decoration: InputDecoration(
+              labelText: 'Preset',
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border, width: 1.4),
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            items: controller.availablePresets
+                .map(
+                  (option) => DropdownMenuItem(
+                    value: option,
+                    child: Text(option.label, style: menuTextStyle),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                controller.setHomePreset(value);
+                controller.prepareTeams();
+              }
+            },
+          ),
+          const SizedBox(height: 12),
+          DropdownButtonFormField<String>(
+            initialValue: controller.homeFormationCode,
+            dropdownColor: background,
+            style: menuTextStyle,
+            iconEnabledColor: foreground,
+            decoration: InputDecoration(
+              labelText: 'Formation',
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border, width: 1.4),
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            items: controller.availableFormations
+                .map(
+                  (option) => DropdownMenuItem(
+                    value: option,
+                    child: Text(option, style: menuTextStyle),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                controller.setHomeFormation(value);
+                controller.prepareTeams();
+              }
+            },
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Away Team',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: foreground,
+                ),
+          ),
+          const SizedBox(height: 12),
+          DropdownButtonFormField<TacticalPreset>(
+            initialValue: controller.awayPreset,
+            dropdownColor: background,
+            style: menuTextStyle,
+            iconEnabledColor: foreground,
+            decoration: InputDecoration(
+              labelText: 'Preset',
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border, width: 1.4),
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            items: controller.availablePresets
+                .map(
+                  (option) => DropdownMenuItem(
+                    value: option,
+                    child: Text(option.label, style: menuTextStyle),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                controller.setAwayPreset(value);
+                controller.prepareTeams();
+              }
+            },
+          ),
+          const SizedBox(height: 12),
+          DropdownButtonFormField<String>(
+            initialValue: controller.awayFormationCode,
+            dropdownColor: background,
+            style: menuTextStyle,
+            iconEnabledColor: foreground,
+            decoration: InputDecoration(
+              labelText: 'Formation',
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: border, width: 1.4),
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            items: controller.availableFormations
+                .map(
+                  (option) => DropdownMenuItem(
+                    value: option,
+                    child: Text(option, style: menuTextStyle),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                controller.setAwayFormation(value);
+                controller.prepareTeams();
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class _MatchupHeader extends StatelessWidget {
   const _MatchupHeader({
@@ -291,7 +510,7 @@ class _PitchView extends StatelessWidget {
     final usableHalf = halfHeight - (verticalPadding * 2);
     final sectionStep = usableHalf / _playerRows;
     final baseInHalf = verticalPadding + (sectionStep * (section - 0.5));
-    final y = isHome ? (height - baseInHalf) : baseInHalf;
+    final y = isHome ? baseInHalf : (height - baseInHalf);
 
     const laneFractions = <double>[0.14, 0.32, 0.50, 0.68, 0.86];
     final laneIndex = (lane - 1).clamp(0, laneFractions.length - 1);
@@ -395,8 +614,8 @@ class _PlayerMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isHome ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC);
-    final textColor = isHome ? Colors.white : Colors.black87;
+    final color = isHome ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A);
+    final textColor = isHome ? Colors.black87 : Colors.white;
     final nameBar = Container(
       width: 64,
       height: 10,

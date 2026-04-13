@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
                         FilledButton(
                           onPressed: () {
                             ref.read(matchFlowProvider).resetToDefaults();
-                            context.go('/setup');
+                            context.go('/lineup');
                           },
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 18),
