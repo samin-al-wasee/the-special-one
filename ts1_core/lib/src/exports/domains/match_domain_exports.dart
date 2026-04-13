@@ -2,6 +2,7 @@ export 'package:ts1_core/src/match/models/attack/attack_state.dart';
 export 'package:ts1_core/src/match/models/context/match_context.dart';
 export 'package:ts1_core/src/match/models/dynamics/match_dynamics.dart';
 export 'package:ts1_core/src/match/models/events/match_event_card.dart';
+export 'package:ts1_core/src/match/models/insights/match_performance_summary.dart';
 export 'package:ts1_core/src/match/models/interventions/manager_intervention.dart';
 export 'package:ts1_core/src/match/models/interventions/substitution_record.dart';
 export 'package:ts1_core/src/match/models/insights/tactical_insight.dart';
