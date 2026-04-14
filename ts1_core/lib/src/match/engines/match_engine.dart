@@ -210,7 +210,12 @@ class MatchEngine {
     final phaseType = _resolvePhaseType(state: state, random: random);
     final attackState = AttackState(
       id: state.currentPhaseIndex + 1,
-      route: _resolveAttackRoute(match, initiative, random),
+      route: _resolveAttackRoute(
+        match: match,
+        state: state,
+        initiative: initiative,
+        random: random,
+      ),
       mode: _resolveAttackMode(
         match: match,
         state: state,
@@ -241,16 +246,16 @@ class MatchEngine {
         ? null
         : _resolveChanceQuality(match, initiative, attackState, random);
     final chanceOutcome = chanceType == null
-      ? null
-      : _resolveChanceOutcome(
-        match: match,
-        state: state,
-        initiative: initiative,
-        phaseType: phaseType,
-        chanceType: chanceType,
-        chanceQuality: chanceQuality ?? 0.0,
-        random: random,
-        );
+        ? null
+        : _resolveChanceOutcome(
+            match: match,
+            state: state,
+            initiative: initiative,
+            phaseType: phaseType,
+            chanceType: chanceType,
+            chanceQuality: chanceQuality ?? 0.0,
+            random: random,
+          );
     final phaseState = _resolvePhaseState(
       match: match,
       state: state,
@@ -452,71 +457,41 @@ class MatchEngine {
           MatchPhaseState.buildUp: _positiveWeight(
             0.28 + (momentum * 0.08) + (confidence * 0.04),
           ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.10 + (fatigue * 0.06),
-          ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.08 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.turnover: _positiveWeight(
-            0.04 + (fatigue * 0.06),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.02 + (discipline * 0.03),
-          ),
-          MatchPhaseState.foulStop: _positiveWeight(
-            0.01 + (discipline * 0.04),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.10 + (fatigue * 0.06)),
+          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
+          MatchPhaseState.turnover: _positiveWeight(0.04 + (fatigue * 0.06)),
+          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.03)),
+          MatchPhaseState.foulStop: _positiveWeight(0.01 + (discipline * 0.04)),
         };
 
       case MatchPhaseType.defensiveOrganization:
         return {
-          MatchPhaseState.restart: _positiveWeight(
-            0.32 + (discipline * 0.06),
-          ),
+          MatchPhaseState.restart: _positiveWeight(0.32 + (discipline * 0.06)),
           MatchPhaseState.buildUp: _positiveWeight(
             0.24 + (momentum * 0.06) + (confidence * 0.04),
           ),
           MatchPhaseState.neutralPossession: _positiveWeight(
             0.18 + (discipline * 0.04),
           ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.12 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.08 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.03 + (discipline * 0.02),
-          ),
-          MatchPhaseState.foulStop: _positiveWeight(
-            0.01 + (discipline * 0.03),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.12 + (fatigue * 0.04)),
+          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
+          MatchPhaseState.stoppage: _positiveWeight(0.03 + (discipline * 0.02)),
+          MatchPhaseState.foulStop: _positiveWeight(0.01 + (discipline * 0.03)),
         };
 
       case MatchPhaseType.buildUp:
         return {
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.28 + (confidence * 0.06),
-          ),
+          MatchPhaseState.buildUp: _positiveWeight(0.28 + (confidence * 0.06)),
           MatchPhaseState.progression: _positiveWeight(
             0.32 + (momentum * 0.08),
           ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.14 + (fatigue * 0.04),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.14 + (fatigue * 0.04)),
           MatchPhaseState.neutralPossession: _positiveWeight(
             0.12 + (discipline * 0.02),
           ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.08 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.turnover: _positiveWeight(
-            0.03 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.01 + (discipline * 0.02),
-          ),
+          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
+          MatchPhaseState.turnover: _positiveWeight(0.03 + (fatigue * 0.04)),
+          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
         };
 
       case MatchPhaseType.progression:
@@ -527,21 +502,11 @@ class MatchEngine {
           MatchPhaseState.finalThird: _positiveWeight(
             0.30 + (confidence * 0.06),
           ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.18 + (fatigue * 0.06),
-          ),
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.10 + (discipline * 0.02),
-          ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.08 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.turnover: _positiveWeight(
-            0.04 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.02 + (discipline * 0.02),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.18 + (fatigue * 0.06)),
+          MatchPhaseState.buildUp: _positiveWeight(0.10 + (discipline * 0.02)),
+          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
+          MatchPhaseState.turnover: _positiveWeight(0.04 + (fatigue * 0.04)),
+          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.02)),
         };
 
       case MatchPhaseType.finalThird:
@@ -552,40 +517,22 @@ class MatchEngine {
           MatchPhaseState.chance: _positiveWeight(
             0.32 + (momentum * 0.06) + (confidence * 0.04),
           ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.16 + (fatigue * 0.06),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.16 + (fatigue * 0.06)),
           MatchPhaseState.progression: _positiveWeight(
             0.12 + (discipline * 0.02),
           ),
-          MatchPhaseState.turnover: _positiveWeight(
-            0.06 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.04 + (fatigue * 0.02),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.02 + (discipline * 0.02),
-          ),
+          MatchPhaseState.turnover: _positiveWeight(0.06 + (fatigue * 0.04)),
+          MatchPhaseState.transition: _positiveWeight(0.04 + (fatigue * 0.02)),
+          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.02)),
         };
 
       case MatchPhaseType.chance:
         return {
-          MatchPhaseState.chance: _positiveWeight(
-            0.50 + (confidence * 0.08),
-          ),
-          MatchPhaseState.outcome: _positiveWeight(
-            0.28 + (momentum * 0.06),
-          ),
-          MatchPhaseState.duel: _positiveWeight(
-            0.12 + (fatigue * 0.04),
-          ),
-          MatchPhaseState.transition: _positiveWeight(
-            0.06 + (fatigue * 0.02),
-          ),
-          MatchPhaseState.turnover: _positiveWeight(
-            0.02 + (fatigue * 0.02),
-          ),
+          MatchPhaseState.chance: _positiveWeight(0.50 + (confidence * 0.08)),
+          MatchPhaseState.outcome: _positiveWeight(0.28 + (momentum * 0.06)),
+          MatchPhaseState.duel: _positiveWeight(0.12 + (fatigue * 0.04)),
+          MatchPhaseState.transition: _positiveWeight(0.06 + (fatigue * 0.02)),
+          MatchPhaseState.turnover: _positiveWeight(0.02 + (fatigue * 0.02)),
         };
 
       case MatchPhaseType.outcome:
@@ -597,15 +544,11 @@ class MatchEngine {
           ),
           MatchPhaseState.turnover: _turnoverStateWeight(state, chanceOutcome),
           MatchPhaseState.transition: _transitionStateWeight(state),
-          MatchPhaseState.duel: _positiveWeight(
-            0.04 + (fatigue * 0.02),
-          ),
+          MatchPhaseState.duel: _positiveWeight(0.04 + (fatigue * 0.02)),
           MatchPhaseState.buildUp: _positiveWeight(
             0.02 + ((1 - fatigue) * 0.01),
           ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.01 + (discipline * 0.02),
-          ),
+          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
         };
 
       case MatchPhaseType.transition:
@@ -613,44 +556,40 @@ class MatchEngine {
           MatchPhaseState.transition: _transitionStateWeight(state),
           MatchPhaseState.duel: _duelStateWeight(match, state),
           MatchPhaseState.turnover: _turnoverStateWeight(state, chanceOutcome),
-          MatchPhaseState.neutralPossession:
-              _neutralPossessionStateWeight(match, state),
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.12 + (momentum * 0.04),
+          MatchPhaseState.neutralPossession: _neutralPossessionStateWeight(
+            match,
+            state,
           ),
+          MatchPhaseState.buildUp: _positiveWeight(0.12 + (momentum * 0.04)),
           MatchPhaseState.progression: _positiveWeight(
             0.04 + (momentum * 0.02),
           ),
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.01 + (discipline * 0.02),
-          ),
+          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
         };
 
       case MatchPhaseType.setPiece:
         return {
-          MatchPhaseState.setPiecePreparation:
-              _setPiecePreparationStateWeight(match, state, chanceType),
-          MatchPhaseState.setPieceDelivery:
-              _setPieceDeliveryStateWeight(match, state, chanceType),
-          MatchPhaseState.restart: _restartStateWeight(match, state),
-          MatchPhaseState.chance: _positiveWeight(
-            0.06 + (confidence * 0.02),
+          MatchPhaseState.setPiecePreparation: _setPiecePreparationStateWeight(
+            match,
+            state,
+            chanceType,
           ),
+          MatchPhaseState.setPieceDelivery: _setPieceDeliveryStateWeight(
+            match,
+            state,
+            chanceType,
+          ),
+          MatchPhaseState.restart: _restartStateWeight(match, state),
+          MatchPhaseState.chance: _positiveWeight(0.06 + (confidence * 0.02)),
           MatchPhaseState.outcome: _positiveWeight(0.04),
           MatchPhaseState.duel: _positiveWeight(0.02),
         };
 
       case MatchPhaseType.intervention:
         return {
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.40 + (discipline * 0.08),
-          ),
-          MatchPhaseState.foulStop: _positiveWeight(
-            0.22 + (discipline * 0.10),
-          ),
-          MatchPhaseState.restart: _positiveWeight(
-            0.18 + (discipline * 0.04),
-          ),
+          MatchPhaseState.stoppage: _positiveWeight(0.40 + (discipline * 0.08)),
+          MatchPhaseState.foulStop: _positiveWeight(0.22 + (discipline * 0.10)),
+          MatchPhaseState.restart: _positiveWeight(0.18 + (discipline * 0.04)),
           MatchPhaseState.transition: _positiveWeight(
             0.12 + (discipline * 0.02),
           ),
@@ -663,15 +602,9 @@ class MatchEngine {
 
       case MatchPhaseType.specialIncident:
         return {
-          MatchPhaseState.stoppage: _positiveWeight(
-            0.36 + (discipline * 0.06),
-          ),
-          MatchPhaseState.restart: _positiveWeight(
-            0.22 + (discipline * 0.04),
-          ),
-          MatchPhaseState.foulStop: _positiveWeight(
-            0.16 + (discipline * 0.06),
-          ),
+          MatchPhaseState.stoppage: _positiveWeight(0.36 + (discipline * 0.06)),
+          MatchPhaseState.restart: _positiveWeight(0.22 + (discipline * 0.04)),
+          MatchPhaseState.foulStop: _positiveWeight(0.16 + (discipline * 0.06)),
           MatchPhaseState.transition: _positiveWeight(
             0.14 + (discipline * 0.02),
           ),
@@ -783,24 +716,87 @@ class MatchEngine {
   }
 
   /// Selects attacking route using weighted tactical identity biases.
-  static AttackRoute _resolveAttackRoute(
-    Match match,
-    TeamSide initiative,
-    math.Random random,
-  ) {
+  static AttackRoute _resolveAttackRoute({
+    required Match match,
+    required MatchState state,
+    required TeamSide initiative,
+    required math.Random random,
+  }) {
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
+    final structure = initiative == TeamSide.home
+        ? match.context.homeStructuralProfile
+        : match.context.awayStructuralProfile;
+
+    final wingEdge = _directionalMatchupEdge(
+      state.matchupState.wingControlEdge,
+      initiative,
+    );
+    final midfieldEdge = _directionalMatchupEdge(
+      state.matchupState.midfieldControlEdge,
+      initiative,
+    );
+    final transitionEdge = _directionalMatchupEdge(
+      state.matchupState.transitionControlEdge,
+      initiative,
+    );
+
+    final wingAdvantage = _clamp01((wingEdge + 1.0) / 2.0);
+    final midfieldAdvantage = _clamp01((midfieldEdge + 1.0) / 2.0);
+    final transitionAdvantage = _clamp01((transitionEdge + 1.0) / 2.0);
+    final widthShapeBias = _clamp01(structure.widthCoverage - 0.45);
+    final centralShapeBias = _clamp01(structure.centralDensity - 0.45);
 
     final weights = <AttackRoute, double>{
-      AttackRoute.leftFlank: identity.attackLeftBias,
-      AttackRoute.rightFlank: identity.attackRightBias,
-      AttackRoute.centralProgression: identity.attackCentralBias,
-      AttackRoute.halfSpaces:
-          (identity.cutbackBias + identity.throughBallBias) / 2,
-      AttackRoute.directCentralLane:
-          (identity.directnessBias + identity.riskTaking) / 2,
+      AttackRoute.leftFlank: _positiveWeight(
+        (identity.attackLeftBias * 0.30) +
+            (identity.widthBias * 0.12) +
+            (structure.widthCoverage * 0.42) +
+            (wingAdvantage * 0.10) -
+            (structure.centralDensity * 0.12) -
+            (structure.halfSpaceAccess * 0.06),
+      ),
+      AttackRoute.rightFlank: _positiveWeight(
+        (identity.attackRightBias * 0.30) +
+            (identity.widthBias * 0.12) +
+            (structure.widthCoverage * 0.42) +
+            (wingAdvantage * 0.10) -
+            (structure.centralDensity * 0.12) -
+            (structure.halfSpaceAccess * 0.06),
+      ),
+      AttackRoute.centralProgression: _positiveWeight(
+        (identity.attackCentralBias * 0.30) +
+            (structure.centralDensity * 0.36) +
+            ((1.0 - structure.widthCoverage) * 0.16) +
+            ((1.0 - identity.widthBias) * 0.08) +
+            (midfieldAdvantage * 0.10) +
+            (centralShapeBias * 0.08),
+      ),
+      AttackRoute.halfSpaces: _positiveWeight(
+        (((identity.cutbackBias + identity.throughBallBias) / 2) * 0.28) +
+            (structure.halfSpaceAccess * 0.38) +
+            (structure.centralDensity * 0.14) +
+            ((1.0 - structure.widthCoverage) * 0.10) +
+            (midfieldAdvantage * 0.06) +
+            (centralShapeBias * 0.04),
+      ),
+      AttackRoute.directCentralLane: _positiveWeight(
+        (((identity.directnessBias + identity.riskTaking) / 2) * 0.44) +
+            ((1.0 - identity.shortPassBias) * 0.14) +
+            (transitionAdvantage * 0.16) +
+            (structure.boxPresence * 0.10) +
+            ((1.0 - structure.widthCoverage) * 0.06),
+      ),
     };
+
+    // Width-heavy structures should more strongly favor flank routes.
+    if (widthShapeBias >= 0.25) {
+      weights[AttackRoute.leftFlank] =
+          (weights[AttackRoute.leftFlank] ?? 0.0) + (widthShapeBias * 0.12);
+      weights[AttackRoute.rightFlank] =
+          (weights[AttackRoute.rightFlank] ?? 0.0) + (widthShapeBias * 0.12);
+    }
 
     return _weightedPick(weights, random);
   }
@@ -979,6 +975,9 @@ class MatchEngine {
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
+    final structure = initiative == TeamSide.home
+        ? match.context.homeStructuralProfile
+        : match.context.awayStructuralProfile;
 
     final routeZone = switch (attackState.route) {
       AttackRoute.leftFlank => random.nextBool() ? PitchZone.lw : PitchZone.lhs,
@@ -992,10 +991,23 @@ class MatchEngine {
         random.nextBool() ? PitchZone.cf : PitchZone.cm,
     };
 
-    if (identity.widthBias >= 0.65) {
-      return initiative == TeamSide.home
-          ? (random.nextBool() ? PitchZone.lw : PitchZone.rw)
-          : (random.nextBool() ? PitchZone.lm : PitchZone.rm);
+    final wideTilt = _clamp01(
+      (identity.widthBias * 0.65) + (structure.widthCoverage * 0.35),
+    );
+    if (wideTilt >= 0.70 &&
+        attackState.route != AttackRoute.directCentralLane &&
+        random.nextDouble() < ((wideTilt - 0.70) * 1.7)) {
+      return random.nextBool() ? PitchZone.lw : PitchZone.rw;
+    }
+
+    final narrowTilt = _clamp01(
+      ((1.0 - identity.widthBias) * 0.55) + (structure.centralDensity * 0.45),
+    );
+    if (narrowTilt >= 0.72 &&
+        (attackState.route == AttackRoute.leftFlank ||
+            attackState.route == AttackRoute.rightFlank) &&
+        random.nextDouble() < ((narrowTilt - 0.72) * 1.5)) {
+      return random.nextBool() ? PitchZone.lhs : PitchZone.rhs;
     }
 
     return routeZone;
@@ -1117,11 +1129,17 @@ class MatchEngine {
             ChanceType.wideCrossHeader: _positiveWeight(
               0.20 + (wingEdge * 0.14) + (identity.widthBias * 0.10),
             ),
-            ChanceType.nearPostHeader: _positiveWeight(0.10 + (wingEdge * 0.08)),
-            ChanceType.backPostHeader: _positiveWeight(0.10 + (wingEdge * 0.08)),
+            ChanceType.nearPostHeader: _positiveWeight(
+              0.10 + (wingEdge * 0.08),
+            ),
+            ChanceType.backPostHeader: _positiveWeight(
+              0.10 + (wingEdge * 0.08),
+            ),
             ChanceType.farPostHeader: _positiveWeight(0.07 + (wingEdge * 0.06)),
             ChanceType.cutback: _positiveWeight(
-              0.16 + (identity.cutbackBias * 0.12) + (structure.halfSpaceAccess * 0.08),
+              0.16 +
+                  (identity.cutbackBias * 0.12) +
+                  (structure.halfSpaceAccess * 0.08),
             ),
             ChanceType.dribbleIsolation: _positiveWeight(
               0.07 + (identity.riskTaking * 0.08),
@@ -1129,10 +1147,14 @@ class MatchEngine {
           },
           AttackRoute.centralProgression => {
             ChanceType.highXgCentralShot: _positiveWeight(
-              0.20 + (attackEdge * 0.14) + (strength.chanceConversion / 100.0 * 0.10),
+              0.20 +
+                  (attackEdge * 0.14) +
+                  (strength.chanceConversion / 100.0 * 0.10),
             ),
             ChanceType.throughBallOneVsOne: _positiveWeight(
-              0.16 + (identity.throughBallBias * 0.14) + (identity.verticalProgressionBias * 0.08),
+              0.16 +
+                  (identity.throughBallBias * 0.14) +
+                  (identity.verticalProgressionBias * 0.08),
             ),
             ChanceType.closeRangeTapIn: _positiveWeight(
               0.10 + (structure.boxPresence * 0.10),
@@ -1157,7 +1179,9 @@ class MatchEngine {
           },
           AttackRoute.directCentralLane => {
             ChanceType.transitionBreakaway: _positiveWeight(
-              0.16 + (transitionEdge * 0.14) + (identity.counterSpeedBias * 0.10),
+              0.16 +
+                  (transitionEdge * 0.14) +
+                  (identity.counterSpeedBias * 0.10),
             ),
             ChanceType.lowXgLongShot: _positiveWeight(
               0.12 + (identity.directnessBias * 0.12),
@@ -1173,9 +1197,15 @@ class MatchEngine {
 
         final chaosWeights = phaseType == MatchPhaseType.outcome
             ? <ChanceType, double>{
-                ChanceType.blockedShot: _positiveWeight(0.14 + ((1 - attackEdge) * 0.10)),
-                ChanceType.scramble: _positiveWeight(0.10 + (structure.boxPresence * 0.08)),
-                ChanceType.rebound: _positiveWeight(0.08 + ((1 - fatigue) * 0.06)),
+                ChanceType.blockedShot: _positiveWeight(
+                  0.14 + ((1 - attackEdge) * 0.10),
+                ),
+                ChanceType.scramble: _positiveWeight(
+                  0.10 + (structure.boxPresence * 0.08),
+                ),
+                ChanceType.rebound: _positiveWeight(
+                  0.08 + ((1 - fatigue) * 0.06),
+                ),
               }
             : <ChanceType, double>{};
 
@@ -1287,11 +1317,12 @@ class MatchEngine {
         chanceTypeProfile;
 
     final finishingEdge =
-        (attackingStrength.finishingQuality + attackingStrength.chanceConversion) /
+        (attackingStrength.finishingQuality +
+            attackingStrength.chanceConversion) /
         200.0;
     final keeperResilience =
-      (defendingStrength.gkShotStopping + defendingStrength.centralDefense) /
-      200.0;
+        (defendingStrength.gkShotStopping + defendingStrength.centralDefense) /
+        200.0;
     final phaseGoalBias = phaseType == MatchPhaseType.chance
         ? 0.04
         : phaseType == MatchPhaseType.finalThird
@@ -1330,7 +1361,7 @@ class MatchEngine {
       ChanceOutcome.clearance: _positiveWeight(
         baseClearance +
             ((1 - adjusted) * 0.14) +
-        (defendingStrength.setPieceDefenseStrength / 100.0 * 0.08) +
+            (defendingStrength.setPieceDefenseStrength / 100.0 * 0.08) +
             (state.matchupState.setPieceControlEdge.abs() * 0.04),
       ),
       ChanceOutcome.turnover: _positiveWeight(
@@ -1346,7 +1377,7 @@ class MatchEngine {
         0.05 +
             (keeperResilience * 0.08) +
             ((1 - adjusted) * 0.08) +
-        (defendingStrength.setPieceDefenseStrength / 100.0 * 0.06),
+            (defendingStrength.setPieceDefenseStrength / 100.0 * 0.06),
       ),
       ChanceOutcome.deflectionCorner: _positiveWeight(
         0.04 +
