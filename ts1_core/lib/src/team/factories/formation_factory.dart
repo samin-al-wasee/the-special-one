@@ -8,23 +8,30 @@ class FormationFactory {
   const FormationFactory._();
 
   static const Set<String> supportedCodes = {
-    '4-3-3',
-    '4-2-3-1',
-    '3-5-2',
-    '4-4-2',
-    '4-5-1',
-    '4-1-4-1',
-    '4-1-2-1-2',
-    '4-3-1-2',
-    '4-2-2-2',
-    '4-2-4',
-    '4-3-2-1',
-    '3-4-3',
-    '3-4-2-1',
+    '3-1-4-2',
     '3-4-1-2',
+    '3-4-2-1',
+    '3-4-3',
+    '3-5-2',
+    '4-1-2-1-2',
+    '4-1-4-1',
+    '4-2-2-2',
+    '4-2-3-1',
+    '4-2-3-1-narrow',
+    '4-2-4',
+    '4-3-1-2',
+    '4-3-2-1',
+    '4-3-3',
+    '4-3-3-attacking',
+    '4-3-3-defensive',
+    '4-4-1-1',
+    '4-4-2',
+    '4-4-2-defensive',
+    '4-5-1',
+    '5-2-1-2',
+    '5-2-3',
     '5-3-2',
     '5-4-1',
-    '5-2-3',
   };
 
   static FormationShape byCode(String code) {
@@ -32,18 +39,46 @@ class FormationFactory {
 
     switch (compact) {
       case '433':
+      case '433flat':
         return _shape(
           id: 433,
           code: '4-3-3',
-          slotDefinitions: _slots433(),
+          slotDefinitions: _slots433Flat(),
           structuralTags: const {
-            'natural_width': 0.78,
-            'central_compactness': 0.62,
-            'rest_defense_shape': 0.58,
+            'natural_width': 0.80,
+            'central_compactness': 0.65,
+            'rest_defense_shape': 0.61,
             'press_front_line': 0.70,
           },
         );
+      case '433defensive':
+      case '433d':
+        return _shape(
+          id: 4331,
+          code: '4-3-3-defensive',
+          slotDefinitions: _slots433Defensive(),
+          structuralTags: const {
+            'natural_width': 0.78,
+            'central_compactness': 0.69,
+            'rest_defense_shape': 0.72,
+            'press_front_line': 0.66,
+          },
+        );
+      case '433attacking':
+      case '433a':
+        return _shape(
+          id: 4332,
+          code: '4-3-3-attacking',
+          slotDefinitions: _slots433Attacking(),
+          structuralTags: const {
+            'natural_width': 0.83,
+            'central_compactness': 0.60,
+            'rest_defense_shape': 0.55,
+            'press_front_line': 0.74,
+          },
+        );
       case '4231':
+      case '4231wide':
         return _shape(
           id: 4231,
           code: '4-2-3-1',
@@ -53,6 +88,19 @@ class FormationFactory {
             'central_compactness': 0.68,
             'rest_defense_shape': 0.74,
             'press_front_line': 0.66,
+          },
+        );
+      case '4231narrow':
+      case '4231narrowfixed':
+        return _shape(
+          id: 4232,
+          code: '4-2-3-1-narrow',
+          slotDefinitions: _slots4231Narrow(),
+          structuralTags: const {
+            'natural_width': 0.48,
+            'central_compactness': 0.86,
+            'rest_defense_shape': 0.76,
+            'press_front_line': 0.67,
           },
         );
       case '352':
@@ -67,7 +115,20 @@ class FormationFactory {
             'press_front_line': 0.64,
           },
         );
+      case '3142':
+        return _shape(
+          id: 3142,
+          code: '3-1-4-2',
+          slotDefinitions: _slots3142(),
+          structuralTags: const {
+            'natural_width': 0.76,
+            'central_compactness': 0.80,
+            'rest_defense_shape': 0.83,
+            'press_front_line': 0.63,
+          },
+        );
       case '442':
+      case '442wide':
         return _shape(
           id: 442,
           code: '4-4-2',
@@ -77,6 +138,20 @@ class FormationFactory {
             'central_compactness': 0.64,
             'rest_defense_shape': 0.69,
             'press_front_line': 0.62,
+          },
+        );
+      case '442defensive':
+      case '442d':
+      case '442def':
+        return _shape(
+          id: 4421,
+          code: '4-4-2-defensive',
+          slotDefinitions: _slots442Defensive(),
+          structuralTags: const {
+            'natural_width': 0.68,
+            'central_compactness': 0.79,
+            'rest_defense_shape': 0.82,
+            'press_front_line': 0.57,
           },
         );
       case '451':
@@ -104,6 +179,7 @@ class FormationFactory {
           },
         );
       case '41212':
+      case '41212narrow':
       case '442diamond':
       case 'diamond':
         return _shape(
@@ -130,6 +206,7 @@ class FormationFactory {
           },
         );
       case '4222':
+      case 'box':
         return _shape(
           id: 4222,
           code: '4-2-2-2',
@@ -142,6 +219,8 @@ class FormationFactory {
           },
         );
       case '424':
+      case '424wide':
+      case '424widefixed':
         return _shape(
           id: 424,
           code: '4-2-4',
@@ -165,7 +244,21 @@ class FormationFactory {
             'press_front_line': 0.63,
           },
         );
+      case '4411':
+      case '4411balanced':
+        return _shape(
+          id: 4411,
+          code: '4-4-1-1',
+          slotDefinitions: _slots4411Balanced(),
+          structuralTags: const {
+            'natural_width': 0.70,
+            'central_compactness': 0.72,
+            'rest_defense_shape': 0.73,
+            'press_front_line': 0.60,
+          },
+        );
       case '343':
+      case '343wide':
         return _shape(
           id: 343,
           code: '3-4-3',
@@ -211,6 +304,18 @@ class FormationFactory {
             'central_compactness': 0.79,
             'rest_defense_shape': 0.86,
             'press_front_line': 0.55,
+          },
+        );
+      case '5212':
+        return _shape(
+          id: 5212,
+          code: '5-2-1-2',
+          slotDefinitions: _slots5212(),
+          structuralTags: const {
+            'natural_width': 0.67,
+            'central_compactness': 0.77,
+            'rest_defense_shape': 0.85,
+            'press_front_line': 0.58,
           },
         );
       case '541':
@@ -287,7 +392,7 @@ class FormationFactory {
     );
   }
 
-  static List<FormationSlot> _slots433() {
+  static List<FormationSlot> _slots433Flat() {
     return [
       _slot(
         1,
@@ -296,7 +401,7 @@ class FormationFactory {
         'goalkeeper',
         [Position.goalKeeper],
         adjacency: ['RCB', 'LCB'],
-        support: ['RCB', 'LCB', 'DM'],
+        support: ['RCB', 'LCB', 'CM'],
         lanes: ['central_build'],
         defensive: ['box'],
       ),
@@ -317,8 +422,8 @@ class FormationFactory {
         PitchZone.rcb,
         'defense',
         [Position.centerBack],
-        adjacency: ['GK', 'RB', 'LCB', 'DM'],
-        support: ['RB', 'DM'],
+        adjacency: ['GK', 'RB', 'LCB', 'CM'],
+        support: ['RB', 'CM'],
         lanes: ['central_build'],
         defensive: ['box', 'right_halfspace'],
       ),
@@ -328,8 +433,8 @@ class FormationFactory {
         PitchZone.lcb,
         'defense',
         [Position.centerBack],
-        adjacency: ['GK', 'LB', 'RCB', 'DM'],
-        support: ['LB', 'DM'],
+        adjacency: ['GK', 'LB', 'RCB', 'CM'],
+        support: ['LB', 'CM'],
         lanes: ['central_build'],
         defensive: ['box', 'left_halfspace'],
       ),
@@ -346,25 +451,25 @@ class FormationFactory {
       ),
       _slot(
         6,
-        'DM',
-        PitchZone.cm,
-        'midfield',
-        [Position.defensiveMidfielder, Position.centralMidfielder],
-        adjacency: ['RCB', 'LCB', 'RCM', 'LCM', 'ST'],
-        support: ['RCM', 'LCM', 'ST'],
-        lanes: ['central_build', 'halfspaces'],
-        defensive: ['zone14', 'counter_rest'],
-      ),
-      _slot(
-        7,
         'RCM',
         PitchZone.rcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
-        adjacency: ['RB', 'DM', 'ST', 'RW'],
-        support: ['RB', 'RW', 'ST'],
+        adjacency: ['RB', 'RCB', 'CM', 'RW', 'ST'],
+        support: ['RB', 'CM', 'RW', 'ST'],
         lanes: ['right_halfspace'],
         defensive: ['right_halfspace'],
+      ),
+      _slot(
+        7,
+        'CM',
+        PitchZone.cm,
+        'midfield',
+        [Position.centralMidfielder, Position.defensiveMidfielder],
+        adjacency: ['RCB', 'LCB', 'RCM', 'LCM', 'ST'],
+        support: ['RCM', 'LCM', 'ST'],
+        lanes: ['central_build', 'halfspaces'],
+        defensive: ['zone14', 'counter_rest'],
       ),
       _slot(
         8,
@@ -372,8 +477,8 @@ class FormationFactory {
         PitchZone.lcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
-        adjacency: ['LB', 'DM', 'ST', 'LW'],
-        support: ['LB', 'LW', 'ST'],
+        adjacency: ['LB', 'LCB', 'CM', 'ST', 'LW'],
+        support: ['LB', 'CM', 'LW', 'ST'],
         lanes: ['left_halfspace'],
         defensive: ['left_halfspace'],
       ),
@@ -405,11 +510,40 @@ class FormationFactory {
         PitchZone.cf,
         'attack',
         [Position.striker],
-        adjacency: ['RW', 'LW', 'RCM', 'LCM', 'DM'],
-        support: ['RW', 'LW', 'RCM', 'LCM'],
+        adjacency: ['RW', 'LW', 'RCM', 'CM', 'LCM'],
+        support: ['RW', 'LW', 'RCM', 'CM', 'LCM'],
         lanes: ['box', 'central_channel'],
         defensive: ['first_press'],
       ),
+    ];
+  }
+
+  static List<FormationSlot> _slots433Defensive() {
+    return [
+      ..._backFourBase(),
+      _slot(6, 'DM', PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+        Position.centralMidfielder,
+      ]),
+      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
+      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+    ];
+  }
+
+  static List<FormationSlot> _slots433Attacking() {
+    return [
+      ..._backFourBase(),
+      _slot(6, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(7, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(8, 'CAM', PitchZone.cf, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
+      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
     ];
   }
 
@@ -568,6 +702,19 @@ class FormationFactory {
     ];
   }
 
+  static List<FormationSlot> _slots3142() {
+    return [
+      ..._backThreeBase(),
+      _slot(5, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
+      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
+      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
+      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
+      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+    ];
+  }
+
   static List<FormationSlot> _slots442Wide() {
     return [
       ..._backFourBase(),
@@ -591,6 +738,22 @@ class FormationFactory {
         lanes: ['left_flank'],
         defensive: ['left_flank'],
       ),
+      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
+      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+    ];
+  }
+
+  static List<FormationSlot> _slots442Defensive() {
+    return [
+      ..._backFourBase(),
+      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
+      _slot(7, 'RDM', PitchZone.rcm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(8, 'LDM', PitchZone.lcm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
       _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
       _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
     ];
@@ -646,6 +809,30 @@ class FormationFactory {
     ];
   }
 
+  static List<FormationSlot> _slots4231Narrow() {
+    return [
+      ..._backFourBase(),
+      _slot(6, 'RDM', PitchZone.rcm, 'midfield', [
+        Position.defensiveMidfielder,
+        Position.centralMidfielder,
+      ]),
+      _slot(7, 'LDM', PitchZone.lcm, 'midfield', [
+        Position.defensiveMidfielder,
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'RAM', PitchZone.rhs, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(9, 'CAM', PitchZone.cf, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(10, 'LAM', PitchZone.lhs, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+    ];
+  }
+
   static List<FormationSlot> _slots4312Narrow() {
     return [
       ..._backFourBase(),
@@ -687,16 +874,12 @@ class FormationFactory {
   static List<FormationSlot> _slots424Wide() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RDM', PitchZone.rcm, 'midfield', [
-        Position.defensiveMidfielder,
-      ]),
-      _slot(7, 'LDM', PitchZone.lcm, 'midfield', [
-        Position.defensiveMidfielder,
-      ]),
+      _slot(6, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(7, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
       _slot(8, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(9, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(9, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
+      _slot(10, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
     ];
   }
 
@@ -836,6 +1019,38 @@ class FormationFactory {
       _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
       _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
       _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+    ];
+  }
+
+  static List<FormationSlot> _slots5212() {
+    return [
+      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
+      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
+      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
+      _slot(4, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
+      _slot(5, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
+      _slot(6, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
+      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(9, 'CAM', PitchZone.cf, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
+      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+    ];
+  }
+
+  static List<FormationSlot> _slots4411Balanced() {
+    return [
+      ..._backFourBase(),
+      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
+      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
+      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
+      _slot(10, 'CAM', PitchZone.cf, 'attack_mid', [
+        Position.attackingMidfielder,
+      ]),
+      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
     ];
   }
 
