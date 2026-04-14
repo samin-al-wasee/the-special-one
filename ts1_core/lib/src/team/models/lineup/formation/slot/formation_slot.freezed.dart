@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FormationSlot {
 
- int get id; String get slotId; PitchZone get baseZone; String get line; SlotLateralBand get lateralBand; SlotVerticalBand get verticalBand; List<Position> get preferredPositions; List<String> get adjacencySlots; List<String> get supportLinks; List<String> get attackingLaneAccess; List<String> get defensiveResponsibility;
+ int get id; String get slotId; Position get position;// NEW: tactical position for this slot
+ PitchZone get baseZone; String get line; SlotLateralBand get lateralBand; SlotVerticalBand get verticalBand; List<Position> get preferredPositions; List<String> get adjacencySlots; List<String> get supportLinks; List<String> get attackingLaneAccess; List<String> get defensiveResponsibility;
 /// Create a copy of FormationSlot
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $FormationSlotCopyWith<FormationSlot> get copyWith => _$FormationSlotCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FormationSlot&&(identical(other.id, id) || other.id == id)&&(identical(other.slotId, slotId) || other.slotId == slotId)&&(identical(other.baseZone, baseZone) || other.baseZone == baseZone)&&(identical(other.line, line) || other.line == line)&&(identical(other.lateralBand, lateralBand) || other.lateralBand == lateralBand)&&(identical(other.verticalBand, verticalBand) || other.verticalBand == verticalBand)&&const DeepCollectionEquality().equals(other.preferredPositions, preferredPositions)&&const DeepCollectionEquality().equals(other.adjacencySlots, adjacencySlots)&&const DeepCollectionEquality().equals(other.supportLinks, supportLinks)&&const DeepCollectionEquality().equals(other.attackingLaneAccess, attackingLaneAccess)&&const DeepCollectionEquality().equals(other.defensiveResponsibility, defensiveResponsibility));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FormationSlot&&(identical(other.id, id) || other.id == id)&&(identical(other.slotId, slotId) || other.slotId == slotId)&&(identical(other.position, position) || other.position == position)&&(identical(other.baseZone, baseZone) || other.baseZone == baseZone)&&(identical(other.line, line) || other.line == line)&&(identical(other.lateralBand, lateralBand) || other.lateralBand == lateralBand)&&(identical(other.verticalBand, verticalBand) || other.verticalBand == verticalBand)&&const DeepCollectionEquality().equals(other.preferredPositions, preferredPositions)&&const DeepCollectionEquality().equals(other.adjacencySlots, adjacencySlots)&&const DeepCollectionEquality().equals(other.supportLinks, supportLinks)&&const DeepCollectionEquality().equals(other.attackingLaneAccess, attackingLaneAccess)&&const DeepCollectionEquality().equals(other.defensiveResponsibility, defensiveResponsibility));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slotId,baseZone,line,lateralBand,verticalBand,const DeepCollectionEquality().hash(preferredPositions),const DeepCollectionEquality().hash(adjacencySlots),const DeepCollectionEquality().hash(supportLinks),const DeepCollectionEquality().hash(attackingLaneAccess),const DeepCollectionEquality().hash(defensiveResponsibility));
+int get hashCode => Object.hash(runtimeType,id,slotId,position,baseZone,line,lateralBand,verticalBand,const DeepCollectionEquality().hash(preferredPositions),const DeepCollectionEquality().hash(adjacencySlots),const DeepCollectionEquality().hash(supportLinks),const DeepCollectionEquality().hash(attackingLaneAccess),const DeepCollectionEquality().hash(defensiveResponsibility));
 
 @override
 String toString() {
-  return 'FormationSlot(id: $id, slotId: $slotId, baseZone: $baseZone, line: $line, lateralBand: $lateralBand, verticalBand: $verticalBand, preferredPositions: $preferredPositions, adjacencySlots: $adjacencySlots, supportLinks: $supportLinks, attackingLaneAccess: $attackingLaneAccess, defensiveResponsibility: $defensiveResponsibility)';
+  return 'FormationSlot(id: $id, slotId: $slotId, position: $position, baseZone: $baseZone, line: $line, lateralBand: $lateralBand, verticalBand: $verticalBand, preferredPositions: $preferredPositions, adjacencySlots: $adjacencySlots, supportLinks: $supportLinks, attackingLaneAccess: $attackingLaneAccess, defensiveResponsibility: $defensiveResponsibility)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $FormationSlotCopyWith<$Res>  {
   factory $FormationSlotCopyWith(FormationSlot value, $Res Function(FormationSlot) _then) = _$FormationSlotCopyWithImpl;
 @useResult
 $Res call({
- int id, String slotId, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
+ int id, String slotId, Position position, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
 });
 
 
@@ -65,11 +66,12 @@ class _$FormationSlotCopyWithImpl<$Res>
 
 /// Create a copy of FormationSlot
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slotId = null,Object? baseZone = null,Object? line = null,Object? lateralBand = null,Object? verticalBand = null,Object? preferredPositions = null,Object? adjacencySlots = null,Object? supportLinks = null,Object? attackingLaneAccess = null,Object? defensiveResponsibility = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slotId = null,Object? position = null,Object? baseZone = null,Object? line = null,Object? lateralBand = null,Object? verticalBand = null,Object? preferredPositions = null,Object? adjacencySlots = null,Object? supportLinks = null,Object? attackingLaneAccess = null,Object? defensiveResponsibility = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slotId: null == slotId ? _self.slotId : slotId // ignore: cast_nullable_to_non_nullable
-as String,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
+as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
+as Position,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
 as PitchZone,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
 as String,lateralBand: null == lateralBand ? _self.lateralBand : lateralBand // ignore: cast_nullable_to_non_nullable
 as SlotLateralBand,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable
@@ -163,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String slotId,  Position position,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FormationSlot() when $default != null:
-return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
+return $default(_that.id,_that.slotId,_that.position,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
   return orElse();
 
 }
@@ -184,10 +186,10 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String slotId,  Position position,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)  $default,) {final _that = this;
 switch (_that) {
 case _FormationSlot():
-return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
+return $default(_that.id,_that.slotId,_that.position,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +206,10 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slotId,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String slotId,  Position position,  PitchZone baseZone,  String line,  SlotLateralBand lateralBand,  SlotVerticalBand verticalBand,  List<Position> preferredPositions,  List<String> adjacencySlots,  List<String> supportLinks,  List<String> attackingLaneAccess,  List<String> defensiveResponsibility)?  $default,) {final _that = this;
 switch (_that) {
 case _FormationSlot() when $default != null:
-return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
+return $default(_that.id,_that.slotId,_that.position,_that.baseZone,_that.line,_that.lateralBand,_that.verticalBand,_that.preferredPositions,_that.adjacencySlots,_that.supportLinks,_that.attackingLaneAccess,_that.defensiveResponsibility);case _:
   return null;
 
 }
@@ -219,11 +221,13 @@ return $default(_that.id,_that.slotId,_that.baseZone,_that.line,_that.lateralBan
 @JsonSerializable()
 
 class _FormationSlot extends FormationSlot {
-  const _FormationSlot({required this.id, required this.slotId, required this.baseZone, required this.line, required this.lateralBand, required this.verticalBand, final  List<Position> preferredPositions = const [], final  List<String> adjacencySlots = const [], final  List<String> supportLinks = const [], final  List<String> attackingLaneAccess = const [], final  List<String> defensiveResponsibility = const []}): _preferredPositions = preferredPositions,_adjacencySlots = adjacencySlots,_supportLinks = supportLinks,_attackingLaneAccess = attackingLaneAccess,_defensiveResponsibility = defensiveResponsibility,super._();
+  const _FormationSlot({required this.id, required this.slotId, required this.position, required this.baseZone, required this.line, required this.lateralBand, required this.verticalBand, final  List<Position> preferredPositions = const [], final  List<String> adjacencySlots = const [], final  List<String> supportLinks = const [], final  List<String> attackingLaneAccess = const [], final  List<String> defensiveResponsibility = const []}): _preferredPositions = preferredPositions,_adjacencySlots = adjacencySlots,_supportLinks = supportLinks,_attackingLaneAccess = attackingLaneAccess,_defensiveResponsibility = defensiveResponsibility,super._();
   factory _FormationSlot.fromJson(Map<String, dynamic> json) => _$FormationSlotFromJson(json);
 
 @override final  int id;
 @override final  String slotId;
+@override final  Position position;
+// NEW: tactical position for this slot
 @override final  PitchZone baseZone;
 @override final  String line;
 @override final  SlotLateralBand lateralBand;
@@ -277,16 +281,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FormationSlot&&(identical(other.id, id) || other.id == id)&&(identical(other.slotId, slotId) || other.slotId == slotId)&&(identical(other.baseZone, baseZone) || other.baseZone == baseZone)&&(identical(other.line, line) || other.line == line)&&(identical(other.lateralBand, lateralBand) || other.lateralBand == lateralBand)&&(identical(other.verticalBand, verticalBand) || other.verticalBand == verticalBand)&&const DeepCollectionEquality().equals(other._preferredPositions, _preferredPositions)&&const DeepCollectionEquality().equals(other._adjacencySlots, _adjacencySlots)&&const DeepCollectionEquality().equals(other._supportLinks, _supportLinks)&&const DeepCollectionEquality().equals(other._attackingLaneAccess, _attackingLaneAccess)&&const DeepCollectionEquality().equals(other._defensiveResponsibility, _defensiveResponsibility));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FormationSlot&&(identical(other.id, id) || other.id == id)&&(identical(other.slotId, slotId) || other.slotId == slotId)&&(identical(other.position, position) || other.position == position)&&(identical(other.baseZone, baseZone) || other.baseZone == baseZone)&&(identical(other.line, line) || other.line == line)&&(identical(other.lateralBand, lateralBand) || other.lateralBand == lateralBand)&&(identical(other.verticalBand, verticalBand) || other.verticalBand == verticalBand)&&const DeepCollectionEquality().equals(other._preferredPositions, _preferredPositions)&&const DeepCollectionEquality().equals(other._adjacencySlots, _adjacencySlots)&&const DeepCollectionEquality().equals(other._supportLinks, _supportLinks)&&const DeepCollectionEquality().equals(other._attackingLaneAccess, _attackingLaneAccess)&&const DeepCollectionEquality().equals(other._defensiveResponsibility, _defensiveResponsibility));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slotId,baseZone,line,lateralBand,verticalBand,const DeepCollectionEquality().hash(_preferredPositions),const DeepCollectionEquality().hash(_adjacencySlots),const DeepCollectionEquality().hash(_supportLinks),const DeepCollectionEquality().hash(_attackingLaneAccess),const DeepCollectionEquality().hash(_defensiveResponsibility));
+int get hashCode => Object.hash(runtimeType,id,slotId,position,baseZone,line,lateralBand,verticalBand,const DeepCollectionEquality().hash(_preferredPositions),const DeepCollectionEquality().hash(_adjacencySlots),const DeepCollectionEquality().hash(_supportLinks),const DeepCollectionEquality().hash(_attackingLaneAccess),const DeepCollectionEquality().hash(_defensiveResponsibility));
 
 @override
 String toString() {
-  return 'FormationSlot(id: $id, slotId: $slotId, baseZone: $baseZone, line: $line, lateralBand: $lateralBand, verticalBand: $verticalBand, preferredPositions: $preferredPositions, adjacencySlots: $adjacencySlots, supportLinks: $supportLinks, attackingLaneAccess: $attackingLaneAccess, defensiveResponsibility: $defensiveResponsibility)';
+  return 'FormationSlot(id: $id, slotId: $slotId, position: $position, baseZone: $baseZone, line: $line, lateralBand: $lateralBand, verticalBand: $verticalBand, preferredPositions: $preferredPositions, adjacencySlots: $adjacencySlots, supportLinks: $supportLinks, attackingLaneAccess: $attackingLaneAccess, defensiveResponsibility: $defensiveResponsibility)';
 }
 
 
@@ -297,7 +301,7 @@ abstract mixin class _$FormationSlotCopyWith<$Res> implements $FormationSlotCopy
   factory _$FormationSlotCopyWith(_FormationSlot value, $Res Function(_FormationSlot) _then) = __$FormationSlotCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String slotId, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
+ int id, String slotId, Position position, PitchZone baseZone, String line, SlotLateralBand lateralBand, SlotVerticalBand verticalBand, List<Position> preferredPositions, List<String> adjacencySlots, List<String> supportLinks, List<String> attackingLaneAccess, List<String> defensiveResponsibility
 });
 
 
@@ -314,11 +318,12 @@ class __$FormationSlotCopyWithImpl<$Res>
 
 /// Create a copy of FormationSlot
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slotId = null,Object? baseZone = null,Object? line = null,Object? lateralBand = null,Object? verticalBand = null,Object? preferredPositions = null,Object? adjacencySlots = null,Object? supportLinks = null,Object? attackingLaneAccess = null,Object? defensiveResponsibility = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slotId = null,Object? position = null,Object? baseZone = null,Object? line = null,Object? lateralBand = null,Object? verticalBand = null,Object? preferredPositions = null,Object? adjacencySlots = null,Object? supportLinks = null,Object? attackingLaneAccess = null,Object? defensiveResponsibility = null,}) {
   return _then(_FormationSlot(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,slotId: null == slotId ? _self.slotId : slotId // ignore: cast_nullable_to_non_nullable
-as String,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
+as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
+as Position,baseZone: null == baseZone ? _self.baseZone : baseZone // ignore: cast_nullable_to_non_nullable
 as PitchZone,line: null == line ? _self.line : line // ignore: cast_nullable_to_non_nullable
 as String,lateralBand: null == lateralBand ? _self.lateralBand : lateralBand // ignore: cast_nullable_to_non_nullable
 as SlotLateralBand,verticalBand: null == verticalBand ? _self.verticalBand : verticalBand // ignore: cast_nullable_to_non_nullable

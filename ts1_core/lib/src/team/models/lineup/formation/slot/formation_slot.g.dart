@@ -10,6 +10,7 @@ _FormationSlot _$FormationSlotFromJson(Map<String, dynamic> json) =>
     _FormationSlot(
       id: (json['id'] as num).toInt(),
       slotId: json['slotId'] as String,
+      position: $enumDecode(_$PositionEnumMap, json['position']),
       baseZone: $enumDecode(_$PitchZoneEnumMap, json['baseZone']),
       line: json['line'] as String,
       lateralBand: $enumDecode(_$SlotLateralBandEnumMap, json['lateralBand']),
@@ -48,6 +49,7 @@ Map<String, dynamic> _$FormationSlotToJson(_FormationSlot instance) =>
     <String, dynamic>{
       'id': instance.id,
       'slotId': instance.slotId,
+      'position': _$PositionEnumMap[instance.position]!,
       'baseZone': _$PitchZoneEnumMap[instance.baseZone]!,
       'line': instance.line,
       'lateralBand': _$SlotLateralBandEnumMap[instance.lateralBand]!,
@@ -60,6 +62,21 @@ Map<String, dynamic> _$FormationSlotToJson(_FormationSlot instance) =>
       'attackingLaneAccess': instance.attackingLaneAccess,
       'defensiveResponsibility': instance.defensiveResponsibility,
     };
+
+const _$PositionEnumMap = {
+  Position.goalKeeper: 'goalKeeper',
+  Position.rightBack: 'rightBack',
+  Position.centerBack: 'centerBack',
+  Position.leftBack: 'leftBack',
+  Position.defensiveMidfielder: 'defensiveMidfielder',
+  Position.centralMidfielder: 'centralMidfielder',
+  Position.attackingMidfielder: 'attackingMidfielder',
+  Position.rightMidfielder: 'rightMidfielder',
+  Position.leftMidfielder: 'leftMidfielder',
+  Position.rightWinger: 'rightWinger',
+  Position.leftWinger: 'leftWinger',
+  Position.striker: 'striker',
+};
 
 const _$PitchZoneEnumMap = {
   PitchZone.lw: 'lw',
@@ -91,19 +108,4 @@ const _$SlotVerticalBandEnumMap = {
   SlotVerticalBand.deep: 'deep',
   SlotVerticalBand.mid: 'mid',
   SlotVerticalBand.high: 'high',
-};
-
-const _$PositionEnumMap = {
-  Position.goalKeeper: 'goalKeeper',
-  Position.rightBack: 'rightBack',
-  Position.centerBack: 'centerBack',
-  Position.leftBack: 'leftBack',
-  Position.defensiveMidfielder: 'defensiveMidfielder',
-  Position.centralMidfielder: 'centralMidfielder',
-  Position.attackingMidfielder: 'attackingMidfielder',
-  Position.rightMidfielder: 'rightMidfielder',
-  Position.leftMidfielder: 'leftMidfielder',
-  Position.rightWinger: 'rightWinger',
-  Position.leftWinger: 'leftWinger',
-  Position.striker: 'striker',
 };

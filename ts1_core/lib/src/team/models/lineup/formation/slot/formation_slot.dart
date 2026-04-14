@@ -5,11 +5,14 @@ import 'package:ts1_core/src/core/enums/player/position.dart';
 part 'formation_slot.freezed.dart';
 part 'formation_slot.g.dart';
 
+/// A slot in a formation, representing a tactical position (e.g., LB, ST).
+/// The `position` field is the intended tactical role for this slot (e.g., Position.leftBack).
 @freezed
 abstract class FormationSlot with _$FormationSlot {
   const factory FormationSlot({
     required int id,
     required String slotId,
+    required Position position, // NEW: tactical position for this slot
     required PitchZone baseZone,
     required String line,
     required SlotLateralBand lateralBand,

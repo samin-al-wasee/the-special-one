@@ -389,6 +389,7 @@ class FormationFactory {
   static FormationSlot _slot(
     int id,
     String slotId,
+    Position position, // NEW required argument
     PitchZone zone,
     String line,
     List<Position> preferredPositions, {
@@ -400,6 +401,7 @@ class FormationFactory {
     return FormationSlot(
       id: id,
       slotId: slotId,
+      position: position,
       baseZone: zone,
       line: line,
       lateralBand: FormationSlot.lateralBandForZone(zone),
@@ -419,6 +421,7 @@ class FormationFactory {
       _slot(
         1,
         'GK',
+        Position.goalKeeper,
         PitchZone.cb,
         'goalkeeper',
         [Position.goalKeeper],
@@ -431,6 +434,7 @@ class FormationFactory {
       _slot(
         2,
         'RB',
+        Position.rightBack,
         PitchZone.rb,
         'defense',
         [Position.rightBack],
@@ -443,6 +447,7 @@ class FormationFactory {
       _slot(
         3,
         'RCB',
+        Position.centerBack,
         PitchZone.rcb,
         'defense',
         [Position.centerBack],
@@ -454,6 +459,7 @@ class FormationFactory {
       _slot(
         4,
         'LCB',
+        Position.centerBack,
         PitchZone.lcb,
         'defense',
         [Position.centerBack],
@@ -466,6 +472,7 @@ class FormationFactory {
       _slot(
         5,
         'LB',
+        Position.leftBack,
         PitchZone.lb,
         'defense',
         [Position.leftBack],
@@ -478,6 +485,7 @@ class FormationFactory {
       _slot(
         6,
         'RCM',
+        Position.centralMidfielder,
         PitchZone.rcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
@@ -489,6 +497,7 @@ class FormationFactory {
       _slot(
         7,
         'CM',
+        Position.centralMidfielder,
         PitchZone.cm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
@@ -500,6 +509,7 @@ class FormationFactory {
       _slot(
         8,
         'LCM',
+        Position.centralMidfielder,
         PitchZone.lcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
@@ -512,6 +522,7 @@ class FormationFactory {
       _slot(
         9,
         'RW',
+        Position.rightWinger,
         PitchZone.rw,
         'attack',
         [Position.rightWinger, Position.attackingMidfielder],
@@ -524,6 +535,7 @@ class FormationFactory {
       _slot(
         10,
         'LW',
+        Position.leftWinger,
         PitchZone.lw,
         'attack',
         [Position.leftWinger, Position.attackingMidfielder],
@@ -536,6 +548,7 @@ class FormationFactory {
       _slot(
         11,
         'ST',
+        Position.striker,
         PitchZone.cf,
         'attack',
         [Position.striker],
@@ -550,29 +563,54 @@ class FormationFactory {
   static List<FormationSlot> _slots433Defensive() {
     return [
       ..._backFourBase(),
-      _slot(6, 'DM', PitchZone.cm, 'midfield', [
+      _slot(6, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
         Position.defensiveMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
-      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'RW', Position.rightWinger, PitchZone.rw, 'attack', [
+        Position.rightWinger,
+      ]),
+      _slot(10, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LW', Position.leftWinger, PitchZone.lw, 'attack', [
+        Position.leftWinger,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots433Attacking() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(7, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'CAM', PitchZone.cf, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(6, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
       ]),
-      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
-      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+      _slot(7, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(
+        8,
+        'CAM',
+        Position.attackingMidfielder,
+        PitchZone.cf,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(9, 'RW', Position.rightWinger, PitchZone.rw, 'attack', [
+        Position.rightWinger,
+      ]),
+      _slot(10, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LW', Position.leftWinger, PitchZone.lw, 'attack', [
+        Position.leftWinger,
+      ]),
     ];
   }
 
@@ -582,6 +620,7 @@ class FormationFactory {
       _slot(
         6,
         'RDM',
+        Position.defensiveMidfielder,
         PitchZone.rcm,
         'midfield',
         [Position.defensiveMidfielder, Position.centralMidfielder],
@@ -593,6 +632,7 @@ class FormationFactory {
       _slot(
         7,
         'LDM',
+        Position.defensiveMidfielder,
         PitchZone.lcm,
         'midfield',
         [Position.defensiveMidfielder, Position.centralMidfielder],
@@ -604,6 +644,7 @@ class FormationFactory {
       _slot(
         8,
         'AM',
+        Position.attackingMidfielder,
         PitchZone.cf,
         'attack_mid',
         [Position.attackingMidfielder, Position.centralMidfielder],
@@ -615,6 +656,7 @@ class FormationFactory {
       _slot(
         9,
         'RM',
+        Position.rightMidfielder,
         PitchZone.rm,
         'midfield',
         [Position.rightMidfielder, Position.centralMidfielder],
@@ -626,6 +668,7 @@ class FormationFactory {
       _slot(
         10,
         'LM',
+        Position.leftMidfielder,
         PitchZone.lm,
         'midfield',
         [Position.leftMidfielder, Position.centralMidfielder],
@@ -637,6 +680,7 @@ class FormationFactory {
       _slot(
         11,
         'ST',
+        Position.striker,
         PitchZone.cf,
         'attack',
         [Position.striker],
@@ -654,6 +698,7 @@ class FormationFactory {
       _slot(
         5,
         'RM',
+        Position.rightMidfielder,
         PitchZone.rm,
         'midfield',
         [Position.rightMidfielder, Position.centralMidfielder],
@@ -665,6 +710,7 @@ class FormationFactory {
       _slot(
         6,
         'LM',
+        Position.leftMidfielder,
         PitchZone.lm,
         'midfield',
         [Position.leftMidfielder, Position.centralMidfielder],
@@ -676,6 +722,7 @@ class FormationFactory {
       _slot(
         7,
         'DM',
+        Position.defensiveMidfielder,
         PitchZone.cm,
         'midfield',
         [Position.defensiveMidfielder, Position.centralMidfielder],
@@ -687,6 +734,7 @@ class FormationFactory {
       _slot(
         8,
         'RCM',
+        Position.centralMidfielder,
         PitchZone.rcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
@@ -698,6 +746,7 @@ class FormationFactory {
       _slot(
         9,
         'LCM',
+        Position.centralMidfielder,
         PitchZone.lcm,
         'midfield',
         [Position.centralMidfielder, Position.defensiveMidfielder],
@@ -709,6 +758,7 @@ class FormationFactory {
       _slot(
         10,
         'RST',
+        Position.striker,
         PitchZone.rhs,
         'attack',
         [Position.striker],
@@ -720,6 +770,7 @@ class FormationFactory {
       _slot(
         11,
         'LST',
+        Position.striker,
         PitchZone.lhs,
         'attack',
         [Position.striker],
@@ -734,13 +785,27 @@ class FormationFactory {
   static List<FormationSlot> _slots3142() {
     return [
       ..._backThreeBase(),
-      _slot(5, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(5, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(6, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
+        Position.rightMidfielder,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
+        Position.leftMidfielder,
+      ]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
@@ -750,355 +815,622 @@ class FormationFactory {
       _slot(
         6,
         'RM',
+        Position.rightMidfielder,
         PitchZone.rm,
         'midfield',
         [Position.rightMidfielder, Position.centralMidfielder],
         lanes: ['right_flank'],
         defensive: ['right_flank'],
       ),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
       _slot(
         9,
         'LM',
+        Position.leftMidfielder,
         PitchZone.lm,
         'midfield',
         [Position.leftMidfielder, Position.centralMidfielder],
         lanes: ['left_flank'],
         defensive: ['left_flank'],
       ),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots442Defensive() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
-      _slot(7, 'RDM', PitchZone.rcm, 'midfield', [
+      _slot(6, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
+        Position.rightMidfielder,
+      ]),
+      _slot(7, 'RDM', Position.defensiveMidfielder, PitchZone.rcm, 'midfield', [
         Position.defensiveMidfielder,
       ]),
-      _slot(8, 'LDM', PitchZone.lcm, 'midfield', [
+      _slot(8, 'LDM', Position.defensiveMidfielder, PitchZone.lcm, 'midfield', [
         Position.defensiveMidfielder,
       ]),
-      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(9, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
+        Position.leftMidfielder,
+      ]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots451() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RM', PitchZone.rm, 'midfield', [
+      _slot(6, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
         Position.rightMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(9, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(10, 'LM', PitchZone.lm, 'midfield', [
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(9, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(10, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
         Position.leftMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots4141() {
     return [
       ..._backFourBase(),
-      _slot(6, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(7, 'RM', PitchZone.rm, 'midfield', [
+      _slot(6, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(7, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
         Position.rightMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(8, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(10, 'LM', PitchZone.lm, 'midfield', [
+      _slot(8, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(10, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
         Position.leftMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots41212Diamond() {
     return [
       ..._backFourBase(),
-      _slot(6, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'AM', PitchZone.cf, 'attack_mid', [
+      _slot(6, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'AM', Position.attackingMidfielder, PitchZone.cf, 'attack_mid', [
         Position.attackingMidfielder,
       ]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots4231Narrow() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RDM', PitchZone.rcm, 'midfield', [
+      _slot(6, 'RDM', Position.defensiveMidfielder, PitchZone.rcm, 'midfield', [
         Position.defensiveMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'LDM', PitchZone.lcm, 'midfield', [
+      _slot(7, 'LDM', Position.defensiveMidfielder, PitchZone.lcm, 'midfield', [
         Position.defensiveMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(8, 'RAM', PitchZone.rhs, 'attack_mid', [
+      _slot(
+        8,
+        'RAM',
         Position.attackingMidfielder,
-      ]),
-      _slot(9, 'CAM', PitchZone.cf, 'attack_mid', [
+        PitchZone.rhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(
+        9,
+        'CAM',
         Position.attackingMidfielder,
-      ]),
-      _slot(10, 'LAM', PitchZone.lhs, 'attack_mid', [
+        PitchZone.cf,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(
+        10,
+        'LAM',
         Position.attackingMidfielder,
+        PitchZone.lhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
     ];
   }
 
   static List<FormationSlot> _slots4312Narrow() {
     return [
       ..._backFourBase(),
-      _slot(6, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'AM', PitchZone.cf, 'attack_mid', [
+      _slot(6, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'AM', Position.attackingMidfielder, PitchZone.cf, 'attack_mid', [
         Position.attackingMidfielder,
       ]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots4222Box() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RDM', PitchZone.rcm, 'midfield', [
+      _slot(6, 'RDM', Position.defensiveMidfielder, PitchZone.rcm, 'midfield', [
         Position.defensiveMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'LDM', PitchZone.lcm, 'midfield', [
+      _slot(7, 'LDM', Position.defensiveMidfielder, PitchZone.lcm, 'midfield', [
         Position.defensiveMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(8, 'RAM', PitchZone.rhs, 'attack_mid', [
+      _slot(
+        8,
+        'RAM',
         Position.attackingMidfielder,
-        Position.rightWinger,
-      ]),
-      _slot(9, 'LAM', PitchZone.lhs, 'attack_mid', [
+        PitchZone.rhs,
+        'attack_mid',
+        [Position.attackingMidfielder, Position.rightWinger],
+      ),
+      _slot(
+        9,
+        'LAM',
         Position.attackingMidfielder,
-        Position.leftWinger,
+        PitchZone.lhs,
+        'attack_mid',
+        [Position.attackingMidfielder, Position.leftWinger],
+      ),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
       ]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots424Wide() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(7, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(9, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(10, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
-      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+      _slot(6, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(7, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'RW', Position.rightWinger, PitchZone.rw, 'attack', [
+        Position.rightWinger,
+      ]),
+      _slot(9, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(10, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LW', Position.leftWinger, PitchZone.lw, 'attack', [
+        Position.leftWinger,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots4321ChristmasTree() {
     return [
       ..._backFourBase(),
-      _slot(6, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'RAM', PitchZone.rhs, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(6, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
       ]),
-      _slot(10, 'LAM', PitchZone.lhs, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(
+        9,
+        'RAM',
+        Position.attackingMidfielder,
+        PitchZone.rhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(
+        10,
+        'LAM',
+        Position.attackingMidfielder,
+        PitchZone.lhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots343Wide() {
     return [
       ..._backThreeBase(),
-      _slot(5, 'RM', PitchZone.rm, 'wingback', [
+      _slot(5, 'RM', Position.rightMidfielder, PitchZone.rm, 'wingback', [
         Position.rightMidfielder,
         Position.rightWinger,
         Position.centralMidfielder,
       ]),
-      _slot(6, 'LM', PitchZone.lm, 'wingback', [
+      _slot(6, 'LM', Position.leftMidfielder, PitchZone.lm, 'wingback', [
         Position.leftMidfielder,
         Position.leftWinger,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
-      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'RW', Position.rightWinger, PitchZone.rw, 'attack', [
+        Position.rightWinger,
+      ]),
+      _slot(10, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LW', Position.leftWinger, PitchZone.lw, 'attack', [
+        Position.leftWinger,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots3421() {
     return [
       ..._backThreeBase(),
-      _slot(5, 'RM', PitchZone.rm, 'wingback', [
+      _slot(5, 'RM', Position.rightMidfielder, PitchZone.rm, 'wingback', [
         Position.rightMidfielder,
         Position.rightWinger,
         Position.centralMidfielder,
       ]),
-      _slot(6, 'LM', PitchZone.lm, 'wingback', [
+      _slot(6, 'LM', Position.leftMidfielder, PitchZone.lm, 'wingback', [
         Position.leftMidfielder,
         Position.leftWinger,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'RAM', PitchZone.rhs, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
       ]),
-      _slot(10, 'LAM', PitchZone.lhs, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(
+        9,
+        'RAM',
+        Position.attackingMidfielder,
+        PitchZone.rhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(
+        10,
+        'LAM',
+        Position.attackingMidfielder,
+        PitchZone.lhs,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots3412() {
     return [
       ..._backThreeBase(),
-      _slot(5, 'RM', PitchZone.rm, 'wingback', [
+      _slot(5, 'RM', Position.rightMidfielder, PitchZone.rm, 'wingback', [
         Position.rightMidfielder,
         Position.rightWinger,
         Position.centralMidfielder,
       ]),
-      _slot(6, 'LM', PitchZone.lm, 'wingback', [
+      _slot(6, 'LM', Position.leftMidfielder, PitchZone.lm, 'wingback', [
         Position.leftMidfielder,
         Position.leftWinger,
         Position.centralMidfielder,
       ]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'AM', PitchZone.cf, 'attack_mid', [
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'AM', Position.attackingMidfielder, PitchZone.cf, 'attack_mid', [
         Position.attackingMidfielder,
       ]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots532() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
-      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(4, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
-      _slot(5, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
-      _slot(6, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'DM', PitchZone.cm, 'midfield', [Position.defensiveMidfielder]),
-      _slot(9, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
+      ]),
+      _slot(2, 'RB', Position.rightBack, PitchZone.rb, 'defense', [
+        Position.rightBack,
+      ]),
+      _slot(3, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'CB', Position.centerBack, PitchZone.cb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(5, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(6, 'LB', Position.leftBack, PitchZone.lb, 'defense', [
+        Position.leftBack,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'DM', Position.defensiveMidfielder, PitchZone.cm, 'midfield', [
+        Position.defensiveMidfielder,
+      ]),
+      _slot(9, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots541() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
-      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(4, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
-      _slot(5, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
-      _slot(6, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
-      _slot(7, 'RM', PitchZone.rm, 'midfield', [
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
+      ]),
+      _slot(2, 'RB', Position.rightBack, PitchZone.rb, 'defense', [
+        Position.rightBack,
+      ]),
+      _slot(3, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'CB', Position.centerBack, PitchZone.cb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(5, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(6, 'LB', Position.leftBack, PitchZone.lb, 'defense', [
+        Position.leftBack,
+      ]),
+      _slot(7, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
         Position.rightMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(8, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(10, 'LM', PitchZone.lm, 'midfield', [
+      _slot(8, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(10, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
         Position.leftMidfielder,
         Position.centralMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots523() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
-      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(4, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
-      _slot(5, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
-      _slot(6, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'RW', PitchZone.rw, 'attack', [Position.rightWinger]),
-      _slot(10, 'ST', PitchZone.cf, 'attack', [Position.striker]),
-      _slot(11, 'LW', PitchZone.lw, 'attack', [Position.leftWinger]),
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
+      ]),
+      _slot(2, 'RB', Position.rightBack, PitchZone.rb, 'defense', [
+        Position.rightBack,
+      ]),
+      _slot(3, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'CB', Position.centerBack, PitchZone.cb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(5, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(6, 'LB', Position.leftBack, PitchZone.lb, 'defense', [
+        Position.leftBack,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'RW', Position.rightWinger, PitchZone.rw, 'attack', [
+        Position.rightWinger,
+      ]),
+      _slot(10, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LW', Position.leftWinger, PitchZone.lw, 'attack', [
+        Position.leftWinger,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots5212() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
-      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(4, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
-      _slot(5, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
-      _slot(6, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'CAM', PitchZone.cf, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
       ]),
-      _slot(10, 'RST', PitchZone.rhs, 'attack', [Position.striker]),
-      _slot(11, 'LST', PitchZone.lhs, 'attack', [Position.striker]),
+      _slot(2, 'RB', Position.rightBack, PitchZone.rb, 'defense', [
+        Position.rightBack,
+      ]),
+      _slot(3, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'CB', Position.centerBack, PitchZone.cb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(5, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(6, 'LB', Position.leftBack, PitchZone.lb, 'defense', [
+        Position.leftBack,
+      ]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(
+        9,
+        'CAM',
+        Position.attackingMidfielder,
+        PitchZone.cf,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(10, 'RST', Position.striker, PitchZone.rhs, 'attack', [
+        Position.striker,
+      ]),
+      _slot(11, 'LST', Position.striker, PitchZone.lhs, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _slots4411Balanced() {
     return [
       ..._backFourBase(),
-      _slot(6, 'RM', PitchZone.rm, 'midfield', [Position.rightMidfielder]),
-      _slot(7, 'RCM', PitchZone.rcm, 'midfield', [Position.centralMidfielder]),
-      _slot(8, 'LCM', PitchZone.lcm, 'midfield', [Position.centralMidfielder]),
-      _slot(9, 'LM', PitchZone.lm, 'midfield', [Position.leftMidfielder]),
-      _slot(10, 'CAM', PitchZone.cf, 'attack_mid', [
-        Position.attackingMidfielder,
+      _slot(6, 'RM', Position.rightMidfielder, PitchZone.rm, 'midfield', [
+        Position.rightMidfielder,
       ]),
-      _slot(11, 'ST', PitchZone.cf, 'attack', [Position.striker]),
+      _slot(7, 'RCM', Position.centralMidfielder, PitchZone.rcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(8, 'LCM', Position.centralMidfielder, PitchZone.lcm, 'midfield', [
+        Position.centralMidfielder,
+      ]),
+      _slot(9, 'LM', Position.leftMidfielder, PitchZone.lm, 'midfield', [
+        Position.leftMidfielder,
+      ]),
+      _slot(
+        10,
+        'CAM',
+        Position.attackingMidfielder,
+        PitchZone.cf,
+        'attack_mid',
+        [Position.attackingMidfielder],
+      ),
+      _slot(11, 'ST', Position.striker, PitchZone.cf, 'attack', [
+        Position.striker,
+      ]),
     ];
   }
 
   static List<FormationSlot> _backFourBase() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RB', PitchZone.rb, 'defense', [Position.rightBack]),
-      _slot(3, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(4, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
-      _slot(5, 'LB', PitchZone.lb, 'defense', [Position.leftBack]),
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
+      ]),
+      _slot(2, 'RB', Position.rightBack, PitchZone.rb, 'defense', [
+        Position.rightBack,
+      ]),
+      _slot(3, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(5, 'LB', Position.leftBack, PitchZone.lb, 'defense', [
+        Position.leftBack,
+      ]),
     ];
   }
 
   static List<FormationSlot> _backThreeBase() {
     return [
-      _slot(1, 'GK', PitchZone.cb, 'goalkeeper', [Position.goalKeeper]),
-      _slot(2, 'RCB', PitchZone.rcb, 'defense', [Position.centerBack]),
-      _slot(3, 'CB', PitchZone.cb, 'defense', [Position.centerBack]),
-      _slot(4, 'LCB', PitchZone.lcb, 'defense', [Position.centerBack]),
+      _slot(1, 'GK', Position.goalKeeper, PitchZone.cb, 'goalkeeper', [
+        Position.goalKeeper,
+      ]),
+      _slot(2, 'RCB', Position.centerBack, PitchZone.rcb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(3, 'CB', Position.centerBack, PitchZone.cb, 'defense', [
+        Position.centerBack,
+      ]),
+      _slot(4, 'LCB', Position.centerBack, PitchZone.lcb, 'defense', [
+        Position.centerBack,
+      ]),
     ];
   }
 }
