@@ -444,7 +444,7 @@ class _PitchView extends StatelessWidget {
   }) {
     final sections = <int, List<LineupSlotAssignment>>{};
     for (final assignment in team.lineup.slotAssignments) {
-      final section = _depthSectionForAssignment(assignment);
+      final section = _depthSectionForAssignment(assignment, useSlot: true);
       sections
           .putIfAbsent(section, () => <LineupSlotAssignment>[])
           .add(assignment);
@@ -456,8 +456,8 @@ class _PitchView extends StatelessWidget {
       final line = sections[section]!
         ..sort(
           (a, b) => _positionSortKey(
-            a.player.position,
-          ).compareTo(_positionSortKey(b.player.position)),
+            a.formationSlot.position,
+          ).compareTo(_positionSortKey(b.formationSlot.position)),
         );
 
       for (var i = 0; i < line.length; i++) {
@@ -477,7 +477,8 @@ class _PitchView extends StatelessWidget {
         );
         widgets.add(
           _positionedMarker(
-            player: assignment.player,
+            playerName: assignment.player.name,
+            slotPosition: assignment.formationSlot.position,
             center: center,
             isHome: isHome,
           ),
@@ -489,7 +490,8 @@ class _PitchView extends StatelessWidget {
   }
 
   Widget _positionedMarker({
-    required Player player,
+    required String playerName,
+    required Position slotPosition,
     required Offset center,
     required bool isHome,
   }) {
@@ -498,8 +500,8 @@ class _PitchView extends StatelessWidget {
       left: center.dx - 32,
       top: center.dy - topOffset,
       child: _PlayerMarker(
-        name: player.name,
-        positionCode: _positionCode(player.position),
+        name: playerName,
+        positionCode: _positionCode(slotPosition),
         isHome: isHome,
       ),
     );
@@ -565,13 +567,20 @@ class _PitchView extends StatelessWidget {
   int _middleLaneFor(
     LineupSlotAssignment assignment,
     List<LineupSlotAssignment> sectionPlayers,
-    List<Position> centralPositions,
-  ) {
+    List<Position> centralPositions, {
+    bool useSlot = false,
+  }) {
     final centralPlayers = sectionPlayers
-        .where((p) => centralPositions.contains(p.player.position))
+        .where(
+          (p) => centralPositions.contains(
+            useSlot ? p.formationSlot.position : p.player.position,
+          ),
+        )
         .toList();
     final playerIndex = centralPlayers.indexWhere(
-      (p) => p.player.id == assignment.player.id,
+      (p) => useSlot
+          ? p.formationSlot.slotId == assignment.formationSlot.slotId
+          : p.player.id == assignment.player.id,
     );
     final middleLanes = switch (centralPlayers.length) {
       1 => const <int>[3],
@@ -590,7 +599,7 @@ class _PitchView extends StatelessWidget {
     required int indexInSection,
     required int section,
   }) {
-    final position = assignment.player.position;
+    final position = assignment.formationSlot.position;
 
     if (section == 2 || section == 4 || section == 5) {
       if (_isLeftSided(position)) {
@@ -602,7 +611,12 @@ class _PitchView extends StatelessWidget {
 
       final centralPositions = _centralPositionsForSection(section);
       if (centralPositions.contains(position)) {
-        return _middleLaneFor(assignment, sectionPlayers, centralPositions);
+        return _middleLaneFor(
+          assignment,
+          sectionPlayers,
+          centralPositions,
+          useSlot: true,
+        );
       }
     }
 
@@ -627,8 +641,13 @@ class _PitchView extends StatelessWidget {
     };
   }
 
-  int _depthSectionForAssignment(LineupSlotAssignment assignment) {
-    final position = assignment.player.position;
+  int _depthSectionForAssignment(
+    LineupSlotAssignment assignment, {
+    bool useSlot = false,
+  }) {
+    final position = useSlot
+        ? assignment.formationSlot.position
+        : assignment.player.position;
     return switch (position) {
       Position.goalKeeper => 1,
       Position.centerBack || Position.rightBack || Position.leftBack => 2,
