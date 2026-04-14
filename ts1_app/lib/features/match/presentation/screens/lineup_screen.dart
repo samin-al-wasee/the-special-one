@@ -211,7 +211,6 @@ class _TacticsSetupTab extends StatelessWidget {
             onChanged: (value) {
               if (value != null) {
                 controller.setHomePreset(value);
-                controller.prepareTeams();
               }
             },
           ),
@@ -245,7 +244,6 @@ class _TacticsSetupTab extends StatelessWidget {
             onChanged: (value) {
               if (value != null) {
                 controller.setHomeFormation(value);
-                controller.prepareTeams();
               }
             },
           ),
@@ -287,7 +285,6 @@ class _TacticsSetupTab extends StatelessWidget {
             onChanged: (value) {
               if (value != null) {
                 controller.setAwayPreset(value);
-                controller.prepareTeams();
               }
             },
           ),
@@ -321,7 +318,6 @@ class _TacticsSetupTab extends StatelessWidget {
             onChanged: (value) {
               if (value != null) {
                 controller.setAwayFormation(value);
-                controller.prepareTeams();
               }
             },
           ),

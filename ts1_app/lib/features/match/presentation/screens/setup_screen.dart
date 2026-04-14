@@ -74,19 +74,16 @@ class MatchConfigurationScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                   FilledButton(
                     onPressed: () {
-                      ref.read(matchFlowProvider).prepareTeams();
                       context.go('/lineup');
                     },
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text('Advance'),
+                    child: const Text('Continue'),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    controller.hasPreparedTeams
-                        ? 'Draft ready: ${controller.draftHomeTeam?.summary()} vs ${controller.draftAwayTeam?.summary()}'
-                        : 'Players are generated after you tap Advance.',
+                    'Draft ready: ${controller.draftHomeTeam?.summary()} vs ${controller.draftAwayTeam?.summary()}',
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: Colors.black54),

@@ -10,7 +10,7 @@ final matchFlowProvider = Provider<MatchFlowController>((ref) {
 
 class MatchFlowController extends ChangeNotifier {
   MatchFlowController._() {
-    resetToDefaults();
+    _generateInitialDraftTeams();
   }
 
   static final MatchFlowController instance = MatchFlowController._();
@@ -56,48 +56,72 @@ class MatchFlowController extends ChangeNotifier {
     _homeFormationCode = '4-3-3';
     _awayFormationCode = '4-2-3-1';
     _match = null;
-    _draftHomeTeam = null;
-    _draftAwayTeam = null;
+    _generateInitialDraftTeams();
     notifyListeners();
   }
 
   void setHomePreset(TacticalPreset preset) {
     _homePreset = preset;
-    _draftHomeTeam = null;
-    _draftAwayTeam = null;
+    if (_draftHomeTeam == null) {
+      _generateInitialDraftTeams();
+    } else {
+      // Update tactic using MatchEngine
+      _draftHomeTeam = MatchEngine.changeTeamTactic(
+        match: _fakeMatchForDraft(),
+        side: TeamSide.home,
+        newTactic: TacticalPresetFactory.create(_homePreset),
+      ).homeTeam;
+    }
     notifyListeners();
   }
 
   void setAwayPreset(TacticalPreset preset) {
     _awayPreset = preset;
-    _draftHomeTeam = null;
-    _draftAwayTeam = null;
+    if (_draftAwayTeam == null) {
+      _generateInitialDraftTeams();
+    } else {
+      _draftAwayTeam = MatchEngine.changeTeamTactic(
+        match: _fakeMatchForDraft(),
+        side: TeamSide.away,
+        newTactic: TacticalPresetFactory.create(_awayPreset),
+      ).awayTeam;
+    }
     notifyListeners();
   }
 
   void setHomeFormation(String code) {
     _homeFormationCode = code;
-    _draftHomeTeam = null;
-    _draftAwayTeam = null;
+    if (_draftHomeTeam == null) {
+      _generateInitialDraftTeams();
+    } else {
+      _draftHomeTeam = MatchEngine.changeTeamFormation(
+        match: _fakeMatchForDraft(),
+        side: TeamSide.home,
+        newShape: FormationFactory.byCode(code),
+      ).homeTeam;
+    }
     notifyListeners();
   }
 
   void setAwayFormation(String code) {
     _awayFormationCode = code;
-    _draftHomeTeam = null;
-    _draftAwayTeam = null;
+    if (_draftAwayTeam == null) {
+      _generateInitialDraftTeams();
+    } else {
+      _draftAwayTeam = MatchEngine.changeTeamFormation(
+        match: _fakeMatchForDraft(),
+        side: TeamSide.away,
+        newShape: FormationFactory.byCode(code),
+      ).awayTeam;
+    }
     notifyListeners();
   }
 
-  void prepareTeams() {
-    _refreshDraftTeams();
-    notifyListeners();
-  }
+  // No longer needed: teams are always prepared
+  void prepareTeams() {}
 
   void startMatch() {
-    if (!hasPreparedTeams) {
-      _refreshDraftTeams();
-    }
+    // No need to refresh draft teams; always up to date
     final homeTeam = _draftHomeTeam;
     final awayTeam = _draftAwayTeam;
     if (homeTeam == null || awayTeam == null) {
@@ -211,7 +235,7 @@ class MatchFlowController extends ChangeNotifier {
     return MatchPerformanceBuilder.buildFor(current, side).label;
   }
 
-  void _refreshDraftTeams() {
+  void _generateInitialDraftTeams() {
     _draftHomeTeam = DraftTeamFactory.buildTeam(
       id: _homeTeamId,
       name: _homeTeamName,
@@ -223,6 +247,18 @@ class MatchFlowController extends ChangeNotifier {
       name: _awayTeamName,
       formationCode: _awayFormationCode,
       preset: _awayPreset,
+    );
+  }
+
+  // Helper to create a fake match for updating draft teams
+  Match _fakeMatchForDraft() {
+    return MatchEngine.bootstrapMatch(
+      id: 9999,
+      homeTeam: _draftHomeTeam!,
+      awayTeam: _draftAwayTeam!,
+      kickoffAt: DateTime.now(),
+      venue: 'Draft',
+      weather: 'Clear',
     );
   }
 }
