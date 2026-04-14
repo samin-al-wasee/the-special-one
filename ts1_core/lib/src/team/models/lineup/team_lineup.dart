@@ -1,15 +1,16 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/core/catalog/role_catalog.dart';
-import 'package:ts1_core/src/core/enums/player/duty.dart';
-import 'package:ts1_core/src/core/enums/player/position.dart';
-import 'package:ts1_core/src/core/enums/player/role.dart';
-import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
-import 'package:ts1_core/src/team/models/lineup/slot_assignment/lineup_slot_assignment.dart';
-import 'package:ts1_core/src/player/models/player.dart';
-import 'package:ts1_core/src/team/models/lineup/slot_assignment/role_assignment/role_assignment.dart';
 
-part 'team_lineup.freezed.dart';
-part 'team_lineup.g.dart';
+  import 'package:freezed_annotation/freezed_annotation.dart';
+  import 'package:ts1_core/src/core/catalog/role_catalog.dart';
+  import 'package:ts1_core/src/core/enums/player/duty.dart';
+  import 'package:ts1_core/src/core/enums/player/position.dart';
+  import 'package:ts1_core/src/core/enums/player/role.dart';
+  import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
+  import 'package:ts1_core/src/team/models/lineup/slot_assignment/lineup_slot_assignment.dart';
+  import 'package:ts1_core/src/player/models/player.dart';
+  import 'package:ts1_core/src/team/models/lineup/slot_assignment/role_assignment/role_assignment.dart';
+
+  part 'team_lineup.freezed.dart';
+  part 'team_lineup.g.dart';
 
 @freezed
 abstract class TeamLineup with _$TeamLineup {
@@ -27,6 +28,51 @@ abstract class TeamLineup with _$TeamLineup {
       _$TeamLineupFromJson(json);
 
   const TeamLineup._();
+
+  /// Change the formation shape and reassign players to new slots.
+  /// Attempts to preserve player-slot fit by matching preferred positions.
+  TeamLineup changeFormationShape(FormationShape newShape) {
+    // Gather all current starters
+    final starters = [for (final a in slotAssignments) a.player];
+    // Rebuild slot assignments for the new shape
+    final unassigned = List<Player>.from(starters);
+    final newAssignments = <LineupSlotAssignment>[];
+    for (final slot in newShape.slotDefinitions) {
+      var chosenIdx = -1;
+      for (var idx = 0; idx < unassigned.length; idx++) {
+        final player = unassigned[idx];
+        if (slot.preferredPositions.isNotEmpty && slot.preferredPositions.contains(player.position)) {
+          chosenIdx = idx;
+          break;
+        }
+      }
+      if (chosenIdx < 0 && unassigned.isNotEmpty) {
+        chosenIdx = 0;
+      }
+      if (chosenIdx < 0) {
+        throw StateError('Not enough players to fill new formation slot "${slot.slotId}".');
+      }
+      final player = unassigned.removeAt(chosenIdx);
+      newAssignments.add(
+        LineupSlotAssignment(
+          id: 0,
+          formationSlot: slot,
+          player: player,
+          roleAssignment: _defaultRoleAssignmentFor(player),
+        ),
+      );
+    }
+    final newLineup = TeamLineup(
+      id: id,
+      formationShape: newShape,
+      slotAssignments: newAssignments,
+      bench: List<Player>.from(bench),
+      reserves: List<Player>.from(reserves),
+      captain: captain,
+    );
+    newLineup.validate();
+    return newLineup;
+  }
 
   List<int> starterIds() {
     return [for (final assignment in slotAssignments) assignment.player.id];

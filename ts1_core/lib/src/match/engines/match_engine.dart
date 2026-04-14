@@ -1,8 +1,9 @@
 import 'dart:math' as math;
-
 import 'package:ts1_core/src/match/builders/match_context_builder.dart';
 import 'package:ts1_core/src/core/enums/match_enums.dart';
 import 'package:ts1_core/src/match/factories/match_state_factory.dart';
+import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
+import 'package:ts1_core/src/match/builders/matchup_state_builder.dart';
 import 'package:ts1_core/src/match/models/attack/attack_state.dart';
 import 'package:ts1_core/src/match/models/dynamics/match_dynamics.dart';
 import 'package:ts1_core/src/match/models/events/match_event_card.dart';
@@ -13,7 +14,47 @@ import 'package:ts1_core/src/match/models/state/match_state.dart';
 import 'package:ts1_core/src/team/models/team.dart';
 
 /// Static bootstrap utility for creating [Match] objects.
+
 class MatchEngine {
+  /// Changes a team's formation during a match and updates context/state.
+  ///
+  /// - [match]: The current match object.
+  /// - [side]: Which team to change (home or away).
+  /// - [newShape]: The new formation shape to apply.
+  ///
+  /// Returns a new Match object with updated team, context, and matchup state.
+  static Match changeTeamFormation({
+    required Match match,
+    required TeamSide side,
+    required FormationShape newShape,
+  }) {
+    // Update the team's lineup with the new formation
+    final oldTeam = side == TeamSide.home ? match.homeTeam : match.awayTeam;
+    final newLineup = oldTeam.lineup.changeFormationShape(newShape);
+    final newTeam = oldTeam.copyWith(lineup: newLineup);
+
+    // Swap in the updated team
+    final updatedMatch = side == TeamSide.home
+        ? match.copyWith(homeTeam: newTeam)
+        : match.copyWith(awayTeam: newTeam);
+
+    // Rebuild match context and matchup state
+    final newContext = MatchContextBuilder.buildFromTeams(
+      homeTeam: updatedMatch.homeTeam,
+      awayTeam: updatedMatch.awayTeam,
+    );
+
+    final newMatchupState = MatchupStateBuilder.fromContext(newContext);
+
+    // Update match with new context and matchup state
+    return updatedMatch.copyWith(
+      context: newContext,
+      matchState: updatedMatch.matchState.copyWith(
+        matchupState: newMatchupState,
+      ),
+    );
+  }
+
   MatchEngine._();
 
   static const int defaultTotalRegulationMinutes = 90;
