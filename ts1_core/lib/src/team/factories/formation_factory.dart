@@ -4,6 +4,26 @@ import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.
 import 'package:ts1_core/src/team/models/lineup/formation/slot/formation_slot.dart';
 
 /// Factory for canonical formation shapes.
+///
+/// \*
+/// \* All formation slot lists in this factory strictly follow this enforced order:
+///
+///   1. GK
+///   2. RB (if present)
+///   3. CBs (from right to left)
+///   4. LB (if present)
+///   5. DM(s) (right to left, if present)
+///   6. RM (if present)
+///   7. CM(s) (right to left, if present)
+///   8. LM (if present)
+///   9. AM(s) (right to left, if present)
+///  10. RW (if present)
+///  11. LW (if present)
+///  12. ST
+///
+/// This order is enforced for all formation slot list methods to ensure consistency
+/// and predictable downstream consumption.
+///
 class FormationFactory {
   const FormationFactory._();
 
@@ -393,7 +413,9 @@ class FormationFactory {
   }
 
   static List<FormationSlot> _slots433Flat() {
+    // Order: GK, RB, CBs (R->L), LB, DMs (R->L), RM, CMs (R->L), LM, AMs (R->L), RW, LW, ST
     return [
+      // GK
       _slot(
         1,
         'GK',
@@ -405,6 +427,7 @@ class FormationFactory {
         lanes: ['central_build'],
         defensive: ['box'],
       ),
+      // RB
       _slot(
         2,
         'RB',
@@ -416,6 +439,7 @@ class FormationFactory {
         lanes: ['right_flank', 'right_halfspace'],
         defensive: ['right_flank'],
       ),
+      // CBs (right to left)
       _slot(
         3,
         'RCB',
@@ -438,6 +462,7 @@ class FormationFactory {
         lanes: ['central_build'],
         defensive: ['box', 'left_halfspace'],
       ),
+      // LB
       _slot(
         5,
         'LB',
@@ -449,6 +474,7 @@ class FormationFactory {
         lanes: ['left_flank', 'left_halfspace'],
         defensive: ['left_flank'],
       ),
+      // CMs (right to left)
       _slot(
         6,
         'RCM',
@@ -482,6 +508,7 @@ class FormationFactory {
         lanes: ['left_halfspace'],
         defensive: ['left_halfspace'],
       ),
+      // RW
       _slot(
         9,
         'RW',
@@ -493,6 +520,7 @@ class FormationFactory {
         lanes: ['right_flank', 'right_halfspace'],
         defensive: ['right_press_lane'],
       ),
+      // LW
       _slot(
         10,
         'LW',
@@ -504,6 +532,7 @@ class FormationFactory {
         lanes: ['left_flank', 'left_halfspace'],
         defensive: ['left_press_lane'],
       ),
+      // ST
       _slot(
         11,
         'ST',
