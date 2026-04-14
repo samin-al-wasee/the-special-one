@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 
 @DataClassName('PlayerRecord')
 class Players extends Table {
-  IntColumn get id => integer()();
+  IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
   TextColumn get position => text()();
   TextColumn get footedness => text()();
@@ -18,7 +18,4 @@ class Players extends Table {
   TextColumn get physical => text()();
   TextColumn get hidden => text()();
   TextColumn get condition => text()();
-
-  @override
-  Set<Column> get primaryKey => {id};
 }
