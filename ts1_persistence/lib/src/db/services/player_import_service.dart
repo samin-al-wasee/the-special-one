@@ -26,15 +26,16 @@ class PlayerImportService {
 
   PlayersCompanion _toCompanion(Map<String, dynamic> json) {
     return PlayersCompanion(
-      id: Value(json['id']),
-      name: Value(json['name']),
-      position: Value(json['position']),
-      footedness: Value(json['footedness']),
+      id: Value(json['id'] as int),
+      name: Value(json['name'] as String),
+      position: Value(json['position'] as String),
+      footedness: Value(json['footedness'] as String),
 
       heightCm: Value((json['heightCm'] as num).toDouble()),
       weightKg: Value((json['weightKg'] as num).toDouble()),
-      dateOfBirth: Value(DateTime.parse(json['dateOfBirth'])),
+      dateOfBirth: Value(DateTime.parse(json['dateOfBirth'] as String)),
 
+      // Store nested structures as JSON strings
       technical: Value(jsonEncode(json['technical'] ?? {})),
       mental: Value(jsonEncode(json['mental'] ?? {})),
       physical: Value(jsonEncode(json['physical'] ?? {})),
