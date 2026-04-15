@@ -698,15 +698,884 @@ class PlayersCompanion extends UpdateCompanion<PlayerRecord> {
   }
 }
 
+class $ContinentsTable extends Continents
+    with TableInfo<$ContinentsTable, ContinentRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ContinentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, code];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'continents';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ContinentRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ContinentRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ContinentRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+    );
+  }
+
+  @override
+  $ContinentsTable createAlias(String alias) {
+    return $ContinentsTable(attachedDatabase, alias);
+  }
+}
+
+class ContinentRecord extends DataClass implements Insertable<ContinentRecord> {
+  final int id;
+  final String name;
+  final String code;
+  const ContinentRecord({
+    required this.id,
+    required this.name,
+    required this.code,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['code'] = Variable<String>(code);
+    return map;
+  }
+
+  ContinentsCompanion toCompanion(bool nullToAbsent) {
+    return ContinentsCompanion(
+      id: Value(id),
+      name: Value(name),
+      code: Value(code),
+    );
+  }
+
+  factory ContinentRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ContinentRecord(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      code: serializer.fromJson<String>(json['code']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'code': serializer.toJson<String>(code),
+    };
+  }
+
+  ContinentRecord copyWith({int? id, String? name, String? code}) =>
+      ContinentRecord(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        code: code ?? this.code,
+      );
+  ContinentRecord copyWithCompanion(ContinentsCompanion data) {
+    return ContinentRecord(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      code: data.code.present ? data.code.value : this.code,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ContinentRecord(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('code: $code')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, code);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ContinentRecord &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.code == this.code);
+}
+
+class ContinentsCompanion extends UpdateCompanion<ContinentRecord> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> code;
+  const ContinentsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.code = const Value.absent(),
+  });
+  ContinentsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String code,
+  }) : name = Value(name),
+       code = Value(code);
+  static Insertable<ContinentRecord> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? code,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (code != null) 'code': code,
+    });
+  }
+
+  ContinentsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? code,
+  }) {
+    return ContinentsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      code: code ?? this.code,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ContinentsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('code: $code')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $CountriesTable extends Countries
+    with TableInfo<$CountriesTable, CountryRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CountriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _continentIdMeta = const VerificationMeta(
+    'continentId',
+  );
+  @override
+  late final GeneratedColumn<int> continentId = GeneratedColumn<int>(
+    'continent_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES continents (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, code, continentId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'countries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CountryRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('continent_id')) {
+      context.handle(
+        _continentIdMeta,
+        continentId.isAcceptableOrUnknown(
+          data['continent_id']!,
+          _continentIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_continentIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CountryRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CountryRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      continentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}continent_id'],
+      )!,
+    );
+  }
+
+  @override
+  $CountriesTable createAlias(String alias) {
+    return $CountriesTable(attachedDatabase, alias);
+  }
+}
+
+class CountryRecord extends DataClass implements Insertable<CountryRecord> {
+  final int id;
+  final String name;
+  final String code;
+  final int continentId;
+  const CountryRecord({
+    required this.id,
+    required this.name,
+    required this.code,
+    required this.continentId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['code'] = Variable<String>(code);
+    map['continent_id'] = Variable<int>(continentId);
+    return map;
+  }
+
+  CountriesCompanion toCompanion(bool nullToAbsent) {
+    return CountriesCompanion(
+      id: Value(id),
+      name: Value(name),
+      code: Value(code),
+      continentId: Value(continentId),
+    );
+  }
+
+  factory CountryRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CountryRecord(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      code: serializer.fromJson<String>(json['code']),
+      continentId: serializer.fromJson<int>(json['continentId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'code': serializer.toJson<String>(code),
+      'continentId': serializer.toJson<int>(continentId),
+    };
+  }
+
+  CountryRecord copyWith({
+    int? id,
+    String? name,
+    String? code,
+    int? continentId,
+  }) => CountryRecord(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    code: code ?? this.code,
+    continentId: continentId ?? this.continentId,
+  );
+  CountryRecord copyWithCompanion(CountriesCompanion data) {
+    return CountryRecord(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      code: data.code.present ? data.code.value : this.code,
+      continentId: data.continentId.present
+          ? data.continentId.value
+          : this.continentId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountryRecord(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('continentId: $continentId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, code, continentId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CountryRecord &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.code == this.code &&
+          other.continentId == this.continentId);
+}
+
+class CountriesCompanion extends UpdateCompanion<CountryRecord> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> code;
+  final Value<int> continentId;
+  const CountriesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.code = const Value.absent(),
+    this.continentId = const Value.absent(),
+  });
+  CountriesCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String code,
+    required int continentId,
+  }) : name = Value(name),
+       code = Value(code),
+       continentId = Value(continentId);
+  static Insertable<CountryRecord> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? code,
+    Expression<int>? continentId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (code != null) 'code': code,
+      if (continentId != null) 'continent_id': continentId,
+    });
+  }
+
+  CountriesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? code,
+    Value<int>? continentId,
+  }) {
+    return CountriesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      code: code ?? this.code,
+      continentId: continentId ?? this.continentId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (continentId.present) {
+      map['continent_id'] = Variable<int>(continentId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountriesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('code: $code, ')
+          ..write('continentId: $continentId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NationalTeamsTable extends NationalTeams
+    with TableInfo<$NationalTeamsTable, NationalTeamRecord> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NationalTeamsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _countryIdMeta = const VerificationMeta(
+    'countryId',
+  );
+  @override
+  late final GeneratedColumn<int> countryId = GeneratedColumn<int>(
+    'country_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES countries (id)',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fifaRankingMeta = const VerificationMeta(
+    'fifaRanking',
+  );
+  @override
+  late final GeneratedColumn<int> fifaRanking = GeneratedColumn<int>(
+    'fifa_ranking',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, countryId, name, fifaRanking];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'national_teams';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<NationalTeamRecord> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('country_id')) {
+      context.handle(
+        _countryIdMeta,
+        countryId.isAcceptableOrUnknown(data['country_id']!, _countryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_countryIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('fifa_ranking')) {
+      context.handle(
+        _fifaRankingMeta,
+        fifaRanking.isAcceptableOrUnknown(
+          data['fifa_ranking']!,
+          _fifaRankingMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NationalTeamRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NationalTeamRecord(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      countryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}country_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      fifaRanking: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}fifa_ranking'],
+      ),
+    );
+  }
+
+  @override
+  $NationalTeamsTable createAlias(String alias) {
+    return $NationalTeamsTable(attachedDatabase, alias);
+  }
+}
+
+class NationalTeamRecord extends DataClass
+    implements Insertable<NationalTeamRecord> {
+  final int id;
+  final int countryId;
+  final String name;
+  final int? fifaRanking;
+  const NationalTeamRecord({
+    required this.id,
+    required this.countryId,
+    required this.name,
+    this.fifaRanking,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['country_id'] = Variable<int>(countryId);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || fifaRanking != null) {
+      map['fifa_ranking'] = Variable<int>(fifaRanking);
+    }
+    return map;
+  }
+
+  NationalTeamsCompanion toCompanion(bool nullToAbsent) {
+    return NationalTeamsCompanion(
+      id: Value(id),
+      countryId: Value(countryId),
+      name: Value(name),
+      fifaRanking: fifaRanking == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fifaRanking),
+    );
+  }
+
+  factory NationalTeamRecord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NationalTeamRecord(
+      id: serializer.fromJson<int>(json['id']),
+      countryId: serializer.fromJson<int>(json['countryId']),
+      name: serializer.fromJson<String>(json['name']),
+      fifaRanking: serializer.fromJson<int?>(json['fifaRanking']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'countryId': serializer.toJson<int>(countryId),
+      'name': serializer.toJson<String>(name),
+      'fifaRanking': serializer.toJson<int?>(fifaRanking),
+    };
+  }
+
+  NationalTeamRecord copyWith({
+    int? id,
+    int? countryId,
+    String? name,
+    Value<int?> fifaRanking = const Value.absent(),
+  }) => NationalTeamRecord(
+    id: id ?? this.id,
+    countryId: countryId ?? this.countryId,
+    name: name ?? this.name,
+    fifaRanking: fifaRanking.present ? fifaRanking.value : this.fifaRanking,
+  );
+  NationalTeamRecord copyWithCompanion(NationalTeamsCompanion data) {
+    return NationalTeamRecord(
+      id: data.id.present ? data.id.value : this.id,
+      countryId: data.countryId.present ? data.countryId.value : this.countryId,
+      name: data.name.present ? data.name.value : this.name,
+      fifaRanking: data.fifaRanking.present
+          ? data.fifaRanking.value
+          : this.fifaRanking,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NationalTeamRecord(')
+          ..write('id: $id, ')
+          ..write('countryId: $countryId, ')
+          ..write('name: $name, ')
+          ..write('fifaRanking: $fifaRanking')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, countryId, name, fifaRanking);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NationalTeamRecord &&
+          other.id == this.id &&
+          other.countryId == this.countryId &&
+          other.name == this.name &&
+          other.fifaRanking == this.fifaRanking);
+}
+
+class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
+  final Value<int> id;
+  final Value<int> countryId;
+  final Value<String> name;
+  final Value<int?> fifaRanking;
+  const NationalTeamsCompanion({
+    this.id = const Value.absent(),
+    this.countryId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.fifaRanking = const Value.absent(),
+  });
+  NationalTeamsCompanion.insert({
+    this.id = const Value.absent(),
+    required int countryId,
+    required String name,
+    this.fifaRanking = const Value.absent(),
+  }) : countryId = Value(countryId),
+       name = Value(name);
+  static Insertable<NationalTeamRecord> custom({
+    Expression<int>? id,
+    Expression<int>? countryId,
+    Expression<String>? name,
+    Expression<int>? fifaRanking,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (countryId != null) 'country_id': countryId,
+      if (name != null) 'name': name,
+      if (fifaRanking != null) 'fifa_ranking': fifaRanking,
+    });
+  }
+
+  NationalTeamsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? countryId,
+    Value<String>? name,
+    Value<int?>? fifaRanking,
+  }) {
+    return NationalTeamsCompanion(
+      id: id ?? this.id,
+      countryId: countryId ?? this.countryId,
+      name: name ?? this.name,
+      fifaRanking: fifaRanking ?? this.fifaRanking,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (countryId.present) {
+      map['country_id'] = Variable<int>(countryId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (fifaRanking.present) {
+      map['fifa_ranking'] = Variable<int>(fifaRanking.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NationalTeamsCompanion(')
+          ..write('id: $id, ')
+          ..write('countryId: $countryId, ')
+          ..write('name: $name, ')
+          ..write('fifaRanking: $fifaRanking')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $PlayersTable players = $PlayersTable(this);
+  late final $ContinentsTable continents = $ContinentsTable(this);
+  late final $CountriesTable countries = $CountriesTable(this);
+  late final $NationalTeamsTable nationalTeams = $NationalTeamsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [players];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    players,
+    continents,
+    countries,
+    nationalTeams,
+  ];
 }
 
 typedef $$PlayersTableCreateCompanionBuilder =
@@ -1040,10 +1909,958 @@ typedef $$PlayersTableProcessedTableManager =
       PlayerRecord,
       PrefetchHooks Function()
     >;
+typedef $$ContinentsTableCreateCompanionBuilder =
+    ContinentsCompanion Function({
+      Value<int> id,
+      required String name,
+      required String code,
+    });
+typedef $$ContinentsTableUpdateCompanionBuilder =
+    ContinentsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> code,
+    });
+
+final class $$ContinentsTableReferences
+    extends BaseReferences<_$AppDatabase, $ContinentsTable, ContinentRecord> {
+  $$ContinentsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$CountriesTable, List<CountryRecord>>
+  _countriesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.countries,
+    aliasName: $_aliasNameGenerator(db.continents.id, db.countries.continentId),
+  );
+
+  $$CountriesTableProcessedTableManager get countriesRefs {
+    final manager = $$CountriesTableTableManager(
+      $_db,
+      $_db.countries,
+    ).filter((f) => f.continentId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_countriesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$ContinentsTableFilterComposer
+    extends Composer<_$AppDatabase, $ContinentsTable> {
+  $$ContinentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> countriesRefs(
+    Expression<bool> Function($$CountriesTableFilterComposer f) f,
+  ) {
+    final $$CountriesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.countries,
+      getReferencedColumn: (t) => t.continentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CountriesTableFilterComposer(
+            $db: $db,
+            $table: $db.countries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ContinentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ContinentsTable> {
+  $$ContinentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ContinentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ContinentsTable> {
+  $$ContinentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  Expression<T> countriesRefs<T extends Object>(
+    Expression<T> Function($$CountriesTableAnnotationComposer a) f,
+  ) {
+    final $$CountriesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.countries,
+      getReferencedColumn: (t) => t.continentId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CountriesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.countries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ContinentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ContinentsTable,
+          ContinentRecord,
+          $$ContinentsTableFilterComposer,
+          $$ContinentsTableOrderingComposer,
+          $$ContinentsTableAnnotationComposer,
+          $$ContinentsTableCreateCompanionBuilder,
+          $$ContinentsTableUpdateCompanionBuilder,
+          (ContinentRecord, $$ContinentsTableReferences),
+          ContinentRecord,
+          PrefetchHooks Function({bool countriesRefs})
+        > {
+  $$ContinentsTableTableManager(_$AppDatabase db, $ContinentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ContinentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ContinentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ContinentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> code = const Value.absent(),
+              }) => ContinentsCompanion(id: id, name: name, code: code),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                required String code,
+              }) => ContinentsCompanion.insert(id: id, name: name, code: code),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ContinentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({countriesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (countriesRefs) db.countries],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (countriesRefs)
+                    await $_getPrefetchedData<
+                      ContinentRecord,
+                      $ContinentsTable,
+                      CountryRecord
+                    >(
+                      currentTable: table,
+                      referencedTable: $$ContinentsTableReferences
+                          ._countriesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$ContinentsTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).countriesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.continentId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ContinentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ContinentsTable,
+      ContinentRecord,
+      $$ContinentsTableFilterComposer,
+      $$ContinentsTableOrderingComposer,
+      $$ContinentsTableAnnotationComposer,
+      $$ContinentsTableCreateCompanionBuilder,
+      $$ContinentsTableUpdateCompanionBuilder,
+      (ContinentRecord, $$ContinentsTableReferences),
+      ContinentRecord,
+      PrefetchHooks Function({bool countriesRefs})
+    >;
+typedef $$CountriesTableCreateCompanionBuilder =
+    CountriesCompanion Function({
+      Value<int> id,
+      required String name,
+      required String code,
+      required int continentId,
+    });
+typedef $$CountriesTableUpdateCompanionBuilder =
+    CountriesCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> code,
+      Value<int> continentId,
+    });
+
+final class $$CountriesTableReferences
+    extends BaseReferences<_$AppDatabase, $CountriesTable, CountryRecord> {
+  $$CountriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ContinentsTable _continentIdTable(_$AppDatabase db) =>
+      db.continents.createAlias(
+        $_aliasNameGenerator(db.countries.continentId, db.continents.id),
+      );
+
+  $$ContinentsTableProcessedTableManager get continentId {
+    final $_column = $_itemColumn<int>('continent_id')!;
+
+    final manager = $$ContinentsTableTableManager(
+      $_db,
+      $_db.continents,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_continentIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$NationalTeamsTable, List<NationalTeamRecord>>
+  _nationalTeamsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.nationalTeams,
+    aliasName: $_aliasNameGenerator(
+      db.countries.id,
+      db.nationalTeams.countryId,
+    ),
+  );
+
+  $$NationalTeamsTableProcessedTableManager get nationalTeamsRefs {
+    final manager = $$NationalTeamsTableTableManager(
+      $_db,
+      $_db.nationalTeams,
+    ).filter((f) => f.countryId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_nationalTeamsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$CountriesTableFilterComposer
+    extends Composer<_$AppDatabase, $CountriesTable> {
+  $$CountriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ContinentsTableFilterComposer get continentId {
+    final $$ContinentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.continentId,
+      referencedTable: $db.continents,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContinentsTableFilterComposer(
+            $db: $db,
+            $table: $db.continents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> nationalTeamsRefs(
+    Expression<bool> Function($$NationalTeamsTableFilterComposer f) f,
+  ) {
+    final $$NationalTeamsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.nationalTeams,
+      getReferencedColumn: (t) => t.countryId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NationalTeamsTableFilterComposer(
+            $db: $db,
+            $table: $db.nationalTeams,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$CountriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $CountriesTable> {
+  $$CountriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ContinentsTableOrderingComposer get continentId {
+    final $$ContinentsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.continentId,
+      referencedTable: $db.continents,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContinentsTableOrderingComposer(
+            $db: $db,
+            $table: $db.continents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CountriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CountriesTable> {
+  $$CountriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  $$ContinentsTableAnnotationComposer get continentId {
+    final $$ContinentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.continentId,
+      referencedTable: $db.continents,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContinentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.continents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> nationalTeamsRefs<T extends Object>(
+    Expression<T> Function($$NationalTeamsTableAnnotationComposer a) f,
+  ) {
+    final $$NationalTeamsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.nationalTeams,
+      getReferencedColumn: (t) => t.countryId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$NationalTeamsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.nationalTeams,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$CountriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CountriesTable,
+          CountryRecord,
+          $$CountriesTableFilterComposer,
+          $$CountriesTableOrderingComposer,
+          $$CountriesTableAnnotationComposer,
+          $$CountriesTableCreateCompanionBuilder,
+          $$CountriesTableUpdateCompanionBuilder,
+          (CountryRecord, $$CountriesTableReferences),
+          CountryRecord,
+          PrefetchHooks Function({bool continentId, bool nationalTeamsRefs})
+        > {
+  $$CountriesTableTableManager(_$AppDatabase db, $CountriesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CountriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CountriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CountriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<int> continentId = const Value.absent(),
+              }) => CountriesCompanion(
+                id: id,
+                name: name,
+                code: code,
+                continentId: continentId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                required String code,
+                required int continentId,
+              }) => CountriesCompanion.insert(
+                id: id,
+                name: name,
+                code: code,
+                continentId: continentId,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CountriesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({continentId = false, nationalTeamsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (nationalTeamsRefs) db.nationalTeams,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (continentId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.continentId,
+                                    referencedTable: $$CountriesTableReferences
+                                        ._continentIdTable(db),
+                                    referencedColumn: $$CountriesTableReferences
+                                        ._continentIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (nationalTeamsRefs)
+                        await $_getPrefetchedData<
+                          CountryRecord,
+                          $CountriesTable,
+                          NationalTeamRecord
+                        >(
+                          currentTable: table,
+                          referencedTable: $$CountriesTableReferences
+                              ._nationalTeamsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$CountriesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).nationalTeamsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.countryId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$CountriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CountriesTable,
+      CountryRecord,
+      $$CountriesTableFilterComposer,
+      $$CountriesTableOrderingComposer,
+      $$CountriesTableAnnotationComposer,
+      $$CountriesTableCreateCompanionBuilder,
+      $$CountriesTableUpdateCompanionBuilder,
+      (CountryRecord, $$CountriesTableReferences),
+      CountryRecord,
+      PrefetchHooks Function({bool continentId, bool nationalTeamsRefs})
+    >;
+typedef $$NationalTeamsTableCreateCompanionBuilder =
+    NationalTeamsCompanion Function({
+      Value<int> id,
+      required int countryId,
+      required String name,
+      Value<int?> fifaRanking,
+    });
+typedef $$NationalTeamsTableUpdateCompanionBuilder =
+    NationalTeamsCompanion Function({
+      Value<int> id,
+      Value<int> countryId,
+      Value<String> name,
+      Value<int?> fifaRanking,
+    });
+
+final class $$NationalTeamsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $NationalTeamsTable, NationalTeamRecord> {
+  $$NationalTeamsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $CountriesTable _countryIdTable(_$AppDatabase db) =>
+      db.countries.createAlias(
+        $_aliasNameGenerator(db.nationalTeams.countryId, db.countries.id),
+      );
+
+  $$CountriesTableProcessedTableManager get countryId {
+    final $_column = $_itemColumn<int>('country_id')!;
+
+    final manager = $$CountriesTableTableManager(
+      $_db,
+      $_db.countries,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_countryIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$NationalTeamsTableFilterComposer
+    extends Composer<_$AppDatabase, $NationalTeamsTable> {
+  $$NationalTeamsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get fifaRanking => $composableBuilder(
+    column: $table.fifaRanking,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$CountriesTableFilterComposer get countryId {
+    final $$CountriesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.countryId,
+      referencedTable: $db.countries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CountriesTableFilterComposer(
+            $db: $db,
+            $table: $db.countries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NationalTeamsTableOrderingComposer
+    extends Composer<_$AppDatabase, $NationalTeamsTable> {
+  $$NationalTeamsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get fifaRanking => $composableBuilder(
+    column: $table.fifaRanking,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$CountriesTableOrderingComposer get countryId {
+    final $$CountriesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.countryId,
+      referencedTable: $db.countries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CountriesTableOrderingComposer(
+            $db: $db,
+            $table: $db.countries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NationalTeamsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $NationalTeamsTable> {
+  $$NationalTeamsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get fifaRanking => $composableBuilder(
+    column: $table.fifaRanking,
+    builder: (column) => column,
+  );
+
+  $$CountriesTableAnnotationComposer get countryId {
+    final $$CountriesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.countryId,
+      referencedTable: $db.countries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CountriesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.countries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$NationalTeamsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $NationalTeamsTable,
+          NationalTeamRecord,
+          $$NationalTeamsTableFilterComposer,
+          $$NationalTeamsTableOrderingComposer,
+          $$NationalTeamsTableAnnotationComposer,
+          $$NationalTeamsTableCreateCompanionBuilder,
+          $$NationalTeamsTableUpdateCompanionBuilder,
+          (NationalTeamRecord, $$NationalTeamsTableReferences),
+          NationalTeamRecord,
+          PrefetchHooks Function({bool countryId})
+        > {
+  $$NationalTeamsTableTableManager(_$AppDatabase db, $NationalTeamsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$NationalTeamsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$NationalTeamsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$NationalTeamsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> countryId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int?> fifaRanking = const Value.absent(),
+              }) => NationalTeamsCompanion(
+                id: id,
+                countryId: countryId,
+                name: name,
+                fifaRanking: fifaRanking,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int countryId,
+                required String name,
+                Value<int?> fifaRanking = const Value.absent(),
+              }) => NationalTeamsCompanion.insert(
+                id: id,
+                countryId: countryId,
+                name: name,
+                fifaRanking: fifaRanking,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$NationalTeamsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({countryId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (countryId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.countryId,
+                                referencedTable: $$NationalTeamsTableReferences
+                                    ._countryIdTable(db),
+                                referencedColumn: $$NationalTeamsTableReferences
+                                    ._countryIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$NationalTeamsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $NationalTeamsTable,
+      NationalTeamRecord,
+      $$NationalTeamsTableFilterComposer,
+      $$NationalTeamsTableOrderingComposer,
+      $$NationalTeamsTableAnnotationComposer,
+      $$NationalTeamsTableCreateCompanionBuilder,
+      $$NationalTeamsTableUpdateCompanionBuilder,
+      (NationalTeamRecord, $$NationalTeamsTableReferences),
+      NationalTeamRecord,
+      PrefetchHooks Function({bool countryId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$PlayersTableTableManager get players =>
       $$PlayersTableTableManager(_db, _db.players);
+  $$ContinentsTableTableManager get continents =>
+      $$ContinentsTableTableManager(_db, _db.continents);
+  $$CountriesTableTableManager get countries =>
+      $$CountriesTableTableManager(_db, _db.countries);
+  $$NationalTeamsTableTableManager get nationalTeams =>
+      $$NationalTeamsTableTableManager(_db, _db.nationalTeams);
 }
