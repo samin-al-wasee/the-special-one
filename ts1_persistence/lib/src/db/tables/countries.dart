@@ -6,8 +6,8 @@ import 'continents.dart';
 class Countries extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  TextColumn get name => text()(); // Brazil
-  TextColumn get code => text().unique()(); // BRA
+  TextColumn get name => text().unique()();
+  TextColumn get code => text().unique().withLength(min: 3, max: 3)();
 
   IntColumn get continentId => integer().references(Continents, #id)();
 }

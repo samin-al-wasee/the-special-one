@@ -725,6 +725,7 @@ class $ContinentsTable extends Continents
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
@@ -732,6 +733,10 @@ class $ContinentsTable extends Continents
     'code',
     aliasedName,
     false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 2,
+      maxTextLength: 2,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
@@ -973,6 +978,7 @@ class $CountriesTable extends Countries
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
@@ -980,6 +986,10 @@ class $CountriesTable extends Countries
     'code',
     aliasedName,
     false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 3,
+      maxTextLength: 3,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
@@ -1292,20 +1302,10 @@ class $NationalTeamsTable extends NationalTeams
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-  );
-  static const VerificationMeta _fifaRankingMeta = const VerificationMeta(
-    'fifaRanking',
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   @override
-  late final GeneratedColumn<int> fifaRanking = GeneratedColumn<int>(
-    'fifa_ranking',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [id, countryId, name, fifaRanking];
+  List<GeneratedColumn> get $columns => [id, countryId, name];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1337,15 +1337,6 @@ class $NationalTeamsTable extends NationalTeams
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('fifa_ranking')) {
-      context.handle(
-        _fifaRankingMeta,
-        fifaRanking.isAcceptableOrUnknown(
-          data['fifa_ranking']!,
-          _fifaRankingMeta,
-        ),
-      );
-    }
     return context;
   }
 
@@ -1367,10 +1358,6 @@ class $NationalTeamsTable extends NationalTeams
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      fifaRanking: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}fifa_ranking'],
-      ),
     );
   }
 
@@ -1385,12 +1372,10 @@ class NationalTeamRecord extends DataClass
   final int id;
   final int countryId;
   final String name;
-  final int? fifaRanking;
   const NationalTeamRecord({
     required this.id,
     required this.countryId,
     required this.name,
-    this.fifaRanking,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1398,9 +1383,6 @@ class NationalTeamRecord extends DataClass
     map['id'] = Variable<int>(id);
     map['country_id'] = Variable<int>(countryId);
     map['name'] = Variable<String>(name);
-    if (!nullToAbsent || fifaRanking != null) {
-      map['fifa_ranking'] = Variable<int>(fifaRanking);
-    }
     return map;
   }
 
@@ -1409,9 +1391,6 @@ class NationalTeamRecord extends DataClass
       id: Value(id),
       countryId: Value(countryId),
       name: Value(name),
-      fifaRanking: fifaRanking == null && nullToAbsent
-          ? const Value.absent()
-          : Value(fifaRanking),
     );
   }
 
@@ -1424,7 +1403,6 @@ class NationalTeamRecord extends DataClass
       id: serializer.fromJson<int>(json['id']),
       countryId: serializer.fromJson<int>(json['countryId']),
       name: serializer.fromJson<String>(json['name']),
-      fifaRanking: serializer.fromJson<int?>(json['fifaRanking']),
     );
   }
   @override
@@ -1434,29 +1412,20 @@ class NationalTeamRecord extends DataClass
       'id': serializer.toJson<int>(id),
       'countryId': serializer.toJson<int>(countryId),
       'name': serializer.toJson<String>(name),
-      'fifaRanking': serializer.toJson<int?>(fifaRanking),
     };
   }
 
-  NationalTeamRecord copyWith({
-    int? id,
-    int? countryId,
-    String? name,
-    Value<int?> fifaRanking = const Value.absent(),
-  }) => NationalTeamRecord(
-    id: id ?? this.id,
-    countryId: countryId ?? this.countryId,
-    name: name ?? this.name,
-    fifaRanking: fifaRanking.present ? fifaRanking.value : this.fifaRanking,
-  );
+  NationalTeamRecord copyWith({int? id, int? countryId, String? name}) =>
+      NationalTeamRecord(
+        id: id ?? this.id,
+        countryId: countryId ?? this.countryId,
+        name: name ?? this.name,
+      );
   NationalTeamRecord copyWithCompanion(NationalTeamsCompanion data) {
     return NationalTeamRecord(
       id: data.id.present ? data.id.value : this.id,
       countryId: data.countryId.present ? data.countryId.value : this.countryId,
       name: data.name.present ? data.name.value : this.name,
-      fifaRanking: data.fifaRanking.present
-          ? data.fifaRanking.value
-          : this.fifaRanking,
     );
   }
 
@@ -1465,53 +1434,46 @@ class NationalTeamRecord extends DataClass
     return (StringBuffer('NationalTeamRecord(')
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
-          ..write('name: $name, ')
-          ..write('fifaRanking: $fifaRanking')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, countryId, name, fifaRanking);
+  int get hashCode => Object.hash(id, countryId, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NationalTeamRecord &&
           other.id == this.id &&
           other.countryId == this.countryId &&
-          other.name == this.name &&
-          other.fifaRanking == this.fifaRanking);
+          other.name == this.name);
 }
 
 class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
   final Value<int> id;
   final Value<int> countryId;
   final Value<String> name;
-  final Value<int?> fifaRanking;
   const NationalTeamsCompanion({
     this.id = const Value.absent(),
     this.countryId = const Value.absent(),
     this.name = const Value.absent(),
-    this.fifaRanking = const Value.absent(),
   });
   NationalTeamsCompanion.insert({
     this.id = const Value.absent(),
     required int countryId,
     required String name,
-    this.fifaRanking = const Value.absent(),
   }) : countryId = Value(countryId),
        name = Value(name);
   static Insertable<NationalTeamRecord> custom({
     Expression<int>? id,
     Expression<int>? countryId,
     Expression<String>? name,
-    Expression<int>? fifaRanking,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (countryId != null) 'country_id': countryId,
       if (name != null) 'name': name,
-      if (fifaRanking != null) 'fifa_ranking': fifaRanking,
     });
   }
 
@@ -1519,13 +1481,11 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     Value<int>? id,
     Value<int>? countryId,
     Value<String>? name,
-    Value<int?>? fifaRanking,
   }) {
     return NationalTeamsCompanion(
       id: id ?? this.id,
       countryId: countryId ?? this.countryId,
       name: name ?? this.name,
-      fifaRanking: fifaRanking ?? this.fifaRanking,
     );
   }
 
@@ -1541,9 +1501,6 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (fifaRanking.present) {
-      map['fifa_ranking'] = Variable<int>(fifaRanking.value);
-    }
     return map;
   }
 
@@ -1552,8 +1509,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     return (StringBuffer('NationalTeamsCompanion(')
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
-          ..write('name: $name, ')
-          ..write('fifaRanking: $fifaRanking')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
@@ -2555,14 +2511,12 @@ typedef $$NationalTeamsTableCreateCompanionBuilder =
       Value<int> id,
       required int countryId,
       required String name,
-      Value<int?> fifaRanking,
     });
 typedef $$NationalTeamsTableUpdateCompanionBuilder =
     NationalTeamsCompanion Function({
       Value<int> id,
       Value<int> countryId,
       Value<String> name,
-      Value<int?> fifaRanking,
     });
 
 final class $$NationalTeamsTableReferences
@@ -2613,11 +2567,6 @@ class $$NationalTeamsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get fifaRanking => $composableBuilder(
-    column: $table.fifaRanking,
-    builder: (column) => ColumnFilters(column),
-  );
-
   $$CountriesTableFilterComposer get countryId {
     final $$CountriesTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -2661,11 +2610,6 @@ class $$NationalTeamsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get fifaRanking => $composableBuilder(
-    column: $table.fifaRanking,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   $$CountriesTableOrderingComposer get countryId {
     final $$CountriesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -2704,11 +2648,6 @@ class $$NationalTeamsTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
-
-  GeneratedColumn<int> get fifaRanking => $composableBuilder(
-    column: $table.fifaRanking,
-    builder: (column) => column,
-  );
 
   $$CountriesTableAnnotationComposer get countryId {
     final $$CountriesTableAnnotationComposer composer = $composerBuilder(
@@ -2765,24 +2704,20 @@ class $$NationalTeamsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> countryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<int?> fifaRanking = const Value.absent(),
               }) => NationalTeamsCompanion(
                 id: id,
                 countryId: countryId,
                 name: name,
-                fifaRanking: fifaRanking,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int countryId,
                 required String name,
-                Value<int?> fifaRanking = const Value.absent(),
               }) => NationalTeamsCompanion.insert(
                 id: id,
                 countryId: countryId,
                 name: name,
-                fifaRanking: fifaRanking,
               ),
           withReferenceMapper: (p0) => p0
               .map(
