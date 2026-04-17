@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 
+import 'countries.dart';
+
 @DataClassName('PlayerRecord')
 class Players extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -11,6 +13,7 @@ class Players extends Table {
   RealColumn get weightKg => real()();
 
   DateTimeColumn get dateOfBirth => dateTime()();
+  IntColumn get countryId => integer().references(Countries, #id)();
 
   // JSON fields for attributes
   TextColumn get technical => text()();

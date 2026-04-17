@@ -7,32 +7,34 @@ class PlayerMapper {
   // =========================
   // 🔹 DB → DOMAIN
   // =========================
-  static Player toDomain(PlayerRecord row) {
+  static Player toDomain(PlayerRecord playerRow, CountryRecord countryRow) {
     return Player(
-      id: row.id,
-      name: row.name,
-      dateOfBirth: row.dateOfBirth,
-      heightCm: row.heightCm,
-      weightKg: row.weightKg,
-      position: Position.fromLabel(row.position),
-      footedness: Footedness.fromLabel(row.footedness),
+      id: playerRow.id,
+      name: playerRow.name,
+      dateOfBirth: playerRow.dateOfBirth,
+      country: countryRow.name,
+      heightCm: playerRow.heightCm,
+      weightKg: playerRow.weightKg,
+      position: Position.fromLabel(playerRow.position),
+      footedness: Footedness.fromLabel(playerRow.footedness),
 
-      technical: _decode<TechnicalAttr>(row.technical, TechnicalAttr.values),
-      mental: _decode<MentalAttr>(row.mental, MentalAttr.values),
-      physical: _decode<PhysicalAttr>(row.physical, PhysicalAttr.values),
-      hidden: _decode<HiddenAttr>(row.hidden, HiddenAttr.values),
-      condition: _decode<ConditionAttr>(row.condition, ConditionAttr.values),
+      technical: _decode<TechnicalAttr>(playerRow.technical, TechnicalAttr.values),
+      mental: _decode<MentalAttr>(playerRow.mental, MentalAttr.values),
+      physical: _decode<PhysicalAttr>(playerRow.physical, PhysicalAttr.values),
+      hidden: _decode<HiddenAttr>(playerRow.hidden, HiddenAttr.values),
+      condition: _decode<ConditionAttr>(playerRow.condition, ConditionAttr.values),
     );
   }
 
   // =========================
   // 🔹 DOMAIN → DB
   // =========================
-  static PlayerRecord toRecord(Player player) {
+  static PlayerRecord toRecord(Player player, CountryRecord country) {
     return PlayerRecord(
       id: player.id,
       name: player.name,
       dateOfBirth: player.dateOfBirth,
+      countryId: country.id,
       heightCm: player.heightCm,
       weightKg: player.weightKg,
       position: player.position.label,

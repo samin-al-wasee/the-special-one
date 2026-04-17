@@ -11,6 +11,7 @@ abstract class Player with _$Player {
     required int id,
     required String name,
     required DateTime dateOfBirth,
+    required String country,
     required double heightCm,
     required double weightKg,
     required Position position,

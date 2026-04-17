@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Player {
 
- int get id; String get name; DateTime get dateOfBirth; double get heightCm; double get weightKg; Position get position; Footedness get footedness; Map<TechnicalAttr, int> get technical; Map<MentalAttr, int> get mental; Map<PhysicalAttr, int> get physical; Map<HiddenAttr, int> get hidden; Map<ConditionAttr, int> get condition;
+ int get id; String get name; DateTime get dateOfBirth; String get country; double get heightCm; double get weightKg; Position get position; Footedness get footedness; Map<TechnicalAttr, int> get technical; Map<MentalAttr, int> get mental; Map<PhysicalAttr, int> get physical; Map<HiddenAttr, int> get hidden; Map<ConditionAttr, int> get condition;
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PlayerCopyWith<Player> get copyWith => _$PlayerCopyWithImpl<Player>(this as Pla
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.position, position) || other.position == position)&&(identical(other.footedness, footedness) || other.footedness == footedness)&&const DeepCollectionEquality().equals(other.technical, technical)&&const DeepCollectionEquality().equals(other.mental, mental)&&const DeepCollectionEquality().equals(other.physical, physical)&&const DeepCollectionEquality().equals(other.hidden, hidden)&&const DeepCollectionEquality().equals(other.condition, condition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.country, country) || other.country == country)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.position, position) || other.position == position)&&(identical(other.footedness, footedness) || other.footedness == footedness)&&const DeepCollectionEquality().equals(other.technical, technical)&&const DeepCollectionEquality().equals(other.mental, mental)&&const DeepCollectionEquality().equals(other.physical, physical)&&const DeepCollectionEquality().equals(other.hidden, hidden)&&const DeepCollectionEquality().equals(other.condition, condition));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,dateOfBirth,heightCm,weightKg,position,footedness,const DeepCollectionEquality().hash(technical),const DeepCollectionEquality().hash(mental),const DeepCollectionEquality().hash(physical),const DeepCollectionEquality().hash(hidden),const DeepCollectionEquality().hash(condition));
+int get hashCode => Object.hash(runtimeType,id,name,dateOfBirth,country,heightCm,weightKg,position,footedness,const DeepCollectionEquality().hash(technical),const DeepCollectionEquality().hash(mental),const DeepCollectionEquality().hash(physical),const DeepCollectionEquality().hash(hidden),const DeepCollectionEquality().hash(condition));
 
 @override
 String toString() {
-  return 'Player(id: $id, name: $name, dateOfBirth: $dateOfBirth, heightCm: $heightCm, weightKg: $weightKg, position: $position, footedness: $footedness, technical: $technical, mental: $mental, physical: $physical, hidden: $hidden, condition: $condition)';
+  return 'Player(id: $id, name: $name, dateOfBirth: $dateOfBirth, country: $country, heightCm: $heightCm, weightKg: $weightKg, position: $position, footedness: $footedness, technical: $technical, mental: $mental, physical: $physical, hidden: $hidden, condition: $condition)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PlayerCopyWith<$Res>  {
   factory $PlayerCopyWith(Player value, $Res Function(Player) _then) = _$PlayerCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, DateTime dateOfBirth, double heightCm, double weightKg, Position position, Footedness footedness, Map<TechnicalAttr, int> technical, Map<MentalAttr, int> mental, Map<PhysicalAttr, int> physical, Map<HiddenAttr, int> hidden, Map<ConditionAttr, int> condition
+ int id, String name, DateTime dateOfBirth, String country, double heightCm, double weightKg, Position position, Footedness footedness, Map<TechnicalAttr, int> technical, Map<MentalAttr, int> mental, Map<PhysicalAttr, int> physical, Map<HiddenAttr, int> hidden, Map<ConditionAttr, int> condition
 });
 
 
@@ -65,12 +65,13 @@ class _$PlayerCopyWithImpl<$Res>
 
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? dateOfBirth = null,Object? heightCm = null,Object? weightKg = null,Object? position = null,Object? footedness = null,Object? technical = null,Object? mental = null,Object? physical = null,Object? hidden = null,Object? condition = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? dateOfBirth = null,Object? country = null,Object? heightCm = null,Object? weightKg = null,Object? position = null,Object? footedness = null,Object? technical = null,Object? mental = null,Object? physical = null,Object? hidden = null,Object? condition = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,dateOfBirth: null == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
-as DateTime,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
+as DateTime,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as String,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
 as double,weightKg: null == weightKg ? _self.weightKg : weightKg // ignore: cast_nullable_to_non_nullable
 as double,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as Position,footedness: null == footedness ? _self.footedness : footedness // ignore: cast_nullable_to_non_nullable
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  DateTime dateOfBirth,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  DateTime dateOfBirth,  String country,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Player() when $default != null:
-return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
+return $default(_that.id,_that.name,_that.dateOfBirth,_that.country,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weigh
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  DateTime dateOfBirth,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  DateTime dateOfBirth,  String country,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)  $default,) {final _that = this;
 switch (_that) {
 case _Player():
-return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
+return $default(_that.id,_that.name,_that.dateOfBirth,_that.country,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weigh
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  DateTime dateOfBirth,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  DateTime dateOfBirth,  String country,  double heightCm,  double weightKg,  Position position,  Footedness footedness,  Map<TechnicalAttr, int> technical,  Map<MentalAttr, int> mental,  Map<PhysicalAttr, int> physical,  Map<HiddenAttr, int> hidden,  Map<ConditionAttr, int> condition)?  $default,) {final _that = this;
 switch (_that) {
 case _Player() when $default != null:
-return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
+return $default(_that.id,_that.name,_that.dateOfBirth,_that.country,_that.heightCm,_that.weightKg,_that.position,_that.footedness,_that.technical,_that.mental,_that.physical,_that.hidden,_that.condition);case _:
   return null;
 
 }
@@ -220,12 +221,13 @@ return $default(_that.id,_that.name,_that.dateOfBirth,_that.heightCm,_that.weigh
 @JsonSerializable()
 
 class _Player implements Player {
-  const _Player({required this.id, required this.name, required this.dateOfBirth, required this.heightCm, required this.weightKg, required this.position, required this.footedness, final  Map<TechnicalAttr, int> technical = const {}, final  Map<MentalAttr, int> mental = const {}, final  Map<PhysicalAttr, int> physical = const {}, final  Map<HiddenAttr, int> hidden = const {}, final  Map<ConditionAttr, int> condition = const {}}): _technical = technical,_mental = mental,_physical = physical,_hidden = hidden,_condition = condition;
+  const _Player({required this.id, required this.name, required this.dateOfBirth, required this.country, required this.heightCm, required this.weightKg, required this.position, required this.footedness, final  Map<TechnicalAttr, int> technical = const {}, final  Map<MentalAttr, int> mental = const {}, final  Map<PhysicalAttr, int> physical = const {}, final  Map<HiddenAttr, int> hidden = const {}, final  Map<ConditionAttr, int> condition = const {}}): _technical = technical,_mental = mental,_physical = physical,_hidden = hidden,_condition = condition;
   factory _Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
 
 @override final  int id;
 @override final  String name;
 @override final  DateTime dateOfBirth;
+@override final  String country;
 @override final  double heightCm;
 @override final  double weightKg;
 @override final  Position position;
@@ -279,16 +281,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.position, position) || other.position == position)&&(identical(other.footedness, footedness) || other.footedness == footedness)&&const DeepCollectionEquality().equals(other._technical, _technical)&&const DeepCollectionEquality().equals(other._mental, _mental)&&const DeepCollectionEquality().equals(other._physical, _physical)&&const DeepCollectionEquality().equals(other._hidden, _hidden)&&const DeepCollectionEquality().equals(other._condition, _condition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.country, country) || other.country == country)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.position, position) || other.position == position)&&(identical(other.footedness, footedness) || other.footedness == footedness)&&const DeepCollectionEquality().equals(other._technical, _technical)&&const DeepCollectionEquality().equals(other._mental, _mental)&&const DeepCollectionEquality().equals(other._physical, _physical)&&const DeepCollectionEquality().equals(other._hidden, _hidden)&&const DeepCollectionEquality().equals(other._condition, _condition));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,dateOfBirth,heightCm,weightKg,position,footedness,const DeepCollectionEquality().hash(_technical),const DeepCollectionEquality().hash(_mental),const DeepCollectionEquality().hash(_physical),const DeepCollectionEquality().hash(_hidden),const DeepCollectionEquality().hash(_condition));
+int get hashCode => Object.hash(runtimeType,id,name,dateOfBirth,country,heightCm,weightKg,position,footedness,const DeepCollectionEquality().hash(_technical),const DeepCollectionEquality().hash(_mental),const DeepCollectionEquality().hash(_physical),const DeepCollectionEquality().hash(_hidden),const DeepCollectionEquality().hash(_condition));
 
 @override
 String toString() {
-  return 'Player(id: $id, name: $name, dateOfBirth: $dateOfBirth, heightCm: $heightCm, weightKg: $weightKg, position: $position, footedness: $footedness, technical: $technical, mental: $mental, physical: $physical, hidden: $hidden, condition: $condition)';
+  return 'Player(id: $id, name: $name, dateOfBirth: $dateOfBirth, country: $country, heightCm: $heightCm, weightKg: $weightKg, position: $position, footedness: $footedness, technical: $technical, mental: $mental, physical: $physical, hidden: $hidden, condition: $condition)';
 }
 
 
@@ -299,7 +301,7 @@ abstract mixin class _$PlayerCopyWith<$Res> implements $PlayerCopyWith<$Res> {
   factory _$PlayerCopyWith(_Player value, $Res Function(_Player) _then) = __$PlayerCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, DateTime dateOfBirth, double heightCm, double weightKg, Position position, Footedness footedness, Map<TechnicalAttr, int> technical, Map<MentalAttr, int> mental, Map<PhysicalAttr, int> physical, Map<HiddenAttr, int> hidden, Map<ConditionAttr, int> condition
+ int id, String name, DateTime dateOfBirth, String country, double heightCm, double weightKg, Position position, Footedness footedness, Map<TechnicalAttr, int> technical, Map<MentalAttr, int> mental, Map<PhysicalAttr, int> physical, Map<HiddenAttr, int> hidden, Map<ConditionAttr, int> condition
 });
 
 
@@ -316,12 +318,13 @@ class __$PlayerCopyWithImpl<$Res>
 
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? dateOfBirth = null,Object? heightCm = null,Object? weightKg = null,Object? position = null,Object? footedness = null,Object? technical = null,Object? mental = null,Object? physical = null,Object? hidden = null,Object? condition = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? dateOfBirth = null,Object? country = null,Object? heightCm = null,Object? weightKg = null,Object? position = null,Object? footedness = null,Object? technical = null,Object? mental = null,Object? physical = null,Object? hidden = null,Object? condition = null,}) {
   return _then(_Player(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,dateOfBirth: null == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
-as DateTime,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
+as DateTime,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as String,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
 as double,weightKg: null == weightKg ? _self.weightKg : weightKg // ignore: cast_nullable_to_non_nullable
 as double,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as Position,footedness: null == footedness ? _self.footedness : footedness // ignore: cast_nullable_to_non_nullable

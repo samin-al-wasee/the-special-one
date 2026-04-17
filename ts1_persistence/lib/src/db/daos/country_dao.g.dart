@@ -1,22 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_dao.dart';
+part of 'country_dao.dart';
 
 // ignore_for_file: type=lint
-mixin _$PlayerDaoMixin on DatabaseAccessor<AppDatabase> {
+mixin _$CountryDaoMixin on DatabaseAccessor<AppDatabase> {
   $ContinentsTable get continents => attachedDatabase.continents;
   $CountriesTable get countries => attachedDatabase.countries;
-  $PlayersTable get players => attachedDatabase.players;
-  PlayerDaoManager get managers => PlayerDaoManager(this);
+  CountryDaoManager get managers => CountryDaoManager(this);
 }
 
-class PlayerDaoManager {
-  final _$PlayerDaoMixin _db;
-  PlayerDaoManager(this._db);
+class CountryDaoManager {
+  final _$CountryDaoMixin _db;
+  CountryDaoManager(this._db);
   $$ContinentsTableTableManager get continents =>
       $$ContinentsTableTableManager(_db.attachedDatabase, _db.continents);
   $$CountriesTableTableManager get countries =>
       $$CountriesTableTableManager(_db.attachedDatabase, _db.countries);
-  $$PlayersTableTableManager get players =>
-      $$PlayersTableTableManager(_db.attachedDatabase, _db.players);
 }
