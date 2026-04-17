@@ -1573,6 +1573,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CountriesTable countries = $CountriesTable(this);
   late final $PlayersTable players = $PlayersTable(this);
   late final $NationalTeamsTable nationalTeams = $NationalTeamsTable(this);
+  late final CountryDao countryDao = CountryDao(this as AppDatabase);
+  late final PlayerDao playerDao = PlayerDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

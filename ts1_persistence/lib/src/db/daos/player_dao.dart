@@ -28,8 +28,16 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   // 🔹 WRITE (single)
   // =========================
 
-  Future<void> upsertPlayer(Insertable<PlayerRecord> player) {
+  Future<void> insertPlayer(PlayersCompanion player) {
+    return into(players).insert(player);
+  }
+
+  Future<void> upsertPlayer(PlayersCompanion player) {
     return into(players).insertOnConflictUpdate(player);
+  }
+
+  Future<void> updatePlayer(PlayersCompanion player) {
+    return (update(players)..where((p) => p.id.equals(player.id.value))).write(player);
   }
 
   Future<int> deletePlayer(int id) {
@@ -40,13 +48,13 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
   // 🔥 BULK OPERATIONS (IMPORTANT)
   // =========================
 
-  Future<void> insertAll(List<Insertable<PlayerRecord>> items) {
+  Future<void> insertAll(List<PlayersCompanion> items) {
     return batch((batch) {
       batch.insertAllOnConflictUpdate(players, items);
     });
   }
 
-  Future<void> replaceAll(List<Insertable<PlayerRecord>> items) async {
+  Future<void> replaceAll(List<PlayersCompanion> items) async {
     return transaction(() async {
       await delete(players).go();
       await insertAll(items);

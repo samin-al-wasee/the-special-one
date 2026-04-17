@@ -73,7 +73,7 @@ class PlayerRepository {
     if (country == null) {
       throw Exception('Country "${player.country}" not found');
     }
-    final row = PlayerMapper.toRecord(player, country);
+    final row = PlayerMapper.toCompanion(player, country);
     return dao.upsertPlayer(row);
   }
 

@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:ts1_persistence/src/db/daos/player_dao.dart';
 
+import 'daos/country_dao.dart';
 import 'tables/players.dart';
 import 'tables/continents.dart';
 import 'tables/countries.dart';
@@ -13,7 +15,10 @@ import 'seeds/country_seed.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Players, Continents, Countries, NationalTeams])
+@DriftDatabase(
+  tables: [Players, Continents, Countries, NationalTeams],
+  daos: [CountryDao, PlayerDao],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

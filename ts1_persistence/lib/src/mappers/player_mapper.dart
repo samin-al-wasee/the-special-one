@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:drift/drift.dart';
 import 'package:ts1_core/ts1_core.dart';
 import 'package:ts1_persistence/src/db/database.dart';
 
@@ -47,6 +48,29 @@ class PlayerMapper {
       condition: _encode(player.condition),
     );
   }
+
+  // =========================
+  // 🔹 DOMAIN → DB COMPANION
+  // =========================
+  static PlayersCompanion toCompanion(Player player, CountryRecord country) {
+    return PlayersCompanion(
+      id: player.id == 0 ? Value.absent() : Value(player.id), // Allow auto-increment if ID is 0, otherwise use provided ID
+      name: Value(player.name),
+      dateOfBirth: Value(player.dateOfBirth),
+      countryId: Value(country.id),
+      heightCm: Value(player.heightCm),
+      weightKg: Value(player.weightKg),
+      position: Value(player.position.label),
+      footedness: Value(player.footedness.label),
+
+      technical: Value(_encode(player.technical)),
+      mental: Value(_encode(player.mental)),
+      physical: Value(_encode(player.physical)),
+      hidden: Value(_encode(player.hidden)),
+      condition: Value(_encode(player.condition)),
+    );
+  }
+
 
   // =========================
   // 🔧 JSON ENCODING
