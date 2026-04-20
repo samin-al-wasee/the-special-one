@@ -4,6 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:ts1_core/ts1_core.dart';
 import 'package:ts1_persistence/src/db/daos/player_dao.dart';
+import 'package:ts1_persistence/src/db/daos/national_team_dao.dart';
+import 'package:ts1_persistence/src/db/daos/national_team_tactic_dao.dart';
 
 import 'daos/country_dao.dart';
 import 'tables/players.dart';
@@ -19,7 +21,7 @@ part 'database.g.dart';
 
 @DriftDatabase(
   tables: [Players, Continents, Countries, NationalTeams, NationalTeamTactics],
-  daos: [CountryDao, PlayerDao],
+  daos: [CountryDao, PlayerDao, NationalTeamDao, NationalTeamTacticDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

@@ -1355,8 +1355,17 @@ class $NationalTeamsTable extends NationalTeams
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
+  static const VerificationMeta _lineupMeta = const VerificationMeta('lineup');
   @override
-  List<GeneratedColumn> get $columns => [id, countryId, name];
+  late final GeneratedColumn<String> lineup = GeneratedColumn<String>(
+    'lineup',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, countryId, name, lineup];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1388,6 +1397,14 @@ class $NationalTeamsTable extends NationalTeams
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('lineup')) {
+      context.handle(
+        _lineupMeta,
+        lineup.isAcceptableOrUnknown(data['lineup']!, _lineupMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lineupMeta);
+    }
     return context;
   }
 
@@ -1409,6 +1426,10 @@ class $NationalTeamsTable extends NationalTeams
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      lineup: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lineup'],
+      )!,
     );
   }
 
@@ -1423,10 +1444,12 @@ class NationalTeamRecord extends DataClass
   final int id;
   final int countryId;
   final String name;
+  final String lineup;
   const NationalTeamRecord({
     required this.id,
     required this.countryId,
     required this.name,
+    required this.lineup,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1434,6 +1457,7 @@ class NationalTeamRecord extends DataClass
     map['id'] = Variable<int>(id);
     map['country_id'] = Variable<int>(countryId);
     map['name'] = Variable<String>(name);
+    map['lineup'] = Variable<String>(lineup);
     return map;
   }
 
@@ -1442,6 +1466,7 @@ class NationalTeamRecord extends DataClass
       id: Value(id),
       countryId: Value(countryId),
       name: Value(name),
+      lineup: Value(lineup),
     );
   }
 
@@ -1454,6 +1479,7 @@ class NationalTeamRecord extends DataClass
       id: serializer.fromJson<int>(json['id']),
       countryId: serializer.fromJson<int>(json['countryId']),
       name: serializer.fromJson<String>(json['name']),
+      lineup: serializer.fromJson<String>(json['lineup']),
     );
   }
   @override
@@ -1463,20 +1489,27 @@ class NationalTeamRecord extends DataClass
       'id': serializer.toJson<int>(id),
       'countryId': serializer.toJson<int>(countryId),
       'name': serializer.toJson<String>(name),
+      'lineup': serializer.toJson<String>(lineup),
     };
   }
 
-  NationalTeamRecord copyWith({int? id, int? countryId, String? name}) =>
-      NationalTeamRecord(
-        id: id ?? this.id,
-        countryId: countryId ?? this.countryId,
-        name: name ?? this.name,
-      );
+  NationalTeamRecord copyWith({
+    int? id,
+    int? countryId,
+    String? name,
+    String? lineup,
+  }) => NationalTeamRecord(
+    id: id ?? this.id,
+    countryId: countryId ?? this.countryId,
+    name: name ?? this.name,
+    lineup: lineup ?? this.lineup,
+  );
   NationalTeamRecord copyWithCompanion(NationalTeamsCompanion data) {
     return NationalTeamRecord(
       id: data.id.present ? data.id.value : this.id,
       countryId: data.countryId.present ? data.countryId.value : this.countryId,
       name: data.name.present ? data.name.value : this.name,
+      lineup: data.lineup.present ? data.lineup.value : this.lineup,
     );
   }
 
@@ -1485,46 +1518,54 @@ class NationalTeamRecord extends DataClass
     return (StringBuffer('NationalTeamRecord(')
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('lineup: $lineup')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, countryId, name);
+  int get hashCode => Object.hash(id, countryId, name, lineup);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NationalTeamRecord &&
           other.id == this.id &&
           other.countryId == this.countryId &&
-          other.name == this.name);
+          other.name == this.name &&
+          other.lineup == this.lineup);
 }
 
 class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
   final Value<int> id;
   final Value<int> countryId;
   final Value<String> name;
+  final Value<String> lineup;
   const NationalTeamsCompanion({
     this.id = const Value.absent(),
     this.countryId = const Value.absent(),
     this.name = const Value.absent(),
+    this.lineup = const Value.absent(),
   });
   NationalTeamsCompanion.insert({
     this.id = const Value.absent(),
     required int countryId,
     required String name,
+    required String lineup,
   }) : countryId = Value(countryId),
-       name = Value(name);
+       name = Value(name),
+       lineup = Value(lineup);
   static Insertable<NationalTeamRecord> custom({
     Expression<int>? id,
     Expression<int>? countryId,
     Expression<String>? name,
+    Expression<String>? lineup,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (countryId != null) 'country_id': countryId,
       if (name != null) 'name': name,
+      if (lineup != null) 'lineup': lineup,
     });
   }
 
@@ -1532,11 +1573,13 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     Value<int>? id,
     Value<int>? countryId,
     Value<String>? name,
+    Value<String>? lineup,
   }) {
     return NationalTeamsCompanion(
       id: id ?? this.id,
       countryId: countryId ?? this.countryId,
       name: name ?? this.name,
+      lineup: lineup ?? this.lineup,
     );
   }
 
@@ -1552,6 +1595,9 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (lineup.present) {
+      map['lineup'] = Variable<String>(lineup.value);
+    }
     return map;
   }
 
@@ -1560,14 +1606,15 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     return (StringBuffer('NationalTeamsCompanion(')
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('lineup: $lineup')
           ..write(')'))
         .toString();
   }
 }
 
 class $NationalTeamTacticsTable extends NationalTeamTactics
-    with TableInfo<$NationalTeamTacticsTable, NationalTeamTactic> {
+    with TableInfo<$NationalTeamTacticsTable, NationalTeamTacticRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2036,7 +2083,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
   static const String $name = 'national_team_tactics';
   @override
   VerificationContext validateIntegrity(
-    Insertable<NationalTeamTactic> instance, {
+    Insertable<NationalTeamTacticRecord> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2311,9 +2358,12 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  NationalTeamTactic map(Map<String, dynamic> data, {String? tablePrefix}) {
+  NationalTeamTacticRecord map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return NationalTeamTactic(
+    return NationalTeamTacticRecord(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -2427,8 +2477,8 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
   }
 }
 
-class NationalTeamTactic extends DataClass
-    implements Insertable<NationalTeamTactic> {
+class NationalTeamTacticRecord extends DataClass
+    implements Insertable<NationalTeamTacticRecord> {
   final int id;
   final int? teamId;
   final String presetName;
@@ -2455,7 +2505,7 @@ class NationalTeamTactic extends DataClass
   final String setPieceAttack;
   final String setPieceDefense;
   final String freeKickStrategy;
-  const NationalTeamTactic({
+  const NationalTeamTacticRecord({
     required this.id,
     this.teamId,
     required this.presetName,
@@ -2550,12 +2600,12 @@ class NationalTeamTactic extends DataClass
     );
   }
 
-  factory NationalTeamTactic.fromJson(
+  factory NationalTeamTacticRecord.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return NationalTeamTactic(
+    return NationalTeamTacticRecord(
       id: serializer.fromJson<int>(json['id']),
       teamId: serializer.fromJson<int?>(json['teamId']),
       presetName: serializer.fromJson<String>(json['presetName']),
@@ -2619,7 +2669,7 @@ class NationalTeamTactic extends DataClass
     };
   }
 
-  NationalTeamTactic copyWith({
+  NationalTeamTacticRecord copyWith({
     int? id,
     Value<int?> teamId = const Value.absent(),
     String? presetName,
@@ -2646,7 +2696,7 @@ class NationalTeamTactic extends DataClass
     String? setPieceAttack,
     String? setPieceDefense,
     String? freeKickStrategy,
-  }) => NationalTeamTactic(
+  }) => NationalTeamTacticRecord(
     id: id ?? this.id,
     teamId: teamId.present ? teamId.value : this.teamId,
     presetName: presetName ?? this.presetName,
@@ -2674,8 +2724,10 @@ class NationalTeamTactic extends DataClass
     setPieceDefense: setPieceDefense ?? this.setPieceDefense,
     freeKickStrategy: freeKickStrategy ?? this.freeKickStrategy,
   );
-  NationalTeamTactic copyWithCompanion(NationalTeamTacticsCompanion data) {
-    return NationalTeamTactic(
+  NationalTeamTacticRecord copyWithCompanion(
+    NationalTeamTacticsCompanion data,
+  ) {
+    return NationalTeamTacticRecord(
       id: data.id.present ? data.id.value : this.id,
       teamId: data.teamId.present ? data.teamId.value : this.teamId,
       presetName: data.presetName.present
@@ -2751,7 +2803,7 @@ class NationalTeamTactic extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('NationalTeamTactic(')
+    return (StringBuffer('NationalTeamTacticRecord(')
           ..write('id: $id, ')
           ..write('teamId: $teamId, ')
           ..write('presetName: $presetName, ')
@@ -2814,7 +2866,7 @@ class NationalTeamTactic extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is NationalTeamTactic &&
+      (other is NationalTeamTacticRecord &&
           other.id == this.id &&
           other.teamId == this.teamId &&
           other.presetName == this.presetName &&
@@ -2843,7 +2895,8 @@ class NationalTeamTactic extends DataClass
           other.freeKickStrategy == this.freeKickStrategy);
 }
 
-class NationalTeamTacticsCompanion extends UpdateCompanion<NationalTeamTactic> {
+class NationalTeamTacticsCompanion
+    extends UpdateCompanion<NationalTeamTacticRecord> {
   final Value<int> id;
   final Value<int?> teamId;
   final Value<String> presetName;
@@ -2949,7 +3002,7 @@ class NationalTeamTacticsCompanion extends UpdateCompanion<NationalTeamTactic> {
        setPieceAttack = Value(setPieceAttack),
        setPieceDefense = Value(setPieceDefense),
        freeKickStrategy = Value(freeKickStrategy);
-  static Insertable<NationalTeamTactic> custom({
+  static Insertable<NationalTeamTacticRecord> custom({
     Expression<int>? id,
     Expression<int>? teamId,
     Expression<String>? presetName,
@@ -3194,6 +3247,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $NationalTeamTacticsTable(this);
   late final CountryDao countryDao = CountryDao(this as AppDatabase);
   late final PlayerDao playerDao = PlayerDao(this as AppDatabase);
+  late final NationalTeamDao nationalTeamDao = NationalTeamDao(
+    this as AppDatabase,
+  );
+  late final NationalTeamTacticDao nationalTeamTacticDao =
+      NationalTeamTacticDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4422,12 +4480,14 @@ typedef $$NationalTeamsTableCreateCompanionBuilder =
       Value<int> id,
       required int countryId,
       required String name,
+      required String lineup,
     });
 typedef $$NationalTeamsTableUpdateCompanionBuilder =
     NationalTeamsCompanion Function({
       Value<int> id,
       Value<int> countryId,
       Value<String> name,
+      Value<String> lineup,
     });
 
 final class $$NationalTeamsTableReferences
@@ -4478,6 +4538,11 @@ class $$NationalTeamsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get lineup => $composableBuilder(
+    column: $table.lineup,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$CountriesTableFilterComposer get countryId {
     final $$CountriesTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -4521,6 +4586,11 @@ class $$NationalTeamsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get lineup => $composableBuilder(
+    column: $table.lineup,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$CountriesTableOrderingComposer get countryId {
     final $$CountriesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -4559,6 +4629,9 @@ class $$NationalTeamsTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get lineup =>
+      $composableBuilder(column: $table.lineup, builder: (column) => column);
 
   $$CountriesTableAnnotationComposer get countryId {
     final $$CountriesTableAnnotationComposer composer = $composerBuilder(
@@ -4615,20 +4688,24 @@ class $$NationalTeamsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> countryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
+                Value<String> lineup = const Value.absent(),
               }) => NationalTeamsCompanion(
                 id: id,
                 countryId: countryId,
                 name: name,
+                lineup: lineup,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int countryId,
                 required String name,
+                required String lineup,
               }) => NationalTeamsCompanion.insert(
                 id: id,
                 countryId: countryId,
                 name: name,
+                lineup: lineup,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -5173,21 +5250,21 @@ class $$NationalTeamTacticsTableTableManager
         RootTableManager<
           _$AppDatabase,
           $NationalTeamTacticsTable,
-          NationalTeamTactic,
+          NationalTeamTacticRecord,
           $$NationalTeamTacticsTableFilterComposer,
           $$NationalTeamTacticsTableOrderingComposer,
           $$NationalTeamTacticsTableAnnotationComposer,
           $$NationalTeamTacticsTableCreateCompanionBuilder,
           $$NationalTeamTacticsTableUpdateCompanionBuilder,
           (
-            NationalTeamTactic,
+            NationalTeamTacticRecord,
             BaseReferences<
               _$AppDatabase,
               $NationalTeamTacticsTable,
-              NationalTeamTactic
+              NationalTeamTacticRecord
             >,
           ),
-          NationalTeamTactic,
+          NationalTeamTacticRecord,
           PrefetchHooks Function()
         > {
   $$NationalTeamTacticsTableTableManager(
@@ -5333,21 +5410,21 @@ typedef $$NationalTeamTacticsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $NationalTeamTacticsTable,
-      NationalTeamTactic,
+      NationalTeamTacticRecord,
       $$NationalTeamTacticsTableFilterComposer,
       $$NationalTeamTacticsTableOrderingComposer,
       $$NationalTeamTacticsTableAnnotationComposer,
       $$NationalTeamTacticsTableCreateCompanionBuilder,
       $$NationalTeamTacticsTableUpdateCompanionBuilder,
       (
-        NationalTeamTactic,
+        NationalTeamTacticRecord,
         BaseReferences<
           _$AppDatabase,
           $NationalTeamTacticsTable,
-          NationalTeamTactic
+          NationalTeamTacticRecord
         >,
       ),
-      NationalTeamTactic,
+      NationalTeamTacticRecord,
       PrefetchHooks Function()
     >;
 

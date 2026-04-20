@@ -52,6 +52,20 @@ class PlayerRepository {
     return _mapPlayersWithCountries(rows);
   }
 
+  // Get players by a list of IDs.
+  Future<List<Player>> getPlayersByIdsWithCountry(List<int> ids) async {
+    final rows = await dao.getPlayersByIdsWithCountry(ids);
+
+    // Map the results to Player objects
+    List<Player> players = [];
+    for (var row in rows) {
+      final playerRecord = row['player'] as PlayerRecord;
+      final countryRecord = row['country'] as CountryRecord;
+      players.add(PlayerMapper.toDomain(playerRecord, countryRecord));
+    }
+    return players;
+  }
+
   Future<Player?> getById(int id) async {
     final row = await dao.getById(id);
     if (row == null) return null;

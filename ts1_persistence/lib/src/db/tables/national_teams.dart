@@ -8,5 +8,7 @@ class NationalTeams extends Table {
 
   IntColumn get countryId => integer().references(Countries, #id)();
 
-  TextColumn get name => text().unique()(); // "Brazil National Team"
+  TextColumn get name => text().unique()();
+
+  TextColumn get lineup => text()();
 }

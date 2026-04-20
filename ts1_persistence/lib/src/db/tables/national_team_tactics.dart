@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 
+@DataClassName('NationalTeamTacticRecord')
 class NationalTeamTactics extends Table {
   // Primary key
   IntColumn get id => integer().autoIncrement()();
