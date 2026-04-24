@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ts1_core/src/core/enums/player/player_attributes.dart';
+import 'package:ts1_core/src/core/enums/player/player_attributes_exports.dart';
 import 'package:ts1_core/src/core/enums/player/position.dart';
 
 part 'player.freezed.dart';

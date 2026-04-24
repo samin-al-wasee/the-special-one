@@ -330,7 +330,8 @@ abstract class MatchState with _$MatchState {
           next,
           MatchStatus.penalties,
           title: 'Penalty Shootout',
-          description: 'Regulation ends level; penalties will decide the match.',
+          description:
+              'Regulation ends level; penalties will decide the match.',
         );
       }
       return applyTransitionStatus(
@@ -359,7 +360,8 @@ abstract class MatchState with _$MatchState {
           next,
           MatchStatus.penalties,
           title: 'Penalty Shootout',
-          description: 'Extra time ends level; penalties will decide the match.',
+          description:
+              'Extra time ends level; penalties will decide the match.',
         );
       }
       return applyTransitionStatus(

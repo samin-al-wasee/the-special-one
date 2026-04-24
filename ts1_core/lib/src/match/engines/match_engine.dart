@@ -42,7 +42,11 @@ class MatchEngine {
   }
 
   /// Shared logic for updating a team and recalculating context, matchup, and dynamics.
-  static Match _updateTeamAndRecalculate(Match match, TeamSide side, Team newTeam) {
+  static Match _updateTeamAndRecalculate(
+    Match match,
+    TeamSide side,
+    Team newTeam,
+  ) {
     // Swap in the updated team
     final updatedMatch = side == TeamSide.home
         ? match.copyWith(homeTeam: newTeam)

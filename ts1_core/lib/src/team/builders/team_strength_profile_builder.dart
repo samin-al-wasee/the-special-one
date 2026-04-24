@@ -1,5 +1,6 @@
 import 'package:ts1_core/src/team/builders/structural_profile_builder.dart';
 import 'package:ts1_core/src/core/enums/player/player_attributes.dart';
+import 'package:ts1_core/src/core/enums/player/player_attributes_exports.dart';
 import 'package:ts1_core/src/core/enums/team/tactic/tactical_attributes.dart';
 import 'package:ts1_core/src/player/models/player.dart';
 import 'package:ts1_core/src/team/models/strength_profile/team_strength_profile.dart';

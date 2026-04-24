@@ -27,7 +27,11 @@ final roleSupportedPositions = <Role, Set<Position>>{
     Position.rightMidfielder,
     Position.leftMidfielder,
   },
-  Role.halfBack: {Position.defensiveMidfielder, Position.rightMidfielder, Position.leftMidfielder},
+  Role.halfBack: {
+    Position.defensiveMidfielder,
+    Position.rightMidfielder,
+    Position.leftMidfielder,
+  },
   Role.boxToBoxMidfielder: {
     Position.centralMidfielder,
     Position.rightMidfielder,

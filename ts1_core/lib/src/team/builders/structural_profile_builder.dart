@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ts1_core/src/core/enums/player/player_attributes.dart';
+import 'package:ts1_core/src/core/enums/player/player_attributes_exports.dart';
 import 'package:ts1_core/src/player/models/player.dart';
 import 'package:ts1_core/src/team/models/lineup/formation/slot/formation_slot.dart';
 import 'package:ts1_core/src/team/models/lineup/formation/structural_profile.dart';

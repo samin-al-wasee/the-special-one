@@ -1,16 +1,15 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ts1_core/src/core/catalog/role_catalog.dart';
+import 'package:ts1_core/src/core/enums/player/duty.dart';
+import 'package:ts1_core/src/core/enums/player/position.dart';
+import 'package:ts1_core/src/core/enums/player/role.dart';
+import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
+import 'package:ts1_core/src/team/models/lineup/slot_assignment/lineup_slot_assignment.dart';
+import 'package:ts1_core/src/player/models/player.dart';
+import 'package:ts1_core/src/team/models/lineup/slot_assignment/role_assignment/role_assignment.dart';
 
-  import 'package:freezed_annotation/freezed_annotation.dart';
-  import 'package:ts1_core/src/core/catalog/role_catalog.dart';
-  import 'package:ts1_core/src/core/enums/player/duty.dart';
-  import 'package:ts1_core/src/core/enums/player/position.dart';
-  import 'package:ts1_core/src/core/enums/player/role.dart';
-  import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
-  import 'package:ts1_core/src/team/models/lineup/slot_assignment/lineup_slot_assignment.dart';
-  import 'package:ts1_core/src/player/models/player.dart';
-  import 'package:ts1_core/src/team/models/lineup/slot_assignment/role_assignment/role_assignment.dart';
-
-  part 'team_lineup.freezed.dart';
-  part 'team_lineup.g.dart';
+part 'team_lineup.freezed.dart';
+part 'team_lineup.g.dart';
 
 @freezed
 abstract class TeamLineup with _$TeamLineup {
@@ -41,7 +40,8 @@ abstract class TeamLineup with _$TeamLineup {
       var chosenIdx = -1;
       for (var idx = 0; idx < unassigned.length; idx++) {
         final player = unassigned[idx];
-        if (slot.preferredPositions.isNotEmpty && slot.preferredPositions.contains(player.position)) {
+        if (slot.preferredPositions.isNotEmpty &&
+            slot.preferredPositions.contains(player.position)) {
           chosenIdx = idx;
           break;
         }
@@ -50,7 +50,9 @@ abstract class TeamLineup with _$TeamLineup {
         chosenIdx = 0;
       }
       if (chosenIdx < 0) {
-        throw StateError('Not enough players to fill new formation slot "${slot.slotId}".');
+        throw StateError(
+          'Not enough players to fill new formation slot "${slot.slotId}".',
+        );
       }
       final player = unassigned.removeAt(chosenIdx);
       newAssignments.add(
