@@ -48,7 +48,8 @@ class HomeScreen extends ConsumerWidget {
                         Text(
                           'The Special One',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          style: Theme.of(context).textTheme.displaySmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: -0.6,
                               ),
@@ -57,16 +58,14 @@ class HomeScreen extends ConsumerWidget {
                         Text(
                           'A single-match football simulation with presets, phases, event cards, and tactical feedback.',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: primaryText,
-                                height: 1.4,
-                              ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(color: primaryText, height: 1.4),
                         ),
                         const SizedBox(height: 32),
                         FilledButton(
                           onPressed: () {
                             ref.read(matchFlowProvider).resetToDefaults();
-                            context.go('/lineup');
+                            context.go('/pre-match');
                           },
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 18),
@@ -74,15 +73,14 @@ class HomeScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(18),
                             ),
                           ),
-                          child: const Text('Play Match'),
+                          child: const Text('Choose Teams'),
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Select team presets and formations, then step through a full simulated match.',
+                          'Pick two teams from the database, then refine tactics and formations before kickoff.',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: secondaryText,
-                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: secondaryText),
                         ),
                       ],
                     ),

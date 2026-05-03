@@ -60,6 +60,18 @@ class MatchFlowController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSelectedTeams({required Team homeTeam, required Team awayTeam}) {
+    _stopSimulation();
+    _draftHomeTeam = homeTeam;
+    _draftAwayTeam = awayTeam;
+    _homeFormationCode = homeTeam.lineup.formationShape.code;
+    _awayFormationCode = awayTeam.lineup.formationShape.code;
+    _homePreset = _presetFor(homeTeam.tactic);
+    _awayPreset = _presetFor(awayTeam.tactic);
+    _match = null;
+    notifyListeners();
+  }
+
   void setHomePreset(TacticalPreset preset) {
     _homePreset = preset;
     if (_draftHomeTeam == null) {
@@ -248,6 +260,17 @@ class MatchFlowController extends ChangeNotifier {
       formationCode: _awayFormationCode,
       preset: _awayPreset,
     );
+  }
+
+  TacticalPreset _presetFor(TeamTactic tactic) {
+    for (final preset in TacticalPreset.values) {
+      final candidate = TacticalPresetFactory.create(preset, id: tactic.id);
+      if (candidate == tactic) {
+        return preset;
+      }
+    }
+
+    return TacticalPreset.balanced;
   }
 
   // Helper to create a fake match for updating draft teams
