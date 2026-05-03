@@ -12,7 +12,7 @@ class TeamLineupMapper {
   ) {
     // The lineupJson is expected to have the structure of TeamLineup's JSON representation.
     // We will use the provided list of players to resolve player references in the lineup.
-    final decoded = lineupJson;
+    final decoded = Map<String, dynamic>.from(lineupJson);
 
     // In decoded replace benchIds, reserveIds, and slotAssignments' player ids with actual Player objects from the playerMap
     // First, we need to get benchIds
