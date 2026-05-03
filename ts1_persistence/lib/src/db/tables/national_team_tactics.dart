@@ -21,31 +21,31 @@ class NationalTeamTactics extends Table {
   TextColumn get buildUpStyle => text()
       .withLength(min: 1, max: 50)
       .customConstraint(
-        "NOT NULL CHECK (build_up_style IN ('Build From Back', 'Mixed Build-Up', 'Direct Progression', 'Long Ball', 'Counter Build-Up'))",
+        "NOT NULL CHECK (build_up_style IN ('buildFromBack', 'mixedBuildUp', 'directProgression', 'longBall', 'counterBuildUp'))",
       )();
 
   TextColumn get tempo => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (tempo IN ('Very Low', 'Low', 'Balanced', 'High', 'Very High'))",
+        "NOT NULL CHECK (tempo IN ('veryLow', 'low', 'balanced', 'high', 'veryHigh'))",
       )();
 
   TextColumn get width => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (width IN ('Very Narrow', 'Narrow', 'Balanced', 'Wide', 'Very Wide'))",
+        "NOT NULL CHECK (width IN ('veryNarrow', 'narrow', 'balanced', 'wide', 'veryWide'))",
       )();
 
   TextColumn get finalThirdFocus => text()
       .withLength(min: 1, max: 50)
       .customConstraint(
-        "NOT NULL CHECK (final_third_focus IN ('Work Ball Into Box', 'Mixed Attacking', 'Shoot On Sight', 'Cross Early', 'Overlap Wide', 'Underlap Inside', 'Through Ball Focus', 'Dribble More', 'Hold Possession'))",
+        "NOT NULL CHECK (final_third_focus IN ('workBallIntoBox', 'mixedAttacking', 'shootOnSight', 'crossEarly', 'overlapWide', 'underlapInside', 'throughBallFocus', 'dribbleMore', 'holdPossession'))",
       )();
 
   TextColumn get attackingFocus => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (attacking_focus IN ('Attack Left', 'Attack Right', 'Attack Centre', 'Mixed', 'Switch Flanks Often', 'Target Half-Spaces'))",
+        "NOT NULL CHECK (attacking_focus IN ('attackLeft', 'attackRight', 'attackCentre', 'mixed', 'switchFlanksOften', 'targetHalfSpaces'))",
       )();
 
   // =========================
@@ -55,37 +55,37 @@ class NationalTeamTactics extends Table {
   TextColumn get defensiveLine => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (defensive_line IN ('Very Deep', 'Deep', 'Standard', 'High', 'Very High'))",
+        "NOT NULL CHECK (defensive_line IN ('veryDeep', 'deep', 'standard', 'high', 'veryHigh'))",
       )();
 
   TextColumn get lineOfEngagement => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (line_of_engagement IN ('Low Block', 'Mid Block', 'High Block', 'Full Press'))",
+        "NOT NULL CHECK (line_of_engagement IN ('lowBlock', 'midBlock', 'highBlock', 'fullPress'))",
       )();
 
   TextColumn get pressingIntensity => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (pressing_intensity IN ('Very Low', 'Low', 'Balanced', 'High', 'Extreme'))",
+        "NOT NULL CHECK (pressing_intensity IN ('veryLow', 'low', 'balanced', 'high', 'extreme'))",
       )();
 
   TextColumn get defensiveWidth => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (defensive_width IN ('Very Narrow', 'Narrow', 'Balanced', 'Wide', 'Very Wide'))",
+        "NOT NULL CHECK (defensive_width IN ('veryNarrow', 'narrow', 'balanced', 'wide', 'veryWide'))",
       )();
 
   TextColumn get markingStyle => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (marking_style IN ('Zonal', 'Mixed', 'Tight Man-Oriented'))",
+        "NOT NULL CHECK (marking_style IN ('zonal', 'mixed', 'tightManOriented'))",
       )();
 
   TextColumn get tacklingAggression => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (tackling_aggression IN ('Stay On Feet', 'Balanced', 'Aggressive', 'Very Aggressive'))",
+        "NOT NULL CHECK (tackling_aggression IN ('stayOnFeet', 'balanced', 'aggressive', 'veryAggressive'))",
       )();
 
   // =========================
@@ -95,13 +95,13 @@ class NationalTeamTactics extends Table {
   TextColumn get transitionOnWin => text()
       .withLength(min: 1, max: 40)
       .customConstraint(
-        "NOT NULL CHECK (transition_on_win IN ('Counter Immediately', 'Progress Safely', 'Hold Shape', 'Feed Playmaker', 'Feed Winger', 'Go Long To Striker', 'Attack Weak Side'))",
+        "NOT NULL CHECK (transition_on_win IN ('counterImmediately', 'progressSafely', 'holdShape', 'feedPlaymaker', 'feedWinger', 'goLongToStriker', 'attackWeakSide'))",
       )();
 
   TextColumn get transitionOnLoss => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (transition_on_loss IN ('Counterpress', 'Delay', 'Regroup', 'Tactical Foul', 'Drop Deep Immediately'))",
+        "NOT NULL CHECK (transition_on_loss IN ('counterpress', 'delay', 'regroup', 'tacticalFoul', 'dropDeepImmediately'))",
       )();
 
   // =========================
@@ -111,7 +111,7 @@ class NationalTeamTactics extends Table {
   TextColumn get teamMentality => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (team_mentality IN ('Very Defensive', 'Defensive', 'Cautious', 'Balanced', 'Positive', 'Attacking', 'Very Attacking'))",
+        "NOT NULL CHECK (team_mentality IN ('veryDefensive', 'defensive', 'cautious', 'balanced', 'positive', 'attacking', 'veryAttacking'))",
       )();
 
   // =========================
@@ -121,19 +121,19 @@ class NationalTeamTactics extends Table {
   TextColumn get passingRisk => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (passing_risk IN ('Very Safe', 'Safe', 'Balanced', 'Risky', 'Very Risky'))",
+        "NOT NULL CHECK (passing_risk IN ('verySafe', 'safe', 'balanced', 'risky', 'veryRisky'))",
       )();
 
   TextColumn get dribblingRisk => text()
       .withLength(min: 1, max: 25)
       .customConstraint(
-        "NOT NULL CHECK (dribbling_risk IN ('Very Conservative', 'Balanced', 'Aggressive'))",
+        "NOT NULL CHECK (dribbling_risk IN ('veryConservative', 'balanced', 'aggressive'))",
       )();
 
   TextColumn get shootingPolicy => text()
       .withLength(min: 1, max: 25)
       .customConstraint(
-        "NOT NULL CHECK (shooting_policy IN ('Shoot Less', 'Balanced', 'Shoot More', 'Shoot Aggressively'))",
+        "NOT NULL CHECK (shooting_policy IN ('shootLess', 'balanced', 'shootMore', 'shootAggressively'))",
       )();
 
   // =========================
@@ -143,19 +143,19 @@ class NationalTeamTactics extends Table {
   TextColumn get compactness => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (compactness IN ('Very Compact', 'Compact', 'Balanced', 'Loose', 'Very Loose'))",
+        "NOT NULL CHECK (compactness IN ('veryCompact', 'compact', 'balanced', 'loose', 'veryLoose'))",
       )();
 
   TextColumn get verticalStretch => text()
       .withLength(min: 1, max: 20)
       .customConstraint(
-        "NOT NULL CHECK (vertical_stretch IN ('Compressed', 'Balanced', 'Stretched'))",
+        "NOT NULL CHECK (vertical_stretch IN ('compressed', 'balanced', 'stretched'))",
       )();
 
   TextColumn get overloadFocus => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (overload_focus IN ('Left overload', 'Right overload', 'Central overload', 'No specific overload'))",
+        "NOT NULL CHECK (overload_focus IN ('leftOverload', 'rightOverload', 'centralOverload', 'noSpecificOverload'))",
       )();
 
   // =========================
@@ -165,18 +165,18 @@ class NationalTeamTactics extends Table {
   TextColumn get setPieceAttack => text()
       .withLength(min: 1, max: 40)
       .customConstraint(
-        "NOT NULL CHECK (set_piece_attack IN ('Near-post corners', 'Far-post corners', 'Mixed corners', 'Short corners', 'Crowd goalkeeper', 'Edge-of-box setup', 'Tall-player targeting', 'Rebound hunting'))",
+        "NOT NULL CHECK (set_piece_attack IN ('nearPostCorners', 'farPostCorners', 'mixedCorners', 'shortCorners', 'crowdGoalkeeper', 'edgeOfBoxSetup', 'tallPlayerTargeting', 'reboundHunting'))",
       )();
 
   TextColumn get setPieceDefense => text()
       .withLength(min: 1, max: 30)
       .customConstraint(
-        "NOT NULL CHECK (set_piece_defense IN ('Zonal marking', 'Mixed marking', 'Man marking', 'Leave players up', 'Full retreat', 'Counter setup', 'Near-post guard'))",
+        "NOT NULL CHECK (set_piece_defense IN ('zonalMarking', 'mixedMarking', 'manMarking', 'leavePlayersUp', 'fullRetreat', 'counterSetup', 'nearPostGuard'))",
       )();
 
   TextColumn get freeKickStrategy => text()
       .withLength(min: 1, max: 25)
       .customConstraint(
-        "NOT NULL CHECK (free_kick_strategy IN ('Shoot direct', 'Cross into box', 'Short routine', 'Fast restart'))",
+        "NOT NULL CHECK (free_kick_strategy IN ('shootDirect', 'crossIntoBox', 'shortRoutine', 'fastRestart'))",
       )();
 }

@@ -10,5 +10,5 @@ class NationalTeams extends Table {
 
   TextColumn get name => text().unique()();
 
-  TextColumn get lineup => text()();
+  TextColumn get lineup => text().withDefault(const Constant('{}'))();
 }

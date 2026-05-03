@@ -98,7 +98,9 @@ class NationalTeamRepository {
   // }
 
   Future<TeamLineup> _parseLineup(String lineupJson) async {
-    final decoded = jsonDecode(lineupJson);
+    final decoded = Map<String, dynamic>.from(
+      jsonDecode(lineupJson) as Map,
+    );
 
     // Merge decoded JSON's bench ids, reserve ids, and slot assignment player ids into a single set of unique player IDs
     final playerIds = <int>{

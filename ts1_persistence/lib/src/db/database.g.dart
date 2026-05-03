@@ -1362,7 +1362,8 @@ class $NationalTeamsTable extends NationalTeams
     aliasedName,
     false,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
   );
   @override
   List<GeneratedColumn> get $columns => [id, countryId, name, lineup];
@@ -1402,8 +1403,6 @@ class $NationalTeamsTable extends NationalTeams
         _lineupMeta,
         lineup.isAcceptableOrUnknown(data['lineup']!, _lineupMeta),
       );
-    } else if (isInserting) {
-      context.missing(_lineupMeta);
     }
     return context;
   }
@@ -1551,10 +1550,9 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     this.id = const Value.absent(),
     required int countryId,
     required String name,
-    required String lineup,
+    this.lineup = const Value.absent(),
   }) : countryId = Value(countryId),
-       name = Value(name),
-       lineup = Value(lineup);
+       name = Value(name);
   static Insertable<NationalTeamRecord> custom({
     Expression<int>? id,
     Expression<int>? countryId,
@@ -1674,7 +1672,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (build_up_style IN (\'Build From Back\', \'Mixed Build-Up\', \'Direct Progression\', \'Long Ball\', \'Counter Build-Up\'))',
+        'NOT NULL CHECK (build_up_style IN (\'buildFromBack\', \'mixedBuildUp\', \'directProgression\', \'longBall\', \'counterBuildUp\'))',
   );
   static const VerificationMeta _tempoMeta = const VerificationMeta('tempo');
   @override
@@ -1689,7 +1687,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (tempo IN (\'Very Low\', \'Low\', \'Balanced\', \'High\', \'Very High\'))',
+        'NOT NULL CHECK (tempo IN (\'veryLow\', \'low\', \'balanced\', \'high\', \'veryHigh\'))',
   );
   static const VerificationMeta _widthMeta = const VerificationMeta('width');
   @override
@@ -1704,7 +1702,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (width IN (\'Very Narrow\', \'Narrow\', \'Balanced\', \'Wide\', \'Very Wide\'))',
+        'NOT NULL CHECK (width IN (\'veryNarrow\', \'narrow\', \'balanced\', \'wide\', \'veryWide\'))',
   );
   static const VerificationMeta _finalThirdFocusMeta = const VerificationMeta(
     'finalThirdFocus',
@@ -1721,7 +1719,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (final_third_focus IN (\'Work Ball Into Box\', \'Mixed Attacking\', \'Shoot On Sight\', \'Cross Early\', \'Overlap Wide\', \'Underlap Inside\', \'Through Ball Focus\', \'Dribble More\', \'Hold Possession\'))',
+        'NOT NULL CHECK (final_third_focus IN (\'workBallIntoBox\', \'mixedAttacking\', \'shootOnSight\', \'crossEarly\', \'overlapWide\', \'underlapInside\', \'throughBallFocus\', \'dribbleMore\', \'holdPossession\'))',
   );
   static const VerificationMeta _attackingFocusMeta = const VerificationMeta(
     'attackingFocus',
@@ -1738,7 +1736,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (attacking_focus IN (\'Attack Left\', \'Attack Right\', \'Attack Centre\', \'Mixed\', \'Switch Flanks Often\', \'Target Half-Spaces\'))',
+        'NOT NULL CHECK (attacking_focus IN (\'attackLeft\', \'attackRight\', \'attackCentre\', \'mixed\', \'switchFlanksOften\', \'targetHalfSpaces\'))',
   );
   static const VerificationMeta _defensiveLineMeta = const VerificationMeta(
     'defensiveLine',
@@ -1755,7 +1753,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (defensive_line IN (\'Very Deep\', \'Deep\', \'Standard\', \'High\', \'Very High\'))',
+        'NOT NULL CHECK (defensive_line IN (\'veryDeep\', \'deep\', \'standard\', \'high\', \'veryHigh\'))',
   );
   static const VerificationMeta _lineOfEngagementMeta = const VerificationMeta(
     'lineOfEngagement',
@@ -1772,7 +1770,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (line_of_engagement IN (\'Low Block\', \'Mid Block\', \'High Block\', \'Full Press\'))',
+        'NOT NULL CHECK (line_of_engagement IN (\'lowBlock\', \'midBlock\', \'highBlock\', \'fullPress\'))',
   );
   static const VerificationMeta _pressingIntensityMeta = const VerificationMeta(
     'pressingIntensity',
@@ -1790,7 +1788,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (pressing_intensity IN (\'Very Low\', \'Low\', \'Balanced\', \'High\', \'Extreme\'))',
+        'NOT NULL CHECK (pressing_intensity IN (\'veryLow\', \'low\', \'balanced\', \'high\', \'extreme\'))',
   );
   static const VerificationMeta _defensiveWidthMeta = const VerificationMeta(
     'defensiveWidth',
@@ -1807,7 +1805,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (defensive_width IN (\'Very Narrow\', \'Narrow\', \'Balanced\', \'Wide\', \'Very Wide\'))',
+        'NOT NULL CHECK (defensive_width IN (\'veryNarrow\', \'narrow\', \'balanced\', \'wide\', \'veryWide\'))',
   );
   static const VerificationMeta _markingStyleMeta = const VerificationMeta(
     'markingStyle',
@@ -1824,7 +1822,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (marking_style IN (\'Zonal\', \'Mixed\', \'Tight Man-Oriented\'))',
+        'NOT NULL CHECK (marking_style IN (\'zonal\', \'mixed\', \'tightManOriented\'))',
   );
   static const VerificationMeta _tacklingAggressionMeta =
       const VerificationMeta('tacklingAggression');
@@ -1841,7 +1839,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (tackling_aggression IN (\'Stay On Feet\', \'Balanced\', \'Aggressive\', \'Very Aggressive\'))',
+        'NOT NULL CHECK (tackling_aggression IN (\'stayOnFeet\', \'balanced\', \'aggressive\', \'veryAggressive\'))',
   );
   static const VerificationMeta _transitionOnWinMeta = const VerificationMeta(
     'transitionOnWin',
@@ -1858,7 +1856,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (transition_on_win IN (\'Counter Immediately\', \'Progress Safely\', \'Hold Shape\', \'Feed Playmaker\', \'Feed Winger\', \'Go Long To Striker\', \'Attack Weak Side\'))',
+        'NOT NULL CHECK (transition_on_win IN (\'counterImmediately\', \'progressSafely\', \'holdShape\', \'feedPlaymaker\', \'feedWinger\', \'goLongToStriker\', \'attackWeakSide\'))',
   );
   static const VerificationMeta _transitionOnLossMeta = const VerificationMeta(
     'transitionOnLoss',
@@ -1875,7 +1873,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (transition_on_loss IN (\'Counterpress\', \'Delay\', \'Regroup\', \'Tactical Foul\', \'Drop Deep Immediately\'))',
+        'NOT NULL CHECK (transition_on_loss IN (\'counterpress\', \'delay\', \'regroup\', \'tacticalFoul\', \'dropDeepImmediately\'))',
   );
   static const VerificationMeta _teamMentalityMeta = const VerificationMeta(
     'teamMentality',
@@ -1892,7 +1890,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (team_mentality IN (\'Very Defensive\', \'Defensive\', \'Cautious\', \'Balanced\', \'Positive\', \'Attacking\', \'Very Attacking\'))',
+        'NOT NULL CHECK (team_mentality IN (\'veryDefensive\', \'defensive\', \'cautious\', \'balanced\', \'positive\', \'attacking\', \'veryAttacking\'))',
   );
   static const VerificationMeta _passingRiskMeta = const VerificationMeta(
     'passingRisk',
@@ -1909,7 +1907,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (passing_risk IN (\'Very Safe\', \'Safe\', \'Balanced\', \'Risky\', \'Very Risky\'))',
+        'NOT NULL CHECK (passing_risk IN (\'verySafe\', \'safe\', \'balanced\', \'risky\', \'veryRisky\'))',
   );
   static const VerificationMeta _dribblingRiskMeta = const VerificationMeta(
     'dribblingRisk',
@@ -1926,7 +1924,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (dribbling_risk IN (\'Very Conservative\', \'Balanced\', \'Aggressive\'))',
+        'NOT NULL CHECK (dribbling_risk IN (\'veryConservative\', \'balanced\', \'aggressive\'))',
   );
   static const VerificationMeta _shootingPolicyMeta = const VerificationMeta(
     'shootingPolicy',
@@ -1943,7 +1941,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (shooting_policy IN (\'Shoot Less\', \'Balanced\', \'Shoot More\', \'Shoot Aggressively\'))',
+        'NOT NULL CHECK (shooting_policy IN (\'shootLess\', \'balanced\', \'shootMore\', \'shootAggressively\'))',
   );
   static const VerificationMeta _compactnessMeta = const VerificationMeta(
     'compactness',
@@ -1960,7 +1958,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (compactness IN (\'Very Compact\', \'Compact\', \'Balanced\', \'Loose\', \'Very Loose\'))',
+        'NOT NULL CHECK (compactness IN (\'veryCompact\', \'compact\', \'balanced\', \'loose\', \'veryLoose\'))',
   );
   static const VerificationMeta _verticalStretchMeta = const VerificationMeta(
     'verticalStretch',
@@ -1977,7 +1975,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (vertical_stretch IN (\'Compressed\', \'Balanced\', \'Stretched\'))',
+        'NOT NULL CHECK (vertical_stretch IN (\'compressed\', \'balanced\', \'stretched\'))',
   );
   static const VerificationMeta _overloadFocusMeta = const VerificationMeta(
     'overloadFocus',
@@ -1994,7 +1992,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (overload_focus IN (\'Left overload\', \'Right overload\', \'Central overload\', \'No specific overload\'))',
+        'NOT NULL CHECK (overload_focus IN (\'leftOverload\', \'rightOverload\', \'centralOverload\', \'noSpecificOverload\'))',
   );
   static const VerificationMeta _setPieceAttackMeta = const VerificationMeta(
     'setPieceAttack',
@@ -2011,7 +2009,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (set_piece_attack IN (\'Near-post corners\', \'Far-post corners\', \'Mixed corners\', \'Short corners\', \'Crowd goalkeeper\', \'Edge-of-box setup\', \'Tall-player targeting\', \'Rebound hunting\'))',
+        'NOT NULL CHECK (set_piece_attack IN (\'nearPostCorners\', \'farPostCorners\', \'mixedCorners\', \'shortCorners\', \'crowdGoalkeeper\', \'edgeOfBoxSetup\', \'tallPlayerTargeting\', \'reboundHunting\'))',
   );
   static const VerificationMeta _setPieceDefenseMeta = const VerificationMeta(
     'setPieceDefense',
@@ -2028,7 +2026,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (set_piece_defense IN (\'Zonal marking\', \'Mixed marking\', \'Man marking\', \'Leave players up\', \'Full retreat\', \'Counter setup\', \'Near-post guard\'))',
+        'NOT NULL CHECK (set_piece_defense IN (\'zonalMarking\', \'mixedMarking\', \'manMarking\', \'leavePlayersUp\', \'fullRetreat\', \'counterSetup\', \'nearPostGuard\'))',
   );
   static const VerificationMeta _freeKickStrategyMeta = const VerificationMeta(
     'freeKickStrategy',
@@ -2045,7 +2043,7 @@ class $NationalTeamTacticsTable extends NationalTeamTactics
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     $customConstraints:
-        'NOT NULL CHECK (free_kick_strategy IN (\'Shoot direct\', \'Cross into box\', \'Short routine\', \'Fast restart\'))',
+        'NOT NULL CHECK (free_kick_strategy IN (\'shootDirect\', \'crossIntoBox\', \'shortRoutine\', \'fastRestart\'))',
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -4480,7 +4478,7 @@ typedef $$NationalTeamsTableCreateCompanionBuilder =
       Value<int> id,
       required int countryId,
       required String name,
-      required String lineup,
+      Value<String> lineup,
     });
 typedef $$NationalTeamsTableUpdateCompanionBuilder =
     NationalTeamsCompanion Function({
@@ -4700,7 +4698,7 @@ class $$NationalTeamsTableTableManager
                 Value<int> id = const Value.absent(),
                 required int countryId,
                 required String name,
-                required String lineup,
+                Value<String> lineup = const Value.absent(),
               }) => NationalTeamsCompanion.insert(
                 id: id,
                 countryId: countryId,

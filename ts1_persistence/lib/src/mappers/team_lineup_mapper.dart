@@ -18,21 +18,23 @@ class TeamLineupMapper {
     // First, we need to get benchIds
     final benchIds = List<int>.from(decoded['benchIds'] ?? []);
     final reserveIds = List<int>.from(decoded['reserveIds'] ?? []);
-    final slotAssignments = List<Map<String, dynamic>>.from(
-      decoded['slotAssignments'] ?? [],
-    );
+    final slotAssignments = (decoded['slotAssignments'] as List<dynamic>? ?? [])
+        .map((entry) => Map<String, dynamic>.from(entry as Map))
+        .toList();
 
     // Replace benchIds with bench Players
     decoded['bench'] = benchIds
-        .map((id) => playerMap[id])
-        .whereType<Player>()
-        .toList();
+      .map((id) => playerMap[id])
+      .whereType<Player>()
+      .map((player) => player.toJson())
+      .toList();
 
     // Replace reserveIds with reserve Players
     decoded['reserves'] = reserveIds
-        .map((id) => playerMap[id])
-        .whereType<Player>()
-        .toList();
+      .map((id) => playerMap[id])
+      .whereType<Player>()
+      .map((player) => player.toJson())
+      .toList();
 
     // Replace slotAssignments' playerId with actual Player objects
     decoded['slotAssignments'] = slotAssignments.map((sa) {
@@ -41,7 +43,7 @@ class TeamLineupMapper {
       if (player == null) {
         throw Exception('Player with ID $playerId not found in playerMap');
       }
-      return {...sa, 'player': player};
+      return {...sa, 'player': player.toJson()};
     }).toList();
 
     // Replace captainId with actual Player object
@@ -51,7 +53,7 @@ class TeamLineupMapper {
       if (captain == null) {
         throw Exception('Captain with ID $captainId not found in playerMap');
       }
-      decoded['captain'] = captain;
+      decoded['captain'] = captain.toJson();
     }
 
     // Now we can construct the TeamLineup using the decoded JSON and the player map
