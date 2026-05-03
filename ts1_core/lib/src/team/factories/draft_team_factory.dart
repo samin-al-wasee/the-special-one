@@ -128,7 +128,7 @@ class DraftTeamFactory {
           teamId: teamId,
           index: index,
           seed: chosen,
-          slotLabel: slot.slotId,
+          slotLabel: slot.slotId.code,
           isStarter: true,
         ),
       );
@@ -314,7 +314,7 @@ class DraftTeamFactory {
           teamName: teamName,
           index: index,
           position: position,
-          slotLabel: slot.slotId,
+          slotLabel: slot.slotId.code,
           isStarter: true,
         ),
       );

@@ -19,10 +19,12 @@ abstract class FormationShape with _$FormationShape {
   const FormationShape._();
 
   /// Get all slot IDs in this formation.
-  List<String> slotIds() => [for (final slot in slotDefinitions) slot.slotId];
+  List<FormationSlotId> slotIds() => [
+    for (final slot in slotDefinitions) slot.slotId,
+  ];
 
   /// Get a slot by its ID, or null if not found.
-  FormationSlot? slotById(String slotId) {
+  FormationSlot? slotById(FormationSlotId slotId) {
     for (final slot in slotDefinitions) {
       if (slot.slotId == slotId) {
         return slot;

@@ -1,6 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ts1_core/src/core/enums/match/pitch_zone.dart';
 import 'package:ts1_core/src/core/enums/player/position.dart';
+import 'package:ts1_core/src/core/enums/team/formation/formation_area.dart';
+import 'package:ts1_core/src/core/enums/team/formation/formation_line.dart';
+import 'package:ts1_core/src/core/enums/team/formation/formation_slot_id.dart';
+import 'package:ts1_core/src/core/enums/team/formation/slot_lateral_band.dart';
+import 'package:ts1_core/src/core/enums/team/formation/slot_vertical_band.dart';
+
+export 'package:ts1_core/src/core/enums/team/formation/formation_area.dart';
+export 'package:ts1_core/src/core/enums/team/formation/formation_line.dart';
+export 'package:ts1_core/src/core/enums/team/formation/formation_slot_id.dart';
+export 'package:ts1_core/src/core/enums/team/formation/slot_lateral_band.dart';
+export 'package:ts1_core/src/core/enums/team/formation/slot_vertical_band.dart';
 
 part 'formation_slot.freezed.dart';
 part 'formation_slot.g.dart';
@@ -11,17 +22,17 @@ part 'formation_slot.g.dart';
 abstract class FormationSlot with _$FormationSlot {
   const factory FormationSlot({
     required int id,
-    required String slotId,
+    required FormationSlotId slotId,
     required Position position, // NEW: tactical position for this slot
     required PitchZone baseZone,
-    required String line,
+    required FormationLine line,
     required SlotLateralBand lateralBand,
     required SlotVerticalBand verticalBand,
     @Default([]) List<Position> preferredPositions,
-    @Default([]) List<String> adjacencySlots,
-    @Default([]) List<String> supportLinks,
-    @Default([]) List<String> attackingLaneAccess,
-    @Default([]) List<String> defensiveResponsibility,
+    @Default([]) List<FormationSlotId> adjacencySlots,
+    @Default([]) List<FormationSlotId> supportLinks,
+    @Default([]) List<FormationArea> attackingLaneAccess,
+    @Default([]) List<FormationArea> defensiveResponsibility,
   }) = _FormationSlot;
 
   factory FormationSlot.fromJson(Map<String, dynamic> json) =>
@@ -84,13 +95,3 @@ abstract class FormationSlot with _$FormationSlot {
         verticalBand == verticalBandForZone(baseZone);
   }
 }
-
-enum SlotLateralBand {
-  leftWide,
-  leftHalfSpace,
-  center,
-  rightHalfSpace,
-  rightWide,
-}
-
-enum SlotVerticalBand { deep, mid, high }

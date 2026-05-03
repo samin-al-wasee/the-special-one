@@ -388,29 +388,30 @@ class FormationFactory {
 
   static FormationSlot _slot(
     int id,
-    String slotId,
+    String slotIdCode,
     Position position, // NEW required argument
     PitchZone zone,
-    String line,
+    String lineCode,
     List<Position> preferredPositions, {
     List<String> adjacency = const <String>[],
     List<String> support = const <String>[],
     List<String> lanes = const <String>[],
     List<String> defensive = const <String>[],
   }) {
+    // The catalog keeps canonical codes; the domain model is enum-backed.
     return FormationSlot(
       id: id,
-      slotId: slotId,
+      slotId: FormationSlotId.fromCode(slotIdCode),
       position: position,
       baseZone: zone,
-      line: line,
+      line: FormationLine.fromCode(lineCode),
       lateralBand: FormationSlot.lateralBandForZone(zone),
       verticalBand: FormationSlot.verticalBandForZone(zone),
       preferredPositions: preferredPositions,
-      adjacencySlots: adjacency,
-      supportLinks: support,
-      attackingLaneAccess: lanes,
-      defensiveResponsibility: defensive,
+      adjacencySlots: adjacency.map(FormationSlotId.fromCode).toList(),
+      supportLinks: support.map(FormationSlotId.fromCode).toList(),
+      attackingLaneAccess: lanes.map(FormationArea.fromCode).toList(),
+      defensiveResponsibility: defensive.map(FormationArea.fromCode).toList(),
     );
   }
 
@@ -443,7 +444,6 @@ class FormationFactory {
         lanes: ['right_flank', 'right_halfspace'],
         defensive: ['right_flank'],
       ),
-      // CBs (right to left)
       _slot(
         3,
         'RCB',

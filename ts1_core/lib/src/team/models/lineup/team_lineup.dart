@@ -3,6 +3,7 @@ import 'package:ts1_core/src/core/catalog/role_catalog.dart';
 import 'package:ts1_core/src/core/enums/player/duty.dart';
 import 'package:ts1_core/src/core/enums/player/position.dart';
 import 'package:ts1_core/src/core/enums/player/role.dart';
+import 'package:ts1_core/src/team/models/lineup/formation/slot/formation_slot.dart';
 import 'package:ts1_core/src/team/models/lineup/formation/shape/formation_shape.dart';
 import 'package:ts1_core/src/team/models/lineup/slot_assignment/lineup_slot_assignment.dart';
 import 'package:ts1_core/src/player/models/player.dart';
@@ -51,7 +52,7 @@ abstract class TeamLineup with _$TeamLineup {
       }
       if (chosenIdx < 0) {
         throw StateError(
-          'Not enough players to fill new formation slot "${slot.slotId}".',
+          'Not enough players to fill new formation slot "${slot.slotId.code}".',
         );
       }
       final player = unassigned.removeAt(chosenIdx);
@@ -81,7 +82,7 @@ abstract class TeamLineup with _$TeamLineup {
   }
 
   void validate() {
-    final slotIds = <String>{
+    final slotIds = <FormationSlotId>{
       for (final slot in formationShape.slotDefinitions) slot.slotId,
     };
     final assignedSlots = [
@@ -126,13 +127,13 @@ abstract class TeamLineup with _$TeamLineup {
       // Prevent stale/contradictory slot snapshots in assignment payloads.
       if (assignment.formationSlot != canonicalSlot) {
         throw ArgumentError(
-          'Slot snapshot mismatch for "$slotId". Use formationShape.slotById(slotId) as source of truth.',
+          'Slot snapshot mismatch for "${slotId.code}". Use formationShape.slotById(slotId) as source of truth.',
         );
       }
 
       if (!canonicalSlot.hasCanonicalBandMapping()) {
         throw ArgumentError(
-          'Non-canonical zone-band mapping in slot "$slotId": ${canonicalSlot.baseZone}/${canonicalSlot.lateralBand}/${canonicalSlot.verticalBand}.',
+          'Non-canonical zone-band mapping in slot "${slotId.code}": ${canonicalSlot.baseZone}/${canonicalSlot.lateralBand}/${canonicalSlot.verticalBand}.',
         );
       }
 
@@ -145,14 +146,14 @@ abstract class TeamLineup with _$TeamLineup {
       if (supportedPositions.isNotEmpty &&
           !supportedPositions.contains(playerPosition)) {
         throw ArgumentError(
-          'Role-position mismatch for slot "$slotId": role "$role" does not support position "$playerPosition".',
+          'Role-position mismatch for slot "${slotId.code}": role "$role" does not support position "$playerPosition".',
         );
       }
 
       final supportedDuties = roleSupportedDuties[role] ?? const <Duty>{};
       if (supportedDuties.isNotEmpty && !supportedDuties.contains(duty)) {
         throw ArgumentError(
-          'Role-duty mismatch for slot "$slotId": duty "$duty" is not valid for role "$role".',
+          'Role-duty mismatch for slot "${slotId.code}": duty "$duty" is not valid for role "$role".',
         );
       }
     }
@@ -234,7 +235,7 @@ abstract class TeamLineup with _$TeamLineup {
       }
       if (chosenIdx < 0) {
         throw StateError(
-          'Cannot build lineup: not enough players to fill formation slot ${slot.slotId}.',
+          'Cannot build lineup: not enough players to fill formation slot ${slot.slotId.code}.',
         );
       }
 
