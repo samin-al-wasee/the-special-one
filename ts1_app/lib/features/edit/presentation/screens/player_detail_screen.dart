@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class PlayerDetailScreen extends ConsumerWidget {
@@ -13,7 +14,10 @@ class PlayerDetailScreen extends ConsumerWidget {
     final asyncPlayer = ref.watch(playerByIdProvider(playerId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Player Detail')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Player Detail'),
+      ),
       body: asyncPlayer.when(
         data: (player) {
           if (player == null) {

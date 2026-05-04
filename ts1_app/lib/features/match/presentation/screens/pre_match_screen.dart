@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ts1_core/ts1_core.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/persistence/persistence_providers.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
@@ -39,6 +40,10 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
         child: SafeArea(
           child: Stack(
             children: [
+              const Align(
+                alignment: Alignment.topLeft,
+                child: AppBackButton(),
+              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
@@ -120,7 +125,7 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
                                             homeTeam: _homeTeam!,
                                             awayTeam: _awayTeam!,
                                           );
-                                      context.go('/setup');
+                                      context.push('/setup');
                                     }
                                   : null,
                               style: FilledButton.styleFrom(

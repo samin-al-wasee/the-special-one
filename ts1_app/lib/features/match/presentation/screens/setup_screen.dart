@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ts1_core/ts1_core.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 import '../widgets/responsive_pair_layout.dart';
@@ -18,6 +19,7 @@ class MatchConfigurationScreen extends ConsumerWidget {
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(
+            leading: const AppBackButton(),
             title: const Text('Match Setup'),
             actions: const [ThemeModeButton()],
           ),
@@ -74,7 +76,7 @@ class MatchConfigurationScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                   FilledButton(
                     onPressed: () {
-                      context.go('/lineup');
+                      context.push('/lineup');
                     },
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),

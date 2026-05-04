@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class ContinentListScreen extends ConsumerWidget {
@@ -12,7 +13,10 @@ class ContinentListScreen extends ConsumerWidget {
     final asyncData = ref.watch(continentOverviewsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Continents')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Continents'),
+      ),
       body: asyncData.when(
         data: (items) {
           if (items.isEmpty) {
@@ -28,7 +32,7 @@ class ContinentListScreen extends ConsumerWidget {
                   'Teams: ${item.teamCount} | Players: ${item.playerCount} | Countries: ${item.countryNames.length}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/edit/continents/${item.continent.id}'),
+                onTap: () => context.push('/edit/continents/${item.continent.id}'),
               );
             },
           );

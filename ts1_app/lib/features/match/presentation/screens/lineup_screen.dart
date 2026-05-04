@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ts1_core/ts1_core.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 
@@ -17,6 +18,7 @@ class LineupScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: const Text('Lineups & Tactics'),
         actions: const [ThemeModeButton()],
       ),
@@ -116,7 +118,7 @@ class LineupScreen extends ConsumerWidget {
                       child: FilledButton(
                         onPressed: () {
                           ref.read(matchFlowProvider).startMatch();
-                          context.go('/match');
+                          context.push('/match');
                         },
                         child: const Text('Kick Off'),
                       ),

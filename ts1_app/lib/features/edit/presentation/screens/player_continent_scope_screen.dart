@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class PlayerContinentScopeScreen extends ConsumerWidget {
@@ -12,7 +13,10 @@ class PlayerContinentScopeScreen extends ConsumerWidget {
     final asyncData = ref.watch(playerContinentScopesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Players by Nationality')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Players by Nationality'),
+      ),
       body: asyncData.when(
         data: (scopes) {
           if (scopes.isEmpty) {
@@ -27,7 +31,7 @@ class PlayerContinentScopeScreen extends ConsumerWidget {
                 title: Text('${scope.continent.name} (${scope.continent.code})'),
                 subtitle: Text('Players: ${scope.playerCount}'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/edit/players/continent/${scope.continent.id}'),
+                onTap: () => context.push('/edit/players/continent/${scope.continent.id}'),
               );
             },
           );

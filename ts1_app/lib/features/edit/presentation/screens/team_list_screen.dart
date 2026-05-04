@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class TeamListScreen extends ConsumerWidget {
@@ -12,7 +13,10 @@ class TeamListScreen extends ConsumerWidget {
     final asyncData = ref.watch(teamsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Teams')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Teams'),
+      ),
       body: asyncData.when(
         data: (teams) {
           if (teams.isEmpty) {
@@ -28,7 +32,7 @@ class TeamListScreen extends ConsumerWidget {
                   'Formation: ${team.lineup.formationShape.code} | Starters: ${team.lineup.slotAssignments.length}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/edit/teams/${team.id}'),
+                onTap: () => context.push('/edit/teams/${team.id}'),
               );
             },
           );

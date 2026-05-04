@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class PlayerListScreen extends ConsumerWidget {
@@ -16,6 +17,7 @@ class PlayerListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: asyncCountry.maybeWhen(
           data: (country) => Text(country == null ? 'Players' : 'Players - ${country.name}'),
           orElse: () => const Text('Players'),
@@ -35,7 +37,7 @@ class PlayerListScreen extends ConsumerWidget {
                 title: Text(player.name),
                 subtitle: Text(player.position),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/edit/players/detail/${player.id}'),
+                onTap: () => context.push('/edit/players/detail/${player.id}'),
               );
             },
           );

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ts1_core/ts1_core.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 
@@ -19,6 +20,7 @@ class LiveMatchScreen extends ConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
+            leading: const AppBackButton(),
             title: const Text('Live Match'),
             actions: [
               const ThemeModeButton(),
@@ -46,7 +48,7 @@ class LiveMatchScreen extends ConsumerWidget {
                           width: double.infinity,
                           child: FilledButton(
                             onPressed: match.matchState.isFinished
-                                ? () => context.go('/summary')
+                                  ? () => context.push('/summary')
                                 : null,
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),

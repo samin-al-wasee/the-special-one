@@ -65,7 +65,7 @@ class HomeScreen extends ConsumerWidget {
                         FilledButton(
                           onPressed: () {
                             ref.read(matchFlowProvider).resetToDefaults();
-                            context.go('/pre-match');
+                            context.push('/pre-match');
                           },
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 18),
@@ -77,7 +77,7 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 12),
                         OutlinedButton(
-                          onPressed: () => context.go('/edit'),
+                          onPressed: () => context.push('/edit'),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 18),
                             shape: RoundedRectangleBorder(

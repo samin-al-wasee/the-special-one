@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/navigation/app_back_button.dart';
 import '../../application/edit_data_providers.dart';
 
 class ContinentDetailScreen extends ConsumerWidget {
@@ -13,7 +14,10 @@ class ContinentDetailScreen extends ConsumerWidget {
     final asyncData = ref.watch(continentOverviewProvider(continentId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Continent Detail')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('Continent Detail'),
+      ),
       body: asyncData.when(
         data: (item) {
           if (item == null) {
