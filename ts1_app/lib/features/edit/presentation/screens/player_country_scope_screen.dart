@@ -12,7 +12,9 @@ class PlayerCountryScopeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncData = ref.watch(playerCountryScopesByContinentProvider(continentId));
+    final asyncData = ref.watch(
+      playerCountryScopesByContinentProvider(continentId),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +24,9 @@ class PlayerCountryScopeScreen extends ConsumerWidget {
       body: asyncData.when(
         data: (scopes) {
           if (scopes.isEmpty) {
-            return const Center(child: Text('No countries found for this continent'));
+            return const Center(
+              child: Text('No countries found for this continent'),
+            );
           }
 
           return ListView.builder(
@@ -33,7 +37,8 @@ class PlayerCountryScopeScreen extends ConsumerWidget {
                 title: Text('${scope.country.name} (${scope.country.code})'),
                 subtitle: Text('Players: ${scope.playerCount}'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/edit/players/country/${scope.country.id}'),
+                onTap: () =>
+                    context.push('/edit/players/country/${scope.country.id}'),
               );
             },
           );

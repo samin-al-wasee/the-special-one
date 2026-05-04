@@ -26,7 +26,10 @@ class CountryDetailScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Text(item.country.name, style: Theme.of(context).textTheme.headlineSmall),
+              Text(
+                item.country.name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
               const SizedBox(height: 8),
               Text('Code: ${item.country.code}'),
               Text('Team: ${item.team?.name ?? 'No national team assigned'}'),

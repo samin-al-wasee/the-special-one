@@ -28,10 +28,14 @@ class PlayerContinentScopeScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               final scope = scopes[index];
               return ListTile(
-                title: Text('${scope.continent.name} (${scope.continent.code})'),
+                title: Text(
+                  '${scope.continent.name} (${scope.continent.code})',
+                ),
                 subtitle: Text('Players: ${scope.playerCount}'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/edit/players/continent/${scope.continent.id}'),
+                onTap: () => context.push(
+                  '/edit/players/continent/${scope.continent.id}',
+                ),
               );
             },
           );

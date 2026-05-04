@@ -32,7 +32,8 @@ class ContinentListScreen extends ConsumerWidget {
                   'Teams: ${item.teamCount} | Players: ${item.playerCount} | Countries: ${item.countryNames.length}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/edit/continents/${item.continent.id}'),
+                onTap: () =>
+                    context.push('/edit/continents/${item.continent.id}'),
               );
             },
           );

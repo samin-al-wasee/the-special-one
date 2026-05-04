@@ -40,10 +40,7 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
         child: SafeArea(
           child: Stack(
             children: [
-              const Align(
-                alignment: Alignment.topLeft,
-                child: AppBackButton(),
-              ),
+              const Align(alignment: Alignment.topLeft, child: AppBackButton()),
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(

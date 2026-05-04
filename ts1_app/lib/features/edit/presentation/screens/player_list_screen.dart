@@ -19,7 +19,8 @@ class PlayerListScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: const AppBackButton(),
         title: asyncCountry.maybeWhen(
-          data: (country) => Text(country == null ? 'Players' : 'Players - ${country.name}'),
+          data: (country) =>
+              Text(country == null ? 'Players' : 'Players - ${country.name}'),
           orElse: () => const Text('Players'),
         ),
       ),

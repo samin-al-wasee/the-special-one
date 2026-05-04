@@ -37,7 +37,9 @@ class EditHomeScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_search),
             title: const Text('Players'),
-            subtitle: const Text('Continent > Country > Players > Detail (nationality scope)'),
+            subtitle: const Text(
+              'Continent > Country > Players > Detail (nationality scope)',
+            ),
             onTap: () => context.push('/edit/players'),
           ),
         ],

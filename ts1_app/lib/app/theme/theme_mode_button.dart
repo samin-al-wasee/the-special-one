@@ -54,10 +54,7 @@ class ThemeModeButton extends ConsumerWidget {
 }
 
 class _ThemeMenuItem extends StatelessWidget {
-  const _ThemeMenuItem({
-    required this.title,
-    required this.selected,
-  });
+  const _ThemeMenuItem({required this.title, required this.selected});
 
   final String title;
   final bool selected;

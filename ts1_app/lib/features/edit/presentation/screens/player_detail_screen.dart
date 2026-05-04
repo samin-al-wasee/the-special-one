@@ -27,12 +27,17 @@ class PlayerDetailScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Text(player.name, style: Theme.of(context).textTheme.headlineSmall),
+              Text(
+                player.name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
               const SizedBox(height: 8),
               Text('Nationality: ${player.country}'),
               Text('Position: ${player.position.label}'),
               Text('Footedness: ${player.footedness.label}'),
-              Text('Date of Birth: ${player.dateOfBirth.toIso8601String().split('T').first}'),
+              Text(
+                'Date of Birth: ${player.dateOfBirth.toIso8601String().split('T').first}',
+              ),
               Text('Height: ${player.heightCm} cm'),
               Text('Weight: ${player.weightKg} kg'),
               const SizedBox(height: 12),

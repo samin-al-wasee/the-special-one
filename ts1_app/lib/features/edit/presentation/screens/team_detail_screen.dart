@@ -35,7 +35,10 @@ class TeamDetailScreen extends ConsumerWidget {
               const SizedBox(height: 8),
               Text(team.tactic.summary()),
               const SizedBox(height: 16),
-              Text('Lineup (Starters)', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Lineup (Starters)',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               ...team.lineup.slotAssignments.map(
                 (assignment) => ListTile(

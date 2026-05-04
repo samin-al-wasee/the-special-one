@@ -26,13 +26,19 @@ class ContinentDetailScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Text(item.continent.name, style: Theme.of(context).textTheme.headlineSmall),
+              Text(
+                item.continent.name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
               const SizedBox(height: 8),
               Text('Code: ${item.continent.code}'),
               Text('Team Count: ${item.teamCount}'),
               Text('Player Count: ${item.playerCount}'),
               const SizedBox(height: 16),
-              Text('Country Names', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Country Names',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               if (item.countryNames.isEmpty)
                 const Text('No countries in this continent')

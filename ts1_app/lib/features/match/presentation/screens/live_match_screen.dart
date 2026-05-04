@@ -48,7 +48,7 @@ class LiveMatchScreen extends ConsumerWidget {
                           width: double.infinity,
                           child: FilledButton(
                             onPressed: match.matchState.isFinished
-                                  ? () => context.push('/summary')
+                                ? () => context.push('/summary')
                                 : null,
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),

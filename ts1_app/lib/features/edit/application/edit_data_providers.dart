@@ -55,12 +55,20 @@ final continentOverviewsProvider = FutureProvider<List<ContinentOverview>>((
 
   final teamsByCountry = <int, int>{};
   for (final team in teams) {
-    teamsByCountry.update(team.countryId, (count) => count + 1, ifAbsent: () => 1);
+    teamsByCountry.update(
+      team.countryId,
+      (count) => count + 1,
+      ifAbsent: () => 1,
+    );
   }
 
   final playersByCountry = <int, int>{};
   for (final player in players) {
-    playersByCountry.update(player.countryId, (count) => count + 1, ifAbsent: () => 1);
+    playersByCountry.update(
+      player.countryId,
+      (count) => count + 1,
+      ifAbsent: () => 1,
+    );
   }
 
   final result = <ContinentOverview>[];
@@ -81,7 +89,9 @@ final continentOverviewsProvider = FutureProvider<List<ContinentOverview>>((
         continent: continent,
         teamCount: teamCount,
         playerCount: playerCount,
-        countryNames: countriesInContinent.map((country) => country.name).toList(),
+        countryNames: countriesInContinent
+            .map((country) => country.name)
+            .toList(),
       ),
     );
   }
@@ -90,20 +100,20 @@ final continentOverviewsProvider = FutureProvider<List<ContinentOverview>>((
   return result;
 });
 
-final continentOverviewProvider = FutureProvider.family<ContinentOverview?, int>((
-  ref,
-  continentId,
-) async {
-  final overviews = await ref.watch(continentOverviewsProvider.future);
-  for (final overview in overviews) {
-    if (overview.continent.id == continentId) {
-      return overview;
-    }
-  }
-  return null;
-});
+final continentOverviewProvider =
+    FutureProvider.family<ContinentOverview?, int>((ref, continentId) async {
+      final overviews = await ref.watch(continentOverviewsProvider.future);
+      for (final overview in overviews) {
+        if (overview.continent.id == continentId) {
+          return overview;
+        }
+      }
+      return null;
+    });
 
-final countryOverviewsProvider = FutureProvider<List<CountryOverview>>((ref) async {
+final countryOverviewsProvider = FutureProvider<List<CountryOverview>>((
+  ref,
+) async {
   final db = await ref.watch(appDatabaseProvider.future);
   final countries = await db.select(db.countries).get();
   final teams = await db.select(db.nationalTeams).get();
@@ -116,7 +126,11 @@ final countryOverviewsProvider = FutureProvider<List<CountryOverview>>((ref) asy
 
   final playersByCountry = <int, int>{};
   for (final player in players) {
-    playersByCountry.update(player.countryId, (count) => count + 1, ifAbsent: () => 1);
+    playersByCountry.update(
+      player.countryId,
+      (count) => count + 1,
+      ifAbsent: () => 1,
+    );
   }
 
   final result = [
@@ -154,71 +168,87 @@ final teamByIdProvider = FutureProvider.family<Team?, int>((ref, teamId) async {
   return repo.getTeamWithTactics(teamId);
 });
 
-final playerContinentScopesProvider = FutureProvider<List<PlayerContinentScope>>((
-  ref,
-) async {
-  final db = await ref.watch(appDatabaseProvider.future);
-  final continents = await db.select(db.continents).get();
-  final countries = await db.select(db.countries).get();
-  final players = await db.select(db.players).get();
+final playerContinentScopesProvider =
+    FutureProvider<List<PlayerContinentScope>>((ref) async {
+      final db = await ref.watch(appDatabaseProvider.future);
+      final continents = await db.select(db.continents).get();
+      final countries = await db.select(db.countries).get();
+      final players = await db.select(db.players).get();
 
-  final playersByCountry = <int, int>{};
-  for (final player in players) {
-    playersByCountry.update(player.countryId, (count) => count + 1, ifAbsent: () => 1);
-  }
+      final playersByCountry = <int, int>{};
+      for (final player in players) {
+        playersByCountry.update(
+          player.countryId,
+          (count) => count + 1,
+          ifAbsent: () => 1,
+        );
+      }
 
-  final scopes = <PlayerContinentScope>[];
-  for (final continent in continents) {
-    final countriesInContinent = countries.where((c) => c.continentId == continent.id);
-    var playerCount = 0;
-    for (final country in countriesInContinent) {
-      playerCount += playersByCountry[country.id] ?? 0;
-    }
-    scopes.add(PlayerContinentScope(continent: continent, playerCount: playerCount));
-  }
+      final scopes = <PlayerContinentScope>[];
+      for (final continent in continents) {
+        final countriesInContinent = countries.where(
+          (c) => c.continentId == continent.id,
+        );
+        var playerCount = 0;
+        for (final country in countriesInContinent) {
+          playerCount += playersByCountry[country.id] ?? 0;
+        }
+        scopes.add(
+          PlayerContinentScope(continent: continent, playerCount: playerCount),
+        );
+      }
 
-  scopes.sort((a, b) => a.continent.name.compareTo(b.continent.name));
-  return scopes;
-});
+      scopes.sort((a, b) => a.continent.name.compareTo(b.continent.name));
+      return scopes;
+    });
 
 final playerCountryScopesByContinentProvider =
-    FutureProvider.family<List<PlayerCountryScope>, int>((ref, continentId) async {
-  final db = await ref.watch(appDatabaseProvider.future);
-  final countries = await (db.select(
-    db.countries,
-  )..where((country) => country.continentId.equals(continentId))).get();
-  final players = await db.select(db.players).get();
+    FutureProvider.family<List<PlayerCountryScope>, int>((
+      ref,
+      continentId,
+    ) async {
+      final db = await ref.watch(appDatabaseProvider.future);
+      final countries = await (db.select(
+        db.countries,
+      )..where((country) => country.continentId.equals(continentId))).get();
+      final players = await db.select(db.players).get();
 
-  final playersByCountry = <int, int>{};
-  for (final player in players) {
-    playersByCountry.update(player.countryId, (count) => count + 1, ifAbsent: () => 1);
-  }
+      final playersByCountry = <int, int>{};
+      for (final player in players) {
+        playersByCountry.update(
+          player.countryId,
+          (count) => count + 1,
+          ifAbsent: () => 1,
+        );
+      }
 
-  final scopes = [
-    for (final country in countries)
-      PlayerCountryScope(
-        country: country,
-        playerCount: playersByCountry[country.id] ?? 0,
-      ),
-  ];
+      final scopes = [
+        for (final country in countries)
+          PlayerCountryScope(
+            country: country,
+            playerCount: playersByCountry[country.id] ?? 0,
+          ),
+      ];
 
-  scopes.sort((a, b) => a.country.name.compareTo(b.country.name));
-  return scopes;
-});
+      scopes.sort((a, b) => a.country.name.compareTo(b.country.name));
+      return scopes;
+    });
 
-final playersByCountryProvider = FutureProvider.family<List<PlayerRecord>, int>((
+final playersByCountryProvider = FutureProvider.family<List<PlayerRecord>, int>(
+  (ref, countryId) async {
+    final db = await ref.watch(appDatabaseProvider.future);
+    final players = await (db.select(
+      db.players,
+    )..where((player) => player.countryId.equals(countryId))).get();
+    players.sort((a, b) => a.name.compareTo(b.name));
+    return players;
+  },
+);
+
+final playerByIdProvider = FutureProvider.family<Player?, int>((
   ref,
-  countryId,
+  playerId,
 ) async {
-  final db = await ref.watch(appDatabaseProvider.future);
-  final players = await (db.select(
-    db.players,
-  )..where((player) => player.countryId.equals(countryId))).get();
-  players.sort((a, b) => a.name.compareTo(b.name));
-  return players;
-});
-
-final playerByIdProvider = FutureProvider.family<Player?, int>((ref, playerId) async {
   final repo = await ref.watch(playerRepositoryProvider.future);
   return repo.getById(playerId);
 });
