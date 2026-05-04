@@ -88,6 +88,7 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
                             const SizedBox(height: 24),
                             _SelectionPanel(
                               title: 'Home Team',
+                              isHomeTeam: true,
                               value: _homeTeam,
                               options: homeOptions,
                               onChanged: (team) {
@@ -103,6 +104,7 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
                             const SizedBox(height: 16),
                             _SelectionPanel(
                               title: 'Away Team',
+                              isHomeTeam: false,
                               value: _awayTeam,
                               options: awayOptions,
                               otherTeam: _homeTeam,
@@ -176,6 +178,7 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
 class _SelectionPanel extends StatelessWidget {
   const _SelectionPanel({
     required this.title,
+    required this.isHomeTeam,
     required this.value,
     required this.options,
     required this.onChanged,
@@ -183,6 +186,7 @@ class _SelectionPanel extends StatelessWidget {
   });
 
   final String title;
+  final bool isHomeTeam;
   final Team? value;
   final List<Team> options;
   final ValueChanged<Team?> onChanged;
@@ -197,16 +201,14 @@ class _SelectionPanel extends StatelessWidget {
     Color foreground = isDark ? Colors.white : Colors.black87;
 
     if (value != null) {
-      if (otherTeam != null) {
-        final map = colorsForTeams(otherTeam!, value!);
-        panelBackground = map['awayBg']!;
-        accent = map['awayAccent']!;
-        foreground = map['awayText']!;
-      } else {
-        panelBackground = parseHexColor(value!.primaryColor);
-        accent = parseHexColor(value!.secondaryColor);
-        foreground = foregroundForBackground(panelBackground);
-      }
+      final palette = teamColorPalette(
+        value!,
+        opponent: otherTeam,
+        isHome: isHomeTeam,
+      );
+      panelBackground = palette.background;
+      accent = palette.outline;
+      foreground = palette.text;
     }
 
     return Container(

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ts1_core/ts1_core.dart';
 
 import '../../../../app/navigation/app_back_button.dart';
+import '../../../../app/theme/team_color_utils.dart';
 import '../../../../app/theme/theme_mode_button.dart';
 import '../../application/match_flow_controller.dart';
 
@@ -351,24 +352,37 @@ class _MatchupHeader extends StatelessWidget {
         '${kickoffAt.month.toString().padLeft(2, '0')}/'
         '${kickoffAt.year}';
 
+    final homePalette = teamColorPalette(home, isHome: true);
+    final awayPalette = teamColorPalette(away, opponent: home, isHome: false);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [homePalette.background, awayPalette.background],
+        ),
+        border: Border.all(color: homePalette.outline.withValues(alpha: 0.30)),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
         children: [
           Text(
             '${home.name} vs ${away.name}',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: homePalette.text,
+              fontWeight: FontWeight.w800,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
           Text(
             '$date  •  $time',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: homePalette.text.withValues(alpha: 0.85),
+            ),
           ),
         ],
       ),
@@ -429,8 +443,8 @@ class _PitchView extends StatelessWidget {
           child: Stack(
             children: [
               CustomPaint(size: Size(width, height), painter: _PitchPainter()),
-              ..._buildPlayers(home, width, height, isHome: true),
-              ..._buildPlayers(away, width, height, isHome: false),
+                ..._buildPlayers(home, width, height, isHome: true, opponent: away),
+                ..._buildPlayers(away, width, height, isHome: false, opponent: home),
             ],
           ),
         );
@@ -443,6 +457,7 @@ class _PitchView extends StatelessWidget {
     double width,
     double height, {
     required bool isHome,
+    required Team opponent,
   }) {
     final sections = <int, List<LineupSlotAssignment>>{};
     for (final assignment in team.lineup.slotAssignments) {
@@ -483,6 +498,8 @@ class _PitchView extends StatelessWidget {
             slotPosition: assignment.formationSlot.position,
             center: center,
             isHome: isHome,
+            team: team,
+            opponent: opponent,
           ),
         );
       }
@@ -496,6 +513,8 @@ class _PitchView extends StatelessWidget {
     required Position slotPosition,
     required Offset center,
     required bool isHome,
+    required Team team,
+    required Team opponent,
   }) {
     final topOffset = isHome ? 10.0 : 21.0;
     return Positioned(
@@ -505,6 +524,8 @@ class _PitchView extends StatelessWidget {
         name: playerName,
         positionCode: _positionCode(slotPosition),
         isHome: isHome,
+        team: team,
+        opponent: opponent,
       ),
     );
   }
@@ -685,23 +706,27 @@ class _PlayerMarker extends StatelessWidget {
     required this.name,
     required this.positionCode,
     required this.isHome,
+    required this.team,
+    required this.opponent,
   });
 
   final String name;
   final String positionCode;
   final bool isHome;
+  final Team team;
+  final Team opponent;
 
   @override
   Widget build(BuildContext context) {
-    final color = isHome ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A);
-    final textColor = isHome ? Colors.black87 : Colors.white;
+    final palette = teamColorPalette(team, opponent: opponent, isHome: isHome);
     final nameBar = Container(
       width: 64,
       height: 10,
       padding: const EdgeInsets.symmetric(horizontal: 3),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.30),
+        color: palette.outline.withValues(alpha: 0.22),
         borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: palette.outline.withValues(alpha: 0.42)),
       ),
       child: _OscillatingMarquee(
         text: name,
@@ -724,14 +749,14 @@ class _PlayerMarker extends StatelessWidget {
             height: 20,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: color,
+              color: palette.background,
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withValues(alpha: 0.75)),
+              border: Border.all(color: palette.outline.withValues(alpha: 0.9)),
             ),
             child: Text(
               positionCode,
               style: TextStyle(
-                color: textColor,
+                color: palette.text,
                 fontSize: 7,
                 fontWeight: FontWeight.w700,
               ),

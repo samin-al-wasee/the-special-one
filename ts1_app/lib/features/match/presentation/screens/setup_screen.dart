@@ -5,6 +5,7 @@ import 'package:ts1_core/ts1_core.dart';
 
 import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/theme/theme_mode_button.dart';
+import '../../../../app/theme/team_color_utils.dart';
 import '../../application/match_flow_controller.dart';
 import '../widgets/responsive_pair_layout.dart';
 
@@ -45,6 +46,9 @@ class MatchConfigurationScreen extends ConsumerWidget {
                     first: _TeamSetupCard(
                       title: 'Home Team',
                       subtitle: 'Preset and formation',
+                      team: controller.draftHomeTeam,
+                      opponent: controller.draftAwayTeam,
+                      isHomeTeam: true,
                       preset: controller.homePreset,
                       formationCode: controller.homeFormationCode,
                       presetOptions: controller.availablePresets,
@@ -60,6 +64,9 @@ class MatchConfigurationScreen extends ConsumerWidget {
                     second: _TeamSetupCard(
                       title: 'Away Team',
                       subtitle: 'Preset and formation',
+                      team: controller.draftAwayTeam,
+                      opponent: controller.draftHomeTeam,
+                      isHomeTeam: false,
                       preset: controller.awayPreset,
                       formationCode: controller.awayFormationCode,
                       presetOptions: controller.availablePresets,
@@ -104,6 +111,9 @@ class _TeamSetupCard extends StatelessWidget {
   const _TeamSetupCard({
     required this.title,
     required this.subtitle,
+    required this.team,
+    required this.opponent,
+    required this.isHomeTeam,
     required this.preset,
     required this.formationCode,
     required this.presetOptions,
@@ -115,6 +125,9 @@ class _TeamSetupCard extends StatelessWidget {
 
   final String title;
   final String subtitle;
+  final Team? team;
+  final Team? opponent;
+  final bool isHomeTeam;
   final TacticalPreset preset;
   final String formationCode;
   final List<TacticalPreset> presetOptions;
@@ -125,13 +138,25 @@ class _TeamSetupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final background = lightCard
-        ? const Color(0xFFF7F7F1)
-        : const Color(0xFF121317);
-    final foreground = lightCard ? Colors.black87 : Colors.white;
-    final border = lightCard
-        ? const Color(0xFF1B5E20)
-        : const Color(0xFFEAEAEA);
+    final fallbackBackground = lightCard
+      ? const Color(0xFFF7F7F1)
+      : const Color(0xFF121317);
+    final fallbackForeground = lightCard ? Colors.black87 : Colors.white;
+    final fallbackBorder = lightCard
+      ? const Color(0xFF1B5E20)
+      : const Color(0xFFEAEAEA);
+
+    final palette = team == null
+      ? null
+      : teamColorPalette(
+        team!,
+        opponent: opponent,
+        isHome: isHomeTeam,
+        );
+
+    final background = palette?.background ?? fallbackBackground;
+    final foreground = palette?.text ?? fallbackForeground;
+    final border = palette?.outline ?? fallbackBorder;
     final menuTextStyle = TextStyle(color: foreground);
 
     return Container(
@@ -174,7 +199,7 @@ class _TeamSetupCard extends StatelessWidget {
             iconEnabledColor: foreground,
             decoration: InputDecoration(
               labelText: 'Preset',
-              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.85)),
               border: const OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
@@ -207,7 +232,7 @@ class _TeamSetupCard extends StatelessWidget {
             iconEnabledColor: foreground,
             decoration: InputDecoration(
               labelText: 'Formation',
-              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.7)),
+              labelStyle: TextStyle(color: foreground.withValues(alpha: 0.85)),
               border: const OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: border.withValues(alpha: 0.3)),
