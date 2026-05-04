@@ -1,17 +1,41 @@
+import 'package:drift/drift.dart' show Value;
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ts1_core/ts1_core.dart';
+import 'package:ts1_persistence/ts1_persistence.dart';
 
 import '../../../../app/navigation/app_back_button.dart';
+import '../../../../app/persistence/persistence_providers.dart';
 import '../../application/edit_data_providers.dart';
 
-class TeamDetailScreen extends ConsumerWidget {
+class TeamDetailScreen extends ConsumerStatefulWidget {
   const TeamDetailScreen({required this.teamId, super.key});
 
   final int teamId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncTeam = ref.watch(teamByIdProvider(teamId));
+  ConsumerState<TeamDetailScreen> createState() => _TeamDetailScreenState();
+}
+
+class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _nameController;
+  late final TextEditingController _lineupController;
+  bool _initialized = false;
+  bool _saving = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _lineupController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final asyncTeam = ref.watch(teamByIdProvider(widget.teamId));
 
     return Scaffold(
       appBar: AppBar(
@@ -24,16 +48,99 @@ class TeamDetailScreen extends ConsumerWidget {
             return const Center(child: Text('Team not found'));
           }
 
+          if (!_initialized) {
+            _nameController = TextEditingController(text: team.name);
+            _lineupController = TextEditingController(
+              text: const JsonEncoder.withIndent(
+                '  ',
+              ).convert(team.lineup.toJson()),
+            );
+            _initialized = true;
+          }
+
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Text(team.name, style: Theme.of(context).textTheme.headlineSmall),
-              const SizedBox(height: 8),
-              Text('Formation: ${team.lineup.formationShape.code}'),
-              const SizedBox(height: 12),
               Text('Tactics', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 8),
               Text(team.tactic.summary()),
+              const SizedBox(height: 16),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(labelText: 'Team name'),
+                      validator: (value) =>
+                          value == null || value.trim().isEmpty
+                          ? 'Team name is required'
+                          : null,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _lineupController,
+                      decoration: const InputDecoration(
+                        labelText: 'Lineup JSON',
+                        alignLabelWithHint: true,
+                      ),
+                      maxLines: 14,
+                      minLines: 10,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Lineup JSON is required';
+                        }
+                        try {
+                          final decoded =
+                              jsonDecode(value) as Map<String, dynamic>;
+                          TeamLineup.fromJson(decoded);
+                        } catch (error) {
+                          return 'Invalid lineup JSON: $error';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: _saving
+                          ? null
+                          : () async {
+                              if (!_formKey.currentState!.validate()) return;
+                              setState(() => _saving = true);
+                              try {
+                                final repo = await ref.read(
+                                  nationalTeamRepositoryProvider.future,
+                                );
+                                final lineup = TeamLineup.fromJson(
+                                  Map<String, dynamic>.from(
+                                    jsonDecode(_lineupController.text) as Map,
+                                  ),
+                                );
+                                await repo.updateTeam(
+                                  NationalTeamsCompanion(
+                                    id: Value(team.id),
+                                    countryId: Value(team.id),
+                                    name: Value(_nameController.text.trim()),
+                                    lineup: Value(
+                                      TeamLineupMapper.toJson(lineup),
+                                    ),
+                                  ),
+                                );
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Team saved')),
+                                  );
+                                }
+                              } finally {
+                                if (mounted) setState(() => _saving = false);
+                              }
+                            },
+                      child: Text(_saving ? 'Saving...' : 'Save Team & Lineup'),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 'Lineup (Starters)',

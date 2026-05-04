@@ -29,6 +29,11 @@ Future<String> _initializeDatabase() async {
   return dbFile.path;
 }
 
+final continentDaoProvider = FutureProvider<ContinentDao>((ref) async {
+  final db = await ref.watch(appDatabaseProvider.future);
+  return ContinentDao(db);
+});
+
 final countryDaoProvider = FutureProvider<CountryDao>((ref) async {
   final db = await ref.watch(appDatabaseProvider.future);
   return CountryDao(db);
@@ -56,6 +61,13 @@ final countryRepositoryProvider = FutureProvider<CountryRepository>((
 ) async {
   final dao = await ref.watch(countryDaoProvider.future);
   return CountryRepository(dao);
+});
+
+final continentRepositoryProvider = FutureProvider<ContinentRepository>((
+  ref,
+) async {
+  final dao = await ref.watch(continentDaoProvider.future);
+  return ContinentRepository(dao);
 });
 
 final playerRepositoryProvider = FutureProvider<PlayerRepository>((ref) async {
