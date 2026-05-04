@@ -1,16 +1,7 @@
-import 'package:ts1_persistence/ts1_persistence.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('A group of tests', () {
-    final awesome = Awesome();
-
-    setUp(() {
-      // Additional setup goes here.
-    });
-
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
+  test('Placeholder test', () {
+    expect(true, isTrue);
   });
 }

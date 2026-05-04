@@ -61,11 +61,25 @@ class TeamLineupMapper {
   }
 
   // =========================
-  // 🔹 DOMAIN → DB
+  // 🔹 DOMAIN → DB TRANSFORMATIONS
   // =========================
+  
+  /// Converts a domain [TeamLineup] to a JSON string for database storage.
+  /// 
+  /// The method replaces all Player objects with their IDs and serializes
+  /// the lineup structure for storage in the database.
+  /// 
+  /// Handles:
+  /// - Converting bench Players to benchIds list
+  /// - Converting reserve Players to reserveIds list
+  /// - Extracting player IDs from slot assignments
+  /// - Storing captain as captainId
+  /// 
+  /// Parameters:
+  ///   - [lineup]: The domain lineup model with Player objects
+  /// 
+  /// Returns: A JSON string suitable for database storage
   static String toJson(TeamLineup lineup) {
-    // We need to convert the TeamLineup to a JSON representation that can be stored in the database.
-    // This means we need to replace Player objects with their IDs in the bench, reserves, and slot assignments.
 
     final lineupJson = lineup.toJson();
 
