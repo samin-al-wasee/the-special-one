@@ -3,11 +3,11 @@ import 'package:ts1_persistence/src/db/database.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_tactic_dao.dart';
 
 /// Repository for national team tactical configuration data.
-/// 
+///
 /// Provides domain-level access to team tactics, handling transformation from
 /// database records to domain [TeamTactic] models. Returns default balanced tactics
 /// if none are stored for a team.
-/// 
+///
 /// Usage:
 /// ```dart
 /// final repo = NationalTeamTacticRepository(tacticDao);
@@ -24,12 +24,12 @@ class NationalTeamTacticRepository {
   // =========================
 
   /// Retrieves a team's tactical configuration.
-  /// 
+  ///
   /// If no tactics are stored for the team, returns a default balanced tactic.
-  /// 
+  ///
   /// Parameters:
   ///   - [teamId]: The team ID
-  /// 
+  ///
   /// Returns: The [TeamTactic] domain model (never null)
   Future<TeamTactic?> getTacticByTeamId(int teamId) async {
     final tacticRow = await dao.getTacticByTeamId(teamId);
@@ -47,12 +47,12 @@ class NationalTeamTacticRepository {
   }
 
   /// Retrieves tactics for multiple teams in a single batch operation.
-  /// 
+  ///
   /// Returns default balanced tactics for any teams without stored tactics.
-  /// 
+  ///
   /// Parameters:
   ///   - [teamIds]: List of team IDs to retrieve tactics for
-  /// 
+  ///
   /// Returns: Map of team ID to [TeamTactic] (always includes all requested IDs)
   Future<Map<int, TeamTactic>> getTacticsByTeamIds(List<int> teamIds) async {
     Map<int, TeamTactic> tacticsMap = {};

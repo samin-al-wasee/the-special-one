@@ -40,7 +40,10 @@ class PhysicalGeneratorService {
     final staminaBonus = (physical[PhysicalAttr.stamina]! - 10) * 0.3;
     final paceBonus = (physical[PhysicalAttr.pace]! - 10) * 0.2;
 
-    return (baseWeight + strengthBonus + staminaBonus + paceBonus).clamp(60, 110);
+    return (baseWeight + strengthBonus + staminaBonus + paceBonus).clamp(
+      60,
+      110,
+    );
   }
 
   Footedness generateFootedness() {

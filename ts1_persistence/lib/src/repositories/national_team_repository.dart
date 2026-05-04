@@ -9,15 +9,15 @@ import '../mappers/team_mapper.dart';
 import '../mappers/team_lineup_mapper.dart';
 
 /// Repository for national team data access and complex reconstruction.
-/// 
+///
 /// Provides domain-level access to national teams with their lineups and tactics.
 /// This is a complex repository because it must coordinate multiple related entities:
 /// - National team records
 /// - Tactical configurations
 /// - Lineup compositions with player objects
-/// 
+///
 /// The repository automatically reconstructs complex nested structures from database storage.
-/// 
+///
 /// Usage:
 /// ```dart
 /// final repo = NationalTeamRepository(dao, tacticRepo, playerRepo);
@@ -40,16 +40,16 @@ class NationalTeamRepository {
   // =========================
 
   /// Retrieves all national teams with their tactics and complete lineups.
-  /// 
+  ///
   /// This is a heavyweight operation that reconstructs complex nested structures.
   /// Each team includes:
   /// - Tactical configuration (or default balanced if not stored)
   /// - Complete lineup with all player objects resolved
   /// - Bench and reserve player lists
   /// - Formation shape and slot assignments
-  /// 
+  ///
   /// Returns: List of domain [Team] models fully reconstructed
-  /// 
+  ///
   /// Performance: O(n*m) where n is team count, m is average players per team
   Future<List<Team>> getAllTeamsWithTactics() async {
     final teamRows = await dao.getAllTeamsWithTactics();
@@ -83,33 +83,37 @@ class NationalTeamRepository {
   // =========================
   // 🔧 UTILITY METHODS
   // =========================
-  
+
   /// Retrieves a single team by ID with its tactics and lineup.
-  /// 
+  ///
   /// Parameters:
   ///   - [teamId]: The team ID to retrieve
-  /// 
+  ///
   /// Returns: The [Team] domain model fully reconstructed, or null if not found
   Future<Team?> getTeamWithTactics(int teamId) async {
     final teamRecord = await dao.getTeamById(teamId);
     if (teamRecord == null) return null;
-    
+
     final tactic = await tacticRepository.getTacticByTeamId(teamId);
     final lineup = await _parseLineup(teamRecord.lineup);
-    
-    return TeamMapper.toDomain(teamRecord, tactic ?? TacticalPresetFactory.create(TacticalPreset.balanced), lineup);
+
+    return TeamMapper.toDomain(
+      teamRecord,
+      tactic ?? TacticalPresetFactory.create(TacticalPreset.balanced),
+      lineup,
+    );
   }
 
   /// Retrieves a team with its country and tactic information.
   Future<Map<String, Object?>?> getTeamWithCountryAndTactics(int teamId) async {
     return dao.getTeamByIdWithCountryAndTactics(teamId);
   }
-  
+
   /// Retrieves multiple teams by their IDs with tactics and lineups.
-  /// 
+  ///
   /// Parameters:
   ///   - [teamIds]: List of team IDs to retrieve
-  /// 
+  ///
   /// Returns: List of [Team]s (only includes IDs that exist)
   Future<List<Team>> getTeamsWithTactics(List<int> teamIds) async {
     final teams = <Team>[];
@@ -141,22 +145,22 @@ class NationalTeamRepository {
   Future<int> deleteTeam(int id) {
     return dao.deleteTeam(id);
   }
-  
+
   /// Gets a team summary map for UI display.
-  /// 
+  ///
   /// Parameters:
   ///   - [team]: The team to summarize
-  /// 
+  ///
   /// Returns: Map with team information suitable for display
   static Map<String, dynamic> toSummaryMap(Team team) {
     return TeamMapper.toSummaryMap(team);
   }
-  
+
   /// Validates team integrity.
-  /// 
+  ///
   /// Parameters:
   ///   - [team]: The team to validate
-  /// 
+  ///
   /// Throws: ArgumentError if validation fails
   static void validate(Team team) {
     TeamMapper.validate(team);
@@ -165,12 +169,12 @@ class NationalTeamRepository {
   // =========================
   // 🔧 PRIVATE HELPER METHODS
   // =========================
-  
+
   /// Reconstructs a TeamLineup from stored JSON and player data.
-  /// 
+  ///
   /// This method handles the complex transformation of database JSON storage
   /// back into a fully functional [TeamLineup] with resolved Player objects.
-  /// 
+  ///
   /// JSON Structure expected:
   /// ```json
   /// {
@@ -188,19 +192,17 @@ class NationalTeamRepository {
   ///   "formationShape": {...}
   /// }
   /// ```
-  /// 
+  ///
   /// Parameters:
   ///   - [lineupJson]: Stringified JSON lineup data from database
-  /// 
+  ///
   /// Returns: Fully reconstructed [TeamLineup] with Player objects
-  /// 
+  ///
   /// Throws: Exception if any referenced player is not found in database
-  /// 
+  ///
   /// Private: Internal helper - use getAllTeamsWithTactics() for public API
   Future<TeamLineup> _parseLineup(String lineupJson) async {
-    final decoded = Map<String, dynamic>.from(
-      jsonDecode(lineupJson) as Map,
-    );
+    final decoded = Map<String, dynamic>.from(jsonDecode(lineupJson) as Map);
 
     // Merge decoded JSON's bench ids, reserve ids, and slot assignment player ids into a single set of unique player IDs
     final playerIds = <int>{

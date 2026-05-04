@@ -4,11 +4,11 @@ import 'package:ts1_core/ts1_core.dart';
 import 'package:ts1_persistence/src/db/database.dart';
 
 /// Mapper for converting between [Team] domain models and database records.
-/// 
+///
 /// This class handles transformation of national team data between the persistence layer
 /// and the domain layer. It works in conjunction with [TeamLineupMapper] and relies on
 /// the tactic and lineup already being reconstructed separately.
-/// 
+///
 /// Usage:
 /// ```dart
 /// final team = TeamMapper.toDomain(teamRecord, tactic, lineup);
@@ -17,18 +17,18 @@ class TeamMapper {
   // =========================
   // 🔹 DB → DOMAIN TRANSFORMATIONS
   // =========================
-  
+
   /// Converts a database [NationalTeamRecord] along with reconstructed [TeamTactic] and [TeamLineup]
   /// to a domain [Team] model.
-  /// 
+  ///
   /// Note: This mapper expects tactic and lineup to be reconstructed by their respective repositories.
   /// It does not handle those transformations directly.
-  /// 
+  ///
   /// Parameters:
   ///   - [teamRow]: The national team record from the database
   ///   - [nationalTeamTactic]: A pre-reconstructed tactic (or default balanced tactic)
   ///   - [nationalTeamLineup]: A pre-reconstructed lineup
-  /// 
+  ///
   /// Returns: A domain [Team] with populated tactic and lineup, and empty squad list
   static Team toDomain(
     NationalTeamRecord teamRow,
@@ -47,15 +47,15 @@ class TeamMapper {
   // =========================
   // 🔹 DOMAIN → DB TRANSFORMATIONS
   // =========================
-  
+
   /// Converts a domain [Team] model to a database [NationalTeamRecord].
-  /// 
+  ///
   /// WARNING: This only serializes the team's lineup. The tactic must be saved
   /// separately via the national_team_tactics table.
-  /// 
+  ///
   /// Parameters:
   ///   - [team]: The domain team model
-  /// 
+  ///
   /// Returns: A [NationalTeamRecord] with lineup serialized as JSON
   static NationalTeamRecord toRecord(Team team) {
     return NationalTeamRecord(
@@ -65,13 +65,13 @@ class TeamMapper {
       lineup: jsonEncode(team.lineup.toJson()),
     );
   }
-  
+
   // =========================
   // 🔧 UTILITY METHODS
   // =========================
-  
+
   /// Creates a summary map of team information for UI display.
-  /// 
+  ///
   /// Returns:
   /// ```dart
   /// {
@@ -94,14 +94,14 @@ class TeamMapper {
       'playStyle': team.tactic.buildUpStyle.toString(),
     };
   }
-  
+
   /// Validates team integrity and lineup consistency.
-  /// 
+  ///
   /// Checks:
   /// - Team name is not empty
   /// - Lineup has required formation
   /// - Tactic is properly initialized
-  /// 
+  ///
   /// Throws: ArgumentError if validation fails
   static void validate(Team team) {
     if (team.name.isEmpty) {

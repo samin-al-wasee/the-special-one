@@ -3,10 +3,10 @@ import 'package:ts1_persistence/src/db/database.dart';
 import 'package:ts1_persistence/src/mappers/country_mapper.dart';
 
 /// Repository for country data access and transformation.
-/// 
+///
 /// Provides a domain-level interface for accessing country records from the database.
 /// This repository wraps [CountryDao] and adds error handling and validation.
-/// 
+///
 /// Usage:
 /// ```dart
 /// final repo = CountryRepository(countryDao);
@@ -23,19 +23,19 @@ class CountryRepository {
   // =========================
 
   /// Retrieves all available countries.
-  /// 
+  ///
   /// Returns: List of all [CountryRecord]s (empty list if none exist)
   Future<List<CountryRecord>> getAllCountries() async {
     return await _countryDao.getAllCountries();
   }
 
   /// Retrieves a country by ID, throwing if not found.
-  /// 
+  ///
   /// Parameters:
   ///   - [id]: The country ID
-  /// 
+  ///
   /// Returns: The [CountryRecord]
-  /// 
+  ///
   /// Throws: Exception if country with this ID is not found
   Future<CountryRecord> getCountryById(int id) async {
     final country = await _countryDao.getCountryById(id);
@@ -46,10 +46,10 @@ class CountryRepository {
   }
 
   /// Retrieves multiple countries by their IDs.
-  /// 
+  ///
   /// Parameters:
   ///   - [ids]: List of country IDs
-  /// 
+  ///
   /// Returns: List of [CountryRecord]s (only includes IDs that exist)
   Future<List<CountryRecord>> getCountriesByIds(List<int> ids) async {
     final allCountries = await _countryDao.getAllCountries();
@@ -57,10 +57,10 @@ class CountryRepository {
   }
 
   /// Retrieves a country by its 3-letter code (case-insensitive).
-  /// 
+  ///
   /// Parameters:
   ///   - [code]: The ISO 3-letter code (e.g., 'FRA', 'USA')
-  /// 
+  ///
   /// Returns: The [CountryRecord] or null if not found
   Future<CountryRecord?> getCountryByCode(String code) async {
     final country = await _countryDao.getCountryByCode(code);
@@ -68,10 +68,10 @@ class CountryRepository {
   }
 
   /// Retrieves a country by name (case-sensitive exact match).
-  /// 
+  ///
   /// Parameters:
   ///   - [name]: The country name (e.g., 'France')
-  /// 
+  ///
   /// Returns: The [CountryRecord] or null if not found
   Future<CountryRecord?> getCountryByName(String name) async {
     final country = await _countryDao.getCountryByName(name);
@@ -91,37 +91,41 @@ class CountryRepository {
   }
 
   /// Retrieves a country with its continent information by code.
-  Future<Map<String, dynamic>?> getCountryByCodeWithContinent(String code) async {
+  Future<Map<String, dynamic>?> getCountryByCodeWithContinent(
+    String code,
+  ) async {
     final row = await _countryDao.getCountryByCodeWithContinent(code);
     return row == null ? null : CountryMapper.fromJoinedRow(row);
   }
 
   /// Retrieves a country with its continent information by name.
-  Future<Map<String, dynamic>?> getCountryByNameWithContinent(String name) async {
+  Future<Map<String, dynamic>?> getCountryByNameWithContinent(
+    String name,
+  ) async {
     final row = await _countryDao.getCountryByNameWithContinent(name);
     return row == null ? null : CountryMapper.fromJoinedRow(row);
   }
-  
+
   // =========================
   // 🔧 UTILITY METHODS
   // =========================
-  
+
   /// Checks if a country exists by ID.
-  /// 
+  ///
   /// Parameters:
   ///   - [id]: The country ID to check
-  /// 
+  ///
   /// Returns: true if country exists, false otherwise
   Future<bool> existsById(int id) async {
     final country = await _countryDao.getCountryById(id);
     return country != null;
   }
-  
+
   /// Checks if a country exists by code.
-  /// 
+  ///
   /// Parameters:
   ///   - [code]: The 3-letter country code
-  /// 
+  ///
   /// Returns: true if country exists, false otherwise
   Future<bool> existsByCode(String code) async {
     final country = await _countryDao.getCountryByCode(code);
@@ -147,12 +151,12 @@ class CountryRepository {
   Future<int> deleteCountry(int id) {
     return _countryDao.deleteCountry(id);
   }
-  
+
   /// Gets a country summary map for UI display.
-  /// 
+  ///
   /// Parameters:
   ///   - [countryRecord]: The country to summarize
-  /// 
+  ///
   /// Returns: Map with 'name', 'id', 'code', and 'continent' keys
   Map<String, dynamic> toSummaryMap(CountryRecord countryRecord) {
     return {

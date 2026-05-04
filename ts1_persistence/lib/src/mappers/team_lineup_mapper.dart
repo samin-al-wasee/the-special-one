@@ -24,17 +24,17 @@ class TeamLineupMapper {
 
     // Replace benchIds with bench Players
     decoded['bench'] = benchIds
-      .map((id) => playerMap[id])
-      .whereType<Player>()
-      .map((player) => player.toJson())
-      .toList();
+        .map((id) => playerMap[id])
+        .whereType<Player>()
+        .map((player) => player.toJson())
+        .toList();
 
     // Replace reserveIds with reserve Players
     decoded['reserves'] = reserveIds
-      .map((id) => playerMap[id])
-      .whereType<Player>()
-      .map((player) => player.toJson())
-      .toList();
+        .map((id) => playerMap[id])
+        .whereType<Player>()
+        .map((player) => player.toJson())
+        .toList();
 
     // Replace slotAssignments' playerId with actual Player objects
     decoded['slotAssignments'] = slotAssignments.map((sa) {
@@ -63,24 +63,23 @@ class TeamLineupMapper {
   // =========================
   // 🔹 DOMAIN → DB TRANSFORMATIONS
   // =========================
-  
+
   /// Converts a domain [TeamLineup] to a JSON string for database storage.
-  /// 
+  ///
   /// The method replaces all Player objects with their IDs and serializes
   /// the lineup structure for storage in the database.
-  /// 
+  ///
   /// Handles:
   /// - Converting bench Players to benchIds list
   /// - Converting reserve Players to reserveIds list
   /// - Extracting player IDs from slot assignments
   /// - Storing captain as captainId
-  /// 
+  ///
   /// Parameters:
   ///   - [lineup]: The domain lineup model with Player objects
-  /// 
+  ///
   /// Returns: A JSON string suitable for database storage
   static String toJson(TeamLineup lineup) {
-
     final lineupJson = lineup.toJson();
 
     // Replace bench Players with their IDs

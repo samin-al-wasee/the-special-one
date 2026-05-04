@@ -71,7 +71,9 @@ class PlayerGenerator {
     attributes = _applyPositionAdjustments(attributes, position);
 
     // Scale all attributes to 1-100
-    Map<T, int> scaleTo100<T>(Map<T, int> attrs) => attrs.map((k, v) => MapEntry(k, ((v / 20) * 100).round().clamp(1, 100)));
+    Map<T, int> scaleTo100<T>(Map<T, int> attrs) => attrs.map(
+      (k, v) => MapEntry(k, ((v / 20) * 100).round().clamp(1, 100)),
+    );
     final technical100 = scaleTo100(attributes.technical);
     final mental100 = scaleTo100(attributes.mental);
     final physical100 = scaleTo100(attributes.physical);
