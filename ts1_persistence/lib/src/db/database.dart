@@ -61,9 +61,6 @@ class AppDatabase extends _$AppDatabase {
       await _seedNationalTeamTactics();
       await customStatement('PRAGMA foreign_keys = ON');
     },
-    onUpgrade: (m, from, to) async {
-      print('Upgrading database schema from version $from to $to...');
-    },
   );
 
   Future<void> _seedContinents() async {
