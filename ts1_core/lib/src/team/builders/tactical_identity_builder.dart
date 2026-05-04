@@ -371,6 +371,15 @@ class TacticalIdentityBuilder {
       base.shotPatience - (profile.boxPresence - 0.5) * 0.12,
     );
 
+    // Use structural half-space access and width signals to tweak final-third biases
+    final throughBallBias = _clamp01(
+      base.throughBallBias + (profile.halfSpaceAccess - 0.5) * 0.12,
+    );
+
+    final crossBias = _clamp01(
+      base.crossBias + (profile.widthCoverage - 0.5) * 0.10,
+    );
+
     return base.copyWith(
       widthBias: widthBias,
       attackLeftBias: attackLeftBias,
@@ -380,6 +389,8 @@ class TacticalIdentityBuilder {
       counterpressBias: counterpressBias,
       defensiveLineHeight: defensiveLineHeight,
       shotPatience: shotPatience,
+      throughBallBias: throughBallBias,
+      crossBias: crossBias,
     );
   }
 

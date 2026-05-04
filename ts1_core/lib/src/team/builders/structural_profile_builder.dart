@@ -4,6 +4,7 @@ import 'package:ts1_core/src/core/enums/player/player_attributes.dart';
 import 'package:ts1_core/src/core/enums/player/player_attributes_exports.dart';
 import 'package:ts1_core/src/player/models/player.dart';
 import 'package:ts1_core/src/team/models/lineup/formation/slot/formation_slot.dart';
+import 'package:ts1_core/src/core/enums/player/position.dart';
 import 'package:ts1_core/src/team/models/lineup/formation/structural_profile.dart';
 import 'package:ts1_core/src/team/models/lineup/team_lineup.dart';
 
@@ -120,6 +121,10 @@ class StructuralProfileBuilder {
     var deepLineCount = 0;
     var supportLinks = 0;
     var adjacencyLinks = 0;
+    var attackingLaneAccessCount = 0;
+    var defensiveResponsibilityCount = 0;
+    var positionWideCount = 0;
+    var positionCentralCount = 0;
 
     for (final assignment in lineup.slotAssignments) {
       final slot = lineup.formationShape.slotById(
@@ -157,6 +162,39 @@ class StructuralProfileBuilder {
 
       supportLinks += slot.supportLinks.length;
       adjacencyLinks += slot.adjacencySlots.length;
+
+      // account for attacking lanes that this slot affords (increases box presence)
+      attackingLaneAccessCount += slot.attackingLaneAccess.length;
+
+      // defensive responsibilities (covers set-piece/marking duties)
+      defensiveResponsibilityCount += slot.defensiveResponsibility.length;
+
+      // position-based heuristics for width/central density
+      if (slot.position == Position.leftWinger ||
+          slot.position == Position.rightWinger ||
+          slot.position == Position.leftMidfielder ||
+          slot.position == Position.rightMidfielder) {
+        positionWideCount += 1;
+      }
+      if (slot.position == Position.centralMidfielder ||
+          slot.position == Position.attackingMidfielder ||
+          slot.position == Position.defensiveMidfielder ||
+          slot.position == Position.centerBack) {
+        positionCentralCount += 1;
+      }
+
+      // line overrides: treat explicit attack line as contributing to high line,
+      // and defense line as contributing to deep line.
+      try {
+        if (slot.line.name.toLowerCase().contains('attack')) {
+          highLineCount += 1;
+        } else if (slot.line.name.toLowerCase().contains('defense') ||
+            slot.line.name.toLowerCase().contains('goalkeeper')) {
+          deepLineCount += 1;
+        }
+      } catch (_) {
+        // ignore if line is not set or unexpected
+      }
     }
 
     final starterCount = max(1, lineup.slotAssignments.length);
@@ -165,23 +203,26 @@ class StructuralProfileBuilder {
     final centralDensity = _clamp01(lateralCenter / starterCount);
 
     final supportNetworkQuality = _clamp01(
-      _avg(fits) * 0.45 +
-          _avg(roleFits) * 0.35 +
-          _clamp01(supportLinks / max(1, adjacencyLinks)) * 0.20,
+      _avg(fits) * 0.40 +
+          _avg(roleFits) * 0.33 +
+          _clamp01(supportLinks / max(1, adjacencyLinks)) * 0.17 +
+          (positionCentralCount / starterCount) * 0.10,
     );
 
     final formationTags = lineup.formationShape.structuralTags;
 
     final boxPresence = _clamp01(
-      (highLineCount / starterCount) * 0.60 +
-          (formationTags['natural_width'] ?? 0.5) * 0.20 +
-          _avg(roleFits) * 0.20,
+      (highLineCount / starterCount) * 0.55 +
+          (formationTags['natural_width'] ?? 0.5) * 0.18 +
+          _avg(roleFits) * 0.17 +
+          ( (attackingLaneAccessCount / starterCount).clamp(0.0, 1.0) ) * 0.10,
     );
 
     final restDefenseStability = _clamp01(
-      (deepLineCount / starterCount) * 0.45 +
-          (formationTags['rest_defense_shape'] ?? 0.5) * 0.35 +
-          _avg(fits) * 0.20,
+      (deepLineCount / starterCount) * 0.40 +
+          (formationTags['rest_defense_shape'] ?? 0.5) * 0.33 +
+          _avg(fits) * 0.15 +
+          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) * 0.12,
     );
 
     final pressShapeCohesion = _clamp01(
@@ -200,7 +241,7 @@ class StructuralProfileBuilder {
     );
 
     final transitionProtection = _clamp01(
-      restDefenseStability * 0.55 +
+      restDefenseStability * 0.50 +
           _avg(
                 lineup.slotAssignments
                     .where((a) => byId.containsKey(a.player.id))
@@ -210,7 +251,8 @@ class StructuralProfileBuilder {
                           100.0,
                     ),
               ) *
-              0.45,
+              0.40 +
+          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) * 0.10,
     );
 
     var halfSpaceSlotHits = 0;
@@ -228,15 +270,17 @@ class StructuralProfileBuilder {
     }
 
     final halfSpaceAccess = _clamp01(
-      _clamp01(halfSpaceSlotHits / max(1, starterCount)) * 0.60 +
-          _avg(roleFits) * 0.40,
+      _clamp01(halfSpaceSlotHits / max(1, starterCount)) * 0.55 +
+          _avg(roleFits) * 0.35 +
+          ((attackingLaneAccessCount / starterCount).clamp(0.0, 1.0)) * 0.10,
     );
 
     final flankIsolationRisk = _clamp01(
       1.0 -
-          (widthCoverage * 0.45 +
-              supportNetworkQuality * 0.35 +
-              transitionProtection * 0.20),
+        (widthCoverage * 0.45 +
+          supportNetworkQuality * 0.35 +
+          transitionProtection * 0.15 +
+          (positionWideCount / starterCount) * 0.05),
     );
 
     return StructuralProfile(

@@ -220,16 +220,19 @@ class TeamStrengthProfileBuilder {
     pressingForce += _tacklingPressModifier(team);
     disciplineControl += _tacklingDisciplineModifier(team);
 
+    buildUpQuality *= 1.0 + (structural.supportNetworkQuality - 0.5) * 0.12;
     wideAttack *= 1.0 + (structural.widthCoverage - 0.5) * 0.18;
     centralCreativity *= 1.0 + (structural.centralDensity - 0.5) * 0.18;
+    centralCreativity *= 1.0 + (structural.halfSpaceAccess - 0.5) * 0.10;
     chanceConversion *= 1.0 + (structural.boxPresence - 0.5) * 0.14;
+    chanceConversion *= 1.0 + (structural.supportNetworkQuality - 0.5) * 0.06;
     pressingForce *= 1.0 + (structural.pressShapeCohesion - 0.5) * 0.18;
     transitionDefense *= 1.0 + (structural.transitionProtection - 0.5) * 0.20;
     defensiveCompactness *=
-        1.0 + (structural.restDefenseStability - 0.5) * 0.16;
+      1.0 + (structural.restDefenseStability - 0.5) * 0.16;
     setPieceAttackStrength *= 1.0 + (structural.boxPresence - 0.5) * 0.12;
     setPieceDefenseStrength *=
-        1.0 + (structural.restDefenseStability - 0.5) * 0.12;
+      1.0 + (structural.restDefenseStability - 0.5) * 0.12;
 
     possessionSecurity = _clamp100(possessionSecurity);
     turnoverLiability = _clamp100(turnoverLiability);
