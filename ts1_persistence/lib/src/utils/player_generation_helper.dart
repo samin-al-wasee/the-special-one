@@ -1,21 +1,20 @@
-// generators/scripts/run_player_generation.dart
 import 'package:ts1_persistence/src/db/database.dart';
 import 'package:ts1_persistence/src/repositories/country_repository.dart';
 import 'package:ts1_persistence/src/repositories/player_repository.dart';
-import '../player_generator.dart';
-import '../services/name_generator_service.dart';
-import '../services/attribute_generator_service.dart';
-import '../services/position_generator_service.dart';
-import '../services/physical_generator_service.dart';
-import '../data/country_profiles.dart';
+import 'package:ts1_persistence/src/generators/player_generator.dart';
+import 'package:ts1_persistence/src/generators/services/name_generator_service.dart';
+import 'package:ts1_persistence/src/generators/services/attribute_generator_service.dart';
+import 'package:ts1_persistence/src/generators/services/position_generator_service.dart';
+import 'package:ts1_persistence/src/generators/services/physical_generator_service.dart';
+import 'package:ts1_persistence/src/generators/data/country_profiles.dart';
 
-class PlayerGenerationScript {
+class PlayerGenerationHelper {
   final AppDatabase database;
   late final CountryRepository countryRepository;
   late final PlayerRepository playerRepository;
   late final PlayerGenerator playerGenerator;
 
-  PlayerGenerationScript(this.database) {
+  PlayerGenerationHelper(this.database) {
     countryRepository = CountryRepository(database.countryDao);
     playerRepository = PlayerRepository(database.playerDao, countryRepository);
     playerGenerator = PlayerGenerator(
@@ -69,14 +68,4 @@ class PlayerGenerationScript {
       print('   ${entry.key}: ${entry.value}');
     }
   }
-}
-
-// Usage
-void main() async {
-  final database = AppDatabase();
-  final script = PlayerGenerationScript(database);
-
-  await script.run(playersPerCountry: 100);
-
-  await database.close();
 }

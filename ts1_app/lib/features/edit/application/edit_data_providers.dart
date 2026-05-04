@@ -234,14 +234,10 @@ final playerCountryScopesByContinentProvider =
       return scopes;
     });
 
-final playersByCountryProvider = FutureProvider.family<List<PlayerRecord>, int>(
+final playersByCountryProvider = FutureProvider.family<List<Player>, int>(
   (ref, countryId) async {
-    final db = await ref.watch(appDatabaseProvider.future);
-    final players = await (db.select(
-      db.players,
-    )..where((player) => player.countryId.equals(countryId))).get();
-    players.sort((a, b) => a.name.compareTo(b.name));
-    return players;
+    final repo = await ref.watch(playerRepositoryProvider.future);
+    return repo.getPlayersByCountryId(countryId);
   },
 );
 

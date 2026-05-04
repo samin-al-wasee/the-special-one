@@ -1365,8 +1365,61 @@ class $NationalTeamsTable extends NationalTeams
     requiredDuringInsert: false,
     defaultValue: const Constant('{}'),
   );
+  static const VerificationMeta _primaryColorMeta = const VerificationMeta(
+    'primaryColor',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, countryId, name, lineup];
+  late final GeneratedColumn<String> primaryColor = GeneratedColumn<String>(
+    'primary_color',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 4,
+      maxTextLength: 7,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _secondaryColorMeta = const VerificationMeta(
+    'secondaryColor',
+  );
+  @override
+  late final GeneratedColumn<String> secondaryColor = GeneratedColumn<String>(
+    'secondary_color',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 4,
+      maxTextLength: 7,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tertiaryColorMeta = const VerificationMeta(
+    'tertiaryColor',
+  );
+  @override
+  late final GeneratedColumn<String> tertiaryColor = GeneratedColumn<String>(
+    'tertiary_color',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 4,
+      maxTextLength: 7,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    countryId,
+    name,
+    lineup,
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1404,6 +1457,39 @@ class $NationalTeamsTable extends NationalTeams
         lineup.isAcceptableOrUnknown(data['lineup']!, _lineupMeta),
       );
     }
+    if (data.containsKey('primary_color')) {
+      context.handle(
+        _primaryColorMeta,
+        primaryColor.isAcceptableOrUnknown(
+          data['primary_color']!,
+          _primaryColorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_primaryColorMeta);
+    }
+    if (data.containsKey('secondary_color')) {
+      context.handle(
+        _secondaryColorMeta,
+        secondaryColor.isAcceptableOrUnknown(
+          data['secondary_color']!,
+          _secondaryColorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_secondaryColorMeta);
+    }
+    if (data.containsKey('tertiary_color')) {
+      context.handle(
+        _tertiaryColorMeta,
+        tertiaryColor.isAcceptableOrUnknown(
+          data['tertiary_color']!,
+          _tertiaryColorMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_tertiaryColorMeta);
+    }
     return context;
   }
 
@@ -1429,6 +1515,18 @@ class $NationalTeamsTable extends NationalTeams
         DriftSqlType.string,
         data['${effectivePrefix}lineup'],
       )!,
+      primaryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}primary_color'],
+      )!,
+      secondaryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}secondary_color'],
+      )!,
+      tertiaryColor: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tertiary_color'],
+      )!,
     );
   }
 
@@ -1444,11 +1542,17 @@ class NationalTeamRecord extends DataClass
   final int countryId;
   final String name;
   final String lineup;
+  final String primaryColor;
+  final String secondaryColor;
+  final String tertiaryColor;
   const NationalTeamRecord({
     required this.id,
     required this.countryId,
     required this.name,
     required this.lineup,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.tertiaryColor,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1457,6 +1561,9 @@ class NationalTeamRecord extends DataClass
     map['country_id'] = Variable<int>(countryId);
     map['name'] = Variable<String>(name);
     map['lineup'] = Variable<String>(lineup);
+    map['primary_color'] = Variable<String>(primaryColor);
+    map['secondary_color'] = Variable<String>(secondaryColor);
+    map['tertiary_color'] = Variable<String>(tertiaryColor);
     return map;
   }
 
@@ -1466,6 +1573,9 @@ class NationalTeamRecord extends DataClass
       countryId: Value(countryId),
       name: Value(name),
       lineup: Value(lineup),
+      primaryColor: Value(primaryColor),
+      secondaryColor: Value(secondaryColor),
+      tertiaryColor: Value(tertiaryColor),
     );
   }
 
@@ -1479,6 +1589,9 @@ class NationalTeamRecord extends DataClass
       countryId: serializer.fromJson<int>(json['countryId']),
       name: serializer.fromJson<String>(json['name']),
       lineup: serializer.fromJson<String>(json['lineup']),
+      primaryColor: serializer.fromJson<String>(json['primaryColor']),
+      secondaryColor: serializer.fromJson<String>(json['secondaryColor']),
+      tertiaryColor: serializer.fromJson<String>(json['tertiaryColor']),
     );
   }
   @override
@@ -1489,6 +1602,9 @@ class NationalTeamRecord extends DataClass
       'countryId': serializer.toJson<int>(countryId),
       'name': serializer.toJson<String>(name),
       'lineup': serializer.toJson<String>(lineup),
+      'primaryColor': serializer.toJson<String>(primaryColor),
+      'secondaryColor': serializer.toJson<String>(secondaryColor),
+      'tertiaryColor': serializer.toJson<String>(tertiaryColor),
     };
   }
 
@@ -1497,11 +1613,17 @@ class NationalTeamRecord extends DataClass
     int? countryId,
     String? name,
     String? lineup,
+    String? primaryColor,
+    String? secondaryColor,
+    String? tertiaryColor,
   }) => NationalTeamRecord(
     id: id ?? this.id,
     countryId: countryId ?? this.countryId,
     name: name ?? this.name,
     lineup: lineup ?? this.lineup,
+    primaryColor: primaryColor ?? this.primaryColor,
+    secondaryColor: secondaryColor ?? this.secondaryColor,
+    tertiaryColor: tertiaryColor ?? this.tertiaryColor,
   );
   NationalTeamRecord copyWithCompanion(NationalTeamsCompanion data) {
     return NationalTeamRecord(
@@ -1509,6 +1631,15 @@ class NationalTeamRecord extends DataClass
       countryId: data.countryId.present ? data.countryId.value : this.countryId,
       name: data.name.present ? data.name.value : this.name,
       lineup: data.lineup.present ? data.lineup.value : this.lineup,
+      primaryColor: data.primaryColor.present
+          ? data.primaryColor.value
+          : this.primaryColor,
+      secondaryColor: data.secondaryColor.present
+          ? data.secondaryColor.value
+          : this.secondaryColor,
+      tertiaryColor: data.tertiaryColor.present
+          ? data.tertiaryColor.value
+          : this.tertiaryColor,
     );
   }
 
@@ -1518,13 +1649,24 @@ class NationalTeamRecord extends DataClass
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
           ..write('name: $name, ')
-          ..write('lineup: $lineup')
+          ..write('lineup: $lineup, ')
+          ..write('primaryColor: $primaryColor, ')
+          ..write('secondaryColor: $secondaryColor, ')
+          ..write('tertiaryColor: $tertiaryColor')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, countryId, name, lineup);
+  int get hashCode => Object.hash(
+    id,
+    countryId,
+    name,
+    lineup,
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1532,7 +1674,10 @@ class NationalTeamRecord extends DataClass
           other.id == this.id &&
           other.countryId == this.countryId &&
           other.name == this.name &&
-          other.lineup == this.lineup);
+          other.lineup == this.lineup &&
+          other.primaryColor == this.primaryColor &&
+          other.secondaryColor == this.secondaryColor &&
+          other.tertiaryColor == this.tertiaryColor);
 }
 
 class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
@@ -1540,30 +1685,48 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
   final Value<int> countryId;
   final Value<String> name;
   final Value<String> lineup;
+  final Value<String> primaryColor;
+  final Value<String> secondaryColor;
+  final Value<String> tertiaryColor;
   const NationalTeamsCompanion({
     this.id = const Value.absent(),
     this.countryId = const Value.absent(),
     this.name = const Value.absent(),
     this.lineup = const Value.absent(),
+    this.primaryColor = const Value.absent(),
+    this.secondaryColor = const Value.absent(),
+    this.tertiaryColor = const Value.absent(),
   });
   NationalTeamsCompanion.insert({
     this.id = const Value.absent(),
     required int countryId,
     required String name,
     this.lineup = const Value.absent(),
+    required String primaryColor,
+    required String secondaryColor,
+    required String tertiaryColor,
   }) : countryId = Value(countryId),
-       name = Value(name);
+       name = Value(name),
+       primaryColor = Value(primaryColor),
+       secondaryColor = Value(secondaryColor),
+       tertiaryColor = Value(tertiaryColor);
   static Insertable<NationalTeamRecord> custom({
     Expression<int>? id,
     Expression<int>? countryId,
     Expression<String>? name,
     Expression<String>? lineup,
+    Expression<String>? primaryColor,
+    Expression<String>? secondaryColor,
+    Expression<String>? tertiaryColor,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (countryId != null) 'country_id': countryId,
       if (name != null) 'name': name,
       if (lineup != null) 'lineup': lineup,
+      if (primaryColor != null) 'primary_color': primaryColor,
+      if (secondaryColor != null) 'secondary_color': secondaryColor,
+      if (tertiaryColor != null) 'tertiary_color': tertiaryColor,
     });
   }
 
@@ -1572,12 +1735,18 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     Value<int>? countryId,
     Value<String>? name,
     Value<String>? lineup,
+    Value<String>? primaryColor,
+    Value<String>? secondaryColor,
+    Value<String>? tertiaryColor,
   }) {
     return NationalTeamsCompanion(
       id: id ?? this.id,
       countryId: countryId ?? this.countryId,
       name: name ?? this.name,
       lineup: lineup ?? this.lineup,
+      primaryColor: primaryColor ?? this.primaryColor,
+      secondaryColor: secondaryColor ?? this.secondaryColor,
+      tertiaryColor: tertiaryColor ?? this.tertiaryColor,
     );
   }
 
@@ -1596,6 +1765,15 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     if (lineup.present) {
       map['lineup'] = Variable<String>(lineup.value);
     }
+    if (primaryColor.present) {
+      map['primary_color'] = Variable<String>(primaryColor.value);
+    }
+    if (secondaryColor.present) {
+      map['secondary_color'] = Variable<String>(secondaryColor.value);
+    }
+    if (tertiaryColor.present) {
+      map['tertiary_color'] = Variable<String>(tertiaryColor.value);
+    }
     return map;
   }
 
@@ -1605,7 +1783,10 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
           ..write('id: $id, ')
           ..write('countryId: $countryId, ')
           ..write('name: $name, ')
-          ..write('lineup: $lineup')
+          ..write('lineup: $lineup, ')
+          ..write('primaryColor: $primaryColor, ')
+          ..write('secondaryColor: $secondaryColor, ')
+          ..write('tertiaryColor: $tertiaryColor')
           ..write(')'))
         .toString();
   }
@@ -4479,6 +4660,9 @@ typedef $$NationalTeamsTableCreateCompanionBuilder =
       required int countryId,
       required String name,
       Value<String> lineup,
+      required String primaryColor,
+      required String secondaryColor,
+      required String tertiaryColor,
     });
 typedef $$NationalTeamsTableUpdateCompanionBuilder =
     NationalTeamsCompanion Function({
@@ -4486,6 +4670,9 @@ typedef $$NationalTeamsTableUpdateCompanionBuilder =
       Value<int> countryId,
       Value<String> name,
       Value<String> lineup,
+      Value<String> primaryColor,
+      Value<String> secondaryColor,
+      Value<String> tertiaryColor,
     });
 
 final class $$NationalTeamsTableReferences
@@ -4541,6 +4728,21 @@ class $$NationalTeamsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get primaryColor => $composableBuilder(
+    column: $table.primaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get secondaryColor => $composableBuilder(
+    column: $table.secondaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tertiaryColor => $composableBuilder(
+    column: $table.tertiaryColor,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$CountriesTableFilterComposer get countryId {
     final $$CountriesTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -4589,6 +4791,21 @@ class $$NationalTeamsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get primaryColor => $composableBuilder(
+    column: $table.primaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get secondaryColor => $composableBuilder(
+    column: $table.secondaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tertiaryColor => $composableBuilder(
+    column: $table.tertiaryColor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$CountriesTableOrderingComposer get countryId {
     final $$CountriesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -4630,6 +4847,21 @@ class $$NationalTeamsTableAnnotationComposer
 
   GeneratedColumn<String> get lineup =>
       $composableBuilder(column: $table.lineup, builder: (column) => column);
+
+  GeneratedColumn<String> get primaryColor => $composableBuilder(
+    column: $table.primaryColor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get secondaryColor => $composableBuilder(
+    column: $table.secondaryColor,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get tertiaryColor => $composableBuilder(
+    column: $table.tertiaryColor,
+    builder: (column) => column,
+  );
 
   $$CountriesTableAnnotationComposer get countryId {
     final $$CountriesTableAnnotationComposer composer = $composerBuilder(
@@ -4687,11 +4919,17 @@ class $$NationalTeamsTableTableManager
                 Value<int> countryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> lineup = const Value.absent(),
+                Value<String> primaryColor = const Value.absent(),
+                Value<String> secondaryColor = const Value.absent(),
+                Value<String> tertiaryColor = const Value.absent(),
               }) => NationalTeamsCompanion(
                 id: id,
                 countryId: countryId,
                 name: name,
                 lineup: lineup,
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+                tertiaryColor: tertiaryColor,
               ),
           createCompanionCallback:
               ({
@@ -4699,11 +4937,17 @@ class $$NationalTeamsTableTableManager
                 required int countryId,
                 required String name,
                 Value<String> lineup = const Value.absent(),
+                required String primaryColor,
+                required String secondaryColor,
+                required String tertiaryColor,
               }) => NationalTeamsCompanion.insert(
                 id: id,
                 countryId: countryId,
                 name: name,
                 lineup: lineup,
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+                tertiaryColor: tertiaryColor,
               ),
           withReferenceMapper: (p0) => p0
               .map(

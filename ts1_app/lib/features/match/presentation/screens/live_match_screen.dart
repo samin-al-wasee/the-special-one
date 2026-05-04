@@ -5,6 +5,7 @@ import 'package:ts1_core/ts1_core.dart';
 
 import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/theme/theme_mode_button.dart';
+import '../../../../app/theme/team_color_utils.dart';
 import '../../application/match_flow_controller.dart';
 
 class LiveMatchScreen extends ConsumerWidget {
@@ -66,6 +67,7 @@ class LiveMatchScreen extends ConsumerWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: _TimelineList(
+                            match: match,
                             phaseHistory: match.matchState.phaseHistory,
                             eventCards: match.matchState.eventCards,
                           ),
@@ -89,10 +91,14 @@ class _MatchHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final score = match.matchState.scoreline;
     final clock = match.matchState.clock;
+    final colors = colorsForTeams(match.homeTeam, match.awayTeam);
+    final bg = colors['homeBg']!;
+    final textColor = colors['homeText']!;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF101317),
+        color: bg,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -102,7 +108,7 @@ class _MatchHeader extends StatelessWidget {
             '${match.homeTeam.name}  ${score.home} - ${score.away}  ${match.awayTeam.name}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
+              color: textColor,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -112,7 +118,9 @@ class _MatchHeader extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+            ).textTheme.bodyMedium?.copyWith(
+              color: textColor.withValues(alpha: 0.85),
+            ),
           ),
         ],
       ),
@@ -121,8 +129,9 @@ class _MatchHeader extends StatelessWidget {
 }
 
 class _TimelineList extends StatelessWidget {
-  const _TimelineList({required this.phaseHistory, required this.eventCards});
+  const _TimelineList({required this.match, required this.phaseHistory, required this.eventCards});
 
+  final Match match;
   final List<PhaseResolutionSnapshot> phaseHistory;
   final List<MatchEventCard> eventCards;
 
@@ -156,8 +165,8 @@ class _TimelineList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = items[index];
         return item.when(
-          phase: (phase) => _PhaseCard(snapshot: phase),
-          eventBuilder: (event) => _EventCard(event: event),
+          phase: (phase) => _PhaseCard(snapshot: phase, match: match),
+          eventBuilder: (event) => _EventCard(event: event, match: match),
         );
       },
     );
@@ -165,20 +174,35 @@ class _TimelineList extends StatelessWidget {
 }
 
 class _PhaseCard extends StatelessWidget {
-  const _PhaseCard({required this.snapshot});
+  const _PhaseCard({required this.snapshot, required this.match});
 
   final PhaseResolutionSnapshot snapshot;
+  final Match match;
 
   @override
   Widget build(BuildContext context) {
     final side =
         snapshot.initiativeTeam ?? snapshot.possessionTeam ?? TeamSide.home;
-    final light = side == TeamSide.home;
-    final background = light
-        ? const Color(0xFFF7F7F1)
-        : const Color(0xFF17181D);
-    final foreground = light ? Colors.black87 : Colors.white;
-    final accent = light ? const Color(0xFF1B5E20) : const Color(0xFFE6E6E6);
+    final bool isHome = side == TeamSide.home;
+
+    // Choose colors based on the team side and the current match teams
+    final home = match.homeTeam;
+    final away = match.awayTeam;
+
+    Color background;
+    Color foreground;
+    Color accent;
+
+    final map = colorsForTeams(home, away);
+    if (isHome) {
+      background = map['homeBg']!;
+      accent = map['homeAccent']!;
+      foreground = map['homeText']!;
+    } else {
+      background = map['awayBg']!;
+      accent = map['awayAccent']!;
+      foreground = map['awayText']!;
+    }
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -232,18 +256,31 @@ class _PhaseCard extends StatelessWidget {
 }
 
 class _EventCard extends StatelessWidget {
-  const _EventCard({required this.event});
+  const _EventCard({required this.event, required this.match});
 
   final MatchEventCard event;
+  final Match match;
 
   @override
   Widget build(BuildContext context) {
     final light = event.teamSide == TeamSide.home;
-    final background = light
-        ? const Color(0xFFF4FAF0)
-        : const Color(0xFF0F1115);
-    final foreground = light ? Colors.black87 : Colors.white;
-    final accent = light ? const Color(0xFF166534) : const Color(0xFFF5F5F5);
+    final home = match.homeTeam;
+    final away = match.awayTeam;
+
+    Color background;
+    Color foreground;
+    Color accent;
+
+    final map = colorsForTeams(home, away);
+    if (light) {
+      background = map['homeBg']!;
+      accent = map['homeAccent']!;
+      foreground = map['homeText']!;
+    } else {
+      background = map['awayBg']!;
+      accent = map['awayAccent']!;
+      foreground = map['awayText']!;
+    }
 
     return Container(
       padding: const EdgeInsets.all(16),

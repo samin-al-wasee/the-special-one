@@ -81,10 +81,12 @@ class _CountryDetailScreenState extends ConsumerState<CountryDetailScreen> {
                       decoration: const InputDecoration(labelText: 'Code'),
                       maxLength: 3,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty)
+                        if (value == null || value.trim().isEmpty) {
                           return 'Code is required';
-                        if (value.trim().length != 3)
+                        }
+                        if (value.trim().length != 3) {
                           return 'Code must be 3 characters';
+                        }
                         return null;
                       },
                     ),

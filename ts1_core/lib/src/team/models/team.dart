@@ -13,6 +13,10 @@ abstract class Team with _$Team {
     required String name,
     required TeamTactic tactic,
     required TeamLineup lineup,
+    // Hex color values. All three colors are required.
+    required String primaryColor,
+    required String secondaryColor,
+    required String tertiaryColor,
     @Default([]) List<Player> squad,
   }) = _Team;
 

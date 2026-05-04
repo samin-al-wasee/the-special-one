@@ -6,6 +6,7 @@ import 'package:ts1_core/ts1_core.dart';
 import '../../../../app/navigation/app_back_button.dart';
 import '../../../../app/persistence/persistence_providers.dart';
 import '../../../../app/theme/theme_mode_button.dart';
+import '../../../../app/theme/team_color_utils.dart';
 import '../../application/match_flow_controller.dart';
 
 class PreMatchScreen extends ConsumerStatefulWidget {
@@ -87,7 +88,6 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
                             const SizedBox(height: 24),
                             _SelectionPanel(
                               title: 'Home Team',
-                              accent: const Color(0xFF1B5E20),
                               value: _homeTeam,
                               options: homeOptions,
                               onChanged: (team) {
@@ -103,9 +103,9 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
                             const SizedBox(height: 16),
                             _SelectionPanel(
                               title: 'Away Team',
-                              accent: const Color(0xFF111827),
                               value: _awayTeam,
                               options: awayOptions,
+                              otherTeam: _homeTeam,
                               onChanged: (team) {
                                 setState(() {
                                   _awayTeam = team;
@@ -176,30 +176,43 @@ class _PreMatchScreenState extends ConsumerState<PreMatchScreen> {
 class _SelectionPanel extends StatelessWidget {
   const _SelectionPanel({
     required this.title,
-    required this.accent,
     required this.value,
     required this.options,
     required this.onChanged,
+    this.otherTeam,
   });
 
   final String title;
-  final Color accent;
   final Team? value;
   final List<Team> options;
   final ValueChanged<Team?> onChanged;
+  final Team? otherTeam;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final background = isDark
-        ? const Color(0xFF13171D)
-        : const Color(0xFFF9F8F2);
-    final foreground = isDark ? Colors.white : Colors.black87;
+    // Derive panel colors from the selected team when available
+    Color panelBackground = isDark ? const Color(0xFF13171D) : const Color(0xFFF9F8F2);
+    Color accent = isDark ? const Color(0xFF1B5E20) : const Color(0xFF166534);
+    Color foreground = isDark ? Colors.white : Colors.black87;
+
+    if (value != null) {
+      if (otherTeam != null) {
+        final map = colorsForTeams(otherTeam!, value!);
+        panelBackground = map['awayBg']!;
+        accent = map['awayAccent']!;
+        foreground = map['awayText']!;
+      } else {
+        panelBackground = parseHexColor(value!.primaryColor);
+        accent = parseHexColor(value!.secondaryColor);
+        foreground = foregroundForBackground(panelBackground);
+      }
+    }
 
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: background,
+        color: panelBackground,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: accent.withValues(alpha: 0.22)),
         boxShadow: [

@@ -8,6 +8,7 @@ import 'package:ts1_persistence/src/mappers/team_lineup_mapper.dart';
 import 'package:ts1_persistence/src/db/daos/player_dao.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_dao.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_tactic_dao.dart';
+import 'package:ts1_persistence/src/utils/player_generation_helper.dart';
 
 import 'daos/country_dao.dart';
 import 'tables/players.dart';
@@ -18,6 +19,7 @@ import 'tables/national_team_tactics.dart';
 
 import 'seeds/continent_seed.dart';
 import 'seeds/country_seed.dart';
+import 'seeds/national_team_color_seed.dart';
 import 'seeds/national_team_tactics_seed.dart';
 part 'database.g.dart';
 
@@ -37,37 +39,30 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 1;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) async {
+      print('Creating database schema and seeding initial data...');
+      await customStatement('PRAGMA foreign_keys = OFF');
+      await customStatement('DROP TABLE IF EXISTS national_team_tactics');
+      await customStatement('DROP TABLE IF EXISTS national_teams');
+      await customStatement('DROP TABLE IF EXISTS players');
+      await customStatement('DROP TABLE IF EXISTS countries');
+      await customStatement('DROP TABLE IF EXISTS continents');
+
       await m.createAll();
       await _seedContinents();
       await _seedCountries();
+      final helper = PlayerGenerationHelper(this);
+      await helper.run(playersPerCountry: 100);
       await _seedNationalTeams();
       await _seedNationalTeamTactics();
+      await customStatement('PRAGMA foreign_keys = ON');
     },
     onUpgrade: (m, from, to) async {
-      if (from == 1) {
-        await m.deleteTable('national_team_tactics');
-        await m.createTable(nationalTeamTactics);
-        await _seedNationalTeamTactics();
-      }
-
-      if (from < 3) {
-        if (!await _hasNationalTeamLineupColumn()) {
-          await m.addColumn(nationalTeams, nationalTeams.lineup);
-        }
-
-        await _seedNationalTeamLineups();
-      }
-
-      if (from < 5) {
-        await m.deleteTable('national_team_tactics');
-        await m.createTable(nationalTeamTactics);
-        await _seedNationalTeamTactics();
-      }
+      print('Upgrading database schema from version $from to $to...');
     },
   );
 
@@ -113,37 +108,23 @@ class AppDatabase extends _$AppDatabase {
         );
       }
 
+      final colors = nationalTeamColorsSeed[country.id];
+      if (colors == null) {
+        throw StateError(
+          'Cannot seed team "$teamName": no color seed found for country ${country.id}.',
+        );
+      }
+
       await into(nationalTeams).insert(
         NationalTeamsCompanion(
           id: Value(country.id), // Using same ID as country for consistency
           countryId: Value(country.id),
           name: Value(teamName),
           lineup: Value(lineupJson),
+          primaryColor: Value(colors['primaryColor']!),
+          secondaryColor: Value(colors['secondaryColor']!),
+          tertiaryColor: Value(colors['tertiaryColor']!),
         ),
-      );
-    }
-  }
-
-  Future<void> _seedNationalTeamLineups() async {
-    final allCountries = await select(countries).get();
-
-    for (final country in allCountries) {
-      final team = await (select(
-        nationalTeams,
-      )..where((t) => t.countryId.equals(country.id))).getSingleOrNull();
-      if (team == null) {
-        continue;
-      }
-
-      final lineupJson = await _buildLineupJsonForCountry(country);
-      if (lineupJson == null) {
-        throw StateError(
-          'Cannot backfill lineup for team "${team.name}": no players found for country ${country.id}.',
-        );
-      }
-
-      await (update(nationalTeams)..where((t) => t.id.equals(team.id))).write(
-        NationalTeamsCompanion(lineup: Value(lineupJson)),
       );
     }
   }
@@ -198,13 +179,6 @@ class AppDatabase extends _$AppDatabase {
     }
 
     return lineup.slotAssignments.first.player;
-  }
-
-  Future<bool> _hasNationalTeamLineupColumn() async {
-    final result = await customSelect(
-      'PRAGMA table_info(national_teams)',
-    ).get();
-    return result.any((row) => row.data['name'] == 'lineup');
   }
 
   Future<void> _seedNationalTeamTactics() async {

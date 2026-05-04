@@ -86,6 +86,9 @@ class DraftTeamFactory {
       name: name,
       tactic: TacticalPresetFactory.create(preset, id: id),
       lineup: lineup,
+      primaryColor: '#000000',
+      secondaryColor: '#000000',
+      tertiaryColor: '#000000',
       squad: [...starters, ...bench, ...reserves],
     );
   }

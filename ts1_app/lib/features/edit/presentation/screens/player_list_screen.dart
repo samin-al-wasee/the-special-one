@@ -36,7 +36,7 @@ class PlayerListScreen extends ConsumerWidget {
               final player = players[index];
               return ListTile(
                 title: Text(player.name),
-                subtitle: Text(player.position),
+                subtitle: Text(player.position.label),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => context.push('/edit/players/detail/${player.id}'),
               );

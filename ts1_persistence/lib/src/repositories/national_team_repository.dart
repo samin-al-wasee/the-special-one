@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ts1_core/ts1_core.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:ts1_persistence/src/db/database.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_dao.dart';
 import 'package:ts1_persistence/src/repositories/player_repository.dart';
@@ -53,6 +54,8 @@ class NationalTeamRepository {
   /// Performance: O(n*m) where n is team count, m is average players per team
   Future<List<Team>> getAllTeamsWithTactics() async {
     final teamRows = await dao.getAllTeamsWithTactics();
+
+    print('Total teams found: ${teamRows.length}');
 
     List<Team> teams = [];
     for (var row in teamRows) {
@@ -128,17 +131,20 @@ class NationalTeamRepository {
 
   /// Creates a national team record.
   Future<int> createTeam(NationalTeamsCompanion team) {
-    return dao.insertTeam(team);
+    final prepared = _normalizeAndValidateCompanion(team);
+    return dao.insertTeam(prepared);
   }
 
   /// Upserts a national team record.
   Future<void> upsertTeam(NationalTeamsCompanion team) {
-    return dao.upsertTeam(team);
+    final prepared = _normalizeAndValidateCompanion(team);
+    return dao.upsertTeam(prepared);
   }
 
   /// Updates a national team record.
   Future<int> updateTeam(NationalTeamsCompanion team) {
-    return dao.updateTeam(team);
+    final prepared = _normalizeAndValidateCompanion(team);
+    return dao.updateTeam(prepared);
   }
 
   /// Deletes a national team by ID.
@@ -221,5 +227,52 @@ class NationalTeamRepository {
     final playerMap = {for (var p in players) p.id: p};
 
     return TeamLineupMapper.toDomain(decoded, playerMap);
+  }
+
+  // ----------------------
+  // Normalization & validation
+  // ----------------------
+
+  NationalTeamsCompanion _normalizeAndValidateCompanion(
+    NationalTeamsCompanion input,
+  ) {
+    // Normalize color values and require all three colors
+    String normalize(String raw) {
+      var s = raw.trim().toLowerCase();
+      if (!s.startsWith('#')) s = '#$s';
+      return s;
+    }
+
+    final primary =
+      input.primaryColor.present ? normalize(input.primaryColor.value) : null;
+    final secondary =
+      input.secondaryColor.present ? normalize(input.secondaryColor.value) : null;
+    final tertiary =
+      input.tertiaryColor.present ? normalize(input.tertiaryColor.value) : null;
+
+    if (primary == null || primary.isEmpty || !_isValidHex(primary)) {
+      throw ArgumentError('primary_color is required and must be in #rrggbb format');
+    }
+    if (secondary == null || secondary.isEmpty || !_isValidHex(secondary)) {
+      throw ArgumentError('secondary_color is required and must be in #rrggbb format');
+    }
+    if (tertiary == null || tertiary.isEmpty || !_isValidHex(tertiary)) {
+      throw ArgumentError('tertiary_color is required and must be in #rrggbb format');
+    }
+
+    return NationalTeamsCompanion(
+      id: input.id,
+      countryId: input.countryId,
+      name: input.name,
+      lineup: input.lineup,
+      primaryColor: Value(primary),
+      secondaryColor: Value(secondary),
+      tertiaryColor: Value(tertiary),
+    );
+  }
+
+  bool _isValidHex(String v) {
+    final hexReg = RegExp(r'^#[0-9a-f]{6}$');
+    return hexReg.hasMatch(v);
   }
 }

@@ -149,6 +149,17 @@ class PlayerRepository {
     return _mapPlayersWithCountries(rows);
   }
 
+  /// Retrieves all players for a specific country.
+  ///
+  /// Parameters:
+  ///   - [countryId]: The country ID to filter by
+  ///
+  /// Returns: List of [Player]s from that country (empty list if none found)
+  Future<List<Player>> getPlayersByCountryId(int countryId) async {
+    final rows = await dao.getPlayersByCountryId(countryId);
+    return _mapPlayersWithCountries(rows);
+  }
+
   // =========================
   // 🔹 WRITE OPERATIONS
   // =========================

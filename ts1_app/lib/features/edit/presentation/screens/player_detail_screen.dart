@@ -100,10 +100,12 @@ class _PlayerDetailScreenState extends ConsumerState<PlayerDetailScreen> {
                         labelText: 'Date of birth (YYYY-MM-DD)',
                       ),
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty)
+                        if (value == null || value.trim().isEmpty) {
                           return 'Date of birth is required';
-                        if (DateTime.tryParse(value.trim()) == null)
+                        }
+                        if (DateTime.tryParse(value.trim()) == null) {
                           return 'Invalid date';
+                        }
                         return null;
                       },
                     ),

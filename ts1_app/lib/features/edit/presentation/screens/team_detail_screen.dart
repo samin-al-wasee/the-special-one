@@ -23,6 +23,9 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late final TextEditingController _lineupController;
+  late final TextEditingController _primaryColorController;
+  late final TextEditingController _secondaryColorController;
+  late final TextEditingController _tertiaryColorController;
   bool _initialized = false;
   bool _saving = false;
 
@@ -30,6 +33,9 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
   void dispose() {
     _nameController.dispose();
     _lineupController.dispose();
+    _primaryColorController.dispose();
+    _secondaryColorController.dispose();
+    _tertiaryColorController.dispose();
     super.dispose();
   }
 
@@ -55,6 +61,9 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                 '  ',
               ).convert(team.lineup.toJson()),
             );
+            _primaryColorController = TextEditingController(text: team.primaryColor);
+            _secondaryColorController = TextEditingController(text: team.secondaryColor);
+            _tertiaryColorController = TextEditingController(text: team.tertiaryColor);
             _initialized = true;
           }
 
@@ -77,6 +86,48 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                           value == null || value.trim().isEmpty
                           ? 'Team name is required'
                           : null,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _primaryColorController,
+                      decoration: const InputDecoration(
+                        labelText: 'Primary color (#rrggbb)',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) return 'Primary color is required';
+                        final v = value.trim().toLowerCase();
+                        final s = v.startsWith('#') ? v : '#$v';
+                        final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
+                        return hex.hasMatch(s) ? null : 'Invalid hex color';
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _secondaryColorController,
+                      decoration: const InputDecoration(
+                        labelText: 'Secondary color (#rrggbb)',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) return 'Secondary color is required';
+                        final v = value.trim().toLowerCase();
+                        final s = v.startsWith('#') ? v : '#$v';
+                        final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
+                        return hex.hasMatch(s) ? null : 'Invalid hex color';
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _tertiaryColorController,
+                      decoration: const InputDecoration(
+                        labelText: 'Tertiary color (#rrggbb)',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) return 'Tertiary color is required';
+                        final v = value.trim().toLowerCase();
+                        final s = v.startsWith('#') ? v : '#$v';
+                        final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
+                        return hex.hasMatch(s) ? null : 'Invalid hex color';
+                      },
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
@@ -125,6 +176,9 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                                     lineup: Value(
                                       TeamLineupMapper.toJson(lineup),
                                     ),
+                                    primaryColor: Value(_primaryColorController.text.trim().toLowerCase().startsWith('#') ? _primaryColorController.text.trim().toLowerCase() : '#${_primaryColorController.text.trim().toLowerCase()}'),
+                                    secondaryColor: Value(_secondaryColorController.text.trim().toLowerCase().startsWith('#') ? _secondaryColorController.text.trim().toLowerCase() : '#${_secondaryColorController.text.trim().toLowerCase()}'),
+                                    tertiaryColor: Value(_tertiaryColorController.text.trim().toLowerCase().startsWith('#') ? _tertiaryColorController.text.trim().toLowerCase() : '#${_tertiaryColorController.text.trim().toLowerCase()}'),
                                   ),
                                 );
                                 if (context.mounted) {

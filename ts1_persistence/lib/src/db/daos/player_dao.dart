@@ -141,6 +141,16 @@ class PlayerDao extends DatabaseAccessor<AppDatabase> with _$PlayerDaoMixin {
         .toList();
   }
 
+  /// Retrieves all players for a specific country.
+  ///
+  /// Parameters:
+  ///   - [countryId]: The country ID to filter by
+  ///
+  /// Returns: List of [PlayerRecord]s for that country (empty list if none found)
+  Future<List<PlayerRecord>> getPlayersByCountryId(int countryId) {
+    return (select(players)..where((p) => p.countryId.equals(countryId))).get();
+  }
+
   // =========================
   // 🔹 WRITE OPERATIONS (SINGLE)
   // =========================

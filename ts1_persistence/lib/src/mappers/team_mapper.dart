@@ -38,6 +38,9 @@ class TeamMapper {
     return Team(
       id: teamRow.id,
       name: teamRow.name,
+      primaryColor: teamRow.primaryColor,
+      secondaryColor: teamRow.secondaryColor,
+      tertiaryColor: teamRow.tertiaryColor,
       tactic: nationalTeamTactic,
       lineup: nationalTeamLineup,
       squad: [],
@@ -63,6 +66,9 @@ class TeamMapper {
       name: team.name,
       countryId: 0,
       lineup: jsonEncode(team.lineup.toJson()),
+      primaryColor: team.primaryColor,
+      secondaryColor: team.secondaryColor,
+      tertiaryColor: team.tertiaryColor,
     );
   }
 
