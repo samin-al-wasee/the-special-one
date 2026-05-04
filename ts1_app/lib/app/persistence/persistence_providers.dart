@@ -20,7 +20,7 @@ Future<String> _initializeDatabase() async {
 
   // If the database doesn't exist, copy it from assets
   if (!await dbFile.exists()) {
-    final data = await rootBundle.load('assets/databases/ts1_default.db');
+    final data = await rootBundle.load('assets/db/ts1_default.db');
     await dbFile.writeAsBytes(
       data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
     );

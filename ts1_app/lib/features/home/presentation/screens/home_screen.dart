@@ -73,11 +73,22 @@ class HomeScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(18),
                             ),
                           ),
-                          child: const Text('Choose Teams'),
+                          child: const Text('Play Match'),
+                        ),
+                        const SizedBox(height: 12),
+                        OutlinedButton(
+                          onPressed: () => context.go('/edit'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: const Text('Edit Data'),
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Pick two teams from the database, then refine tactics and formations before kickoff.',
+                          'Play Match starts the simulation flow. Edit Data opens continents, countries, teams, and player nationality views.',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: secondaryText),
