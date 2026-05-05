@@ -234,7 +234,7 @@ class _PhaseCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${side.name.toUpperCase()} • ${snapshot.phaseType.name} / ${snapshot.phaseState.name}',
+                  '${side.name.toUpperCase()} • ${snapshot.phaseType.name}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: foreground.withValues(alpha: 0.75),
                   ),

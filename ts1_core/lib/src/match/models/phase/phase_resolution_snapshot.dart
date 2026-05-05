@@ -28,11 +28,8 @@ abstract class PhaseResolutionSnapshot with _$PhaseResolutionSnapshot {
     /// Match minute when phase occurred (0-120+).
     required int minute,
 
-    /// Category of phase type (e.g., attacking, defensive, transition).
+    /// Phase type (what exact phase/state is happening).
     required MatchPhaseType phaseType,
-
-    /// Specific phase state/outcome (goal, chance missed, clearance, etc).
-    required MatchPhaseState phaseState,
 
     /// Team with ball initiative during this phase.
     TeamSide? initiativeTeam,

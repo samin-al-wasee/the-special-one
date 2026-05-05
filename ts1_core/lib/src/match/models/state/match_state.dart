@@ -27,9 +27,8 @@ abstract class MatchState with _$MatchState {
     @Default(MatchStatus.scheduled) MatchStatus status,
     @Default(MatchClock(id: 0)) MatchClock clock,
     @Default(0) int currentPhaseIndex,
-    @Default(MatchPhaseType.neutralPossession) MatchPhaseType currentPhaseType,
-    @Default(MatchPhaseState.neutralPossession)
-    MatchPhaseState currentPhaseState,
+    @Default(MatchPhaseType.neutralPossession)
+    MatchPhaseType currentPhaseType,
 
     // ==================== SCORE and RESULT SYSTEM ====================
     @Default(Scoreline(id: 0)) Scoreline scoreline,
@@ -76,15 +75,14 @@ abstract class MatchState with _$MatchState {
     return side == TeamSide.home ? homeStats : awayStats;
   }
 
-  MatchState beginPhase(MatchPhaseType type, MatchPhaseState state) {
-    return copyWith(currentPhaseType: type, currentPhaseState: state);
+  MatchState beginPhase(MatchPhaseType type) {
+    return copyWith(currentPhaseType: type);
   }
 
   MatchState applyPhaseSnapshot(PhaseResolutionSnapshot snapshot) {
     var next = copyWith(
       currentPhaseIndex: snapshot.phaseIndex,
       currentPhaseType: snapshot.phaseType,
-      currentPhaseState: snapshot.phaseState,
       currentInitiative: snapshot.initiativeTeam,
       currentPossession: snapshot.possessionTeam,
       currentTerritoryControl: snapshot.territoryTeam,
@@ -262,7 +260,6 @@ abstract class MatchState with _$MatchState {
     }) {
       final transitionPhaseIndex = state.currentPhaseIndex + 1;
       const transitionPhaseType = MatchPhaseType.intervention;
-      const transitionPhaseState = MatchPhaseState.stoppage;
       final eventSide =
           state.currentPossession ?? state.currentInitiative ?? TeamSide.home;
 
@@ -271,7 +268,6 @@ abstract class MatchState with _$MatchState {
         phaseIndex: transitionPhaseIndex,
         minute: state.clock.minute,
         phaseType: transitionPhaseType,
-        phaseState: transitionPhaseState,
         initiativeTeam: state.currentInitiative,
         possessionTeam: state.currentPossession,
         territoryTeam: state.currentTerritoryControl,
@@ -293,7 +289,6 @@ abstract class MatchState with _$MatchState {
         status: nextStatus,
         currentPhaseIndex: transitionPhaseIndex,
         currentPhaseType: transitionPhaseType,
-        currentPhaseState: transitionPhaseState,
         phaseHistory: [...state.phaseHistory, snapshot],
         eventCards: [...state.eventCards, event],
       );
@@ -430,7 +425,7 @@ abstract class MatchState with _$MatchState {
         : '';
     final statusLabel = 'Status: $status | Clock: ${clock.toString()}';
     final phaseLabel =
-        'Phase #$currentPhaseIndex: $currentPhaseType / $currentPhaseState';
+        'Phase #$currentPhaseIndex: $currentPhaseType';
     final meta =
         'Events: ${eventCards.length}, Insights: ${tacticalInsights.length}, Subs: ${substitutions.length}';
     return '$header$pens\n$statusLabel\n$phaseLabel\n$meta';

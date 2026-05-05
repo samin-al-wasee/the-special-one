@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$MatchState {
 
  int get id;// ==================== MATCH FLOW SYSTEM ====================
- MatchStatus get status; MatchClock get clock; int get currentPhaseIndex; MatchPhaseType get currentPhaseType; MatchPhaseState get currentPhaseState;// ==================== SCORE and RESULT SYSTEM ====================
+ MatchStatus get status; MatchClock get clock; int get currentPhaseIndex; MatchPhaseType get currentPhaseType;// ==================== SCORE and RESULT SYSTEM ====================
  Scoreline get scoreline; ShootoutScore get shootoutScore;// ==================== TACTICAL FLOW SYSTEM ====================
  TeamSide? get currentInitiative; TeamSide? get currentPossession; TeamSide? get currentTerritoryControl;// ==================== TEAM PERFORMANCE SYSTEM ====================
  TeamMatchStats get homeStats; TeamMatchStats get awayStats;// ==================== POSITIONAL / DYNAMICS SYSTEM ====================
@@ -38,16 +38,16 @@ $MatchStateCopyWith<MatchState> get copyWith => _$MatchStateCopyWithImpl<MatchSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchState&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.clock, clock) || other.clock == clock)&&(identical(other.currentPhaseIndex, currentPhaseIndex) || other.currentPhaseIndex == currentPhaseIndex)&&(identical(other.currentPhaseType, currentPhaseType) || other.currentPhaseType == currentPhaseType)&&(identical(other.currentPhaseState, currentPhaseState) || other.currentPhaseState == currentPhaseState)&&(identical(other.scoreline, scoreline) || other.scoreline == scoreline)&&(identical(other.shootoutScore, shootoutScore) || other.shootoutScore == shootoutScore)&&(identical(other.currentInitiative, currentInitiative) || other.currentInitiative == currentInitiative)&&(identical(other.currentPossession, currentPossession) || other.currentPossession == currentPossession)&&(identical(other.currentTerritoryControl, currentTerritoryControl) || other.currentTerritoryControl == currentTerritoryControl)&&(identical(other.homeStats, homeStats) || other.homeStats == homeStats)&&(identical(other.awayStats, awayStats) || other.awayStats == awayStats)&&(identical(other.dynamics, dynamics) || other.dynamics == dynamics)&&(identical(other.matchupState, matchupState) || other.matchupState == matchupState)&&const DeepCollectionEquality().equals(other.phaseHistory, phaseHistory)&&const DeepCollectionEquality().equals(other.eventCards, eventCards)&&const DeepCollectionEquality().equals(other.tacticalInsights, tacticalInsights)&&const DeepCollectionEquality().equals(other.substitutions, substitutions)&&const DeepCollectionEquality().equals(other.interventions, interventions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchState&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.clock, clock) || other.clock == clock)&&(identical(other.currentPhaseIndex, currentPhaseIndex) || other.currentPhaseIndex == currentPhaseIndex)&&(identical(other.currentPhaseType, currentPhaseType) || other.currentPhaseType == currentPhaseType)&&(identical(other.scoreline, scoreline) || other.scoreline == scoreline)&&(identical(other.shootoutScore, shootoutScore) || other.shootoutScore == shootoutScore)&&(identical(other.currentInitiative, currentInitiative) || other.currentInitiative == currentInitiative)&&(identical(other.currentPossession, currentPossession) || other.currentPossession == currentPossession)&&(identical(other.currentTerritoryControl, currentTerritoryControl) || other.currentTerritoryControl == currentTerritoryControl)&&(identical(other.homeStats, homeStats) || other.homeStats == homeStats)&&(identical(other.awayStats, awayStats) || other.awayStats == awayStats)&&(identical(other.dynamics, dynamics) || other.dynamics == dynamics)&&(identical(other.matchupState, matchupState) || other.matchupState == matchupState)&&const DeepCollectionEquality().equals(other.phaseHistory, phaseHistory)&&const DeepCollectionEquality().equals(other.eventCards, eventCards)&&const DeepCollectionEquality().equals(other.tacticalInsights, tacticalInsights)&&const DeepCollectionEquality().equals(other.substitutions, substitutions)&&const DeepCollectionEquality().equals(other.interventions, interventions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,status,clock,currentPhaseIndex,currentPhaseType,currentPhaseState,scoreline,shootoutScore,currentInitiative,currentPossession,currentTerritoryControl,homeStats,awayStats,dynamics,matchupState,const DeepCollectionEquality().hash(phaseHistory),const DeepCollectionEquality().hash(eventCards),const DeepCollectionEquality().hash(tacticalInsights),const DeepCollectionEquality().hash(substitutions),const DeepCollectionEquality().hash(interventions)]);
+int get hashCode => Object.hashAll([runtimeType,id,status,clock,currentPhaseIndex,currentPhaseType,scoreline,shootoutScore,currentInitiative,currentPossession,currentTerritoryControl,homeStats,awayStats,dynamics,matchupState,const DeepCollectionEquality().hash(phaseHistory),const DeepCollectionEquality().hash(eventCards),const DeepCollectionEquality().hash(tacticalInsights),const DeepCollectionEquality().hash(substitutions),const DeepCollectionEquality().hash(interventions)]);
 
 @override
 String toString() {
-  return 'MatchState(id: $id, status: $status, clock: $clock, currentPhaseIndex: $currentPhaseIndex, currentPhaseType: $currentPhaseType, currentPhaseState: $currentPhaseState, scoreline: $scoreline, shootoutScore: $shootoutScore, currentInitiative: $currentInitiative, currentPossession: $currentPossession, currentTerritoryControl: $currentTerritoryControl, homeStats: $homeStats, awayStats: $awayStats, dynamics: $dynamics, matchupState: $matchupState, phaseHistory: $phaseHistory, eventCards: $eventCards, tacticalInsights: $tacticalInsights, substitutions: $substitutions, interventions: $interventions)';
+  return 'MatchState(id: $id, status: $status, clock: $clock, currentPhaseIndex: $currentPhaseIndex, currentPhaseType: $currentPhaseType, scoreline: $scoreline, shootoutScore: $shootoutScore, currentInitiative: $currentInitiative, currentPossession: $currentPossession, currentTerritoryControl: $currentTerritoryControl, homeStats: $homeStats, awayStats: $awayStats, dynamics: $dynamics, matchupState: $matchupState, phaseHistory: $phaseHistory, eventCards: $eventCards, tacticalInsights: $tacticalInsights, substitutions: $substitutions, interventions: $interventions)';
 }
 
 
@@ -58,7 +58,7 @@ abstract mixin class $MatchStateCopyWith<$Res>  {
   factory $MatchStateCopyWith(MatchState value, $Res Function(MatchState) _then) = _$MatchStateCopyWithImpl;
 @useResult
 $Res call({
- int id, MatchStatus status, MatchClock clock, int currentPhaseIndex, MatchPhaseType currentPhaseType, MatchPhaseState currentPhaseState, Scoreline scoreline, ShootoutScore shootoutScore, TeamSide? currentInitiative, TeamSide? currentPossession, TeamSide? currentTerritoryControl, TeamMatchStats homeStats, TeamMatchStats awayStats, MatchDynamics dynamics, MatchupState matchupState, List<PhaseResolutionSnapshot> phaseHistory, List<MatchEventCard> eventCards, List<TacticalInsight> tacticalInsights, List<SubstitutionRecord> substitutions, List<ManagerIntervention> interventions
+ int id, MatchStatus status, MatchClock clock, int currentPhaseIndex, MatchPhaseType currentPhaseType, Scoreline scoreline, ShootoutScore shootoutScore, TeamSide? currentInitiative, TeamSide? currentPossession, TeamSide? currentTerritoryControl, TeamMatchStats homeStats, TeamMatchStats awayStats, MatchDynamics dynamics, MatchupState matchupState, List<PhaseResolutionSnapshot> phaseHistory, List<MatchEventCard> eventCards, List<TacticalInsight> tacticalInsights, List<SubstitutionRecord> substitutions, List<ManagerIntervention> interventions
 });
 
 
@@ -75,15 +75,14 @@ class _$MatchStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? clock = null,Object? currentPhaseIndex = null,Object? currentPhaseType = null,Object? currentPhaseState = null,Object? scoreline = null,Object? shootoutScore = null,Object? currentInitiative = freezed,Object? currentPossession = freezed,Object? currentTerritoryControl = freezed,Object? homeStats = null,Object? awayStats = null,Object? dynamics = null,Object? matchupState = null,Object? phaseHistory = null,Object? eventCards = null,Object? tacticalInsights = null,Object? substitutions = null,Object? interventions = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? clock = null,Object? currentPhaseIndex = null,Object? currentPhaseType = null,Object? scoreline = null,Object? shootoutScore = null,Object? currentInitiative = freezed,Object? currentPossession = freezed,Object? currentTerritoryControl = freezed,Object? homeStats = null,Object? awayStats = null,Object? dynamics = null,Object? matchupState = null,Object? phaseHistory = null,Object? eventCards = null,Object? tacticalInsights = null,Object? substitutions = null,Object? interventions = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MatchStatus,clock: null == clock ? _self.clock : clock // ignore: cast_nullable_to_non_nullable
 as MatchClock,currentPhaseIndex: null == currentPhaseIndex ? _self.currentPhaseIndex : currentPhaseIndex // ignore: cast_nullable_to_non_nullable
 as int,currentPhaseType: null == currentPhaseType ? _self.currentPhaseType : currentPhaseType // ignore: cast_nullable_to_non_nullable
-as MatchPhaseType,currentPhaseState: null == currentPhaseState ? _self.currentPhaseState : currentPhaseState // ignore: cast_nullable_to_non_nullable
-as MatchPhaseState,scoreline: null == scoreline ? _self.scoreline : scoreline // ignore: cast_nullable_to_non_nullable
+as MatchPhaseType,scoreline: null == scoreline ? _self.scoreline : scoreline // ignore: cast_nullable_to_non_nullable
 as Scoreline,shootoutScore: null == shootoutScore ? _self.shootoutScore : shootoutScore // ignore: cast_nullable_to_non_nullable
 as ShootoutScore,currentInitiative: freezed == currentInitiative ? _self.currentInitiative : currentInitiative // ignore: cast_nullable_to_non_nullable
 as TeamSide?,currentPossession: freezed == currentPossession ? _self.currentPossession : currentPossession // ignore: cast_nullable_to_non_nullable
@@ -245,10 +244,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  MatchPhaseState currentPhaseState,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchState() when $default != null:
-return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.currentPhaseState,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
+return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
   return orElse();
 
 }
@@ -266,10 +265,10 @@ return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  MatchPhaseState currentPhaseState,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)  $default,) {final _that = this;
 switch (_that) {
 case _MatchState():
-return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.currentPhaseState,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
+return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -286,10 +285,10 @@ return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  MatchPhaseState currentPhaseState,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  MatchStatus status,  MatchClock clock,  int currentPhaseIndex,  MatchPhaseType currentPhaseType,  Scoreline scoreline,  ShootoutScore shootoutScore,  TeamSide? currentInitiative,  TeamSide? currentPossession,  TeamSide? currentTerritoryControl,  TeamMatchStats homeStats,  TeamMatchStats awayStats,  MatchDynamics dynamics,  MatchupState matchupState,  List<PhaseResolutionSnapshot> phaseHistory,  List<MatchEventCard> eventCards,  List<TacticalInsight> tacticalInsights,  List<SubstitutionRecord> substitutions,  List<ManagerIntervention> interventions)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchState() when $default != null:
-return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.currentPhaseState,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
+return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.currentPhaseType,_that.scoreline,_that.shootoutScore,_that.currentInitiative,_that.currentPossession,_that.currentTerritoryControl,_that.homeStats,_that.awayStats,_that.dynamics,_that.matchupState,_that.phaseHistory,_that.eventCards,_that.tacticalInsights,_that.substitutions,_that.interventions);case _:
   return null;
 
 }
@@ -301,7 +300,7 @@ return $default(_that.id,_that.status,_that.clock,_that.currentPhaseIndex,_that.
 @JsonSerializable()
 
 class _MatchState extends MatchState {
-  const _MatchState({required this.id, this.status = MatchStatus.scheduled, this.clock = const MatchClock(id: 0), this.currentPhaseIndex = 0, this.currentPhaseType = MatchPhaseType.neutralPossession, this.currentPhaseState = MatchPhaseState.neutralPossession, this.scoreline = const Scoreline(id: 0), this.shootoutScore = const ShootoutScore(id: 0), this.currentInitiative, this.currentPossession, this.currentTerritoryControl, this.homeStats = const TeamMatchStats(id: 0), this.awayStats = const TeamMatchStats(id: 0), required this.dynamics, required this.matchupState, final  List<PhaseResolutionSnapshot> phaseHistory = const <PhaseResolutionSnapshot>[], final  List<MatchEventCard> eventCards = const <MatchEventCard>[], final  List<TacticalInsight> tacticalInsights = const <TacticalInsight>[], final  List<SubstitutionRecord> substitutions = const <SubstitutionRecord>[], final  List<ManagerIntervention> interventions = const <ManagerIntervention>[]}): _phaseHistory = phaseHistory,_eventCards = eventCards,_tacticalInsights = tacticalInsights,_substitutions = substitutions,_interventions = interventions,super._();
+  const _MatchState({required this.id, this.status = MatchStatus.scheduled, this.clock = const MatchClock(id: 0), this.currentPhaseIndex = 0, this.currentPhaseType = MatchPhaseType.neutralPossession, this.scoreline = const Scoreline(id: 0), this.shootoutScore = const ShootoutScore(id: 0), this.currentInitiative, this.currentPossession, this.currentTerritoryControl, this.homeStats = const TeamMatchStats(id: 0), this.awayStats = const TeamMatchStats(id: 0), required this.dynamics, required this.matchupState, final  List<PhaseResolutionSnapshot> phaseHistory = const <PhaseResolutionSnapshot>[], final  List<MatchEventCard> eventCards = const <MatchEventCard>[], final  List<TacticalInsight> tacticalInsights = const <TacticalInsight>[], final  List<SubstitutionRecord> substitutions = const <SubstitutionRecord>[], final  List<ManagerIntervention> interventions = const <ManagerIntervention>[]}): _phaseHistory = phaseHistory,_eventCards = eventCards,_tacticalInsights = tacticalInsights,_substitutions = substitutions,_interventions = interventions,super._();
   factory _MatchState.fromJson(Map<String, dynamic> json) => _$MatchStateFromJson(json);
 
 @override final  int id;
@@ -310,7 +309,6 @@ class _MatchState extends MatchState {
 @override@JsonKey() final  MatchClock clock;
 @override@JsonKey() final  int currentPhaseIndex;
 @override@JsonKey() final  MatchPhaseType currentPhaseType;
-@override@JsonKey() final  MatchPhaseState currentPhaseState;
 // ==================== SCORE and RESULT SYSTEM ====================
 @override@JsonKey() final  Scoreline scoreline;
 @override@JsonKey() final  ShootoutScore shootoutScore;
@@ -382,16 +380,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchState&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.clock, clock) || other.clock == clock)&&(identical(other.currentPhaseIndex, currentPhaseIndex) || other.currentPhaseIndex == currentPhaseIndex)&&(identical(other.currentPhaseType, currentPhaseType) || other.currentPhaseType == currentPhaseType)&&(identical(other.currentPhaseState, currentPhaseState) || other.currentPhaseState == currentPhaseState)&&(identical(other.scoreline, scoreline) || other.scoreline == scoreline)&&(identical(other.shootoutScore, shootoutScore) || other.shootoutScore == shootoutScore)&&(identical(other.currentInitiative, currentInitiative) || other.currentInitiative == currentInitiative)&&(identical(other.currentPossession, currentPossession) || other.currentPossession == currentPossession)&&(identical(other.currentTerritoryControl, currentTerritoryControl) || other.currentTerritoryControl == currentTerritoryControl)&&(identical(other.homeStats, homeStats) || other.homeStats == homeStats)&&(identical(other.awayStats, awayStats) || other.awayStats == awayStats)&&(identical(other.dynamics, dynamics) || other.dynamics == dynamics)&&(identical(other.matchupState, matchupState) || other.matchupState == matchupState)&&const DeepCollectionEquality().equals(other._phaseHistory, _phaseHistory)&&const DeepCollectionEquality().equals(other._eventCards, _eventCards)&&const DeepCollectionEquality().equals(other._tacticalInsights, _tacticalInsights)&&const DeepCollectionEquality().equals(other._substitutions, _substitutions)&&const DeepCollectionEquality().equals(other._interventions, _interventions));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchState&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.clock, clock) || other.clock == clock)&&(identical(other.currentPhaseIndex, currentPhaseIndex) || other.currentPhaseIndex == currentPhaseIndex)&&(identical(other.currentPhaseType, currentPhaseType) || other.currentPhaseType == currentPhaseType)&&(identical(other.scoreline, scoreline) || other.scoreline == scoreline)&&(identical(other.shootoutScore, shootoutScore) || other.shootoutScore == shootoutScore)&&(identical(other.currentInitiative, currentInitiative) || other.currentInitiative == currentInitiative)&&(identical(other.currentPossession, currentPossession) || other.currentPossession == currentPossession)&&(identical(other.currentTerritoryControl, currentTerritoryControl) || other.currentTerritoryControl == currentTerritoryControl)&&(identical(other.homeStats, homeStats) || other.homeStats == homeStats)&&(identical(other.awayStats, awayStats) || other.awayStats == awayStats)&&(identical(other.dynamics, dynamics) || other.dynamics == dynamics)&&(identical(other.matchupState, matchupState) || other.matchupState == matchupState)&&const DeepCollectionEquality().equals(other._phaseHistory, _phaseHistory)&&const DeepCollectionEquality().equals(other._eventCards, _eventCards)&&const DeepCollectionEquality().equals(other._tacticalInsights, _tacticalInsights)&&const DeepCollectionEquality().equals(other._substitutions, _substitutions)&&const DeepCollectionEquality().equals(other._interventions, _interventions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,status,clock,currentPhaseIndex,currentPhaseType,currentPhaseState,scoreline,shootoutScore,currentInitiative,currentPossession,currentTerritoryControl,homeStats,awayStats,dynamics,matchupState,const DeepCollectionEquality().hash(_phaseHistory),const DeepCollectionEquality().hash(_eventCards),const DeepCollectionEquality().hash(_tacticalInsights),const DeepCollectionEquality().hash(_substitutions),const DeepCollectionEquality().hash(_interventions)]);
+int get hashCode => Object.hashAll([runtimeType,id,status,clock,currentPhaseIndex,currentPhaseType,scoreline,shootoutScore,currentInitiative,currentPossession,currentTerritoryControl,homeStats,awayStats,dynamics,matchupState,const DeepCollectionEquality().hash(_phaseHistory),const DeepCollectionEquality().hash(_eventCards),const DeepCollectionEquality().hash(_tacticalInsights),const DeepCollectionEquality().hash(_substitutions),const DeepCollectionEquality().hash(_interventions)]);
 
 @override
 String toString() {
-  return 'MatchState(id: $id, status: $status, clock: $clock, currentPhaseIndex: $currentPhaseIndex, currentPhaseType: $currentPhaseType, currentPhaseState: $currentPhaseState, scoreline: $scoreline, shootoutScore: $shootoutScore, currentInitiative: $currentInitiative, currentPossession: $currentPossession, currentTerritoryControl: $currentTerritoryControl, homeStats: $homeStats, awayStats: $awayStats, dynamics: $dynamics, matchupState: $matchupState, phaseHistory: $phaseHistory, eventCards: $eventCards, tacticalInsights: $tacticalInsights, substitutions: $substitutions, interventions: $interventions)';
+  return 'MatchState(id: $id, status: $status, clock: $clock, currentPhaseIndex: $currentPhaseIndex, currentPhaseType: $currentPhaseType, scoreline: $scoreline, shootoutScore: $shootoutScore, currentInitiative: $currentInitiative, currentPossession: $currentPossession, currentTerritoryControl: $currentTerritoryControl, homeStats: $homeStats, awayStats: $awayStats, dynamics: $dynamics, matchupState: $matchupState, phaseHistory: $phaseHistory, eventCards: $eventCards, tacticalInsights: $tacticalInsights, substitutions: $substitutions, interventions: $interventions)';
 }
 
 
@@ -402,7 +400,7 @@ abstract mixin class _$MatchStateCopyWith<$Res> implements $MatchStateCopyWith<$
   factory _$MatchStateCopyWith(_MatchState value, $Res Function(_MatchState) _then) = __$MatchStateCopyWithImpl;
 @override @useResult
 $Res call({
- int id, MatchStatus status, MatchClock clock, int currentPhaseIndex, MatchPhaseType currentPhaseType, MatchPhaseState currentPhaseState, Scoreline scoreline, ShootoutScore shootoutScore, TeamSide? currentInitiative, TeamSide? currentPossession, TeamSide? currentTerritoryControl, TeamMatchStats homeStats, TeamMatchStats awayStats, MatchDynamics dynamics, MatchupState matchupState, List<PhaseResolutionSnapshot> phaseHistory, List<MatchEventCard> eventCards, List<TacticalInsight> tacticalInsights, List<SubstitutionRecord> substitutions, List<ManagerIntervention> interventions
+ int id, MatchStatus status, MatchClock clock, int currentPhaseIndex, MatchPhaseType currentPhaseType, Scoreline scoreline, ShootoutScore shootoutScore, TeamSide? currentInitiative, TeamSide? currentPossession, TeamSide? currentTerritoryControl, TeamMatchStats homeStats, TeamMatchStats awayStats, MatchDynamics dynamics, MatchupState matchupState, List<PhaseResolutionSnapshot> phaseHistory, List<MatchEventCard> eventCards, List<TacticalInsight> tacticalInsights, List<SubstitutionRecord> substitutions, List<ManagerIntervention> interventions
 });
 
 
@@ -419,15 +417,14 @@ class __$MatchStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? clock = null,Object? currentPhaseIndex = null,Object? currentPhaseType = null,Object? currentPhaseState = null,Object? scoreline = null,Object? shootoutScore = null,Object? currentInitiative = freezed,Object? currentPossession = freezed,Object? currentTerritoryControl = freezed,Object? homeStats = null,Object? awayStats = null,Object? dynamics = null,Object? matchupState = null,Object? phaseHistory = null,Object? eventCards = null,Object? tacticalInsights = null,Object? substitutions = null,Object? interventions = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? clock = null,Object? currentPhaseIndex = null,Object? currentPhaseType = null,Object? scoreline = null,Object? shootoutScore = null,Object? currentInitiative = freezed,Object? currentPossession = freezed,Object? currentTerritoryControl = freezed,Object? homeStats = null,Object? awayStats = null,Object? dynamics = null,Object? matchupState = null,Object? phaseHistory = null,Object? eventCards = null,Object? tacticalInsights = null,Object? substitutions = null,Object? interventions = null,}) {
   return _then(_MatchState(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MatchStatus,clock: null == clock ? _self.clock : clock // ignore: cast_nullable_to_non_nullable
 as MatchClock,currentPhaseIndex: null == currentPhaseIndex ? _self.currentPhaseIndex : currentPhaseIndex // ignore: cast_nullable_to_non_nullable
 as int,currentPhaseType: null == currentPhaseType ? _self.currentPhaseType : currentPhaseType // ignore: cast_nullable_to_non_nullable
-as MatchPhaseType,currentPhaseState: null == currentPhaseState ? _self.currentPhaseState : currentPhaseState // ignore: cast_nullable_to_non_nullable
-as MatchPhaseState,scoreline: null == scoreline ? _self.scoreline : scoreline // ignore: cast_nullable_to_non_nullable
+as MatchPhaseType,scoreline: null == scoreline ? _self.scoreline : scoreline // ignore: cast_nullable_to_non_nullable
 as Scoreline,shootoutScore: null == shootoutScore ? _self.shootoutScore : shootoutScore // ignore: cast_nullable_to_non_nullable
 as ShootoutScore,currentInitiative: freezed == currentInitiative ? _self.currentInitiative : currentInitiative // ignore: cast_nullable_to_non_nullable
 as TeamSide?,currentPossession: freezed == currentPossession ? _self.currentPossession : currentPossession // ignore: cast_nullable_to_non_nullable

@@ -4,7 +4,6 @@ export 'match/attack_route.dart';
 export 'match/chance_outcome.dart';
 export 'match/chance_type.dart';
 export 'match/match_command_type.dart';
-export 'match/match_phase_state.dart';
 export 'match/match_phase_type.dart';
 export 'match/match_status.dart';
 export 'match/pitch_zone.dart';

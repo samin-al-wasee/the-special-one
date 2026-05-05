@@ -13,7 +13,6 @@ _PhaseResolutionSnapshot _$PhaseResolutionSnapshotFromJson(
   phaseIndex: (json['phaseIndex'] as num).toInt(),
   minute: (json['minute'] as num).toInt(),
   phaseType: $enumDecode(_$MatchPhaseTypeEnumMap, json['phaseType']),
-  phaseState: $enumDecode(_$MatchPhaseStateEnumMap, json['phaseState']),
   initiativeTeam: $enumDecodeNullable(
     _$TeamSideEnumMap,
     json['initiativeTeam'],
@@ -43,7 +42,6 @@ Map<String, dynamic> _$PhaseResolutionSnapshotToJson(
   'phaseIndex': instance.phaseIndex,
   'minute': instance.minute,
   'phaseType': _$MatchPhaseTypeEnumMap[instance.phaseType]!,
-  'phaseState': _$MatchPhaseStateEnumMap[instance.phaseState]!,
   'initiativeTeam': _$TeamSideEnumMap[instance.initiativeTeam],
   'possessionTeam': _$TeamSideEnumMap[instance.possessionTeam],
   'territoryTeam': _$TeamSideEnumMap[instance.territoryTeam],
@@ -61,29 +59,18 @@ const _$MatchPhaseTypeEnumMap = {
   MatchPhaseType.buildUp: 'buildUp',
   MatchPhaseType.progression: 'progression',
   MatchPhaseType.finalThird: 'finalThird',
+  MatchPhaseType.duel: 'duel',
   MatchPhaseType.chance: 'chance',
+  MatchPhaseType.setPiecePreparation: 'setPiecePreparation',
+  MatchPhaseType.setPieceDelivery: 'setPieceDelivery',
   MatchPhaseType.outcome: 'outcome',
   MatchPhaseType.transition: 'transition',
-  MatchPhaseType.setPiece: 'setPiece',
+  MatchPhaseType.turnover: 'turnover',
+  MatchPhaseType.foulStop: 'foulStop',
+  MatchPhaseType.stoppage: 'stoppage',
+  MatchPhaseType.restart: 'restart',
   MatchPhaseType.intervention: 'intervention',
   MatchPhaseType.specialIncident: 'specialIncident',
-};
-
-const _$MatchPhaseStateEnumMap = {
-  MatchPhaseState.neutralPossession: 'neutralPossession',
-  MatchPhaseState.buildUp: 'buildUp',
-  MatchPhaseState.progression: 'progression',
-  MatchPhaseState.finalThird: 'finalThird',
-  MatchPhaseState.duel: 'duel',
-  MatchPhaseState.chance: 'chance',
-  MatchPhaseState.outcome: 'outcome',
-  MatchPhaseState.transition: 'transition',
-  MatchPhaseState.setPiecePreparation: 'setPiecePreparation',
-  MatchPhaseState.setPieceDelivery: 'setPieceDelivery',
-  MatchPhaseState.foulStop: 'foulStop',
-  MatchPhaseState.stoppage: 'stoppage',
-  MatchPhaseState.restart: 'restart',
-  MatchPhaseState.turnover: 'turnover',
 };
 
 const _$TeamSideEnumMap = {TeamSide.home: 'home', TeamSide.away: 'away'};

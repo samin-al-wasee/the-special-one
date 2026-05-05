@@ -1,20 +1,20 @@
-/// High-level simulation phase categories for the match engine.
+/// Linear phase progression through a match simulation.
 ///
-/// A [MatchPhaseType] describes the macro football situation currently being
-/// simulated (for example buildup, transition, or set piece). It is intended to
-/// answer: "What kind of phase is this?"
+/// Combines both macro phase categories and granular state labels into one enum.
+/// This creates a linear flow where each value represents a concrete phase state.
 ///
-/// Typical flow example (not mandatory):
-/// neutralPossession -> buildUp -> progression -> finalThird -> chance
+/// Typical progression (not mandatory):
+/// neutralPossession -> buildUp -> progression -> finalThird -> duel -> chance
 /// -> outcome -> transition -> buildUp
 ///
-/// Notes:
-/// - This enum models broad context.
-/// - Fine-grained labels should be expressed via `MatchPhaseState`.
+/// Or with set pieces:
+/// setPiecePreparation -> setPieceDelivery -> outcome -> transition
+///
+/// Each value answers: "What exact phase state is happening right now?"
 enum MatchPhaseType {
-  /// Possession is stable and relatively low-threat.
+  /// Stable low-threat possession behavior.
   ///
-  /// Example: midfield circulation without immediate penetration.
+  /// Example: safe midfield recycling without immediate penetration.
   neutralPossession,
 
   /// Team is primarily in defensive structure and shape control.
@@ -32,30 +32,60 @@ enum MatchPhaseType {
   /// Example: vertical pass chains or carries through midfield.
   progression,
 
-  /// Possession reaches attacking zones near/around the penalty area.
+  /// Sustained presence in attacking territory.
   ///
-  /// Example: sustained pressure around the box before final action.
+  /// Example: probing around the edge of the area.
   finalThird,
+
+  /// Contest-heavy moment between players/units.
+  ///
+  /// Example: shoulder duel, second-ball challenge, pressing clash.
+  duel,
 
   /// A concrete scoring opportunity is formed.
   ///
   /// Example: one-v-one, cutback chance, or high-xG central shot.
   chance,
 
-  /// Resolution of a chance or dangerous action.
+  /// Setup behavior before the ball is delivered on a set piece.
   ///
-  /// Example: goal, save, block, clearance, or turnover outcome.
+  /// Example: player positioning, decoy runs, target assignment.
+  setPiecePreparation,
+
+  /// Ball delivery/execution step of the set-piece routine.
+  ///
+  /// Example: corner delivery, direct free-kick strike, throw-in trigger.
+  setPieceDelivery,
+
+  /// Terminal result of the attacking action.
+  ///
+  /// Example: shot saved, goal scored, or chance blocked.
   outcome,
 
-  /// Rapid state change after ball win/loss with unstable structure.
+  /// Unstable post-turnover flow with fast tactical reconfiguration.
   ///
-  /// Example: counterattack window immediately after a turnover.
+  /// Example: immediate counter window after a turnover.
   transition,
 
-  /// Restart-driven sequence from dead-ball situations.
+  /// Possession changes hands during or after an action.
   ///
-  /// Example: corner, free kick, throw-in, or goal-kick routine.
-  setPiece,
+  /// Example: interception, tackle win, or failed pass leading to counter.
+  turnover,
+
+  /// Play stopped due to foul event specifically.
+  ///
+  /// Example: whistle for contact offense before restart is taken.
+  foulStop,
+
+  /// Generic interruption state not limited to fouls.
+  ///
+  /// Example: injury pause, disciplinary pause, or administrative stop.
+  stoppage,
+
+  /// Restart moment immediately after stoppage.
+  ///
+  /// Example: whistle resume leading back into buildUp or transition.
+  restart,
 
   /// Referee/discipline/medical or control interruption.
   ///

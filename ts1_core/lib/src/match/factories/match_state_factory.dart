@@ -14,7 +14,6 @@ class MatchStateFactory {
     return _buildState(
       status: MatchStatus.scheduled,
       currentPhaseType: MatchPhaseType.neutralPossession,
-      currentPhaseState: MatchPhaseState.neutralPossession,
       currentInitiative: null,
       currentPossession: null,
       currentTerritoryControl: null,
@@ -30,8 +29,7 @@ class MatchStateFactory {
       id: 0,
       phaseIndex: 0,
       minute: 0,
-      phaseType: MatchPhaseType.setPiece,
-      phaseState: MatchPhaseState.restart,
+      phaseType: MatchPhaseType.restart,
       initiativeTeam: kickoffSide,
       possessionTeam: kickoffSide,
       territoryTeam: kickoffSide,
@@ -42,15 +40,14 @@ class MatchStateFactory {
       minute: 0,
       title: 'Kickoff',
       description: 'The match starts with ${kickoffSide.name} in possession.',
-      phaseType: MatchPhaseType.setPiece,
+      phaseType: MatchPhaseType.restart,
       teamSide: kickoffSide,
       isMajor: true,
     );
 
     return _buildState(
       status: MatchStatus.firstHalf,
-      currentPhaseType: MatchPhaseType.setPiece,
-      currentPhaseState: MatchPhaseState.restart,
+      currentPhaseType: MatchPhaseType.restart,
       currentInitiative: kickoffSide,
       currentPossession: kickoffSide,
       currentTerritoryControl: kickoffSide,
@@ -71,8 +68,7 @@ class MatchStateFactory {
       id: nextPhaseIndex,
       phaseIndex: nextPhaseIndex,
       minute: minute,
-      phaseType: MatchPhaseType.setPiece,
-      phaseState: MatchPhaseState.restart,
+      phaseType: MatchPhaseType.restart,
       initiativeTeam: kickoffSide,
       possessionTeam: kickoffSide,
       territoryTeam: kickoffSide,
@@ -85,7 +81,7 @@ class MatchStateFactory {
       title: 'Second Half Kickoff',
       description:
           'The second half starts with ${kickoffSide.name} in possession.',
-      phaseType: MatchPhaseType.setPiece,
+      phaseType: MatchPhaseType.restart,
       teamSide: kickoffSide,
       isMajor: true,
     );
@@ -93,8 +89,7 @@ class MatchStateFactory {
     return halfTimeMatchState.copyWith(
       status: MatchStatus.secondHalf,
       currentPhaseIndex: nextPhaseIndex,
-      currentPhaseType: MatchPhaseType.setPiece,
-      currentPhaseState: MatchPhaseState.restart,
+      currentPhaseType: MatchPhaseType.restart,
       currentInitiative: kickoffSide,
       currentPossession: kickoffSide,
       currentTerritoryControl: kickoffSide,
@@ -106,7 +101,6 @@ class MatchStateFactory {
   static MatchState _buildState({
     required MatchStatus status,
     required MatchPhaseType currentPhaseType,
-    required MatchPhaseState currentPhaseState,
     required TeamSide? currentInitiative,
     required TeamSide? currentPossession,
     required TeamSide? currentTerritoryControl,
@@ -132,7 +126,6 @@ class MatchStateFactory {
       status: status,
       currentPhaseIndex: 0,
       currentPhaseType: currentPhaseType,
-      currentPhaseState: currentPhaseState,
       currentInitiative: currentInitiative,
       currentPossession: currentPossession,
       currentTerritoryControl: currentTerritoryControl,

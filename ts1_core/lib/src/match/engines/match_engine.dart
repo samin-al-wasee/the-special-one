@@ -315,20 +315,11 @@ class MatchEngine {
             chanceQuality: chanceQuality ?? 0.0,
             random: random,
           );
-    final phaseState = _resolvePhaseState(
-      match: match,
-      state: state,
-      phaseType: phaseType,
-      chanceType: chanceType,
-      chanceOutcome: chanceOutcome,
-      chanceQuality: chanceQuality,
-    );
     final snapshot = PhaseResolutionSnapshot(
       id: state.currentPhaseIndex + 1,
       phaseIndex: state.currentPhaseIndex + 1,
       minute: state.clock.minute,
       phaseType: phaseType,
-      phaseState: phaseState,
       initiativeTeam: initiative,
       possessionTeam: possession,
       territoryTeam: territory,
@@ -342,7 +333,9 @@ class MatchEngine {
           chanceOutcome == ChanceOutcome.woodwork ||
           chanceOutcome == ChanceOutcome.save ||
           (chanceQuality != null && chanceQuality >= 0.58) ||
-          (phaseType == MatchPhaseType.setPiece && chanceType != null),
+          (phaseType == MatchPhaseType.setPiecePreparation ||
+              phaseType == MatchPhaseType.setPieceDelivery) &&
+              chanceType != null,
     );
 
     var nextState = state.applyPhaseSnapshot(snapshot);
@@ -399,36 +392,40 @@ class MatchEngine {
   /// Forced sequences (no alternatives):
   /// - turnover state → transition type
   /// - restart state → buildUp type
-  /// - foulStop/stoppage states → intervention type
-  /// - chance type + chance state → outcome type
-  /// - setPiece type + setPiecePreparation state → setPiece type (stay)
+  /// Resolves the next phase type from current phase context.
+  ///
+  /// Combines forced sequences and weighted probabilistic logic.
+  /// Forced sequences ensure narrative consistency:
+  /// - turnover → transition
+  /// - restart → buildUp
+  /// - foulStop/stoppage → intervention
+  /// - chance → outcome
+  /// - setPiecePreparation → can stay or move to setPieceDelivery
   static MatchPhaseType _resolvePhaseType({
     required MatchState state,
     required math.Random random,
   }) {
-    final currentType = state.currentPhaseType;
-    final currentState = state.currentPhaseState;
+    final current = state.currentPhaseType;
 
     // Forced sequences: no alternatives allowed
-    if (currentState == MatchPhaseState.turnover) {
+    if (current == MatchPhaseType.turnover) {
       return MatchPhaseType.transition;
     }
-    if (currentState == MatchPhaseState.restart) {
+    if (current == MatchPhaseType.restart) {
       return MatchPhaseType.buildUp;
     }
-    if (currentState == MatchPhaseState.foulStop) {
+    if (current == MatchPhaseType.foulStop ||
+        current == MatchPhaseType.stoppage) {
       return MatchPhaseType.intervention;
     }
-    if (currentState == MatchPhaseState.stoppage) {
-      return MatchPhaseType.intervention;
-    }
-    if (currentType == MatchPhaseType.chance &&
-        currentState == MatchPhaseState.chance) {
+    if (current == MatchPhaseType.chance) {
       return MatchPhaseType.outcome;
     }
-    if (currentType == MatchPhaseType.setPiece &&
-        currentState == MatchPhaseState.setPiecePreparation) {
-      return MatchPhaseType.setPiece;
+    if (current == MatchPhaseType.setPiecePreparation) {
+      // Can stay in preparation or move to delivery
+      return random.nextDouble() < 0.6
+          ? MatchPhaseType.setPiecePreparation
+          : MatchPhaseType.setPieceDelivery;
     }
 
     // Apply weighted probabilistic logic for valid multibranch points
@@ -436,7 +433,7 @@ class MatchEngine {
     return _weightedPick(weights, random);
   }
 
-  /// Maps phase type into its canonical phase state label with forced sequences.
+  /// Resolves which team drives initiative for the current phase.
   ///
   /// Enforces mandatory state transitions within phase types before applying
   /// weighted probabilistic logic. For example:
@@ -444,236 +441,6 @@ class MatchEngine {
   /// - outcome phase + turnover outcome → must produce turnover state
   /// - setPiece + setPiecePreparation → can transition to delivery or stay
   ///
-  /// This ensures narrative consistency across both phase layers (type & state).
-  static MatchPhaseState _resolvePhaseState({
-    required Match match,
-    required MatchState state,
-    required MatchPhaseType phaseType,
-    required ChanceType? chanceType,
-    required ChanceOutcome? chanceOutcome,
-    required double? chanceQuality,
-  }) {
-    final currentState = state.currentPhaseState;
-
-    // Forced sequences: no alternatives allowed
-    if (phaseType == MatchPhaseType.chance &&
-        currentState == MatchPhaseState.chance) {
-      return MatchPhaseState.outcome;
-    }
-    if (phaseType == MatchPhaseType.outcome &&
-        chanceOutcome == ChanceOutcome.turnover) {
-      return MatchPhaseState.turnover;
-    }
-    if (phaseType == MatchPhaseType.setPiece &&
-        currentState == MatchPhaseState.setPiecePreparation &&
-        chanceType == null) {
-      return MatchPhaseState.setPiecePreparation;
-    }
-    if (phaseType == MatchPhaseType.setPiece &&
-        currentState == MatchPhaseState.setPieceDelivery &&
-        chanceType != null) {
-      return MatchPhaseState.chance;
-    }
-
-    // Apply weighted probabilistic logic for valid multibranch points
-    final weights = _resolvePhaseStateWeights(
-      match: match,
-      state: state,
-      phaseType: phaseType,
-      chanceType: chanceType,
-      chanceOutcome: chanceOutcome,
-      chanceQuality: chanceQuality,
-    );
-    return _pickPhaseState(
-      weights,
-      _phaseStateRandom(state, phaseType, chanceType, chanceOutcome),
-    );
-  }
-
-  /// Builds phase state weights based on phase type and tactical context.
-  ///
-  /// Ensures all 14 states are reachable across different phase type/action combinations.
-  static Map<MatchPhaseState, double> _resolvePhaseStateWeights({
-    required Match match,
-    required MatchState state,
-    required MatchPhaseType phaseType,
-    required ChanceType? chanceType,
-    required ChanceOutcome? chanceOutcome,
-    required double? chanceQuality,
-  }) {
-    final initiative = state.currentInitiative;
-    final momentum = _initiativeMomentum(state, initiative);
-    final confidence = _initiativeConfidence(state, initiative);
-    final fatigue = _initiativeFatigue(state, initiative);
-    final discipline = _initiativeDisciplinePressure(state, initiative);
-
-    switch (phaseType) {
-      case MatchPhaseType.neutralPossession:
-        return {
-          MatchPhaseState.neutralPossession: _positiveWeight(
-            0.40 + (discipline * 0.06) + ((1 - fatigue) * 0.04),
-          ),
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.28 + (momentum * 0.08) + (confidence * 0.04),
-          ),
-          MatchPhaseState.duel: _positiveWeight(0.10 + (fatigue * 0.06)),
-          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
-          MatchPhaseState.turnover: _positiveWeight(0.04 + (fatigue * 0.06)),
-          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.03)),
-          MatchPhaseState.foulStop: _positiveWeight(0.01 + (discipline * 0.04)),
-        };
-
-      case MatchPhaseType.defensiveOrganization:
-        return {
-          MatchPhaseState.restart: _positiveWeight(0.32 + (discipline * 0.06)),
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.24 + (momentum * 0.06) + (confidence * 0.04),
-          ),
-          MatchPhaseState.neutralPossession: _positiveWeight(
-            0.18 + (discipline * 0.04),
-          ),
-          MatchPhaseState.duel: _positiveWeight(0.12 + (fatigue * 0.04)),
-          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
-          MatchPhaseState.stoppage: _positiveWeight(0.03 + (discipline * 0.02)),
-          MatchPhaseState.foulStop: _positiveWeight(0.01 + (discipline * 0.03)),
-        };
-
-      case MatchPhaseType.buildUp:
-        return {
-          MatchPhaseState.buildUp: _positiveWeight(0.28 + (confidence * 0.06)),
-          MatchPhaseState.progression: _positiveWeight(
-            0.32 + (momentum * 0.08),
-          ),
-          MatchPhaseState.duel: _positiveWeight(0.14 + (fatigue * 0.04)),
-          MatchPhaseState.neutralPossession: _positiveWeight(
-            0.12 + (discipline * 0.02),
-          ),
-          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
-          MatchPhaseState.turnover: _positiveWeight(0.03 + (fatigue * 0.04)),
-          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
-        };
-
-      case MatchPhaseType.progression:
-        return {
-          MatchPhaseState.progression: _positiveWeight(
-            0.24 + (momentum * 0.08),
-          ),
-          MatchPhaseState.finalThird: _positiveWeight(
-            0.30 + (confidence * 0.06),
-          ),
-          MatchPhaseState.duel: _positiveWeight(0.18 + (fatigue * 0.06)),
-          MatchPhaseState.buildUp: _positiveWeight(0.10 + (discipline * 0.02)),
-          MatchPhaseState.transition: _positiveWeight(0.08 + (fatigue * 0.04)),
-          MatchPhaseState.turnover: _positiveWeight(0.04 + (fatigue * 0.04)),
-          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.02)),
-        };
-
-      case MatchPhaseType.finalThird:
-        return {
-          MatchPhaseState.finalThird: _positiveWeight(
-            0.24 + (confidence * 0.08),
-          ),
-          MatchPhaseState.chance: _positiveWeight(
-            0.32 + (momentum * 0.06) + (confidence * 0.04),
-          ),
-          MatchPhaseState.duel: _positiveWeight(0.16 + (fatigue * 0.06)),
-          MatchPhaseState.progression: _positiveWeight(
-            0.12 + (discipline * 0.02),
-          ),
-          MatchPhaseState.turnover: _positiveWeight(0.06 + (fatigue * 0.04)),
-          MatchPhaseState.transition: _positiveWeight(0.04 + (fatigue * 0.02)),
-          MatchPhaseState.stoppage: _positiveWeight(0.02 + (discipline * 0.02)),
-        };
-
-      case MatchPhaseType.chance:
-        return {
-          MatchPhaseState.chance: _positiveWeight(0.50 + (confidence * 0.08)),
-          MatchPhaseState.outcome: _positiveWeight(0.28 + (momentum * 0.06)),
-          MatchPhaseState.duel: _positiveWeight(0.12 + (fatigue * 0.04)),
-          MatchPhaseState.transition: _positiveWeight(0.06 + (fatigue * 0.02)),
-          MatchPhaseState.turnover: _positiveWeight(0.02 + (fatigue * 0.02)),
-        };
-
-      case MatchPhaseType.outcome:
-        return {
-          MatchPhaseState.outcome: _outcomeStateWeight(
-            match,
-            state,
-            chanceQuality,
-          ),
-          MatchPhaseState.turnover: _turnoverStateWeight(state, chanceOutcome),
-          MatchPhaseState.transition: _transitionStateWeight(state),
-          MatchPhaseState.duel: _positiveWeight(0.04 + (fatigue * 0.02)),
-          MatchPhaseState.buildUp: _positiveWeight(
-            0.02 + ((1 - fatigue) * 0.01),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
-        };
-
-      case MatchPhaseType.transition:
-        return {
-          MatchPhaseState.transition: _transitionStateWeight(state),
-          MatchPhaseState.duel: _duelStateWeight(match, state),
-          MatchPhaseState.turnover: _turnoverStateWeight(state, chanceOutcome),
-          MatchPhaseState.neutralPossession: _neutralPossessionStateWeight(
-            match,
-            state,
-          ),
-          MatchPhaseState.buildUp: _positiveWeight(0.12 + (momentum * 0.04)),
-          MatchPhaseState.progression: _positiveWeight(
-            0.04 + (momentum * 0.02),
-          ),
-          MatchPhaseState.stoppage: _positiveWeight(0.01 + (discipline * 0.02)),
-        };
-
-      case MatchPhaseType.setPiece:
-        return {
-          MatchPhaseState.setPiecePreparation: _setPiecePreparationStateWeight(
-            match,
-            state,
-            chanceType,
-          ),
-          MatchPhaseState.setPieceDelivery: _setPieceDeliveryStateWeight(
-            match,
-            state,
-            chanceType,
-          ),
-          MatchPhaseState.restart: _restartStateWeight(match, state),
-          MatchPhaseState.chance: _positiveWeight(0.06 + (confidence * 0.02)),
-          MatchPhaseState.outcome: _positiveWeight(0.04),
-          MatchPhaseState.duel: _positiveWeight(0.02),
-        };
-
-      case MatchPhaseType.intervention:
-        return {
-          MatchPhaseState.stoppage: _positiveWeight(0.40 + (discipline * 0.08)),
-          MatchPhaseState.foulStop: _positiveWeight(0.22 + (discipline * 0.10)),
-          MatchPhaseState.restart: _positiveWeight(0.18 + (discipline * 0.04)),
-          MatchPhaseState.transition: _positiveWeight(
-            0.12 + (discipline * 0.02),
-          ),
-          MatchPhaseState.neutralPossession: _positiveWeight(
-            0.05 + (discipline * 0.01),
-          ),
-          MatchPhaseState.buildUp: _positiveWeight(0.02),
-          MatchPhaseState.duel: _positiveWeight(0.01),
-        };
-
-      case MatchPhaseType.specialIncident:
-        return {
-          MatchPhaseState.stoppage: _positiveWeight(0.36 + (discipline * 0.06)),
-          MatchPhaseState.restart: _positiveWeight(0.22 + (discipline * 0.04)),
-          MatchPhaseState.foulStop: _positiveWeight(0.16 + (discipline * 0.06)),
-          MatchPhaseState.transition: _positiveWeight(
-            0.14 + (discipline * 0.02),
-          ),
-          MatchPhaseState.buildUp: _positiveWeight(0.06),
-          MatchPhaseState.neutralPossession: _positiveWeight(0.03),
-          MatchPhaseState.duel: _positiveWeight(0.01),
-        };
-    }
-  }
-
   /// Resolves which team drives initiative for the current phase.
   ///
   /// Uses momentum, confidence, fatigue, and matchup edges to compute:
@@ -868,7 +635,8 @@ class MatchEngine {
     required MatchPhaseType phaseType,
     required math.Random random,
   }) {
-    if (phaseType == MatchPhaseType.setPiece) {
+    if (phaseType == MatchPhaseType.setPiecePreparation ||
+        phaseType == MatchPhaseType.setPieceDelivery) {
       return AttackMode.setPlayExecution;
     }
 
@@ -957,7 +725,8 @@ class MatchEngine {
     final discipline = _initiativeDisciplinePressure(state, initiative);
     final momentum = _initiativeMomentum(state, initiative);
 
-    if (phaseType == MatchPhaseType.setPiece) {
+    if (phaseType == MatchPhaseType.setPiecePreparation ||
+        phaseType == MatchPhaseType.setPieceDelivery) {
       return _weightedPick({
         AttackContext.cornerKick: _positiveWeight(
           0.16 + (identity.widthBias * 0.10) + (structure.boxPresence * 0.10),
@@ -1123,7 +892,8 @@ class MatchEngine {
     final triggerProbability = _clamp01(
       0.02 +
           switch (phaseType) {
-            MatchPhaseType.setPiece =>
+            MatchPhaseType.setPiecePreparation ||
+            MatchPhaseType.setPieceDelivery =>
               0.16 +
                   (identity.setPieceAttackingBias * 0.24) +
                   (structure.boxPresence * 0.14) +
@@ -1161,7 +931,8 @@ class MatchEngine {
     }
 
     switch (phaseType) {
-      case MatchPhaseType.setPiece:
+      case MatchPhaseType.setPiecePreparation:
+      case MatchPhaseType.setPieceDelivery:
         return _weightedPick({
           ChanceType.corner: _positiveWeight(
             0.20 + (identity.widthBias * 0.10) + (structure.boxPresence * 0.08),
@@ -1507,7 +1278,9 @@ class MatchEngine {
     }
 
     final neutralSetPiece =
-        snapshot.phaseType == MatchPhaseType.setPiece && chanceOutcome == null;
+        (snapshot.phaseType == MatchPhaseType.setPiecePreparation ||
+            snapshot.phaseType == MatchPhaseType.setPieceDelivery) &&
+        chanceOutcome == null;
     if (neutralSetPiece && snapshot.phaseIndex % 5 != 0) {
       return null;
     }
@@ -1532,7 +1305,9 @@ class MatchEngine {
       ChanceOutcome.turnover => 'Turnover',
       ChanceOutcome.clearance => 'Clearance',
       null => switch (snapshot.phaseType) {
-        MatchPhaseType.setPiece => 'Set Piece',
+        MatchPhaseType.setPiecePreparation ||
+        MatchPhaseType.setPieceDelivery =>
+          'Set Piece',
         MatchPhaseType.transition => 'Transition',
         _ => 'Dangerous Phase',
       },
@@ -1741,7 +1516,8 @@ class MatchEngine {
           MatchPhaseType.defensiveOrganization: _positiveWeight(
             0.02 + (fatigue * 0.06) + ((1 - confidence) * 0.04),
           ),
-          MatchPhaseType.setPiece: _positiveWeight(0.01),
+          MatchPhaseType.setPiecePreparation: _positiveWeight(0.01),
+          MatchPhaseType.setPieceDelivery: _positiveWeight(0.01),
           MatchPhaseType.intervention: _positiveWeight(
             0.01 + (discipline * 0.02),
           ),
@@ -1769,7 +1545,8 @@ class MatchEngine {
           ),
           MatchPhaseType.chance: _positiveWeight(0.02 + (attackEdge * 0.02)),
           MatchPhaseType.outcome: _positiveWeight(0.02),
-          MatchPhaseType.setPiece: _positiveWeight(0.01),
+          MatchPhaseType.setPiecePreparation: _positiveWeight(0.01),
+          MatchPhaseType.setPieceDelivery: _positiveWeight(0.01),
           MatchPhaseType.intervention: _positiveWeight(
             0.01 + (discipline * 0.03),
           ),
@@ -1807,7 +1584,8 @@ class MatchEngine {
           MatchPhaseType.defensiveOrganization: _positiveWeight(
             0.01 + (fatigue * 0.04),
           ),
-          MatchPhaseType.setPiece: _positiveWeight(0.01),
+          MatchPhaseType.setPiecePreparation: _positiveWeight(0.01),
+          MatchPhaseType.setPieceDelivery: _positiveWeight(0.01),
           MatchPhaseType.intervention: _positiveWeight(
             0.01 + (discipline * 0.02),
           ),
@@ -1872,6 +1650,28 @@ class MatchEngine {
           MatchPhaseType.intervention: _positiveWeight(
             0.01 + (discipline * 0.02),
           ),
+        };
+      case MatchPhaseType.duel:
+        return {
+          MatchPhaseType.duel: _positiveWeight(
+            0.16 + (fatigue * 0.04),
+          ),
+          MatchPhaseType.chance: _positiveWeight(
+            0.24 + (momentum * 0.06) + (confidence * 0.04),
+          ),
+          MatchPhaseType.progression: _positiveWeight(
+            0.20 + (momentum * 0.04),
+          ),
+          MatchPhaseType.buildUp: _positiveWeight(0.14),
+          MatchPhaseType.transition: _positiveWeight(
+            0.14 + (transitionEdge * 0.06),
+          ),
+          MatchPhaseType.turnover: _positiveWeight(
+            0.08 + (fatigue * 0.04),
+          ),
+          MatchPhaseType.outcome: _positiveWeight(0.02),
+          MatchPhaseType.stoppage: _positiveWeight(0.01 + (discipline * 0.01)),
+          MatchPhaseType.foulStop: _positiveWeight(0.01 + (discipline * 0.01)),
         };
       case MatchPhaseType.chance:
         return {
@@ -1950,7 +1750,8 @@ class MatchEngine {
             0.001 + (fatigue * 0.002),
           ),
         };
-      case MatchPhaseType.setPiece:
+      case MatchPhaseType.setPiecePreparation:
+      case MatchPhaseType.setPieceDelivery:
         return {
           MatchPhaseType.transition: _positiveWeight(
             0.42 +
@@ -2000,6 +1801,58 @@ class MatchEngine {
           ),
           MatchPhaseType.outcome: _positiveWeight(0.03),
           MatchPhaseType.chance: _positiveWeight(0.02),
+        };
+      case MatchPhaseType.turnover:
+        return {
+          MatchPhaseType.transition: _positiveWeight(
+            0.65 + (fatigue * 0.10),
+          ),
+          MatchPhaseType.duel: _positiveWeight(0.18 + (fatigue * 0.06)),
+          MatchPhaseType.buildUp: _positiveWeight(0.08),
+          MatchPhaseType.neutralPossession: _positiveWeight(0.05),
+          MatchPhaseType.outcome: _positiveWeight(0.02),
+          MatchPhaseType.chance: _positiveWeight(0.01),
+          MatchPhaseType.stoppage: _positiveWeight(0.01),
+        };
+      case MatchPhaseType.foulStop:
+        return {
+          MatchPhaseType.intervention: _positiveWeight(0.40 + (discipline * 0.06)),
+          MatchPhaseType.restart: _positiveWeight(0.32 + (discipline * 0.08)),
+          MatchPhaseType.stoppage: _positiveWeight(0.18 + (discipline * 0.04)),
+          MatchPhaseType.transition: _positiveWeight(0.06),
+          MatchPhaseType.buildUp: _positiveWeight(0.02),
+          MatchPhaseType.neutralPossession: _positiveWeight(0.02),
+        };
+      case MatchPhaseType.stoppage:
+        return {
+          MatchPhaseType.restart: _positiveWeight(0.45 + (discipline * 0.10)),
+          MatchPhaseType.intervention: _positiveWeight(0.30 + (discipline * 0.08)),
+          MatchPhaseType.foulStop: _positiveWeight(0.16 + (discipline * 0.04)),
+          MatchPhaseType.transition: _positiveWeight(0.05),
+          MatchPhaseType.buildUp: _positiveWeight(0.03),
+          MatchPhaseType.neutralPossession: _positiveWeight(0.01),
+        };
+      case MatchPhaseType.restart:
+        return {
+          MatchPhaseType.buildUp: _positiveWeight(
+            0.36 +
+                (confidence * 0.08) +
+                (momentum * 0.04) +
+                (possessionEdge * 0.06),
+          ),
+          MatchPhaseType.neutralPossession: _positiveWeight(
+            0.24 + (discipline * 0.06) + (midfieldEdge * 0.04),
+          ),
+          MatchPhaseType.progression: _positiveWeight(
+            0.18 + (momentum * 0.08) + (attackEdge * 0.04),
+          ),
+          MatchPhaseType.defensiveOrganization: _positiveWeight(
+            0.12 + (discipline * 0.04),
+          ),
+          MatchPhaseType.duel: _positiveWeight(0.06 + (fatigue * 0.02)),
+          MatchPhaseType.transition: _positiveWeight(0.02 + (fatigue * 0.02)),
+          MatchPhaseType.finalThird: _positiveWeight(0.01),
+          MatchPhaseType.chance: _positiveWeight(0.01),
         };
       case MatchPhaseType.specialIncident:
         return {
@@ -2075,175 +1928,7 @@ class MatchEngine {
     return value <= 0 ? 0.001 : value;
   }
 
-  static double _outcomeStateWeight(
-    Match match,
-    MatchState state,
-    double? chanceQuality,
-  ) {
-    final initiative = state.currentInitiative;
-    final strength = initiative == TeamSide.home
-        ? match.context.homeStrengthProfile
-        : match.context.awayStrengthProfile;
-    final quality = chanceQuality ?? 0.45;
-    final finishingEdge =
-        (strength.finishingQuality + strength.chanceConversion) / 200.0;
-    final momentum = _initiativeMomentum(state, initiative).abs() * 0.08;
-    return _positiveWeight(0.28 + (quality * 0.42) + finishingEdge + momentum);
-  }
 
-  static double _transitionStateWeight(MatchState state) {
-    final initiative = state.currentInitiative;
-    final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
-      initiative,
-    );
-    final momentum = _initiativeMomentum(state, initiative);
-    final fatigue = _initiativeFatigue(state, initiative);
-    return _positiveWeight(
-      0.22 + (transitionEdge * 0.18) + (momentum * 0.10) - (fatigue * 0.08),
-    );
-  }
-
-  static double _duelStateWeight(Match match, MatchState state) {
-    final initiative = state.currentInitiative;
-    final structural = initiative == TeamSide.home
-        ? match.context.homeStructuralProfile
-        : match.context.awayStructuralProfile;
-    final matchup = state.matchupState;
-    final compactness =
-        structural.pressShapeCohesion * 0.04 + structural.centralDensity * 0.04;
-    final halfSpace = structural.halfSpaceAccess * 0.05;
-    final territoryGap = state.currentTerritoryControl == initiative
-        ? 0.06
-        : 0.14;
-    final wingEdge =
-        _directionalMatchupEdge(matchup.wingControlEdge, initiative).abs() *
-        0.08;
-    return _positiveWeight(
-      0.12 + compactness + halfSpace + territoryGap + wingEdge,
-    );
-  }
-
-  static double _turnoverStateWeight(
-    MatchState state,
-    ChanceOutcome? chanceOutcome,
-  ) {
-    final initiative = state.currentInitiative;
-    final possessionLoss = state.currentPossession != initiative ? 0.14 : 0.04;
-    final territoryLoss = state.currentTerritoryControl != initiative
-        ? 0.10
-        : 0.03;
-    final discipline = _initiativeDisciplinePressure(state, initiative) * 0.18;
-    final directTurnover = chanceOutcome == ChanceOutcome.turnover ? 0.22 : 0.0;
-    return _positiveWeight(
-      0.10 + possessionLoss + territoryLoss + discipline + directTurnover,
-    );
-  }
-
-  static double _neutralPossessionStateWeight(Match match, MatchState state) {
-    final initiative = state.currentInitiative;
-    final identity = initiative == TeamSide.home
-        ? match.context.homeTacticalIdentity
-        : match.context.awayTacticalIdentity;
-    final strength = initiative == TeamSide.home
-        ? match.context.homeStrengthProfile
-        : match.context.awayStrengthProfile;
-    return _positiveWeight(
-      0.04 +
-          ((1 - identity.pressIntensityBias) * 0.10) +
-          ((1 - strength.defensiveCompactness) * 0.04) +
-          ((1 - strength.disciplineControl / 10.0) * 0.02),
-    );
-  }
-
-  static double _setPiecePreparationStateWeight(
-    Match match,
-    MatchState state,
-    ChanceType? chanceType,
-  ) {
-    final initiative = state.currentInitiative;
-    final identity = initiative == TeamSide.home
-        ? match.context.homeTacticalIdentity
-        : match.context.awayTacticalIdentity;
-    final structure = initiative == TeamSide.home
-        ? match.context.homeStructuralProfile
-        : match.context.awayStructuralProfile;
-    final setPieceEdge = _directionalMatchupEdge(
-      state.matchupState.setPieceControlEdge,
-      initiative,
-    );
-    final deliveryBias =
-        identity.setPieceAttackingBias * 0.08 + structure.slotFitScore * 0.06;
-    final preparatoryBias =
-        structure.roleCoherence * 0.08 + structure.supportNetworkQuality * 0.04;
-    final chancePenalty = chanceType == null ? 0.08 : -0.03;
-    return _positiveWeight(
-      0.12 +
-          preparatoryBias +
-          deliveryBias +
-          (setPieceEdge * 0.12) +
-          chancePenalty,
-    );
-  }
-
-  static double _setPieceDeliveryStateWeight(
-    Match match,
-    MatchState state,
-    ChanceType? chanceType,
-  ) {
-    final initiative = state.currentInitiative;
-    final identity = initiative == TeamSide.home
-        ? match.context.homeTacticalIdentity
-        : match.context.awayTacticalIdentity;
-    final structure = initiative == TeamSide.home
-        ? match.context.homeStructuralProfile
-        : match.context.awayStructuralProfile;
-    final setPieceEdge = _directionalMatchupEdge(
-      state.matchupState.setPieceControlEdge,
-      initiative,
-    );
-    final deliveryBias =
-        identity.setPieceAttackingBias * 0.12 + structure.boxPresence * 0.08;
-    final chanceBonus = chanceType == null ? -0.06 : 0.10;
-    return _positiveWeight(
-      0.10 + deliveryBias + (setPieceEdge * 0.16) + chanceBonus,
-    );
-  }
-
-  static double _restartStateWeight(Match match, MatchState state) {
-    final initiative = state.currentInitiative;
-    final identity = initiative == TeamSide.home
-        ? match.context.homeTacticalIdentity
-        : match.context.awayTacticalIdentity;
-    final structure = initiative == TeamSide.home
-        ? match.context.homeStructuralProfile
-        : match.context.awayStructuralProfile;
-    return _positiveWeight(
-      0.08 +
-          (1 - identity.counterTriggerBias) * 0.08 +
-          (1 - structure.transitionProtection) * 0.06,
-    );
-  }
-
-  static math.Random _phaseStateRandom(
-    MatchState state,
-    MatchPhaseType phaseType,
-    ChanceType? chanceType,
-    ChanceOutcome? chanceOutcome,
-  ) {
-    final seed =
-        (state.currentPhaseIndex * 1009) +
-        (phaseType.index * 97) +
-        (chanceType?.index ?? 0) * 31 +
-        (chanceOutcome?.index ?? 0) * 11 +
-        state.clock.minute * 13 +
-        state.clock.second;
-    return math.Random(seed);
-  }
-
-  static T _pickPhaseState<T>(Map<T, double> weights, math.Random random) {
-    return _weightedPick(weights, random);
-  }
 
   /// Generic weighted random picker used by route/outcome sampling.
   ///
