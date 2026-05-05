@@ -109,7 +109,8 @@ class AppDatabase extends _$AppDatabase {
       }
 
       // Determine tactical preset for this country and serialize to JSON
-      final preset = nationalTeamTacticsSeed[country.id] ?? TacticalPreset.balanced;
+      final preset =
+          nationalTeamTacticsSeed[country.id] ?? TacticalPreset.balanced;
       final nationalTeamTactic = TacticalPresetFactory.create(preset);
       final tacticJson = jsonEncode(nationalTeamTactic.toJson());
 

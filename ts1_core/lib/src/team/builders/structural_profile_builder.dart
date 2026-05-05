@@ -215,14 +215,15 @@ class StructuralProfileBuilder {
       (highLineCount / starterCount) * 0.55 +
           (formationTags['natural_width'] ?? 0.5) * 0.18 +
           _avg(roleFits) * 0.17 +
-          ( (attackingLaneAccessCount / starterCount).clamp(0.0, 1.0) ) * 0.10,
+          ((attackingLaneAccessCount / starterCount).clamp(0.0, 1.0)) * 0.10,
     );
 
     final restDefenseStability = _clamp01(
       (deepLineCount / starterCount) * 0.40 +
           (formationTags['rest_defense_shape'] ?? 0.5) * 0.33 +
           _avg(fits) * 0.15 +
-          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) * 0.12,
+          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) *
+              0.12,
     );
 
     final pressShapeCohesion = _clamp01(
@@ -252,7 +253,8 @@ class StructuralProfileBuilder {
                     ),
               ) *
               0.40 +
-          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) * 0.10,
+          ((defensiveResponsibilityCount / starterCount).clamp(0.0, 1.0)) *
+              0.10,
     );
 
     var halfSpaceSlotHits = 0;
@@ -277,10 +279,10 @@ class StructuralProfileBuilder {
 
     final flankIsolationRisk = _clamp01(
       1.0 -
-        (widthCoverage * 0.45 +
-          supportNetworkQuality * 0.35 +
-          transitionProtection * 0.15 +
-          (positionWideCount / starterCount) * 0.05),
+          (widthCoverage * 0.45 +
+              supportNetworkQuality * 0.35 +
+              transitionProtection * 0.15 +
+              (positionWideCount / starterCount) * 0.05),
     );
 
     return StructuralProfile(

@@ -234,12 +234,13 @@ final playerCountryScopesByContinentProvider =
       return scopes;
     });
 
-final playersByCountryProvider = FutureProvider.family<List<Player>, int>(
-  (ref, countryId) async {
-    final repo = await ref.watch(playerRepositoryProvider.future);
-    return repo.getPlayersByCountryId(countryId);
-  },
-);
+final playersByCountryProvider = FutureProvider.family<List<Player>, int>((
+  ref,
+  countryId,
+) async {
+  final repo = await ref.watch(playerRepositoryProvider.future);
+  return repo.getPlayersByCountryId(countryId);
+});
 
 final playerByIdProvider = FutureProvider.family<Player?, int>((
   ref,

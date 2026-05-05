@@ -27,8 +27,7 @@ abstract class MatchState with _$MatchState {
     @Default(MatchStatus.scheduled) MatchStatus status,
     @Default(MatchClock(id: 0)) MatchClock clock,
     @Default(0) int currentPhaseIndex,
-    @Default(MatchPhaseType.neutralPossession)
-    MatchPhaseType currentPhaseType,
+    @Default(MatchPhaseType.neutralPossession) MatchPhaseType currentPhaseType,
 
     // ==================== SCORE and RESULT SYSTEM ====================
     @Default(Scoreline(id: 0)) Scoreline scoreline,
@@ -424,8 +423,7 @@ abstract class MatchState with _$MatchState {
         ? ' | Pens: ${shootoutScore.home}-${shootoutScore.away}'
         : '';
     final statusLabel = 'Status: $status | Clock: ${clock.toString()}';
-    final phaseLabel =
-        'Phase #$currentPhaseIndex: $currentPhaseType';
+    final phaseLabel = 'Phase #$currentPhaseIndex: $currentPhaseType';
     final meta =
         'Events: ${eventCards.length}, Insights: ${tacticalInsights.length}, Subs: ${substitutions.length}';
     return '$header$pens\n$statusLabel\n$phaseLabel\n$meta';

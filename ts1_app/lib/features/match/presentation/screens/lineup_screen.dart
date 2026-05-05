@@ -443,8 +443,20 @@ class _PitchView extends StatelessWidget {
           child: Stack(
             children: [
               CustomPaint(size: Size(width, height), painter: _PitchPainter()),
-                ..._buildPlayers(home, width, height, isHome: true, opponent: away),
-                ..._buildPlayers(away, width, height, isHome: false, opponent: home),
+              ..._buildPlayers(
+                home,
+                width,
+                height,
+                isHome: true,
+                opponent: away,
+              ),
+              ..._buildPlayers(
+                away,
+                width,
+                height,
+                isHome: false,
+                opponent: home,
+              ),
             ],
           ),
         );

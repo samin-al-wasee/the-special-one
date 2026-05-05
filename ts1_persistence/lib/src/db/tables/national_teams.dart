@@ -18,11 +18,11 @@ class NationalTeams extends Table {
   // Team colors in hex format (e.g. #ff0000). Normalization and validation are
   // enforced at the repository layer.
   TextColumn get primaryColor =>
-    text().named('primary_color').withLength(min: 4, max: 7)();
+      text().named('primary_color').withLength(min: 4, max: 7)();
 
   TextColumn get secondaryColor =>
-    text().named('secondary_color').withLength(min: 4, max: 7)();
+      text().named('secondary_color').withLength(min: 4, max: 7)();
 
   TextColumn get tertiaryColor =>
-    text().named('tertiary_color').withLength(min: 4, max: 7)();
+      text().named('tertiary_color').withLength(min: 4, max: 7)();
 }

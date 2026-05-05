@@ -61,9 +61,15 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                 '  ',
               ).convert(team.lineup.toJson()),
             );
-            _primaryColorController = TextEditingController(text: team.primaryColor);
-            _secondaryColorController = TextEditingController(text: team.secondaryColor);
-            _tertiaryColorController = TextEditingController(text: team.tertiaryColor);
+            _primaryColorController = TextEditingController(
+              text: team.primaryColor,
+            );
+            _secondaryColorController = TextEditingController(
+              text: team.secondaryColor,
+            );
+            _tertiaryColorController = TextEditingController(
+              text: team.tertiaryColor,
+            );
             _initialized = true;
           }
 
@@ -94,7 +100,8 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                         labelText: 'Primary color (#rrggbb)',
                       ),
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) return 'Primary color is required';
+                        if (value == null || value.trim().isEmpty)
+                          return 'Primary color is required';
                         final v = value.trim().toLowerCase();
                         final s = v.startsWith('#') ? v : '#$v';
                         final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
@@ -108,7 +115,8 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                         labelText: 'Secondary color (#rrggbb)',
                       ),
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) return 'Secondary color is required';
+                        if (value == null || value.trim().isEmpty)
+                          return 'Secondary color is required';
                         final v = value.trim().toLowerCase();
                         final s = v.startsWith('#') ? v : '#$v';
                         final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
@@ -122,7 +130,8 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                         labelText: 'Tertiary color (#rrggbb)',
                       ),
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) return 'Tertiary color is required';
+                        if (value == null || value.trim().isEmpty)
+                          return 'Tertiary color is required';
                         final v = value.trim().toLowerCase();
                         final s = v.startsWith('#') ? v : '#$v';
                         final hex = RegExp(r'^#[0-9a-fA-F]{6}$');
@@ -176,9 +185,36 @@ class _TeamDetailScreenState extends ConsumerState<TeamDetailScreen> {
                                     lineup: Value(
                                       TeamLineupMapper.toJson(lineup),
                                     ),
-                                    primaryColor: Value(_primaryColorController.text.trim().toLowerCase().startsWith('#') ? _primaryColorController.text.trim().toLowerCase() : '#${_primaryColorController.text.trim().toLowerCase()}'),
-                                    secondaryColor: Value(_secondaryColorController.text.trim().toLowerCase().startsWith('#') ? _secondaryColorController.text.trim().toLowerCase() : '#${_secondaryColorController.text.trim().toLowerCase()}'),
-                                    tertiaryColor: Value(_tertiaryColorController.text.trim().toLowerCase().startsWith('#') ? _tertiaryColorController.text.trim().toLowerCase() : '#${_tertiaryColorController.text.trim().toLowerCase()}'),
+                                    primaryColor: Value(
+                                      _primaryColorController.text
+                                              .trim()
+                                              .toLowerCase()
+                                              .startsWith('#')
+                                          ? _primaryColorController.text
+                                                .trim()
+                                                .toLowerCase()
+                                          : '#${_primaryColorController.text.trim().toLowerCase()}',
+                                    ),
+                                    secondaryColor: Value(
+                                      _secondaryColorController.text
+                                              .trim()
+                                              .toLowerCase()
+                                              .startsWith('#')
+                                          ? _secondaryColorController.text
+                                                .trim()
+                                                .toLowerCase()
+                                          : '#${_secondaryColorController.text.trim().toLowerCase()}',
+                                    ),
+                                    tertiaryColor: Value(
+                                      _tertiaryColorController.text
+                                              .trim()
+                                              .toLowerCase()
+                                              .startsWith('#')
+                                          ? _tertiaryColorController.text
+                                                .trim()
+                                                .toLowerCase()
+                                          : '#${_tertiaryColorController.text.trim().toLowerCase()}',
+                                    ),
                                   ),
                                 );
                                 if (context.mounted) {

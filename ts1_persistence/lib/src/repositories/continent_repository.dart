@@ -11,15 +11,20 @@ class ContinentRepository {
 
   Future<ContinentRecord?> getContinentById(int id) => dao.getContinentById(id);
 
-  Future<ContinentRecord?> getContinentByCode(String code) => dao.getContinentByCode(code);
+  Future<ContinentRecord?> getContinentByCode(String code) =>
+      dao.getContinentByCode(code);
 
-  Future<ContinentRecord?> getContinentByName(String name) => dao.getContinentByName(name);
+  Future<ContinentRecord?> getContinentByName(String name) =>
+      dao.getContinentByName(name);
 
-  Future<int> createContinent(ContinentsCompanion continent) => dao.insertContinent(continent);
+  Future<int> createContinent(ContinentsCompanion continent) =>
+      dao.insertContinent(continent);
 
-  Future<void> upsertContinent(ContinentsCompanion continent) => dao.upsertContinent(continent);
+  Future<void> upsertContinent(ContinentsCompanion continent) =>
+      dao.upsertContinent(continent);
 
-  Future<int> updateContinent(ContinentsCompanion continent) => dao.updateContinent(continent);
+  Future<int> updateContinent(ContinentsCompanion continent) =>
+      dao.updateContinent(continent);
 
   Future<int> deleteContinent(int id) => dao.deleteContinent(id);
 }

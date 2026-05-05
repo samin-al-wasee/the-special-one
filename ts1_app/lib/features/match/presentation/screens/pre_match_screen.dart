@@ -196,7 +196,9 @@ class _SelectionPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     // Derive panel colors from the selected team when available
-    Color panelBackground = isDark ? const Color(0xFF13171D) : const Color(0xFFF9F8F2);
+    Color panelBackground = isDark
+        ? const Color(0xFF13171D)
+        : const Color(0xFFF9F8F2);
     Color accent = isDark ? const Color(0xFF1B5E20) : const Color(0xFF166534);
     Color foreground = isDark ? Colors.white : Colors.black87;
 

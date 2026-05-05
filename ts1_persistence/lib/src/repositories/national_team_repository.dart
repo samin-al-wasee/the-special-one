@@ -27,10 +27,7 @@ class NationalTeamRepository {
   final NationalTeamDao dao;
   final PlayerRepository playerRepository;
 
-  NationalTeamRepository(
-    this.dao,
-    this.playerRepository,
-  );
+  NationalTeamRepository(this.dao, this.playerRepository);
 
   // =========================
   // 🔹 READ OPERATIONS
@@ -140,10 +137,7 @@ class NationalTeamRepository {
   Future<int> updateTeamTactics(int teamId, TeamTactic tactic) {
     final tacticJson = jsonEncode(tactic.toJson());
     return dao.updateTeam(
-      NationalTeamsCompanion(
-        id: Value(teamId),
-        tactics: Value(tacticJson),
-      ),
+      NationalTeamsCompanion(id: Value(teamId), tactics: Value(tacticJson)),
     );
   }
 
@@ -264,21 +258,30 @@ class NationalTeamRepository {
       return s;
     }
 
-    final primary =
-      input.primaryColor.present ? normalize(input.primaryColor.value) : null;
-    final secondary =
-      input.secondaryColor.present ? normalize(input.secondaryColor.value) : null;
-    final tertiary =
-      input.tertiaryColor.present ? normalize(input.tertiaryColor.value) : null;
+    final primary = input.primaryColor.present
+        ? normalize(input.primaryColor.value)
+        : null;
+    final secondary = input.secondaryColor.present
+        ? normalize(input.secondaryColor.value)
+        : null;
+    final tertiary = input.tertiaryColor.present
+        ? normalize(input.tertiaryColor.value)
+        : null;
 
     if (primary == null || primary.isEmpty || !_isValidHex(primary)) {
-      throw ArgumentError('primary_color is required and must be in #rrggbb format');
+      throw ArgumentError(
+        'primary_color is required and must be in #rrggbb format',
+      );
     }
     if (secondary == null || secondary.isEmpty || !_isValidHex(secondary)) {
-      throw ArgumentError('secondary_color is required and must be in #rrggbb format');
+      throw ArgumentError(
+        'secondary_color is required and must be in #rrggbb format',
+      );
     }
     if (tertiary == null || tertiary.isEmpty || !_isValidHex(tertiary)) {
-      throw ArgumentError('tertiary_color is required and must be in #rrggbb format');
+      throw ArgumentError(
+        'tertiary_color is required and must be in #rrggbb format',
+      );
     }
 
     return NationalTeamsCompanion(

@@ -334,7 +334,7 @@ class MatchEngine {
           chanceOutcome == ChanceOutcome.save ||
           (chanceQuality != null && chanceQuality >= 0.58) ||
           (phaseType == MatchPhaseType.setPiecePreparation ||
-              phaseType == MatchPhaseType.setPieceDelivery) &&
+                  phaseType == MatchPhaseType.setPieceDelivery) &&
               chanceType != null,
     );
 
@@ -1306,8 +1306,7 @@ class MatchEngine {
       ChanceOutcome.clearance => 'Clearance',
       null => switch (snapshot.phaseType) {
         MatchPhaseType.setPiecePreparation ||
-        MatchPhaseType.setPieceDelivery =>
-          'Set Piece',
+        MatchPhaseType.setPieceDelivery => 'Set Piece',
         MatchPhaseType.transition => 'Transition',
         _ => 'Dangerous Phase',
       },
@@ -1653,22 +1652,16 @@ class MatchEngine {
         };
       case MatchPhaseType.duel:
         return {
-          MatchPhaseType.duel: _positiveWeight(
-            0.16 + (fatigue * 0.04),
-          ),
+          MatchPhaseType.duel: _positiveWeight(0.16 + (fatigue * 0.04)),
           MatchPhaseType.chance: _positiveWeight(
             0.24 + (momentum * 0.06) + (confidence * 0.04),
           ),
-          MatchPhaseType.progression: _positiveWeight(
-            0.20 + (momentum * 0.04),
-          ),
+          MatchPhaseType.progression: _positiveWeight(0.20 + (momentum * 0.04)),
           MatchPhaseType.buildUp: _positiveWeight(0.14),
           MatchPhaseType.transition: _positiveWeight(
             0.14 + (transitionEdge * 0.06),
           ),
-          MatchPhaseType.turnover: _positiveWeight(
-            0.08 + (fatigue * 0.04),
-          ),
+          MatchPhaseType.turnover: _positiveWeight(0.08 + (fatigue * 0.04)),
           MatchPhaseType.outcome: _positiveWeight(0.02),
           MatchPhaseType.stoppage: _positiveWeight(0.01 + (discipline * 0.01)),
           MatchPhaseType.foulStop: _positiveWeight(0.01 + (discipline * 0.01)),
@@ -1804,9 +1797,7 @@ class MatchEngine {
         };
       case MatchPhaseType.turnover:
         return {
-          MatchPhaseType.transition: _positiveWeight(
-            0.65 + (fatigue * 0.10),
-          ),
+          MatchPhaseType.transition: _positiveWeight(0.65 + (fatigue * 0.10)),
           MatchPhaseType.duel: _positiveWeight(0.18 + (fatigue * 0.06)),
           MatchPhaseType.buildUp: _positiveWeight(0.08),
           MatchPhaseType.neutralPossession: _positiveWeight(0.05),
@@ -1816,7 +1807,9 @@ class MatchEngine {
         };
       case MatchPhaseType.foulStop:
         return {
-          MatchPhaseType.intervention: _positiveWeight(0.40 + (discipline * 0.06)),
+          MatchPhaseType.intervention: _positiveWeight(
+            0.40 + (discipline * 0.06),
+          ),
           MatchPhaseType.restart: _positiveWeight(0.32 + (discipline * 0.08)),
           MatchPhaseType.stoppage: _positiveWeight(0.18 + (discipline * 0.04)),
           MatchPhaseType.transition: _positiveWeight(0.06),
@@ -1826,7 +1819,9 @@ class MatchEngine {
       case MatchPhaseType.stoppage:
         return {
           MatchPhaseType.restart: _positiveWeight(0.45 + (discipline * 0.10)),
-          MatchPhaseType.intervention: _positiveWeight(0.30 + (discipline * 0.08)),
+          MatchPhaseType.intervention: _positiveWeight(
+            0.30 + (discipline * 0.08),
+          ),
           MatchPhaseType.foulStop: _positiveWeight(0.16 + (discipline * 0.04)),
           MatchPhaseType.transition: _positiveWeight(0.05),
           MatchPhaseType.buildUp: _positiveWeight(0.03),
@@ -1927,8 +1922,6 @@ class MatchEngine {
   static double _positiveWeight(double value) {
     return value <= 0 ? 0.001 : value;
   }
-
-
 
   /// Generic weighted random picker used by route/outcome sampling.
   ///

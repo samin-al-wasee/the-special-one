@@ -139,20 +139,16 @@ class _TeamSetupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fallbackBackground = lightCard
-      ? const Color(0xFFF7F7F1)
-      : const Color(0xFF121317);
+        ? const Color(0xFFF7F7F1)
+        : const Color(0xFF121317);
     final fallbackForeground = lightCard ? Colors.black87 : Colors.white;
     final fallbackBorder = lightCard
-      ? const Color(0xFF1B5E20)
-      : const Color(0xFFEAEAEA);
+        ? const Color(0xFF1B5E20)
+        : const Color(0xFFEAEAEA);
 
     final palette = team == null
-      ? null
-      : teamColorPalette(
-        team!,
-        opponent: opponent,
-        isHome: isHomeTeam,
-        );
+        ? null
+        : teamColorPalette(team!, opponent: opponent, isHome: isHomeTeam);
 
     final background = palette?.background ?? fallbackBackground;
     final foreground = palette?.text ?? fallbackForeground;

@@ -7,7 +7,8 @@ part 'continent_dao.g.dart';
 
 /// Data Access Object for continent records in the database.
 @DriftAccessor(tables: [Continents])
-class ContinentDao extends DatabaseAccessor<AppDatabase> with _$ContinentDaoMixin {
+class ContinentDao extends DatabaseAccessor<AppDatabase>
+    with _$ContinentDaoMixin {
   ContinentDao(super.db);
 
   /// Retrieves all continents.
@@ -17,17 +18,23 @@ class ContinentDao extends DatabaseAccessor<AppDatabase> with _$ContinentDaoMixi
 
   /// Retrieves a continent by ID.
   Future<ContinentRecord?> getContinentById(int id) async {
-    return await (select(continents)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return await (select(
+      continents,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   /// Retrieves a continent by code.
   Future<ContinentRecord?> getContinentByCode(String code) async {
-    return await (select(continents)..where((t) => t.code.equals(code.toUpperCase()))).getSingleOrNull();
+    return await (select(
+      continents,
+    )..where((t) => t.code.equals(code.toUpperCase()))).getSingleOrNull();
   }
 
   /// Retrieves a continent by name.
   Future<ContinentRecord?> getContinentByName(String name) async {
-    return await (select(continents)..where((t) => t.name.equals(name))).getSingleOrNull();
+    return await (select(
+      continents,
+    )..where((t) => t.name.equals(name))).getSingleOrNull();
   }
 
   /// Inserts a continent.
@@ -42,7 +49,9 @@ class ContinentDao extends DatabaseAccessor<AppDatabase> with _$ContinentDaoMixi
 
   /// Updates a continent.
   Future<int> updateContinent(ContinentsCompanion continent) {
-    return (update(continents)..where((t) => t.id.equals(continent.id.value))).write(continent);
+    return (update(
+      continents,
+    )..where((t) => t.id.equals(continent.id.value))).write(continent);
   }
 
   /// Deletes a continent.

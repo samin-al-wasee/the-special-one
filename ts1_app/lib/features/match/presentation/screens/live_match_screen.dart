@@ -116,9 +116,7 @@ class _MatchHeader extends StatelessWidget {
           Text(
             '${clock.toString()}  •  ${match.matchState.status.name}',
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: textColor.withValues(alpha: 0.85),
             ),
           ),
@@ -129,7 +127,11 @@ class _MatchHeader extends StatelessWidget {
 }
 
 class _TimelineList extends StatelessWidget {
-  const _TimelineList({required this.match, required this.phaseHistory, required this.eventCards});
+  const _TimelineList({
+    required this.match,
+    required this.phaseHistory,
+    required this.eventCards,
+  });
 
   final Match match;
   final List<PhaseResolutionSnapshot> phaseHistory;
