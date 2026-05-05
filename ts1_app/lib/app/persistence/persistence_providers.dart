@@ -49,13 +49,6 @@ final nationalTeamDaoProvider = FutureProvider<NationalTeamDao>((ref) async {
   return NationalTeamDao(db);
 });
 
-final nationalTeamTacticDaoProvider = FutureProvider<NationalTeamTacticDao>((
-  ref,
-) async {
-  final db = await ref.watch(appDatabaseProvider.future);
-  return NationalTeamTacticDao(db);
-});
-
 final countryRepositoryProvider = FutureProvider<CountryRepository>((
   ref,
 ) async {
@@ -76,21 +69,12 @@ final playerRepositoryProvider = FutureProvider<PlayerRepository>((ref) async {
   return PlayerRepository(playerDao, countryRepo);
 });
 
-final nationalTeamTacticRepositoryProvider =
-    FutureProvider<NationalTeamTacticRepository>((ref) async {
-      final dao = await ref.watch(nationalTeamTacticDaoProvider.future);
-      return NationalTeamTacticRepository(dao);
-    });
-
 final nationalTeamRepositoryProvider = FutureProvider<NationalTeamRepository>((
   ref,
 ) async {
   final teamDao = await ref.watch(nationalTeamDaoProvider.future);
-  final tacticRepo = await ref.watch(
-    nationalTeamTacticRepositoryProvider.future,
-  );
   final playerRepo = await ref.watch(playerRepositoryProvider.future);
-  return NationalTeamRepository(teamDao, tacticRepo, playerRepo);
+  return NationalTeamRepository(teamDao, playerRepo);
 });
 
 final availableNationalTeamsProvider = FutureProvider<List<Team>>((ref) async {

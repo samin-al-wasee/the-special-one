@@ -7,7 +7,6 @@ import 'package:ts1_persistence/src/mappers/player_mapper.dart';
 import 'package:ts1_persistence/src/mappers/team_lineup_mapper.dart';
 import 'package:ts1_persistence/src/db/daos/player_dao.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_dao.dart';
-import 'package:ts1_persistence/src/db/daos/national_team_tactic_dao.dart';
 import 'package:ts1_persistence/src/utils/player_generation_helper.dart';
 
 import 'daos/country_dao.dart';
@@ -15,7 +14,6 @@ import 'tables/players.dart';
 import 'tables/continents.dart';
 import 'tables/countries.dart';
 import 'tables/national_teams.dart';
-import 'tables/national_team_tactics.dart';
 
 import 'seeds/continent_seed.dart';
 import 'seeds/country_seed.dart';
@@ -24,8 +22,8 @@ import 'seeds/national_team_tactics_seed.dart';
 part 'database.g.dart';
 
 @DriftDatabase(
-  tables: [Players, Continents, Countries, NationalTeams, NationalTeamTactics],
-  daos: [CountryDao, PlayerDao, NationalTeamDao, NationalTeamTacticDao],
+  tables: [Players, Continents, Countries, NationalTeams],
+  daos: [CountryDao, PlayerDao, NationalTeamDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -46,7 +44,6 @@ class AppDatabase extends _$AppDatabase {
     onCreate: (m) async {
       print('Creating database schema and seeding initial data...');
       await customStatement('PRAGMA foreign_keys = OFF');
-      await customStatement('DROP TABLE IF EXISTS national_team_tactics');
       await customStatement('DROP TABLE IF EXISTS national_teams');
       await customStatement('DROP TABLE IF EXISTS players');
       await customStatement('DROP TABLE IF EXISTS countries');
@@ -58,7 +55,6 @@ class AppDatabase extends _$AppDatabase {
       final helper = PlayerGenerationHelper(this);
       await helper.run(playersPerCountry: 100);
       await _seedNationalTeams();
-      await _seedNationalTeamTactics();
       await customStatement('PRAGMA foreign_keys = ON');
     },
   );
@@ -112,12 +108,18 @@ class AppDatabase extends _$AppDatabase {
         );
       }
 
+      // Determine tactical preset for this country and serialize to JSON
+      final preset = nationalTeamTacticsSeed[country.id] ?? TacticalPreset.balanced;
+      final nationalTeamTactic = TacticalPresetFactory.create(preset);
+      final tacticJson = jsonEncode(nationalTeamTactic.toJson());
+
       await into(nationalTeams).insert(
         NationalTeamsCompanion(
           id: Value(country.id), // Using same ID as country for consistency
           countryId: Value(country.id),
           name: Value(teamName),
           lineup: Value(lineupJson),
+          tactics: Value(tacticJson),
           primaryColor: Value(colors['primaryColor']!),
           secondaryColor: Value(colors['secondaryColor']!),
           tertiaryColor: Value(colors['tertiaryColor']!),
@@ -178,49 +180,7 @@ class AppDatabase extends _$AppDatabase {
     return lineup.slotAssignments.first.player;
   }
 
-  Future<void> _seedNationalTeamTactics() async {
-    // First, ensure national teams are already seeded
-    final allTeams = await select(nationalTeams).get();
-
-    print('Seeding national team tactics for ${allTeams.length} teams...');
-
-    for (var team in allTeams) {
-      // Get the tactical preset for this team from the seed data
-      final preset =
-          nationalTeamTacticsSeed[team.id] ?? TacticalPreset.balanced;
-      final nationalTeamTactic = TacticalPresetFactory.create(preset);
-
-      await into(nationalTeamTactics).insert(
-        NationalTeamTacticsCompanion(
-          teamId: Value(team.id),
-          presetName: Value(preset.label),
-          buildUpStyle: Value(nationalTeamTactic.buildUpStyle.name),
-          tempo: Value(nationalTeamTactic.tempo.name),
-          width: Value(nationalTeamTactic.width.name),
-          finalThirdFocus: Value(nationalTeamTactic.finalThirdFocus.name),
-          attackingFocus: Value(nationalTeamTactic.attackingFocus.name),
-          defensiveLine: Value(nationalTeamTactic.defensiveLine.name),
-          lineOfEngagement: Value(nationalTeamTactic.lineOfEngagement.name),
-          pressingIntensity: Value(nationalTeamTactic.pressingIntensity.name),
-          defensiveWidth: Value(nationalTeamTactic.defensiveWidth.name),
-          markingStyle: Value(nationalTeamTactic.markingStyle.name),
-          tacklingAggression: Value(nationalTeamTactic.tacklingAggression.name),
-          transitionOnWin: Value(nationalTeamTactic.transitionOnWin.name),
-          transitionOnLoss: Value(nationalTeamTactic.transitionOnLoss.name),
-          teamMentality: Value(nationalTeamTactic.teamMentality.name),
-          passingRisk: Value(nationalTeamTactic.passingRisk.name),
-          dribblingRisk: Value(nationalTeamTactic.dribblingRisk.name),
-          shootingPolicy: Value(nationalTeamTactic.shootingPolicy.name),
-          compactness: Value(nationalTeamTactic.compactness.name),
-          verticalStretch: Value(nationalTeamTactic.verticalStretch.name),
-          overloadFocus: Value(nationalTeamTactic.overloadFocus.name),
-          setPieceAttack: Value(nationalTeamTactic.setPieceAttack.name),
-          setPieceDefense: Value(nationalTeamTactic.setPieceDefense.name),
-          freeKickStrategy: Value(nationalTeamTactic.freeKickStrategy.name),
-        ),
-      );
-    }
-  }
+  // Tactics are seeded inline during _seedNationalTeams
 }
 
 LazyDatabase _openConnection() {

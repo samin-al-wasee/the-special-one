@@ -1365,6 +1365,18 @@ class $NationalTeamsTable extends NationalTeams
     requiredDuringInsert: false,
     defaultValue: const Constant('{}'),
   );
+  static const VerificationMeta _tacticsMeta = const VerificationMeta(
+    'tactics',
+  );
+  @override
+  late final GeneratedColumn<String> tactics = GeneratedColumn<String>(
+    'tactics',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  );
   static const VerificationMeta _primaryColorMeta = const VerificationMeta(
     'primaryColor',
   );
@@ -1416,6 +1428,7 @@ class $NationalTeamsTable extends NationalTeams
     countryId,
     name,
     lineup,
+    tactics,
     primaryColor,
     secondaryColor,
     tertiaryColor,
@@ -1455,6 +1468,12 @@ class $NationalTeamsTable extends NationalTeams
       context.handle(
         _lineupMeta,
         lineup.isAcceptableOrUnknown(data['lineup']!, _lineupMeta),
+      );
+    }
+    if (data.containsKey('tactics')) {
+      context.handle(
+        _tacticsMeta,
+        tactics.isAcceptableOrUnknown(data['tactics']!, _tacticsMeta),
       );
     }
     if (data.containsKey('primary_color')) {
@@ -1515,6 +1534,10 @@ class $NationalTeamsTable extends NationalTeams
         DriftSqlType.string,
         data['${effectivePrefix}lineup'],
       )!,
+      tactics: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tactics'],
+      )!,
       primaryColor: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}primary_color'],
@@ -1542,6 +1565,7 @@ class NationalTeamRecord extends DataClass
   final int countryId;
   final String name;
   final String lineup;
+  final String tactics;
   final String primaryColor;
   final String secondaryColor;
   final String tertiaryColor;
@@ -1550,6 +1574,7 @@ class NationalTeamRecord extends DataClass
     required this.countryId,
     required this.name,
     required this.lineup,
+    required this.tactics,
     required this.primaryColor,
     required this.secondaryColor,
     required this.tertiaryColor,
@@ -1561,6 +1586,7 @@ class NationalTeamRecord extends DataClass
     map['country_id'] = Variable<int>(countryId);
     map['name'] = Variable<String>(name);
     map['lineup'] = Variable<String>(lineup);
+    map['tactics'] = Variable<String>(tactics);
     map['primary_color'] = Variable<String>(primaryColor);
     map['secondary_color'] = Variable<String>(secondaryColor);
     map['tertiary_color'] = Variable<String>(tertiaryColor);
@@ -1573,6 +1599,7 @@ class NationalTeamRecord extends DataClass
       countryId: Value(countryId),
       name: Value(name),
       lineup: Value(lineup),
+      tactics: Value(tactics),
       primaryColor: Value(primaryColor),
       secondaryColor: Value(secondaryColor),
       tertiaryColor: Value(tertiaryColor),
@@ -1589,6 +1616,7 @@ class NationalTeamRecord extends DataClass
       countryId: serializer.fromJson<int>(json['countryId']),
       name: serializer.fromJson<String>(json['name']),
       lineup: serializer.fromJson<String>(json['lineup']),
+      tactics: serializer.fromJson<String>(json['tactics']),
       primaryColor: serializer.fromJson<String>(json['primaryColor']),
       secondaryColor: serializer.fromJson<String>(json['secondaryColor']),
       tertiaryColor: serializer.fromJson<String>(json['tertiaryColor']),
@@ -1602,6 +1630,7 @@ class NationalTeamRecord extends DataClass
       'countryId': serializer.toJson<int>(countryId),
       'name': serializer.toJson<String>(name),
       'lineup': serializer.toJson<String>(lineup),
+      'tactics': serializer.toJson<String>(tactics),
       'primaryColor': serializer.toJson<String>(primaryColor),
       'secondaryColor': serializer.toJson<String>(secondaryColor),
       'tertiaryColor': serializer.toJson<String>(tertiaryColor),
@@ -1613,6 +1642,7 @@ class NationalTeamRecord extends DataClass
     int? countryId,
     String? name,
     String? lineup,
+    String? tactics,
     String? primaryColor,
     String? secondaryColor,
     String? tertiaryColor,
@@ -1621,6 +1651,7 @@ class NationalTeamRecord extends DataClass
     countryId: countryId ?? this.countryId,
     name: name ?? this.name,
     lineup: lineup ?? this.lineup,
+    tactics: tactics ?? this.tactics,
     primaryColor: primaryColor ?? this.primaryColor,
     secondaryColor: secondaryColor ?? this.secondaryColor,
     tertiaryColor: tertiaryColor ?? this.tertiaryColor,
@@ -1631,6 +1662,7 @@ class NationalTeamRecord extends DataClass
       countryId: data.countryId.present ? data.countryId.value : this.countryId,
       name: data.name.present ? data.name.value : this.name,
       lineup: data.lineup.present ? data.lineup.value : this.lineup,
+      tactics: data.tactics.present ? data.tactics.value : this.tactics,
       primaryColor: data.primaryColor.present
           ? data.primaryColor.value
           : this.primaryColor,
@@ -1650,6 +1682,7 @@ class NationalTeamRecord extends DataClass
           ..write('countryId: $countryId, ')
           ..write('name: $name, ')
           ..write('lineup: $lineup, ')
+          ..write('tactics: $tactics, ')
           ..write('primaryColor: $primaryColor, ')
           ..write('secondaryColor: $secondaryColor, ')
           ..write('tertiaryColor: $tertiaryColor')
@@ -1663,6 +1696,7 @@ class NationalTeamRecord extends DataClass
     countryId,
     name,
     lineup,
+    tactics,
     primaryColor,
     secondaryColor,
     tertiaryColor,
@@ -1675,6 +1709,7 @@ class NationalTeamRecord extends DataClass
           other.countryId == this.countryId &&
           other.name == this.name &&
           other.lineup == this.lineup &&
+          other.tactics == this.tactics &&
           other.primaryColor == this.primaryColor &&
           other.secondaryColor == this.secondaryColor &&
           other.tertiaryColor == this.tertiaryColor);
@@ -1685,6 +1720,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
   final Value<int> countryId;
   final Value<String> name;
   final Value<String> lineup;
+  final Value<String> tactics;
   final Value<String> primaryColor;
   final Value<String> secondaryColor;
   final Value<String> tertiaryColor;
@@ -1693,6 +1729,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     this.countryId = const Value.absent(),
     this.name = const Value.absent(),
     this.lineup = const Value.absent(),
+    this.tactics = const Value.absent(),
     this.primaryColor = const Value.absent(),
     this.secondaryColor = const Value.absent(),
     this.tertiaryColor = const Value.absent(),
@@ -1702,6 +1739,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     required int countryId,
     required String name,
     this.lineup = const Value.absent(),
+    this.tactics = const Value.absent(),
     required String primaryColor,
     required String secondaryColor,
     required String tertiaryColor,
@@ -1715,6 +1753,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     Expression<int>? countryId,
     Expression<String>? name,
     Expression<String>? lineup,
+    Expression<String>? tactics,
     Expression<String>? primaryColor,
     Expression<String>? secondaryColor,
     Expression<String>? tertiaryColor,
@@ -1724,6 +1763,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
       if (countryId != null) 'country_id': countryId,
       if (name != null) 'name': name,
       if (lineup != null) 'lineup': lineup,
+      if (tactics != null) 'tactics': tactics,
       if (primaryColor != null) 'primary_color': primaryColor,
       if (secondaryColor != null) 'secondary_color': secondaryColor,
       if (tertiaryColor != null) 'tertiary_color': tertiaryColor,
@@ -1735,6 +1775,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     Value<int>? countryId,
     Value<String>? name,
     Value<String>? lineup,
+    Value<String>? tactics,
     Value<String>? primaryColor,
     Value<String>? secondaryColor,
     Value<String>? tertiaryColor,
@@ -1744,6 +1785,7 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
       countryId: countryId ?? this.countryId,
       name: name ?? this.name,
       lineup: lineup ?? this.lineup,
+      tactics: tactics ?? this.tactics,
       primaryColor: primaryColor ?? this.primaryColor,
       secondaryColor: secondaryColor ?? this.secondaryColor,
       tertiaryColor: tertiaryColor ?? this.tertiaryColor,
@@ -1765,6 +1807,9 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
     if (lineup.present) {
       map['lineup'] = Variable<String>(lineup.value);
     }
+    if (tactics.present) {
+      map['tactics'] = Variable<String>(tactics.value);
+    }
     if (primaryColor.present) {
       map['primary_color'] = Variable<String>(primaryColor.value);
     }
@@ -1784,1632 +1829,10 @@ class NationalTeamsCompanion extends UpdateCompanion<NationalTeamRecord> {
           ..write('countryId: $countryId, ')
           ..write('name: $name, ')
           ..write('lineup: $lineup, ')
+          ..write('tactics: $tactics, ')
           ..write('primaryColor: $primaryColor, ')
           ..write('secondaryColor: $secondaryColor, ')
           ..write('tertiaryColor: $tertiaryColor')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $NationalTeamTacticsTable extends NationalTeamTactics
-    with TableInfo<$NationalTeamTacticsTable, NationalTeamTacticRecord> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $NationalTeamTacticsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  static const VerificationMeta _teamIdMeta = const VerificationMeta('teamId');
-  @override
-  late final GeneratedColumn<int> teamId = GeneratedColumn<int>(
-    'team_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
-  static const VerificationMeta _presetNameMeta = const VerificationMeta(
-    'presetName',
-  );
-  @override
-  late final GeneratedColumn<String> presetName = GeneratedColumn<String>(
-    'preset_name',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 50,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (preset_name IN (\'Possession Control\', \'Vertical Attack\', \'Counter-Attack\', \'Wing Play\', \'High Press\', \'Low Block\', \'Direct Football\', \'Balanced\', \'Set-Piece Focus\', \'Tiki-Taka\', \'Gegenpress\', \'Catenaccio\', \'Route One\', \'Total Football\', \'Joga Bonito\', \'Compact Transition\', \'Positional Press\'))',
-  );
-  static const VerificationMeta _buildUpStyleMeta = const VerificationMeta(
-    'buildUpStyle',
-  );
-  @override
-  late final GeneratedColumn<String> buildUpStyle = GeneratedColumn<String>(
-    'build_up_style',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 50,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (build_up_style IN (\'buildFromBack\', \'mixedBuildUp\', \'directProgression\', \'longBall\', \'counterBuildUp\'))',
-  );
-  static const VerificationMeta _tempoMeta = const VerificationMeta('tempo');
-  @override
-  late final GeneratedColumn<String> tempo = GeneratedColumn<String>(
-    'tempo',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (tempo IN (\'veryLow\', \'low\', \'balanced\', \'high\', \'veryHigh\'))',
-  );
-  static const VerificationMeta _widthMeta = const VerificationMeta('width');
-  @override
-  late final GeneratedColumn<String> width = GeneratedColumn<String>(
-    'width',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (width IN (\'veryNarrow\', \'narrow\', \'balanced\', \'wide\', \'veryWide\'))',
-  );
-  static const VerificationMeta _finalThirdFocusMeta = const VerificationMeta(
-    'finalThirdFocus',
-  );
-  @override
-  late final GeneratedColumn<String> finalThirdFocus = GeneratedColumn<String>(
-    'final_third_focus',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 50,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (final_third_focus IN (\'workBallIntoBox\', \'mixedAttacking\', \'shootOnSight\', \'crossEarly\', \'overlapWide\', \'underlapInside\', \'throughBallFocus\', \'dribbleMore\', \'holdPossession\'))',
-  );
-  static const VerificationMeta _attackingFocusMeta = const VerificationMeta(
-    'attackingFocus',
-  );
-  @override
-  late final GeneratedColumn<String> attackingFocus = GeneratedColumn<String>(
-    'attacking_focus',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (attacking_focus IN (\'attackLeft\', \'attackRight\', \'attackCentre\', \'mixed\', \'switchFlanksOften\', \'targetHalfSpaces\'))',
-  );
-  static const VerificationMeta _defensiveLineMeta = const VerificationMeta(
-    'defensiveLine',
-  );
-  @override
-  late final GeneratedColumn<String> defensiveLine = GeneratedColumn<String>(
-    'defensive_line',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (defensive_line IN (\'veryDeep\', \'deep\', \'standard\', \'high\', \'veryHigh\'))',
-  );
-  static const VerificationMeta _lineOfEngagementMeta = const VerificationMeta(
-    'lineOfEngagement',
-  );
-  @override
-  late final GeneratedColumn<String> lineOfEngagement = GeneratedColumn<String>(
-    'line_of_engagement',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (line_of_engagement IN (\'lowBlock\', \'midBlock\', \'highBlock\', \'fullPress\'))',
-  );
-  static const VerificationMeta _pressingIntensityMeta = const VerificationMeta(
-    'pressingIntensity',
-  );
-  @override
-  late final GeneratedColumn<String>
-  pressingIntensity = GeneratedColumn<String>(
-    'pressing_intensity',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (pressing_intensity IN (\'veryLow\', \'low\', \'balanced\', \'high\', \'extreme\'))',
-  );
-  static const VerificationMeta _defensiveWidthMeta = const VerificationMeta(
-    'defensiveWidth',
-  );
-  @override
-  late final GeneratedColumn<String> defensiveWidth = GeneratedColumn<String>(
-    'defensive_width',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (defensive_width IN (\'veryNarrow\', \'narrow\', \'balanced\', \'wide\', \'veryWide\'))',
-  );
-  static const VerificationMeta _markingStyleMeta = const VerificationMeta(
-    'markingStyle',
-  );
-  @override
-  late final GeneratedColumn<String> markingStyle = GeneratedColumn<String>(
-    'marking_style',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (marking_style IN (\'zonal\', \'mixed\', \'tightManOriented\'))',
-  );
-  static const VerificationMeta _tacklingAggressionMeta =
-      const VerificationMeta('tacklingAggression');
-  @override
-  late final GeneratedColumn<String>
-  tacklingAggression = GeneratedColumn<String>(
-    'tackling_aggression',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (tackling_aggression IN (\'stayOnFeet\', \'balanced\', \'aggressive\', \'veryAggressive\'))',
-  );
-  static const VerificationMeta _transitionOnWinMeta = const VerificationMeta(
-    'transitionOnWin',
-  );
-  @override
-  late final GeneratedColumn<String> transitionOnWin = GeneratedColumn<String>(
-    'transition_on_win',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 40,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (transition_on_win IN (\'counterImmediately\', \'progressSafely\', \'holdShape\', \'feedPlaymaker\', \'feedWinger\', \'goLongToStriker\', \'attackWeakSide\'))',
-  );
-  static const VerificationMeta _transitionOnLossMeta = const VerificationMeta(
-    'transitionOnLoss',
-  );
-  @override
-  late final GeneratedColumn<String> transitionOnLoss = GeneratedColumn<String>(
-    'transition_on_loss',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (transition_on_loss IN (\'counterpress\', \'delay\', \'regroup\', \'tacticalFoul\', \'dropDeepImmediately\'))',
-  );
-  static const VerificationMeta _teamMentalityMeta = const VerificationMeta(
-    'teamMentality',
-  );
-  @override
-  late final GeneratedColumn<String> teamMentality = GeneratedColumn<String>(
-    'team_mentality',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (team_mentality IN (\'veryDefensive\', \'defensive\', \'cautious\', \'balanced\', \'positive\', \'attacking\', \'veryAttacking\'))',
-  );
-  static const VerificationMeta _passingRiskMeta = const VerificationMeta(
-    'passingRisk',
-  );
-  @override
-  late final GeneratedColumn<String> passingRisk = GeneratedColumn<String>(
-    'passing_risk',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (passing_risk IN (\'verySafe\', \'safe\', \'balanced\', \'risky\', \'veryRisky\'))',
-  );
-  static const VerificationMeta _dribblingRiskMeta = const VerificationMeta(
-    'dribblingRisk',
-  );
-  @override
-  late final GeneratedColumn<String> dribblingRisk = GeneratedColumn<String>(
-    'dribbling_risk',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 25,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (dribbling_risk IN (\'veryConservative\', \'balanced\', \'aggressive\'))',
-  );
-  static const VerificationMeta _shootingPolicyMeta = const VerificationMeta(
-    'shootingPolicy',
-  );
-  @override
-  late final GeneratedColumn<String> shootingPolicy = GeneratedColumn<String>(
-    'shooting_policy',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 25,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (shooting_policy IN (\'shootLess\', \'balanced\', \'shootMore\', \'shootAggressively\'))',
-  );
-  static const VerificationMeta _compactnessMeta = const VerificationMeta(
-    'compactness',
-  );
-  @override
-  late final GeneratedColumn<String> compactness = GeneratedColumn<String>(
-    'compactness',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (compactness IN (\'veryCompact\', \'compact\', \'balanced\', \'loose\', \'veryLoose\'))',
-  );
-  static const VerificationMeta _verticalStretchMeta = const VerificationMeta(
-    'verticalStretch',
-  );
-  @override
-  late final GeneratedColumn<String> verticalStretch = GeneratedColumn<String>(
-    'vertical_stretch',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 20,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (vertical_stretch IN (\'compressed\', \'balanced\', \'stretched\'))',
-  );
-  static const VerificationMeta _overloadFocusMeta = const VerificationMeta(
-    'overloadFocus',
-  );
-  @override
-  late final GeneratedColumn<String> overloadFocus = GeneratedColumn<String>(
-    'overload_focus',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (overload_focus IN (\'leftOverload\', \'rightOverload\', \'centralOverload\', \'noSpecificOverload\'))',
-  );
-  static const VerificationMeta _setPieceAttackMeta = const VerificationMeta(
-    'setPieceAttack',
-  );
-  @override
-  late final GeneratedColumn<String> setPieceAttack = GeneratedColumn<String>(
-    'set_piece_attack',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 40,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (set_piece_attack IN (\'nearPostCorners\', \'farPostCorners\', \'mixedCorners\', \'shortCorners\', \'crowdGoalkeeper\', \'edgeOfBoxSetup\', \'tallPlayerTargeting\', \'reboundHunting\'))',
-  );
-  static const VerificationMeta _setPieceDefenseMeta = const VerificationMeta(
-    'setPieceDefense',
-  );
-  @override
-  late final GeneratedColumn<String> setPieceDefense = GeneratedColumn<String>(
-    'set_piece_defense',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (set_piece_defense IN (\'zonalMarking\', \'mixedMarking\', \'manMarking\', \'leavePlayersUp\', \'fullRetreat\', \'counterSetup\', \'nearPostGuard\'))',
-  );
-  static const VerificationMeta _freeKickStrategyMeta = const VerificationMeta(
-    'freeKickStrategy',
-  );
-  @override
-  late final GeneratedColumn<String> freeKickStrategy = GeneratedColumn<String>(
-    'free_kick_strategy',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 25,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints:
-        'NOT NULL CHECK (free_kick_strategy IN (\'shootDirect\', \'crossIntoBox\', \'shortRoutine\', \'fastRestart\'))',
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    teamId,
-    presetName,
-    buildUpStyle,
-    tempo,
-    width,
-    finalThirdFocus,
-    attackingFocus,
-    defensiveLine,
-    lineOfEngagement,
-    pressingIntensity,
-    defensiveWidth,
-    markingStyle,
-    tacklingAggression,
-    transitionOnWin,
-    transitionOnLoss,
-    teamMentality,
-    passingRisk,
-    dribblingRisk,
-    shootingPolicy,
-    compactness,
-    verticalStretch,
-    overloadFocus,
-    setPieceAttack,
-    setPieceDefense,
-    freeKickStrategy,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'national_team_tactics';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<NationalTeamTacticRecord> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('team_id')) {
-      context.handle(
-        _teamIdMeta,
-        teamId.isAcceptableOrUnknown(data['team_id']!, _teamIdMeta),
-      );
-    }
-    if (data.containsKey('preset_name')) {
-      context.handle(
-        _presetNameMeta,
-        presetName.isAcceptableOrUnknown(data['preset_name']!, _presetNameMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_presetNameMeta);
-    }
-    if (data.containsKey('build_up_style')) {
-      context.handle(
-        _buildUpStyleMeta,
-        buildUpStyle.isAcceptableOrUnknown(
-          data['build_up_style']!,
-          _buildUpStyleMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_buildUpStyleMeta);
-    }
-    if (data.containsKey('tempo')) {
-      context.handle(
-        _tempoMeta,
-        tempo.isAcceptableOrUnknown(data['tempo']!, _tempoMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_tempoMeta);
-    }
-    if (data.containsKey('width')) {
-      context.handle(
-        _widthMeta,
-        width.isAcceptableOrUnknown(data['width']!, _widthMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_widthMeta);
-    }
-    if (data.containsKey('final_third_focus')) {
-      context.handle(
-        _finalThirdFocusMeta,
-        finalThirdFocus.isAcceptableOrUnknown(
-          data['final_third_focus']!,
-          _finalThirdFocusMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_finalThirdFocusMeta);
-    }
-    if (data.containsKey('attacking_focus')) {
-      context.handle(
-        _attackingFocusMeta,
-        attackingFocus.isAcceptableOrUnknown(
-          data['attacking_focus']!,
-          _attackingFocusMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_attackingFocusMeta);
-    }
-    if (data.containsKey('defensive_line')) {
-      context.handle(
-        _defensiveLineMeta,
-        defensiveLine.isAcceptableOrUnknown(
-          data['defensive_line']!,
-          _defensiveLineMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_defensiveLineMeta);
-    }
-    if (data.containsKey('line_of_engagement')) {
-      context.handle(
-        _lineOfEngagementMeta,
-        lineOfEngagement.isAcceptableOrUnknown(
-          data['line_of_engagement']!,
-          _lineOfEngagementMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lineOfEngagementMeta);
-    }
-    if (data.containsKey('pressing_intensity')) {
-      context.handle(
-        _pressingIntensityMeta,
-        pressingIntensity.isAcceptableOrUnknown(
-          data['pressing_intensity']!,
-          _pressingIntensityMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_pressingIntensityMeta);
-    }
-    if (data.containsKey('defensive_width')) {
-      context.handle(
-        _defensiveWidthMeta,
-        defensiveWidth.isAcceptableOrUnknown(
-          data['defensive_width']!,
-          _defensiveWidthMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_defensiveWidthMeta);
-    }
-    if (data.containsKey('marking_style')) {
-      context.handle(
-        _markingStyleMeta,
-        markingStyle.isAcceptableOrUnknown(
-          data['marking_style']!,
-          _markingStyleMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_markingStyleMeta);
-    }
-    if (data.containsKey('tackling_aggression')) {
-      context.handle(
-        _tacklingAggressionMeta,
-        tacklingAggression.isAcceptableOrUnknown(
-          data['tackling_aggression']!,
-          _tacklingAggressionMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_tacklingAggressionMeta);
-    }
-    if (data.containsKey('transition_on_win')) {
-      context.handle(
-        _transitionOnWinMeta,
-        transitionOnWin.isAcceptableOrUnknown(
-          data['transition_on_win']!,
-          _transitionOnWinMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_transitionOnWinMeta);
-    }
-    if (data.containsKey('transition_on_loss')) {
-      context.handle(
-        _transitionOnLossMeta,
-        transitionOnLoss.isAcceptableOrUnknown(
-          data['transition_on_loss']!,
-          _transitionOnLossMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_transitionOnLossMeta);
-    }
-    if (data.containsKey('team_mentality')) {
-      context.handle(
-        _teamMentalityMeta,
-        teamMentality.isAcceptableOrUnknown(
-          data['team_mentality']!,
-          _teamMentalityMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_teamMentalityMeta);
-    }
-    if (data.containsKey('passing_risk')) {
-      context.handle(
-        _passingRiskMeta,
-        passingRisk.isAcceptableOrUnknown(
-          data['passing_risk']!,
-          _passingRiskMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_passingRiskMeta);
-    }
-    if (data.containsKey('dribbling_risk')) {
-      context.handle(
-        _dribblingRiskMeta,
-        dribblingRisk.isAcceptableOrUnknown(
-          data['dribbling_risk']!,
-          _dribblingRiskMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_dribblingRiskMeta);
-    }
-    if (data.containsKey('shooting_policy')) {
-      context.handle(
-        _shootingPolicyMeta,
-        shootingPolicy.isAcceptableOrUnknown(
-          data['shooting_policy']!,
-          _shootingPolicyMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_shootingPolicyMeta);
-    }
-    if (data.containsKey('compactness')) {
-      context.handle(
-        _compactnessMeta,
-        compactness.isAcceptableOrUnknown(
-          data['compactness']!,
-          _compactnessMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_compactnessMeta);
-    }
-    if (data.containsKey('vertical_stretch')) {
-      context.handle(
-        _verticalStretchMeta,
-        verticalStretch.isAcceptableOrUnknown(
-          data['vertical_stretch']!,
-          _verticalStretchMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_verticalStretchMeta);
-    }
-    if (data.containsKey('overload_focus')) {
-      context.handle(
-        _overloadFocusMeta,
-        overloadFocus.isAcceptableOrUnknown(
-          data['overload_focus']!,
-          _overloadFocusMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_overloadFocusMeta);
-    }
-    if (data.containsKey('set_piece_attack')) {
-      context.handle(
-        _setPieceAttackMeta,
-        setPieceAttack.isAcceptableOrUnknown(
-          data['set_piece_attack']!,
-          _setPieceAttackMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_setPieceAttackMeta);
-    }
-    if (data.containsKey('set_piece_defense')) {
-      context.handle(
-        _setPieceDefenseMeta,
-        setPieceDefense.isAcceptableOrUnknown(
-          data['set_piece_defense']!,
-          _setPieceDefenseMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_setPieceDefenseMeta);
-    }
-    if (data.containsKey('free_kick_strategy')) {
-      context.handle(
-        _freeKickStrategyMeta,
-        freeKickStrategy.isAcceptableOrUnknown(
-          data['free_kick_strategy']!,
-          _freeKickStrategyMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_freeKickStrategyMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  NationalTeamTacticRecord map(
-    Map<String, dynamic> data, {
-    String? tablePrefix,
-  }) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return NationalTeamTacticRecord(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      teamId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}team_id'],
-      ),
-      presetName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}preset_name'],
-      )!,
-      buildUpStyle: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}build_up_style'],
-      )!,
-      tempo: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}tempo'],
-      )!,
-      width: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}width'],
-      )!,
-      finalThirdFocus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}final_third_focus'],
-      )!,
-      attackingFocus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}attacking_focus'],
-      )!,
-      defensiveLine: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}defensive_line'],
-      )!,
-      lineOfEngagement: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}line_of_engagement'],
-      )!,
-      pressingIntensity: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}pressing_intensity'],
-      )!,
-      defensiveWidth: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}defensive_width'],
-      )!,
-      markingStyle: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}marking_style'],
-      )!,
-      tacklingAggression: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}tackling_aggression'],
-      )!,
-      transitionOnWin: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}transition_on_win'],
-      )!,
-      transitionOnLoss: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}transition_on_loss'],
-      )!,
-      teamMentality: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}team_mentality'],
-      )!,
-      passingRisk: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}passing_risk'],
-      )!,
-      dribblingRisk: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}dribbling_risk'],
-      )!,
-      shootingPolicy: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}shooting_policy'],
-      )!,
-      compactness: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}compactness'],
-      )!,
-      verticalStretch: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}vertical_stretch'],
-      )!,
-      overloadFocus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}overload_focus'],
-      )!,
-      setPieceAttack: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}set_piece_attack'],
-      )!,
-      setPieceDefense: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}set_piece_defense'],
-      )!,
-      freeKickStrategy: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}free_kick_strategy'],
-      )!,
-    );
-  }
-
-  @override
-  $NationalTeamTacticsTable createAlias(String alias) {
-    return $NationalTeamTacticsTable(attachedDatabase, alias);
-  }
-}
-
-class NationalTeamTacticRecord extends DataClass
-    implements Insertable<NationalTeamTacticRecord> {
-  final int id;
-  final int? teamId;
-  final String presetName;
-  final String buildUpStyle;
-  final String tempo;
-  final String width;
-  final String finalThirdFocus;
-  final String attackingFocus;
-  final String defensiveLine;
-  final String lineOfEngagement;
-  final String pressingIntensity;
-  final String defensiveWidth;
-  final String markingStyle;
-  final String tacklingAggression;
-  final String transitionOnWin;
-  final String transitionOnLoss;
-  final String teamMentality;
-  final String passingRisk;
-  final String dribblingRisk;
-  final String shootingPolicy;
-  final String compactness;
-  final String verticalStretch;
-  final String overloadFocus;
-  final String setPieceAttack;
-  final String setPieceDefense;
-  final String freeKickStrategy;
-  const NationalTeamTacticRecord({
-    required this.id,
-    this.teamId,
-    required this.presetName,
-    required this.buildUpStyle,
-    required this.tempo,
-    required this.width,
-    required this.finalThirdFocus,
-    required this.attackingFocus,
-    required this.defensiveLine,
-    required this.lineOfEngagement,
-    required this.pressingIntensity,
-    required this.defensiveWidth,
-    required this.markingStyle,
-    required this.tacklingAggression,
-    required this.transitionOnWin,
-    required this.transitionOnLoss,
-    required this.teamMentality,
-    required this.passingRisk,
-    required this.dribblingRisk,
-    required this.shootingPolicy,
-    required this.compactness,
-    required this.verticalStretch,
-    required this.overloadFocus,
-    required this.setPieceAttack,
-    required this.setPieceDefense,
-    required this.freeKickStrategy,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || teamId != null) {
-      map['team_id'] = Variable<int>(teamId);
-    }
-    map['preset_name'] = Variable<String>(presetName);
-    map['build_up_style'] = Variable<String>(buildUpStyle);
-    map['tempo'] = Variable<String>(tempo);
-    map['width'] = Variable<String>(width);
-    map['final_third_focus'] = Variable<String>(finalThirdFocus);
-    map['attacking_focus'] = Variable<String>(attackingFocus);
-    map['defensive_line'] = Variable<String>(defensiveLine);
-    map['line_of_engagement'] = Variable<String>(lineOfEngagement);
-    map['pressing_intensity'] = Variable<String>(pressingIntensity);
-    map['defensive_width'] = Variable<String>(defensiveWidth);
-    map['marking_style'] = Variable<String>(markingStyle);
-    map['tackling_aggression'] = Variable<String>(tacklingAggression);
-    map['transition_on_win'] = Variable<String>(transitionOnWin);
-    map['transition_on_loss'] = Variable<String>(transitionOnLoss);
-    map['team_mentality'] = Variable<String>(teamMentality);
-    map['passing_risk'] = Variable<String>(passingRisk);
-    map['dribbling_risk'] = Variable<String>(dribblingRisk);
-    map['shooting_policy'] = Variable<String>(shootingPolicy);
-    map['compactness'] = Variable<String>(compactness);
-    map['vertical_stretch'] = Variable<String>(verticalStretch);
-    map['overload_focus'] = Variable<String>(overloadFocus);
-    map['set_piece_attack'] = Variable<String>(setPieceAttack);
-    map['set_piece_defense'] = Variable<String>(setPieceDefense);
-    map['free_kick_strategy'] = Variable<String>(freeKickStrategy);
-    return map;
-  }
-
-  NationalTeamTacticsCompanion toCompanion(bool nullToAbsent) {
-    return NationalTeamTacticsCompanion(
-      id: Value(id),
-      teamId: teamId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(teamId),
-      presetName: Value(presetName),
-      buildUpStyle: Value(buildUpStyle),
-      tempo: Value(tempo),
-      width: Value(width),
-      finalThirdFocus: Value(finalThirdFocus),
-      attackingFocus: Value(attackingFocus),
-      defensiveLine: Value(defensiveLine),
-      lineOfEngagement: Value(lineOfEngagement),
-      pressingIntensity: Value(pressingIntensity),
-      defensiveWidth: Value(defensiveWidth),
-      markingStyle: Value(markingStyle),
-      tacklingAggression: Value(tacklingAggression),
-      transitionOnWin: Value(transitionOnWin),
-      transitionOnLoss: Value(transitionOnLoss),
-      teamMentality: Value(teamMentality),
-      passingRisk: Value(passingRisk),
-      dribblingRisk: Value(dribblingRisk),
-      shootingPolicy: Value(shootingPolicy),
-      compactness: Value(compactness),
-      verticalStretch: Value(verticalStretch),
-      overloadFocus: Value(overloadFocus),
-      setPieceAttack: Value(setPieceAttack),
-      setPieceDefense: Value(setPieceDefense),
-      freeKickStrategy: Value(freeKickStrategy),
-    );
-  }
-
-  factory NationalTeamTacticRecord.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return NationalTeamTacticRecord(
-      id: serializer.fromJson<int>(json['id']),
-      teamId: serializer.fromJson<int?>(json['teamId']),
-      presetName: serializer.fromJson<String>(json['presetName']),
-      buildUpStyle: serializer.fromJson<String>(json['buildUpStyle']),
-      tempo: serializer.fromJson<String>(json['tempo']),
-      width: serializer.fromJson<String>(json['width']),
-      finalThirdFocus: serializer.fromJson<String>(json['finalThirdFocus']),
-      attackingFocus: serializer.fromJson<String>(json['attackingFocus']),
-      defensiveLine: serializer.fromJson<String>(json['defensiveLine']),
-      lineOfEngagement: serializer.fromJson<String>(json['lineOfEngagement']),
-      pressingIntensity: serializer.fromJson<String>(json['pressingIntensity']),
-      defensiveWidth: serializer.fromJson<String>(json['defensiveWidth']),
-      markingStyle: serializer.fromJson<String>(json['markingStyle']),
-      tacklingAggression: serializer.fromJson<String>(
-        json['tacklingAggression'],
-      ),
-      transitionOnWin: serializer.fromJson<String>(json['transitionOnWin']),
-      transitionOnLoss: serializer.fromJson<String>(json['transitionOnLoss']),
-      teamMentality: serializer.fromJson<String>(json['teamMentality']),
-      passingRisk: serializer.fromJson<String>(json['passingRisk']),
-      dribblingRisk: serializer.fromJson<String>(json['dribblingRisk']),
-      shootingPolicy: serializer.fromJson<String>(json['shootingPolicy']),
-      compactness: serializer.fromJson<String>(json['compactness']),
-      verticalStretch: serializer.fromJson<String>(json['verticalStretch']),
-      overloadFocus: serializer.fromJson<String>(json['overloadFocus']),
-      setPieceAttack: serializer.fromJson<String>(json['setPieceAttack']),
-      setPieceDefense: serializer.fromJson<String>(json['setPieceDefense']),
-      freeKickStrategy: serializer.fromJson<String>(json['freeKickStrategy']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'teamId': serializer.toJson<int?>(teamId),
-      'presetName': serializer.toJson<String>(presetName),
-      'buildUpStyle': serializer.toJson<String>(buildUpStyle),
-      'tempo': serializer.toJson<String>(tempo),
-      'width': serializer.toJson<String>(width),
-      'finalThirdFocus': serializer.toJson<String>(finalThirdFocus),
-      'attackingFocus': serializer.toJson<String>(attackingFocus),
-      'defensiveLine': serializer.toJson<String>(defensiveLine),
-      'lineOfEngagement': serializer.toJson<String>(lineOfEngagement),
-      'pressingIntensity': serializer.toJson<String>(pressingIntensity),
-      'defensiveWidth': serializer.toJson<String>(defensiveWidth),
-      'markingStyle': serializer.toJson<String>(markingStyle),
-      'tacklingAggression': serializer.toJson<String>(tacklingAggression),
-      'transitionOnWin': serializer.toJson<String>(transitionOnWin),
-      'transitionOnLoss': serializer.toJson<String>(transitionOnLoss),
-      'teamMentality': serializer.toJson<String>(teamMentality),
-      'passingRisk': serializer.toJson<String>(passingRisk),
-      'dribblingRisk': serializer.toJson<String>(dribblingRisk),
-      'shootingPolicy': serializer.toJson<String>(shootingPolicy),
-      'compactness': serializer.toJson<String>(compactness),
-      'verticalStretch': serializer.toJson<String>(verticalStretch),
-      'overloadFocus': serializer.toJson<String>(overloadFocus),
-      'setPieceAttack': serializer.toJson<String>(setPieceAttack),
-      'setPieceDefense': serializer.toJson<String>(setPieceDefense),
-      'freeKickStrategy': serializer.toJson<String>(freeKickStrategy),
-    };
-  }
-
-  NationalTeamTacticRecord copyWith({
-    int? id,
-    Value<int?> teamId = const Value.absent(),
-    String? presetName,
-    String? buildUpStyle,
-    String? tempo,
-    String? width,
-    String? finalThirdFocus,
-    String? attackingFocus,
-    String? defensiveLine,
-    String? lineOfEngagement,
-    String? pressingIntensity,
-    String? defensiveWidth,
-    String? markingStyle,
-    String? tacklingAggression,
-    String? transitionOnWin,
-    String? transitionOnLoss,
-    String? teamMentality,
-    String? passingRisk,
-    String? dribblingRisk,
-    String? shootingPolicy,
-    String? compactness,
-    String? verticalStretch,
-    String? overloadFocus,
-    String? setPieceAttack,
-    String? setPieceDefense,
-    String? freeKickStrategy,
-  }) => NationalTeamTacticRecord(
-    id: id ?? this.id,
-    teamId: teamId.present ? teamId.value : this.teamId,
-    presetName: presetName ?? this.presetName,
-    buildUpStyle: buildUpStyle ?? this.buildUpStyle,
-    tempo: tempo ?? this.tempo,
-    width: width ?? this.width,
-    finalThirdFocus: finalThirdFocus ?? this.finalThirdFocus,
-    attackingFocus: attackingFocus ?? this.attackingFocus,
-    defensiveLine: defensiveLine ?? this.defensiveLine,
-    lineOfEngagement: lineOfEngagement ?? this.lineOfEngagement,
-    pressingIntensity: pressingIntensity ?? this.pressingIntensity,
-    defensiveWidth: defensiveWidth ?? this.defensiveWidth,
-    markingStyle: markingStyle ?? this.markingStyle,
-    tacklingAggression: tacklingAggression ?? this.tacklingAggression,
-    transitionOnWin: transitionOnWin ?? this.transitionOnWin,
-    transitionOnLoss: transitionOnLoss ?? this.transitionOnLoss,
-    teamMentality: teamMentality ?? this.teamMentality,
-    passingRisk: passingRisk ?? this.passingRisk,
-    dribblingRisk: dribblingRisk ?? this.dribblingRisk,
-    shootingPolicy: shootingPolicy ?? this.shootingPolicy,
-    compactness: compactness ?? this.compactness,
-    verticalStretch: verticalStretch ?? this.verticalStretch,
-    overloadFocus: overloadFocus ?? this.overloadFocus,
-    setPieceAttack: setPieceAttack ?? this.setPieceAttack,
-    setPieceDefense: setPieceDefense ?? this.setPieceDefense,
-    freeKickStrategy: freeKickStrategy ?? this.freeKickStrategy,
-  );
-  NationalTeamTacticRecord copyWithCompanion(
-    NationalTeamTacticsCompanion data,
-  ) {
-    return NationalTeamTacticRecord(
-      id: data.id.present ? data.id.value : this.id,
-      teamId: data.teamId.present ? data.teamId.value : this.teamId,
-      presetName: data.presetName.present
-          ? data.presetName.value
-          : this.presetName,
-      buildUpStyle: data.buildUpStyle.present
-          ? data.buildUpStyle.value
-          : this.buildUpStyle,
-      tempo: data.tempo.present ? data.tempo.value : this.tempo,
-      width: data.width.present ? data.width.value : this.width,
-      finalThirdFocus: data.finalThirdFocus.present
-          ? data.finalThirdFocus.value
-          : this.finalThirdFocus,
-      attackingFocus: data.attackingFocus.present
-          ? data.attackingFocus.value
-          : this.attackingFocus,
-      defensiveLine: data.defensiveLine.present
-          ? data.defensiveLine.value
-          : this.defensiveLine,
-      lineOfEngagement: data.lineOfEngagement.present
-          ? data.lineOfEngagement.value
-          : this.lineOfEngagement,
-      pressingIntensity: data.pressingIntensity.present
-          ? data.pressingIntensity.value
-          : this.pressingIntensity,
-      defensiveWidth: data.defensiveWidth.present
-          ? data.defensiveWidth.value
-          : this.defensiveWidth,
-      markingStyle: data.markingStyle.present
-          ? data.markingStyle.value
-          : this.markingStyle,
-      tacklingAggression: data.tacklingAggression.present
-          ? data.tacklingAggression.value
-          : this.tacklingAggression,
-      transitionOnWin: data.transitionOnWin.present
-          ? data.transitionOnWin.value
-          : this.transitionOnWin,
-      transitionOnLoss: data.transitionOnLoss.present
-          ? data.transitionOnLoss.value
-          : this.transitionOnLoss,
-      teamMentality: data.teamMentality.present
-          ? data.teamMentality.value
-          : this.teamMentality,
-      passingRisk: data.passingRisk.present
-          ? data.passingRisk.value
-          : this.passingRisk,
-      dribblingRisk: data.dribblingRisk.present
-          ? data.dribblingRisk.value
-          : this.dribblingRisk,
-      shootingPolicy: data.shootingPolicy.present
-          ? data.shootingPolicy.value
-          : this.shootingPolicy,
-      compactness: data.compactness.present
-          ? data.compactness.value
-          : this.compactness,
-      verticalStretch: data.verticalStretch.present
-          ? data.verticalStretch.value
-          : this.verticalStretch,
-      overloadFocus: data.overloadFocus.present
-          ? data.overloadFocus.value
-          : this.overloadFocus,
-      setPieceAttack: data.setPieceAttack.present
-          ? data.setPieceAttack.value
-          : this.setPieceAttack,
-      setPieceDefense: data.setPieceDefense.present
-          ? data.setPieceDefense.value
-          : this.setPieceDefense,
-      freeKickStrategy: data.freeKickStrategy.present
-          ? data.freeKickStrategy.value
-          : this.freeKickStrategy,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NationalTeamTacticRecord(')
-          ..write('id: $id, ')
-          ..write('teamId: $teamId, ')
-          ..write('presetName: $presetName, ')
-          ..write('buildUpStyle: $buildUpStyle, ')
-          ..write('tempo: $tempo, ')
-          ..write('width: $width, ')
-          ..write('finalThirdFocus: $finalThirdFocus, ')
-          ..write('attackingFocus: $attackingFocus, ')
-          ..write('defensiveLine: $defensiveLine, ')
-          ..write('lineOfEngagement: $lineOfEngagement, ')
-          ..write('pressingIntensity: $pressingIntensity, ')
-          ..write('defensiveWidth: $defensiveWidth, ')
-          ..write('markingStyle: $markingStyle, ')
-          ..write('tacklingAggression: $tacklingAggression, ')
-          ..write('transitionOnWin: $transitionOnWin, ')
-          ..write('transitionOnLoss: $transitionOnLoss, ')
-          ..write('teamMentality: $teamMentality, ')
-          ..write('passingRisk: $passingRisk, ')
-          ..write('dribblingRisk: $dribblingRisk, ')
-          ..write('shootingPolicy: $shootingPolicy, ')
-          ..write('compactness: $compactness, ')
-          ..write('verticalStretch: $verticalStretch, ')
-          ..write('overloadFocus: $overloadFocus, ')
-          ..write('setPieceAttack: $setPieceAttack, ')
-          ..write('setPieceDefense: $setPieceDefense, ')
-          ..write('freeKickStrategy: $freeKickStrategy')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hashAll([
-    id,
-    teamId,
-    presetName,
-    buildUpStyle,
-    tempo,
-    width,
-    finalThirdFocus,
-    attackingFocus,
-    defensiveLine,
-    lineOfEngagement,
-    pressingIntensity,
-    defensiveWidth,
-    markingStyle,
-    tacklingAggression,
-    transitionOnWin,
-    transitionOnLoss,
-    teamMentality,
-    passingRisk,
-    dribblingRisk,
-    shootingPolicy,
-    compactness,
-    verticalStretch,
-    overloadFocus,
-    setPieceAttack,
-    setPieceDefense,
-    freeKickStrategy,
-  ]);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is NationalTeamTacticRecord &&
-          other.id == this.id &&
-          other.teamId == this.teamId &&
-          other.presetName == this.presetName &&
-          other.buildUpStyle == this.buildUpStyle &&
-          other.tempo == this.tempo &&
-          other.width == this.width &&
-          other.finalThirdFocus == this.finalThirdFocus &&
-          other.attackingFocus == this.attackingFocus &&
-          other.defensiveLine == this.defensiveLine &&
-          other.lineOfEngagement == this.lineOfEngagement &&
-          other.pressingIntensity == this.pressingIntensity &&
-          other.defensiveWidth == this.defensiveWidth &&
-          other.markingStyle == this.markingStyle &&
-          other.tacklingAggression == this.tacklingAggression &&
-          other.transitionOnWin == this.transitionOnWin &&
-          other.transitionOnLoss == this.transitionOnLoss &&
-          other.teamMentality == this.teamMentality &&
-          other.passingRisk == this.passingRisk &&
-          other.dribblingRisk == this.dribblingRisk &&
-          other.shootingPolicy == this.shootingPolicy &&
-          other.compactness == this.compactness &&
-          other.verticalStretch == this.verticalStretch &&
-          other.overloadFocus == this.overloadFocus &&
-          other.setPieceAttack == this.setPieceAttack &&
-          other.setPieceDefense == this.setPieceDefense &&
-          other.freeKickStrategy == this.freeKickStrategy);
-}
-
-class NationalTeamTacticsCompanion
-    extends UpdateCompanion<NationalTeamTacticRecord> {
-  final Value<int> id;
-  final Value<int?> teamId;
-  final Value<String> presetName;
-  final Value<String> buildUpStyle;
-  final Value<String> tempo;
-  final Value<String> width;
-  final Value<String> finalThirdFocus;
-  final Value<String> attackingFocus;
-  final Value<String> defensiveLine;
-  final Value<String> lineOfEngagement;
-  final Value<String> pressingIntensity;
-  final Value<String> defensiveWidth;
-  final Value<String> markingStyle;
-  final Value<String> tacklingAggression;
-  final Value<String> transitionOnWin;
-  final Value<String> transitionOnLoss;
-  final Value<String> teamMentality;
-  final Value<String> passingRisk;
-  final Value<String> dribblingRisk;
-  final Value<String> shootingPolicy;
-  final Value<String> compactness;
-  final Value<String> verticalStretch;
-  final Value<String> overloadFocus;
-  final Value<String> setPieceAttack;
-  final Value<String> setPieceDefense;
-  final Value<String> freeKickStrategy;
-  const NationalTeamTacticsCompanion({
-    this.id = const Value.absent(),
-    this.teamId = const Value.absent(),
-    this.presetName = const Value.absent(),
-    this.buildUpStyle = const Value.absent(),
-    this.tempo = const Value.absent(),
-    this.width = const Value.absent(),
-    this.finalThirdFocus = const Value.absent(),
-    this.attackingFocus = const Value.absent(),
-    this.defensiveLine = const Value.absent(),
-    this.lineOfEngagement = const Value.absent(),
-    this.pressingIntensity = const Value.absent(),
-    this.defensiveWidth = const Value.absent(),
-    this.markingStyle = const Value.absent(),
-    this.tacklingAggression = const Value.absent(),
-    this.transitionOnWin = const Value.absent(),
-    this.transitionOnLoss = const Value.absent(),
-    this.teamMentality = const Value.absent(),
-    this.passingRisk = const Value.absent(),
-    this.dribblingRisk = const Value.absent(),
-    this.shootingPolicy = const Value.absent(),
-    this.compactness = const Value.absent(),
-    this.verticalStretch = const Value.absent(),
-    this.overloadFocus = const Value.absent(),
-    this.setPieceAttack = const Value.absent(),
-    this.setPieceDefense = const Value.absent(),
-    this.freeKickStrategy = const Value.absent(),
-  });
-  NationalTeamTacticsCompanion.insert({
-    this.id = const Value.absent(),
-    this.teamId = const Value.absent(),
-    required String presetName,
-    required String buildUpStyle,
-    required String tempo,
-    required String width,
-    required String finalThirdFocus,
-    required String attackingFocus,
-    required String defensiveLine,
-    required String lineOfEngagement,
-    required String pressingIntensity,
-    required String defensiveWidth,
-    required String markingStyle,
-    required String tacklingAggression,
-    required String transitionOnWin,
-    required String transitionOnLoss,
-    required String teamMentality,
-    required String passingRisk,
-    required String dribblingRisk,
-    required String shootingPolicy,
-    required String compactness,
-    required String verticalStretch,
-    required String overloadFocus,
-    required String setPieceAttack,
-    required String setPieceDefense,
-    required String freeKickStrategy,
-  }) : presetName = Value(presetName),
-       buildUpStyle = Value(buildUpStyle),
-       tempo = Value(tempo),
-       width = Value(width),
-       finalThirdFocus = Value(finalThirdFocus),
-       attackingFocus = Value(attackingFocus),
-       defensiveLine = Value(defensiveLine),
-       lineOfEngagement = Value(lineOfEngagement),
-       pressingIntensity = Value(pressingIntensity),
-       defensiveWidth = Value(defensiveWidth),
-       markingStyle = Value(markingStyle),
-       tacklingAggression = Value(tacklingAggression),
-       transitionOnWin = Value(transitionOnWin),
-       transitionOnLoss = Value(transitionOnLoss),
-       teamMentality = Value(teamMentality),
-       passingRisk = Value(passingRisk),
-       dribblingRisk = Value(dribblingRisk),
-       shootingPolicy = Value(shootingPolicy),
-       compactness = Value(compactness),
-       verticalStretch = Value(verticalStretch),
-       overloadFocus = Value(overloadFocus),
-       setPieceAttack = Value(setPieceAttack),
-       setPieceDefense = Value(setPieceDefense),
-       freeKickStrategy = Value(freeKickStrategy);
-  static Insertable<NationalTeamTacticRecord> custom({
-    Expression<int>? id,
-    Expression<int>? teamId,
-    Expression<String>? presetName,
-    Expression<String>? buildUpStyle,
-    Expression<String>? tempo,
-    Expression<String>? width,
-    Expression<String>? finalThirdFocus,
-    Expression<String>? attackingFocus,
-    Expression<String>? defensiveLine,
-    Expression<String>? lineOfEngagement,
-    Expression<String>? pressingIntensity,
-    Expression<String>? defensiveWidth,
-    Expression<String>? markingStyle,
-    Expression<String>? tacklingAggression,
-    Expression<String>? transitionOnWin,
-    Expression<String>? transitionOnLoss,
-    Expression<String>? teamMentality,
-    Expression<String>? passingRisk,
-    Expression<String>? dribblingRisk,
-    Expression<String>? shootingPolicy,
-    Expression<String>? compactness,
-    Expression<String>? verticalStretch,
-    Expression<String>? overloadFocus,
-    Expression<String>? setPieceAttack,
-    Expression<String>? setPieceDefense,
-    Expression<String>? freeKickStrategy,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (teamId != null) 'team_id': teamId,
-      if (presetName != null) 'preset_name': presetName,
-      if (buildUpStyle != null) 'build_up_style': buildUpStyle,
-      if (tempo != null) 'tempo': tempo,
-      if (width != null) 'width': width,
-      if (finalThirdFocus != null) 'final_third_focus': finalThirdFocus,
-      if (attackingFocus != null) 'attacking_focus': attackingFocus,
-      if (defensiveLine != null) 'defensive_line': defensiveLine,
-      if (lineOfEngagement != null) 'line_of_engagement': lineOfEngagement,
-      if (pressingIntensity != null) 'pressing_intensity': pressingIntensity,
-      if (defensiveWidth != null) 'defensive_width': defensiveWidth,
-      if (markingStyle != null) 'marking_style': markingStyle,
-      if (tacklingAggression != null) 'tackling_aggression': tacklingAggression,
-      if (transitionOnWin != null) 'transition_on_win': transitionOnWin,
-      if (transitionOnLoss != null) 'transition_on_loss': transitionOnLoss,
-      if (teamMentality != null) 'team_mentality': teamMentality,
-      if (passingRisk != null) 'passing_risk': passingRisk,
-      if (dribblingRisk != null) 'dribbling_risk': dribblingRisk,
-      if (shootingPolicy != null) 'shooting_policy': shootingPolicy,
-      if (compactness != null) 'compactness': compactness,
-      if (verticalStretch != null) 'vertical_stretch': verticalStretch,
-      if (overloadFocus != null) 'overload_focus': overloadFocus,
-      if (setPieceAttack != null) 'set_piece_attack': setPieceAttack,
-      if (setPieceDefense != null) 'set_piece_defense': setPieceDefense,
-      if (freeKickStrategy != null) 'free_kick_strategy': freeKickStrategy,
-    });
-  }
-
-  NationalTeamTacticsCompanion copyWith({
-    Value<int>? id,
-    Value<int?>? teamId,
-    Value<String>? presetName,
-    Value<String>? buildUpStyle,
-    Value<String>? tempo,
-    Value<String>? width,
-    Value<String>? finalThirdFocus,
-    Value<String>? attackingFocus,
-    Value<String>? defensiveLine,
-    Value<String>? lineOfEngagement,
-    Value<String>? pressingIntensity,
-    Value<String>? defensiveWidth,
-    Value<String>? markingStyle,
-    Value<String>? tacklingAggression,
-    Value<String>? transitionOnWin,
-    Value<String>? transitionOnLoss,
-    Value<String>? teamMentality,
-    Value<String>? passingRisk,
-    Value<String>? dribblingRisk,
-    Value<String>? shootingPolicy,
-    Value<String>? compactness,
-    Value<String>? verticalStretch,
-    Value<String>? overloadFocus,
-    Value<String>? setPieceAttack,
-    Value<String>? setPieceDefense,
-    Value<String>? freeKickStrategy,
-  }) {
-    return NationalTeamTacticsCompanion(
-      id: id ?? this.id,
-      teamId: teamId ?? this.teamId,
-      presetName: presetName ?? this.presetName,
-      buildUpStyle: buildUpStyle ?? this.buildUpStyle,
-      tempo: tempo ?? this.tempo,
-      width: width ?? this.width,
-      finalThirdFocus: finalThirdFocus ?? this.finalThirdFocus,
-      attackingFocus: attackingFocus ?? this.attackingFocus,
-      defensiveLine: defensiveLine ?? this.defensiveLine,
-      lineOfEngagement: lineOfEngagement ?? this.lineOfEngagement,
-      pressingIntensity: pressingIntensity ?? this.pressingIntensity,
-      defensiveWidth: defensiveWidth ?? this.defensiveWidth,
-      markingStyle: markingStyle ?? this.markingStyle,
-      tacklingAggression: tacklingAggression ?? this.tacklingAggression,
-      transitionOnWin: transitionOnWin ?? this.transitionOnWin,
-      transitionOnLoss: transitionOnLoss ?? this.transitionOnLoss,
-      teamMentality: teamMentality ?? this.teamMentality,
-      passingRisk: passingRisk ?? this.passingRisk,
-      dribblingRisk: dribblingRisk ?? this.dribblingRisk,
-      shootingPolicy: shootingPolicy ?? this.shootingPolicy,
-      compactness: compactness ?? this.compactness,
-      verticalStretch: verticalStretch ?? this.verticalStretch,
-      overloadFocus: overloadFocus ?? this.overloadFocus,
-      setPieceAttack: setPieceAttack ?? this.setPieceAttack,
-      setPieceDefense: setPieceDefense ?? this.setPieceDefense,
-      freeKickStrategy: freeKickStrategy ?? this.freeKickStrategy,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (teamId.present) {
-      map['team_id'] = Variable<int>(teamId.value);
-    }
-    if (presetName.present) {
-      map['preset_name'] = Variable<String>(presetName.value);
-    }
-    if (buildUpStyle.present) {
-      map['build_up_style'] = Variable<String>(buildUpStyle.value);
-    }
-    if (tempo.present) {
-      map['tempo'] = Variable<String>(tempo.value);
-    }
-    if (width.present) {
-      map['width'] = Variable<String>(width.value);
-    }
-    if (finalThirdFocus.present) {
-      map['final_third_focus'] = Variable<String>(finalThirdFocus.value);
-    }
-    if (attackingFocus.present) {
-      map['attacking_focus'] = Variable<String>(attackingFocus.value);
-    }
-    if (defensiveLine.present) {
-      map['defensive_line'] = Variable<String>(defensiveLine.value);
-    }
-    if (lineOfEngagement.present) {
-      map['line_of_engagement'] = Variable<String>(lineOfEngagement.value);
-    }
-    if (pressingIntensity.present) {
-      map['pressing_intensity'] = Variable<String>(pressingIntensity.value);
-    }
-    if (defensiveWidth.present) {
-      map['defensive_width'] = Variable<String>(defensiveWidth.value);
-    }
-    if (markingStyle.present) {
-      map['marking_style'] = Variable<String>(markingStyle.value);
-    }
-    if (tacklingAggression.present) {
-      map['tackling_aggression'] = Variable<String>(tacklingAggression.value);
-    }
-    if (transitionOnWin.present) {
-      map['transition_on_win'] = Variable<String>(transitionOnWin.value);
-    }
-    if (transitionOnLoss.present) {
-      map['transition_on_loss'] = Variable<String>(transitionOnLoss.value);
-    }
-    if (teamMentality.present) {
-      map['team_mentality'] = Variable<String>(teamMentality.value);
-    }
-    if (passingRisk.present) {
-      map['passing_risk'] = Variable<String>(passingRisk.value);
-    }
-    if (dribblingRisk.present) {
-      map['dribbling_risk'] = Variable<String>(dribblingRisk.value);
-    }
-    if (shootingPolicy.present) {
-      map['shooting_policy'] = Variable<String>(shootingPolicy.value);
-    }
-    if (compactness.present) {
-      map['compactness'] = Variable<String>(compactness.value);
-    }
-    if (verticalStretch.present) {
-      map['vertical_stretch'] = Variable<String>(verticalStretch.value);
-    }
-    if (overloadFocus.present) {
-      map['overload_focus'] = Variable<String>(overloadFocus.value);
-    }
-    if (setPieceAttack.present) {
-      map['set_piece_attack'] = Variable<String>(setPieceAttack.value);
-    }
-    if (setPieceDefense.present) {
-      map['set_piece_defense'] = Variable<String>(setPieceDefense.value);
-    }
-    if (freeKickStrategy.present) {
-      map['free_kick_strategy'] = Variable<String>(freeKickStrategy.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NationalTeamTacticsCompanion(')
-          ..write('id: $id, ')
-          ..write('teamId: $teamId, ')
-          ..write('presetName: $presetName, ')
-          ..write('buildUpStyle: $buildUpStyle, ')
-          ..write('tempo: $tempo, ')
-          ..write('width: $width, ')
-          ..write('finalThirdFocus: $finalThirdFocus, ')
-          ..write('attackingFocus: $attackingFocus, ')
-          ..write('defensiveLine: $defensiveLine, ')
-          ..write('lineOfEngagement: $lineOfEngagement, ')
-          ..write('pressingIntensity: $pressingIntensity, ')
-          ..write('defensiveWidth: $defensiveWidth, ')
-          ..write('markingStyle: $markingStyle, ')
-          ..write('tacklingAggression: $tacklingAggression, ')
-          ..write('transitionOnWin: $transitionOnWin, ')
-          ..write('transitionOnLoss: $transitionOnLoss, ')
-          ..write('teamMentality: $teamMentality, ')
-          ..write('passingRisk: $passingRisk, ')
-          ..write('dribblingRisk: $dribblingRisk, ')
-          ..write('shootingPolicy: $shootingPolicy, ')
-          ..write('compactness: $compactness, ')
-          ..write('verticalStretch: $verticalStretch, ')
-          ..write('overloadFocus: $overloadFocus, ')
-          ..write('setPieceAttack: $setPieceAttack, ')
-          ..write('setPieceDefense: $setPieceDefense, ')
-          ..write('freeKickStrategy: $freeKickStrategy')
           ..write(')'))
         .toString();
   }
@@ -3422,15 +1845,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CountriesTable countries = $CountriesTable(this);
   late final $PlayersTable players = $PlayersTable(this);
   late final $NationalTeamsTable nationalTeams = $NationalTeamsTable(this);
-  late final $NationalTeamTacticsTable nationalTeamTactics =
-      $NationalTeamTacticsTable(this);
   late final CountryDao countryDao = CountryDao(this as AppDatabase);
   late final PlayerDao playerDao = PlayerDao(this as AppDatabase);
   late final NationalTeamDao nationalTeamDao = NationalTeamDao(
     this as AppDatabase,
   );
-  late final NationalTeamTacticDao nationalTeamTacticDao =
-      NationalTeamTacticDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3440,7 +1859,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     countries,
     players,
     nationalTeams,
-    nationalTeamTactics,
   ];
 }
 
@@ -4660,6 +3078,7 @@ typedef $$NationalTeamsTableCreateCompanionBuilder =
       required int countryId,
       required String name,
       Value<String> lineup,
+      Value<String> tactics,
       required String primaryColor,
       required String secondaryColor,
       required String tertiaryColor,
@@ -4670,6 +3089,7 @@ typedef $$NationalTeamsTableUpdateCompanionBuilder =
       Value<int> countryId,
       Value<String> name,
       Value<String> lineup,
+      Value<String> tactics,
       Value<String> primaryColor,
       Value<String> secondaryColor,
       Value<String> tertiaryColor,
@@ -4725,6 +3145,11 @@ class $$NationalTeamsTableFilterComposer
 
   ColumnFilters<String> get lineup => $composableBuilder(
     column: $table.lineup,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tactics => $composableBuilder(
+    column: $table.tactics,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4791,6 +3216,11 @@ class $$NationalTeamsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get tactics => $composableBuilder(
+    column: $table.tactics,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get primaryColor => $composableBuilder(
     column: $table.primaryColor,
     builder: (column) => ColumnOrderings(column),
@@ -4847,6 +3277,9 @@ class $$NationalTeamsTableAnnotationComposer
 
   GeneratedColumn<String> get lineup =>
       $composableBuilder(column: $table.lineup, builder: (column) => column);
+
+  GeneratedColumn<String> get tactics =>
+      $composableBuilder(column: $table.tactics, builder: (column) => column);
 
   GeneratedColumn<String> get primaryColor => $composableBuilder(
     column: $table.primaryColor,
@@ -4919,6 +3352,7 @@ class $$NationalTeamsTableTableManager
                 Value<int> countryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> lineup = const Value.absent(),
+                Value<String> tactics = const Value.absent(),
                 Value<String> primaryColor = const Value.absent(),
                 Value<String> secondaryColor = const Value.absent(),
                 Value<String> tertiaryColor = const Value.absent(),
@@ -4927,6 +3361,7 @@ class $$NationalTeamsTableTableManager
                 countryId: countryId,
                 name: name,
                 lineup: lineup,
+                tactics: tactics,
                 primaryColor: primaryColor,
                 secondaryColor: secondaryColor,
                 tertiaryColor: tertiaryColor,
@@ -4937,6 +3372,7 @@ class $$NationalTeamsTableTableManager
                 required int countryId,
                 required String name,
                 Value<String> lineup = const Value.absent(),
+                Value<String> tactics = const Value.absent(),
                 required String primaryColor,
                 required String secondaryColor,
                 required String tertiaryColor,
@@ -4945,6 +3381,7 @@ class $$NationalTeamsTableTableManager
                 countryId: countryId,
                 name: name,
                 lineup: lineup,
+                tactics: tactics,
                 primaryColor: primaryColor,
                 secondaryColor: secondaryColor,
                 tertiaryColor: tertiaryColor,
@@ -5016,659 +3453,6 @@ typedef $$NationalTeamsTableProcessedTableManager =
       NationalTeamRecord,
       PrefetchHooks Function({bool countryId})
     >;
-typedef $$NationalTeamTacticsTableCreateCompanionBuilder =
-    NationalTeamTacticsCompanion Function({
-      Value<int> id,
-      Value<int?> teamId,
-      required String presetName,
-      required String buildUpStyle,
-      required String tempo,
-      required String width,
-      required String finalThirdFocus,
-      required String attackingFocus,
-      required String defensiveLine,
-      required String lineOfEngagement,
-      required String pressingIntensity,
-      required String defensiveWidth,
-      required String markingStyle,
-      required String tacklingAggression,
-      required String transitionOnWin,
-      required String transitionOnLoss,
-      required String teamMentality,
-      required String passingRisk,
-      required String dribblingRisk,
-      required String shootingPolicy,
-      required String compactness,
-      required String verticalStretch,
-      required String overloadFocus,
-      required String setPieceAttack,
-      required String setPieceDefense,
-      required String freeKickStrategy,
-    });
-typedef $$NationalTeamTacticsTableUpdateCompanionBuilder =
-    NationalTeamTacticsCompanion Function({
-      Value<int> id,
-      Value<int?> teamId,
-      Value<String> presetName,
-      Value<String> buildUpStyle,
-      Value<String> tempo,
-      Value<String> width,
-      Value<String> finalThirdFocus,
-      Value<String> attackingFocus,
-      Value<String> defensiveLine,
-      Value<String> lineOfEngagement,
-      Value<String> pressingIntensity,
-      Value<String> defensiveWidth,
-      Value<String> markingStyle,
-      Value<String> tacklingAggression,
-      Value<String> transitionOnWin,
-      Value<String> transitionOnLoss,
-      Value<String> teamMentality,
-      Value<String> passingRisk,
-      Value<String> dribblingRisk,
-      Value<String> shootingPolicy,
-      Value<String> compactness,
-      Value<String> verticalStretch,
-      Value<String> overloadFocus,
-      Value<String> setPieceAttack,
-      Value<String> setPieceDefense,
-      Value<String> freeKickStrategy,
-    });
-
-class $$NationalTeamTacticsTableFilterComposer
-    extends Composer<_$AppDatabase, $NationalTeamTacticsTable> {
-  $$NationalTeamTacticsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get teamId => $composableBuilder(
-    column: $table.teamId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get presetName => $composableBuilder(
-    column: $table.presetName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get buildUpStyle => $composableBuilder(
-    column: $table.buildUpStyle,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get tempo => $composableBuilder(
-    column: $table.tempo,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get width => $composableBuilder(
-    column: $table.width,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get finalThirdFocus => $composableBuilder(
-    column: $table.finalThirdFocus,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get attackingFocus => $composableBuilder(
-    column: $table.attackingFocus,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get defensiveLine => $composableBuilder(
-    column: $table.defensiveLine,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lineOfEngagement => $composableBuilder(
-    column: $table.lineOfEngagement,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get pressingIntensity => $composableBuilder(
-    column: $table.pressingIntensity,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get defensiveWidth => $composableBuilder(
-    column: $table.defensiveWidth,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get markingStyle => $composableBuilder(
-    column: $table.markingStyle,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get tacklingAggression => $composableBuilder(
-    column: $table.tacklingAggression,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get transitionOnWin => $composableBuilder(
-    column: $table.transitionOnWin,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get transitionOnLoss => $composableBuilder(
-    column: $table.transitionOnLoss,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get teamMentality => $composableBuilder(
-    column: $table.teamMentality,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get passingRisk => $composableBuilder(
-    column: $table.passingRisk,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get dribblingRisk => $composableBuilder(
-    column: $table.dribblingRisk,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get shootingPolicy => $composableBuilder(
-    column: $table.shootingPolicy,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get compactness => $composableBuilder(
-    column: $table.compactness,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get verticalStretch => $composableBuilder(
-    column: $table.verticalStretch,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get overloadFocus => $composableBuilder(
-    column: $table.overloadFocus,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get setPieceAttack => $composableBuilder(
-    column: $table.setPieceAttack,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get setPieceDefense => $composableBuilder(
-    column: $table.setPieceDefense,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get freeKickStrategy => $composableBuilder(
-    column: $table.freeKickStrategy,
-    builder: (column) => ColumnFilters(column),
-  );
-}
-
-class $$NationalTeamTacticsTableOrderingComposer
-    extends Composer<_$AppDatabase, $NationalTeamTacticsTable> {
-  $$NationalTeamTacticsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get teamId => $composableBuilder(
-    column: $table.teamId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get presetName => $composableBuilder(
-    column: $table.presetName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get buildUpStyle => $composableBuilder(
-    column: $table.buildUpStyle,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get tempo => $composableBuilder(
-    column: $table.tempo,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get width => $composableBuilder(
-    column: $table.width,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get finalThirdFocus => $composableBuilder(
-    column: $table.finalThirdFocus,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get attackingFocus => $composableBuilder(
-    column: $table.attackingFocus,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get defensiveLine => $composableBuilder(
-    column: $table.defensiveLine,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get lineOfEngagement => $composableBuilder(
-    column: $table.lineOfEngagement,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get pressingIntensity => $composableBuilder(
-    column: $table.pressingIntensity,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get defensiveWidth => $composableBuilder(
-    column: $table.defensiveWidth,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get markingStyle => $composableBuilder(
-    column: $table.markingStyle,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get tacklingAggression => $composableBuilder(
-    column: $table.tacklingAggression,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get transitionOnWin => $composableBuilder(
-    column: $table.transitionOnWin,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get transitionOnLoss => $composableBuilder(
-    column: $table.transitionOnLoss,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get teamMentality => $composableBuilder(
-    column: $table.teamMentality,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get passingRisk => $composableBuilder(
-    column: $table.passingRisk,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get dribblingRisk => $composableBuilder(
-    column: $table.dribblingRisk,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get shootingPolicy => $composableBuilder(
-    column: $table.shootingPolicy,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get compactness => $composableBuilder(
-    column: $table.compactness,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get verticalStretch => $composableBuilder(
-    column: $table.verticalStretch,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get overloadFocus => $composableBuilder(
-    column: $table.overloadFocus,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get setPieceAttack => $composableBuilder(
-    column: $table.setPieceAttack,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get setPieceDefense => $composableBuilder(
-    column: $table.setPieceDefense,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get freeKickStrategy => $composableBuilder(
-    column: $table.freeKickStrategy,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$NationalTeamTacticsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $NationalTeamTacticsTable> {
-  $$NationalTeamTacticsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<int> get teamId =>
-      $composableBuilder(column: $table.teamId, builder: (column) => column);
-
-  GeneratedColumn<String> get presetName => $composableBuilder(
-    column: $table.presetName,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get buildUpStyle => $composableBuilder(
-    column: $table.buildUpStyle,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get tempo =>
-      $composableBuilder(column: $table.tempo, builder: (column) => column);
-
-  GeneratedColumn<String> get width =>
-      $composableBuilder(column: $table.width, builder: (column) => column);
-
-  GeneratedColumn<String> get finalThirdFocus => $composableBuilder(
-    column: $table.finalThirdFocus,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get attackingFocus => $composableBuilder(
-    column: $table.attackingFocus,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get defensiveLine => $composableBuilder(
-    column: $table.defensiveLine,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get lineOfEngagement => $composableBuilder(
-    column: $table.lineOfEngagement,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get pressingIntensity => $composableBuilder(
-    column: $table.pressingIntensity,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get defensiveWidth => $composableBuilder(
-    column: $table.defensiveWidth,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get markingStyle => $composableBuilder(
-    column: $table.markingStyle,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get tacklingAggression => $composableBuilder(
-    column: $table.tacklingAggression,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get transitionOnWin => $composableBuilder(
-    column: $table.transitionOnWin,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get transitionOnLoss => $composableBuilder(
-    column: $table.transitionOnLoss,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get teamMentality => $composableBuilder(
-    column: $table.teamMentality,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get passingRisk => $composableBuilder(
-    column: $table.passingRisk,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get dribblingRisk => $composableBuilder(
-    column: $table.dribblingRisk,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get shootingPolicy => $composableBuilder(
-    column: $table.shootingPolicy,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get compactness => $composableBuilder(
-    column: $table.compactness,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get verticalStretch => $composableBuilder(
-    column: $table.verticalStretch,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get overloadFocus => $composableBuilder(
-    column: $table.overloadFocus,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get setPieceAttack => $composableBuilder(
-    column: $table.setPieceAttack,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get setPieceDefense => $composableBuilder(
-    column: $table.setPieceDefense,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get freeKickStrategy => $composableBuilder(
-    column: $table.freeKickStrategy,
-    builder: (column) => column,
-  );
-}
-
-class $$NationalTeamTacticsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $NationalTeamTacticsTable,
-          NationalTeamTacticRecord,
-          $$NationalTeamTacticsTableFilterComposer,
-          $$NationalTeamTacticsTableOrderingComposer,
-          $$NationalTeamTacticsTableAnnotationComposer,
-          $$NationalTeamTacticsTableCreateCompanionBuilder,
-          $$NationalTeamTacticsTableUpdateCompanionBuilder,
-          (
-            NationalTeamTacticRecord,
-            BaseReferences<
-              _$AppDatabase,
-              $NationalTeamTacticsTable,
-              NationalTeamTacticRecord
-            >,
-          ),
-          NationalTeamTacticRecord,
-          PrefetchHooks Function()
-        > {
-  $$NationalTeamTacticsTableTableManager(
-    _$AppDatabase db,
-    $NationalTeamTacticsTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$NationalTeamTacticsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$NationalTeamTacticsTableOrderingComposer(
-                $db: db,
-                $table: table,
-              ),
-          createComputedFieldComposer: () =>
-              $$NationalTeamTacticsTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<int?> teamId = const Value.absent(),
-                Value<String> presetName = const Value.absent(),
-                Value<String> buildUpStyle = const Value.absent(),
-                Value<String> tempo = const Value.absent(),
-                Value<String> width = const Value.absent(),
-                Value<String> finalThirdFocus = const Value.absent(),
-                Value<String> attackingFocus = const Value.absent(),
-                Value<String> defensiveLine = const Value.absent(),
-                Value<String> lineOfEngagement = const Value.absent(),
-                Value<String> pressingIntensity = const Value.absent(),
-                Value<String> defensiveWidth = const Value.absent(),
-                Value<String> markingStyle = const Value.absent(),
-                Value<String> tacklingAggression = const Value.absent(),
-                Value<String> transitionOnWin = const Value.absent(),
-                Value<String> transitionOnLoss = const Value.absent(),
-                Value<String> teamMentality = const Value.absent(),
-                Value<String> passingRisk = const Value.absent(),
-                Value<String> dribblingRisk = const Value.absent(),
-                Value<String> shootingPolicy = const Value.absent(),
-                Value<String> compactness = const Value.absent(),
-                Value<String> verticalStretch = const Value.absent(),
-                Value<String> overloadFocus = const Value.absent(),
-                Value<String> setPieceAttack = const Value.absent(),
-                Value<String> setPieceDefense = const Value.absent(),
-                Value<String> freeKickStrategy = const Value.absent(),
-              }) => NationalTeamTacticsCompanion(
-                id: id,
-                teamId: teamId,
-                presetName: presetName,
-                buildUpStyle: buildUpStyle,
-                tempo: tempo,
-                width: width,
-                finalThirdFocus: finalThirdFocus,
-                attackingFocus: attackingFocus,
-                defensiveLine: defensiveLine,
-                lineOfEngagement: lineOfEngagement,
-                pressingIntensity: pressingIntensity,
-                defensiveWidth: defensiveWidth,
-                markingStyle: markingStyle,
-                tacklingAggression: tacklingAggression,
-                transitionOnWin: transitionOnWin,
-                transitionOnLoss: transitionOnLoss,
-                teamMentality: teamMentality,
-                passingRisk: passingRisk,
-                dribblingRisk: dribblingRisk,
-                shootingPolicy: shootingPolicy,
-                compactness: compactness,
-                verticalStretch: verticalStretch,
-                overloadFocus: overloadFocus,
-                setPieceAttack: setPieceAttack,
-                setPieceDefense: setPieceDefense,
-                freeKickStrategy: freeKickStrategy,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<int?> teamId = const Value.absent(),
-                required String presetName,
-                required String buildUpStyle,
-                required String tempo,
-                required String width,
-                required String finalThirdFocus,
-                required String attackingFocus,
-                required String defensiveLine,
-                required String lineOfEngagement,
-                required String pressingIntensity,
-                required String defensiveWidth,
-                required String markingStyle,
-                required String tacklingAggression,
-                required String transitionOnWin,
-                required String transitionOnLoss,
-                required String teamMentality,
-                required String passingRisk,
-                required String dribblingRisk,
-                required String shootingPolicy,
-                required String compactness,
-                required String verticalStretch,
-                required String overloadFocus,
-                required String setPieceAttack,
-                required String setPieceDefense,
-                required String freeKickStrategy,
-              }) => NationalTeamTacticsCompanion.insert(
-                id: id,
-                teamId: teamId,
-                presetName: presetName,
-                buildUpStyle: buildUpStyle,
-                tempo: tempo,
-                width: width,
-                finalThirdFocus: finalThirdFocus,
-                attackingFocus: attackingFocus,
-                defensiveLine: defensiveLine,
-                lineOfEngagement: lineOfEngagement,
-                pressingIntensity: pressingIntensity,
-                defensiveWidth: defensiveWidth,
-                markingStyle: markingStyle,
-                tacklingAggression: tacklingAggression,
-                transitionOnWin: transitionOnWin,
-                transitionOnLoss: transitionOnLoss,
-                teamMentality: teamMentality,
-                passingRisk: passingRisk,
-                dribblingRisk: dribblingRisk,
-                shootingPolicy: shootingPolicy,
-                compactness: compactness,
-                verticalStretch: verticalStretch,
-                overloadFocus: overloadFocus,
-                setPieceAttack: setPieceAttack,
-                setPieceDefense: setPieceDefense,
-                freeKickStrategy: freeKickStrategy,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ),
-      );
-}
-
-typedef $$NationalTeamTacticsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $NationalTeamTacticsTable,
-      NationalTeamTacticRecord,
-      $$NationalTeamTacticsTableFilterComposer,
-      $$NationalTeamTacticsTableOrderingComposer,
-      $$NationalTeamTacticsTableAnnotationComposer,
-      $$NationalTeamTacticsTableCreateCompanionBuilder,
-      $$NationalTeamTacticsTableUpdateCompanionBuilder,
-      (
-        NationalTeamTacticRecord,
-        BaseReferences<
-          _$AppDatabase,
-          $NationalTeamTacticsTable,
-          NationalTeamTacticRecord
-        >,
-      ),
-      NationalTeamTacticRecord,
-      PrefetchHooks Function()
-    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5681,6 +3465,4 @@ class $AppDatabaseManager {
       $$PlayersTableTableManager(_db, _db.players);
   $$NationalTeamsTableTableManager get nationalTeams =>
       $$NationalTeamsTableTableManager(_db, _db.nationalTeams);
-  $$NationalTeamTacticsTableTableManager get nationalTeamTactics =>
-      $$NationalTeamTacticsTableTableManager(_db, _db.nationalTeamTactics);
 }

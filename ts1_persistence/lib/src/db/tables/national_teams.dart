@@ -12,6 +12,9 @@ class NationalTeams extends Table {
 
   TextColumn get lineup => text().withDefault(const Constant('{}'))();
 
+  // Tactical configuration as JSON. Stores the complete TeamTactic serialized.
+  TextColumn get tactics => text().withDefault(const Constant('{}'))();
+
   // Team colors in hex format (e.g. #ff0000). Normalization and validation are
   // enforced at the repository layer.
   TextColumn get primaryColor =>

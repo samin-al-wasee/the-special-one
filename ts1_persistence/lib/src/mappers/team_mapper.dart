@@ -53,19 +53,19 @@ class TeamMapper {
 
   /// Converts a domain [Team] model to a database [NationalTeamRecord].
   ///
-  /// WARNING: This only serializes the team's lineup. The tactic must be saved
-  /// separately via the national_team_tactics table.
+  /// Serializes both the team's lineup and tactics as JSON.
   ///
   /// Parameters:
   ///   - [team]: The domain team model
   ///
-  /// Returns: A [NationalTeamRecord] with lineup serialized as JSON
+  /// Returns: A [NationalTeamRecord] with lineup and tactics serialized as JSON
   static NationalTeamRecord toRecord(Team team) {
     return NationalTeamRecord(
       id: team.id,
       name: team.name,
       countryId: 0,
       lineup: jsonEncode(team.lineup.toJson()),
+      tactics: jsonEncode(team.tactic.toJson()),
       primaryColor: team.primaryColor,
       secondaryColor: team.secondaryColor,
       tertiaryColor: team.tertiaryColor,

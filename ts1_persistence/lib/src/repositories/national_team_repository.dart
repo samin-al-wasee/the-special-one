@@ -5,7 +5,6 @@ import 'package:drift/drift.dart' show Value;
 import 'package:ts1_persistence/src/db/database.dart';
 import 'package:ts1_persistence/src/db/daos/national_team_dao.dart';
 import 'package:ts1_persistence/src/repositories/player_repository.dart';
-import 'national_team_tactic_repository.dart';
 import '../mappers/team_mapper.dart';
 import '../mappers/team_lineup_mapper.dart';
 
@@ -13,26 +12,23 @@ import '../mappers/team_lineup_mapper.dart';
 ///
 /// Provides domain-level access to national teams with their lineups and tactics.
 /// This is a complex repository because it must coordinate multiple related entities:
-/// - National team records
-/// - Tactical configurations
+/// - National team records (with embedded tactics JSON)
 /// - Lineup compositions with player objects
 ///
 /// The repository automatically reconstructs complex nested structures from database storage.
 ///
 /// Usage:
 /// ```dart
-/// final repo = NationalTeamRepository(dao, tacticRepo, playerRepo);
+/// final repo = NationalTeamRepository(dao, playerRepo);
 /// final teams = await repo.getAllTeamsWithTactics();
 /// final team = await repo.getTeamWithTactics(1);
 /// ```
 class NationalTeamRepository {
   final NationalTeamDao dao;
-  final NationalTeamTacticRepository tacticRepository;
   final PlayerRepository playerRepository;
 
   NationalTeamRepository(
     this.dao,
-    this.tacticRepository,
     this.playerRepository,
   );
 
@@ -44,7 +40,7 @@ class NationalTeamRepository {
   ///
   /// This is a heavyweight operation that reconstructs complex nested structures.
   /// Each team includes:
-  /// - Tactical configuration (or default balanced if not stored)
+  /// - Tactical configuration (parsed from team record's tactics JSON)
   /// - Complete lineup with all player objects resolved
   /// - Bench and reserve player lists
   /// - Formation shape and slot assignments
@@ -60,17 +56,8 @@ class NationalTeamRepository {
     List<Team> teams = [];
     for (var row in teamRows) {
       final teamRecord = row['team'] as NationalTeamRecord;
-      final tacticRecord = row['tactic'] as NationalTeamTacticRecord?;
 
-      TeamTactic? tactic;
-      if (tacticRecord != null) {
-        tactic = TeamTactic.fromJson(tacticRecord.toJson());
-      } else {
-        tactic = TacticalPresetFactory.create(
-          TacticalPreset.balanced,
-        ); // Default tactic
-      }
-
+      final tactic = _parseTactics(teamRecord.tactics);
       final lineup = await _parseLineup(teamRecord.lineup);
 
       teams.add(TeamMapper.toDomain(teamRecord, tactic, lineup));
@@ -97,14 +84,10 @@ class NationalTeamRepository {
     final teamRecord = await dao.getTeamById(teamId);
     if (teamRecord == null) return null;
 
-    final tactic = await tacticRepository.getTacticByTeamId(teamId);
+    final tactic = _parseTactics(teamRecord.tactics);
     final lineup = await _parseLineup(teamRecord.lineup);
 
-    return TeamMapper.toDomain(
-      teamRecord,
-      tactic ?? TacticalPresetFactory.create(TacticalPreset.balanced),
-      lineup,
-    );
+    return TeamMapper.toDomain(teamRecord, tactic, lineup);
   }
 
   /// Retrieves a team with its country and tactic information.
@@ -147,6 +130,23 @@ class NationalTeamRepository {
     return dao.updateTeam(prepared);
   }
 
+  /// Updates a team's tactics by ID.
+  ///
+  /// Parameters:
+  ///   - [teamId]: The team ID
+  ///   - [tactic]: The new [TeamTactic] to store
+  ///
+  /// Returns: Number of rows updated
+  Future<int> updateTeamTactics(int teamId, TeamTactic tactic) {
+    final tacticJson = jsonEncode(tactic.toJson());
+    return dao.updateTeam(
+      NationalTeamsCompanion(
+        id: Value(teamId),
+        tactics: Value(tacticJson),
+      ),
+    );
+  }
+
   /// Deletes a national team by ID.
   Future<int> deleteTeam(int id) {
     return dao.deleteTeam(id);
@@ -175,6 +175,27 @@ class NationalTeamRepository {
   // =========================
   // 🔧 PRIVATE HELPER METHODS
   // =========================
+
+  /// Parses tactics from stored JSON string in team record.
+  ///
+  /// If tactics JSON is empty or invalid, returns a default balanced tactic.
+  ///
+  /// Parameters:
+  ///   - [tacticsJson]: Stringified JSON tactics data from database
+  ///
+  /// Returns: The [TeamTactic] domain model
+  TeamTactic _parseTactics(String tacticsJson) {
+    try {
+      if (tacticsJson.isEmpty || tacticsJson == '{}') {
+        return TacticalPresetFactory.create(TacticalPreset.balanced);
+      }
+      final decoded = Map<String, dynamic>.from(jsonDecode(tacticsJson) as Map);
+      return TeamTactic.fromJson(decoded);
+    } catch (e) {
+      print('Error parsing tactics: $e, returning balanced tactic');
+      return TacticalPresetFactory.create(TacticalPreset.balanced);
+    }
+  }
 
   /// Reconstructs a TeamLineup from stored JSON and player data.
   ///
@@ -265,6 +286,7 @@ class NationalTeamRepository {
       countryId: input.countryId,
       name: input.name,
       lineup: input.lineup,
+      tactics: input.tactics,
       primaryColor: Value(primary),
       secondaryColor: Value(secondary),
       tertiaryColor: Value(tertiary),

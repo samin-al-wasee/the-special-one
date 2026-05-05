@@ -1,17 +1,16 @@
 import 'package:drift/drift.dart';
 import '../database.dart';
 import '../tables/national_teams.dart';
-import '../tables/national_team_tactics.dart';
 
 part 'national_team_dao.g.dart';
 
-/// Data Access Object for national team records and related tactics.
+/// Data Access Object for national team records.
 ///
-/// Provides database access for [NationalTeams] and [NationalTeamTactics] tables,
-/// including queries, joins, and batch operations for team-tactic relationships.
+/// Provides database access for [NationalTeams] table operations.
+/// Tactics are now stored as JSON within the team record.
 ///
 /// This DAO is typically used by [NationalTeamRepository].
-@DriftAccessor(tables: [NationalTeams, NationalTeamTactics])
+@DriftAccessor(tables: [NationalTeams])
 class NationalTeamDao extends DatabaseAccessor<AppDatabase>
     with _$NationalTeamDaoMixin {
   NationalTeamDao(super.db);
@@ -27,21 +26,16 @@ class NationalTeamDao extends DatabaseAccessor<AppDatabase>
     return await select(nationalTeams).get();
   }
 
-  /// Retrieves all teams joined with their associated tactics (left outer join).
+  /// Retrieves all teams joined with their country information.
   ///
-  /// This query efficiently loads teams with their tactics in a single call.
-  /// Teams without tactics will still be returned with null tactic value.
+  /// Tactics are now stored as JSON within the team record.
   ///
-  /// Returns: List of maps with 'team' and 'tactic' keys
+  /// Returns: List of maps with 'team' and 'country' keys
   ///   - 'team': [NationalTeamRecord]
-  ///   - 'tactic': [NationalTeamTacticRecord] or null if not assigned
+  ///   - 'country': [CountryRecord]
   Future<List<Map<String, Object?>>> getAllTeamsWithTactics() async {
     final query = select(nationalTeams).join([
       innerJoin(countries, countries.id.equalsExp(nationalTeams.countryId)),
-      leftOuterJoin(
-        nationalTeamTactics,
-        nationalTeamTactics.teamId.equalsExp(nationalTeams.id),
-      ),
     ]);
 
     final results = await query.get();
@@ -49,8 +43,7 @@ class NationalTeamDao extends DatabaseAccessor<AppDatabase>
     return results.map((row) {
       final team = row.readTable(nationalTeams);
       final country = row.readTable(countries);
-      final tactic = row.readTableOrNull(nationalTeamTactics);
-      return {'team': team, 'country': country, 'tactic': tactic};
+      return {'team': team, 'country': country};
     }).toList();
   }
 
@@ -125,14 +118,14 @@ class NationalTeamDao extends DatabaseAccessor<AppDatabase>
   // 🔹 JOINED READ OPERATIONS
   // =========================
 
-  /// Retrieves a team with country and tactic data by ID.
+  /// Retrieves a team with country data by ID.
+  ///
+  /// Tactics are stored as JSON within the team record.
+  ///
+  /// Returns: Map with 'team' and 'country' keys, or null if not found
   Future<Map<String, Object?>?> getTeamByIdWithCountryAndTactics(int id) async {
     final query = select(nationalTeams).join([
       innerJoin(countries, countries.id.equalsExp(nationalTeams.countryId)),
-      leftOuterJoin(
-        nationalTeamTactics,
-        nationalTeamTactics.teamId.equalsExp(nationalTeams.id),
-      ),
     ])..where(nationalTeams.id.equals(id));
 
     final row = await query.getSingleOrNull();
@@ -140,20 +133,17 @@ class NationalTeamDao extends DatabaseAccessor<AppDatabase>
     return {
       'team': row.readTable(nationalTeams),
       'country': row.readTable(countries),
-      'tactic': row.readTableOrNull(nationalTeamTactics),
     };
   }
 
-  /// Retrieves teams for a country with their country and tactic data.
+  /// Retrieves teams for a country with their country data.
+  ///
+  /// Tactics are stored as JSON within each team record.
   Future<List<Map<String, Object?>>> getTeamsByCountryIdWithCountryAndTactics(
     int countryId,
   ) async {
     final query = select(nationalTeams).join([
       innerJoin(countries, countries.id.equalsExp(nationalTeams.countryId)),
-      leftOuterJoin(
-        nationalTeamTactics,
-        nationalTeamTactics.teamId.equalsExp(nationalTeams.id),
-      ),
     ])..where(nationalTeams.countryId.equals(countryId));
 
     final rows = await query.get();
@@ -162,7 +152,6 @@ class NationalTeamDao extends DatabaseAccessor<AppDatabase>
           (row) => {
             'team': row.readTable(nationalTeams),
             'country': row.readTable(countries),
-            'tactic': row.readTableOrNull(nationalTeamTactics),
           },
         )
         .toList();
