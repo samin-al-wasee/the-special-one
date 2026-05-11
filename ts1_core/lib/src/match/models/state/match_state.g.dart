@@ -43,9 +43,6 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
       ? const TeamMatchStats(id: 0)
       : TeamMatchStats.fromJson(json['awayStats'] as Map<String, dynamic>),
   dynamics: MatchDynamics.fromJson(json['dynamics'] as Map<String, dynamic>),
-  matchupState: MatchupState.fromJson(
-    json['matchupState'] as Map<String, dynamic>,
-  ),
   phaseHistory:
       (json['phaseHistory'] as List<dynamic>?)
           ?.map(
@@ -91,7 +88,6 @@ Map<String, dynamic> _$MatchStateToJson(_MatchState instance) =>
       'homeStats': instance.homeStats,
       'awayStats': instance.awayStats,
       'dynamics': instance.dynamics,
-      'matchupState': instance.matchupState,
       'phaseHistory': instance.phaseHistory,
       'eventCards': instance.eventCards,
       'tacticalInsights': instance.tacticalInsights,

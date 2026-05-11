@@ -108,10 +108,9 @@ class MatchStateFactory {
     PhaseResolutionSnapshot? initialPhaseSnapshot,
     MatchEventCard? initialEventCard,
   }) {
-    final matchupState = MatchupStateBuilder.fromContext(context);
     final dynamics = MatchDynamicsBuilder.fromContext(
       context,
-      matchupState: matchupState,
+      matchupState: MatchupStateBuilder.fromContext(context),
     );
 
     final phaseHistory = initialPhaseSnapshot != null
@@ -129,7 +128,6 @@ class MatchStateFactory {
       currentInitiative: currentInitiative,
       currentPossession: currentPossession,
       currentTerritoryControl: currentTerritoryControl,
-      matchupState: matchupState,
       dynamics: dynamics,
       phaseHistory: phaseHistory,
       eventCards: eventCards,

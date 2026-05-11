@@ -1,4 +1,5 @@
 import 'package:ts1_core/src/core/enums/match/pitch_zone.dart';
+import 'package:ts1_core/src/match/builders/matchup_state_builder.dart';
 import 'package:ts1_core/src/match/models/context/match_context.dart';
 import 'package:ts1_core/src/match/models/dynamics/match_dynamics.dart';
 import 'package:ts1_core/src/match/models/state/matchup_state.dart';
@@ -13,17 +14,7 @@ class MatchDynamicsBuilder {
     MatchContext context, {
     MatchupState? matchupState,
   }) {
-    final matchup =
-        matchupState ??
-        const MatchupState(
-          id: 0,
-          homeAttackVsAwayDefense: 0.0,
-          awayAttackVsHomeDefense: 0.0,
-          midfieldControlEdge: 0.0,
-          transitionControlEdge: 0.0,
-          wingControlEdge: 0.0,
-          setPieceControlEdge: 0.0,
-        );
+    final matchup = matchupState ?? MatchupStateBuilder.fromContext(context);
 
     final homeMomentum = _initialMomentum(
       identity: context.homeTacticalIdentity,
@@ -134,14 +125,36 @@ class MatchDynamicsBuilder {
   }
 
   static double _overallMatchupTilt(MatchupState matchup) {
-    final sum =
-        matchup.homeAttackVsAwayDefense +
-        matchup.awayAttackVsHomeDefense +
-        matchup.midfieldControlEdge +
-        matchup.transitionControlEdge +
-        matchup.wingControlEdge +
-        matchup.setPieceControlEdge;
-    return _clamp(sum / 6.0, -1.0, 1.0);
+    // Compute overall matchup tilt from granular fields
+    // Aggregates major tactical dimensions
+    final attackAvgEdge = (matchup.buildupEdge +
+            matchup.pressingEdge +
+            matchup.counterpressingEdge +
+            matchup.finalThirdEdge +
+            matchup.wideEdge +
+            matchup.centralEdge +
+            matchup.fullbackEdge +
+            matchup.strikerSupportEdge +
+            matchup.playmakerEdge) /
+        9.0;
+
+    final midfieldEdge = (matchup.compactnessEdge +
+            matchup.defensiveLineEdge +
+            matchup.tempoEdge +
+            matchup.playmakerEdge) /
+        4.0;
+
+    final transitionEdge = (matchup.transitionOutEdge -
+            matchup.transitionInEdge +
+            matchup.shootingRiskEdge) /
+        3.0;
+
+    final wingEdge = (matchup.wideEdge + matchup.fullbackEdge) / 2.0;
+
+    final setPieceEdge = (matchup.aerialEdge - matchup.setpieceDefenseEdge) / 2.0;
+
+    final sum = attackAvgEdge + midfieldEdge + transitionEdge + wingEdge + setPieceEdge;
+    return _clamp(sum / 5.0, -1.0, 1.0);
   }
 
   static Map<PitchZone, double> _zoneDominanceFromStructural(

@@ -12,6 +12,7 @@ import 'package:ts1_core/src/match/models/match.dart';
 import 'package:ts1_core/src/match/models/insights/tactical_insight.dart';
 import 'package:ts1_core/src/match/models/phase/phase_resolution_snapshot.dart';
 import 'package:ts1_core/src/match/models/state/match_state.dart';
+import 'package:ts1_core/src/match/models/state/matchup_state.dart';
 import 'package:ts1_core/src/team/models/team.dart';
 import 'package:ts1_core/src/team/models/tactic/team_tactic.dart';
 
@@ -63,11 +64,10 @@ class MatchEngine {
       matchupState: newMatchupState,
     );
 
-    // Update match with new context, matchup state, and dynamics
+    // Update match with new context and dynamics
     return updatedMatch.copyWith(
       context: newContext,
       matchState: updatedMatch.matchState.copyWith(
-        matchupState: newMatchupState,
         dynamics: newDynamics,
       ),
     );
@@ -260,13 +260,14 @@ class MatchEngine {
     final initiative = _resolveInitiative(match, state, random);
     final possession = initiative;
     final territoryRetention = _resolveTerritoryRetentionProbability(
+      match: match,
       state: state,
       initiative: initiative,
     );
     final territory = random.nextDouble() < territoryRetention
         ? initiative
         : match.opponentOf(initiative);
-    final phaseType = _resolvePhaseType(state: state, random: random);
+    final phaseType = _resolvePhaseType(match: match, state: state, random: random);
     final attackState = AttackState(
       id: state.currentPhaseIndex + 1,
       route: _resolveAttackRoute(
@@ -402,6 +403,7 @@ class MatchEngine {
   /// - chance → outcome
   /// - setPiecePreparation → can stay or move to setPieceDelivery
   static MatchPhaseType _resolvePhaseType({
+    required Match match,
     required MatchState state,
     required math.Random random,
   }) {
@@ -429,7 +431,7 @@ class MatchEngine {
     }
 
     // Apply weighted probabilistic logic for valid multibranch points
-    final weights = _resolvePhaseTypeWeights(state);
+    final weights = _resolvePhaseTypeWeights(match, state);
     return _weightedPick(weights, random);
   }
 
@@ -453,10 +455,11 @@ class MatchEngine {
     MatchState state,
     math.Random random,
   ) {
+    final matchup = _getMatchupState(match);
     final homeControl = _clamp01(
       0.5 +
-          (state.matchupState.homeAttackVsAwayDefense * 0.12) +
-          (state.matchupState.midfieldControlEdge * 0.10) +
+          (_attackEdgeFromMatchup(matchup) * 0.12) +
+          (_midfieldEdgeFromMatchup(matchup) * 0.10) +
           (state.dynamics.homeMomentum * 0.10) +
           (state.dynamics.homeConfidence - 0.5) * 0.10 -
           (state.dynamics.homeFatigue * 0.08) +
@@ -500,11 +503,12 @@ class MatchEngine {
   ///
   /// Returns value clamped to [0, 1].
   static double _resolveTerritoryRetentionProbability({
+    required Match match,
     required MatchState state,
     required TeamSide initiative,
   }) {
+    final matchup = _getMatchupState(match);
     final dynamics = state.dynamics;
-    final matchup = state.matchupState;
 
     final momentum = initiative == TeamSide.home
         ? dynamics.homeMomentum
@@ -520,14 +524,14 @@ class MatchEngine {
         : dynamics.awayDisciplinePressure;
 
     final directionalMidfield = initiative == TeamSide.home
-        ? matchup.midfieldControlEdge
-        : -matchup.midfieldControlEdge;
+        ? _midfieldEdgeFromMatchup(matchup)
+        : -_midfieldEdgeFromMatchup(matchup);
     final directionalTransition = initiative == TeamSide.home
-        ? matchup.transitionControlEdge
-        : -matchup.transitionControlEdge;
+        ? _transitionEdgeFromMatchup(matchup)
+        : -_transitionEdgeFromMatchup(matchup);
     final directionalWing = initiative == TeamSide.home
-        ? matchup.wingControlEdge
-        : -matchup.wingControlEdge;
+        ? _wingEdgeFromMatchup(matchup)
+        : -_wingEdgeFromMatchup(matchup);
 
     return _clamp01(
       0.52 +
@@ -548,6 +552,7 @@ class MatchEngine {
     required TeamSide initiative,
     required math.Random random,
   }) {
+    final matchup = _getMatchupState(match);
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
@@ -556,15 +561,15 @@ class MatchEngine {
         : match.context.awayStructuralProfile;
 
     final wingEdge = _directionalMatchupEdge(
-      state.matchupState.wingControlEdge,
+      _wingEdgeFromMatchup(matchup),
       initiative,
     );
     final midfieldEdge = _directionalMatchupEdge(
-      state.matchupState.midfieldControlEdge,
+      _midfieldEdgeFromMatchup(matchup),
       initiative,
     );
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
 
@@ -640,15 +645,16 @@ class MatchEngine {
       return AttackMode.setPlayExecution;
     }
 
+    final matchup = _getMatchupState(match);
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
     final midfieldEdge = _directionalMatchupEdge(
-      state.matchupState.midfieldControlEdge,
+      _midfieldEdgeFromMatchup(matchup),
       initiative,
     );
     final fatigue = _initiativeFatigue(state, initiative);
@@ -707,6 +713,7 @@ class MatchEngine {
     required MatchPhaseType phaseType,
     required math.Random random,
   }) {
+    final matchup = _getMatchupState(match);
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
@@ -714,11 +721,11 @@ class MatchEngine {
         ? match.context.homeStructuralProfile
         : match.context.awayStructuralProfile;
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
     final setPieceEdge = _directionalMatchupEdge(
-      state.matchupState.setPieceControlEdge,
+      _setPieceEdgeFromMatchup(matchup),
       initiative,
     );
     final fatigue = _initiativeFatigue(state, initiative);
@@ -853,6 +860,7 @@ class MatchEngine {
     required AttackState attackState,
     required math.Random random,
   }) {
+    final matchup = _getMatchupState(match);
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
         : match.context.awayTacticalIdentity;
@@ -867,21 +875,19 @@ class MatchEngine {
         : state.dynamics.homeDisciplinePressure;
 
     final attackEdge = _directionalMatchupEdge(
-      initiative == TeamSide.home
-          ? state.matchupState.homeAttackVsAwayDefense
-          : state.matchupState.awayAttackVsHomeDefense,
+      _attackEdgeFromMatchup(matchup),
       initiative,
     );
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
     final setPieceEdge = _directionalMatchupEdge(
-      state.matchupState.setPieceControlEdge,
+      _setPieceEdgeFromMatchup(matchup),
       initiative,
     );
     final wingEdge = _directionalMatchupEdge(
-      state.matchupState.wingControlEdge,
+      _wingEdgeFromMatchup(matchup),
       initiative,
     );
     final momentum = _initiativeMomentum(state, initiative);
@@ -1094,6 +1100,7 @@ class MatchEngine {
     required double chanceQuality,
     required math.Random random,
   }) {
+    final matchup = _getMatchupState(match);
     final adjusted = _clamp01(chanceQuality);
     final identity = initiative == TeamSide.home
         ? match.context.homeTacticalIdentity
@@ -1106,13 +1113,11 @@ class MatchEngine {
         : match.context.homeStrengthProfile;
 
     final attackEdge = _directionalMatchupEdge(
-      initiative == TeamSide.home
-          ? state.matchupState.homeAttackVsAwayDefense
-          : state.matchupState.awayAttackVsHomeDefense,
+      _attackEdgeFromMatchup(matchup),
       initiative,
     );
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
     final momentum = _initiativeMomentum(state, initiative);
@@ -1192,7 +1197,7 @@ class MatchEngine {
         baseClearance +
             ((1 - adjusted) * 0.14) +
             (defendingStrength.setPieceDefenseStrength / 100.0 * 0.08) +
-            (state.matchupState.setPieceControlEdge.abs() * 0.04),
+            (_setPieceEdgeFromMatchup(matchup).abs() * 0.04),
       ),
       ChanceOutcome.turnover: _positiveWeight(
         0.06 +
@@ -1447,8 +1452,10 @@ class MatchEngine {
 
   /// Builds the phase transition weights from live match state.
   static Map<MatchPhaseType, double> _resolvePhaseTypeWeights(
+    Match match,
     MatchState state,
   ) {
+    final matchup = _getMatchupState(match);
     final initiative = state.currentInitiative;
     final momentum = _initiativeMomentum(state, initiative);
     final confidence = _initiativeConfidence(state, initiative);
@@ -1461,25 +1468,23 @@ class MatchEngine {
         ? 0.0
         : (state.currentTerritoryControl == initiative ? 0.10 : -0.05);
     final attackEdge = _directionalMatchupEdge(
-      initiative == TeamSide.home
-          ? state.matchupState.homeAttackVsAwayDefense
-          : state.matchupState.awayAttackVsHomeDefense,
+      _attackEdgeFromMatchup(matchup),
       initiative,
     );
     final midfieldEdge = _directionalMatchupEdge(
-      state.matchupState.midfieldControlEdge,
+      _midfieldEdgeFromMatchup(matchup),
       initiative,
     );
     final transitionEdge = _directionalMatchupEdge(
-      state.matchupState.transitionControlEdge,
+      _transitionEdgeFromMatchup(matchup),
       initiative,
     );
     final wingEdge = _directionalMatchupEdge(
-      state.matchupState.wingControlEdge,
+      _wingEdgeFromMatchup(matchup),
       initiative,
     );
     final setPieceEdge = _directionalMatchupEdge(
-      state.matchupState.setPieceControlEdge,
+      _setPieceEdgeFromMatchup(matchup),
       initiative,
     );
 
@@ -1909,6 +1914,67 @@ class MatchEngine {
     return initiative == TeamSide.home
         ? state.dynamics.homeDisciplinePressure
         : state.dynamics.awayDisciplinePressure;
+  }
+
+  /// Derives the matchupState from the Match context (avoiding state dependency).
+  static MatchupState _getMatchupState(Match match) {
+    return MatchupStateBuilder.fromContext(match.context);
+  }
+
+  /// Computes attack edge from matchup profile (home perspective):
+  /// aggregates offensive and final third tactical edges.
+  static double _attackEdgeFromMatchup(MatchupState matchup) {
+    final values = [
+      matchup.buildupEdge,
+      matchup.pressingEdge,
+      matchup.counterpressingEdge,
+      matchup.finalThirdEdge,
+      matchup.wideEdge,
+      matchup.centralEdge,
+      matchup.fullbackEdge,
+      matchup.strikerSupportEdge,
+      matchup.playmakerEdge,
+    ];
+    return _average(values);
+  }
+
+  /// Computes midfield edge from matchup profile.
+  static double _midfieldEdgeFromMatchup(MatchupState matchup) {
+    final values = [
+      matchup.compactnessEdge,
+      matchup.defensiveLineEdge,
+      matchup.tempoEdge,
+      matchup.playmakerEdge,
+    ];
+    return _average(values);
+  }
+
+  /// Computes transition edge from matchup profile.
+  static double _transitionEdgeFromMatchup(MatchupState matchup) {
+    final values = [
+      matchup.transitionOutEdge,
+      -matchup.transitionInEdge,
+      matchup.shootingRiskEdge,
+    ];
+    return _average(values);
+  }
+
+  /// Computes wing edge from matchup profile.
+  static double _wingEdgeFromMatchup(MatchupState matchup) {
+    final values = [matchup.wideEdge, matchup.fullbackEdge];
+    return _average(values);
+  }
+
+  /// Computes set-piece edge from matchup profile.
+  static double _setPieceEdgeFromMatchup(MatchupState matchup) {
+    final values = [matchup.aerialEdge, -matchup.setpieceDefenseEdge];
+    return _average(values);
+  }
+
+  /// Computes average of a list of values.
+  static double _average(List<double> values) {
+    if (values.isEmpty) return 0.0;
+    return values.reduce((sum, val) => sum + val) / values.length;
   }
 
   static double _directionalMatchupEdge(double edge, TeamSide? initiative) {

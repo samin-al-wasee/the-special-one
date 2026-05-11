@@ -6,7 +6,6 @@ import 'package:ts1_core/src/match/models/insights/tactical_insight.dart';
 import 'package:ts1_core/src/match/models/interventions/manager_intervention.dart';
 import 'package:ts1_core/src/match/models/interventions/substitution_record.dart';
 import 'package:ts1_core/src/match/models/phase/phase_resolution_snapshot.dart';
-import 'package:ts1_core/src/match/models/state/matchup_state.dart';
 import 'package:ts1_core/src/match/models/stats/team_match_stats.dart';
 import 'package:ts1_core/src/match/models/state/clock/match_clock.dart';
 import 'package:ts1_core/src/match/models/state/scoreline/scoreline.dart';
@@ -44,9 +43,6 @@ abstract class MatchState with _$MatchState {
 
     // ==================== POSITIONAL / DYNAMICS SYSTEM ====================
     required MatchDynamics dynamics,
-
-    // ==================== MATCHUP ADVANTAGE SYSTEM ====================
-    required MatchupState matchupState,
 
     // ==================== PHASE HISTORY SYSTEM ====================
     @Default(<PhaseResolutionSnapshot>[])
@@ -388,31 +384,6 @@ abstract class MatchState with _$MatchState {
     return copyWith(
       homeStats: homeStats.copyWith(possession: normalized * 100),
       awayStats: awayStats.copyWith(possession: (1 - normalized) * 100),
-    );
-  }
-
-  MatchState updateMatchupState({
-    double? homeAttackVsAwayDefense,
-    double? awayAttackVsHomeDefense,
-    double? midfieldControlEdge,
-    double? transitionControlEdge,
-    double? wingControlEdge,
-    double? setPieceControlEdge,
-  }) {
-    return copyWith(
-      matchupState: matchupState.copyWith(
-        homeAttackVsAwayDefense:
-            homeAttackVsAwayDefense ?? matchupState.homeAttackVsAwayDefense,
-        awayAttackVsHomeDefense:
-            awayAttackVsHomeDefense ?? matchupState.awayAttackVsHomeDefense,
-        midfieldControlEdge:
-            midfieldControlEdge ?? matchupState.midfieldControlEdge,
-        transitionControlEdge:
-            transitionControlEdge ?? matchupState.transitionControlEdge,
-        wingControlEdge: wingControlEdge ?? matchupState.wingControlEdge,
-        setPieceControlEdge:
-            setPieceControlEdge ?? matchupState.setPieceControlEdge,
-      ),
     );
   }
 
